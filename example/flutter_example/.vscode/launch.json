@@ -5,9 +5,9 @@
             "name": "Launch app",
             "request": "launch",
             "type": "dart",
-            "program": " lib/main_development.dart",
+            "program": "lib/rivepod_example.dart",
             "args": [
-                "lib/main_development.dart"
+                "lib/rivepod_example.dart"
             ]
         },
     ]
