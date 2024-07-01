@@ -25,6 +25,8 @@ dev_dependencies:
   riverpod_generator: ^2.4.2
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.12
+  flutter_zustand: ^0.0.5
+
 
 flutter:
 
