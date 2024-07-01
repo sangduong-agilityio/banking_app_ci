@@ -3,7 +3,6 @@ import 'package:laza_design/ui/foundations/colors.dart';
 import 'package:laza_design/ui/foundations/typography.dart';
 
 class AppTheme {
-  // The light theme for application
   static final ThemeData lightTheme = ThemeData.light().copyWith(
     primaryColor: _lightColorScheme.primary,
     hintColor: _lightColorScheme.tertiary,
@@ -11,10 +10,6 @@ class AppTheme {
     textTheme: _lightTextTheme,
   );
 
-  // The darkThem for application
-  static final ThemeData darkTheme = ThemeData.dark().copyWith(
-    textTheme: _lightTextTheme,
-  );
   static ColorScheme get _lightColorScheme => const ColorScheme(
         brightness: Brightness.light,
         primary: LSColors.primary600,
@@ -24,6 +19,7 @@ class AppTheme {
         secondary: LSColors.mostlyBlack,
         onSecondary: LSColors.white,
         tertiaryContainer: LSColors.grey500,
+        outlineVariant: LSColors.grey200,
         error: LSColors.error600,
         onError: LSColors.error300,
         surface: LSColors.grey50,

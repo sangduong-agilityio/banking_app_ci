@@ -11,7 +11,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  # flutter_svg is a package in Flutter used to display and interact with Scalable Vector Graphics (SVG) images. 
+  flutter_svg: ^2.0.10+1
+  
   laza_design:
     path: ../laza_design
 

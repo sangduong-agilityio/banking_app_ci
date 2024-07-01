@@ -35,7 +35,7 @@ class LSColors {
   // Grey color
   static const grey50 = Color(0xFFEDEEF0);
   static const grey100 = Color(0xFFCFD1D4);
-  static const grey200 = Color(0xFFB7BABF);
+  static const grey200 = Color(0xFFF5F6FA);
   static const grey300 = Color(0xFF9FA3A9);
   static const grey400 = Color(0xFF888C94);
   static const grey500 = Color(0xFF8F959E);
