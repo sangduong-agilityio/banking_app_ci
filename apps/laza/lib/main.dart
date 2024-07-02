@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laza_design/ui/atoms/orientations.dart';
 import 'package:laza_design/ui/atoms/search_bar.dart';
 import 'package:laza_design/ui/templates/scaffold.dart';
 
@@ -30,15 +31,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return const LazaShopScaffold(
-      paddingScaffold: 20,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
-          ),
-          LSSearchBar()
-        ],
+    return const LSOrientation(
+      portraitWidget: LazaShopScaffold(
+        paddingScaffold: 20,
+        body: Column(
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            LSSearchBar()
+          ],
+        ),
+      ),
+      landscapeWidget: LazaShopScaffold(
+        paddingScaffold: 20,
+        body: Column(
+          children: [
+            SizedBox(
+              height: 50,
+            ),
+            LSSearchBar()
+          ],
+        ),
       ),
     );
   }

@@ -27,6 +27,15 @@
             "args": [
                 "lib/main.dart"
             ]
+        },
+        {
+            "name": "Launch app in Profile mode",
+            "request": "launch",
+            "type": "dart",
+            "program": "apps/laza/lib/main.dart",
+            "args": [
+                "--profile"
+            ]
         }
     ]
 }
