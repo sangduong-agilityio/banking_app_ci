@@ -1,0 +1,81 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:laza/core/extenssions/context_extenssions.dart';
+import 'package:laza/core/l10n/l10n_generated/l10n.dart';
+import 'package:laza/core/widgets/app_bar.dart';
+import 'package:laza/core/widgets/buttons.dart';
+import 'package:laza/core/widgets/icons.dart';
+import 'package:laza/core/widgets/scaffold.dart';
+import 'package:laza/features/auth/presentation/widgets/text_input.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  @override
+  Widget build(BuildContext context) {
+    const sizeBox20 = SizedBox(height: 20);
+    return LazaShopScaffold(
+      body: Column(
+        children: [
+          const SizedBox(height: 45),
+          LSAppBar(
+              onTappedBackButton: () => context.pop(),
+              icon: LSIcons.icArrowLeft),
+          const SizedBox(height: 15),
+          Text(
+            S.current.welcome,
+            style: context.textTheme.displayLarge,
+          ),
+          const SizedBox(height: 5),
+          Text(
+            S.current.pleaseEnterData,
+            style: context.textTheme.headlineMedium!
+                .copyWith(color: context.colorScheme.tertiaryContainer),
+          ),
+          const SizedBox(height: 145),
+          const SignUpForm(sizeBox20: sizeBox20),
+          const SizedBox(height: 280),
+          LSButton(text: S.current.signUpBtn, onPressed: () {})
+        ],
+      ),
+    );
+  }
+}
+
+class SignUpForm extends StatelessWidget {
+  const SignUpForm({
+    super.key,
+    required this.sizeBox20,
+  });
+
+  final SizedBox sizeBox20;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        children: [
+          TextInput(
+            labelText: S.current.username,
+          ),
+          sizeBox20,
+          TextInput(
+            labelText: S.current.email,
+          ),
+          sizeBox20,
+          TextInput(
+            labelText: S.current.password,
+            hasObscureText: true,
+          ),
+        ],
+      ),
+    );
+  }
+}

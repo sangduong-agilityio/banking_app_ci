@@ -100,10 +100,10 @@ class S {
     );
   }
 
-  /// `Already have an account?`
+  /// `Already have an account? `
   String get alreadyAccount {
     return Intl.message(
-      'Already have an account?',
+      'Already have an account? ',
       name: 'alreadyAccount',
       desc: '',
       args: [],
@@ -115,6 +115,26 @@ class S {
     return Intl.message(
       'Signin',
       name: 'signInTextBtn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message(
+      'Email',
+      name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign Up`
+  String get signUpBtn {
+    return Intl.message(
+      'Sign Up',
+      name: 'signUpBtn',
       desc: '',
       args: [],
     );
@@ -160,10 +180,10 @@ class S {
     );
   }
 
-  /// `Forgot password`
+  /// `Forgot password?`
   String get forgotPasswordTextBtn {
     return Intl.message(
-      'Forgot password',
+      'Forgot password?',
       name: 'forgotPasswordTextBtn',
       desc: '',
       args: [],
@@ -180,10 +200,10 @@ class S {
     );
   }
 
-  /// `By connecting your account confirm that you agree with our`
+  /// `By connecting your account confirm that you agree with our `
   String get connectingYourAccount {
     return Intl.message(
-      'By connecting your account confirm that you agree with our',
+      'By connecting your account confirm that you agree with our ',
       name: 'connectingYourAccount',
       desc: '',
       args: [],
@@ -385,6 +405,16 @@ class S {
     return Intl.message(
       'Sort',
       name: 'sort',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send email`
+  String get sendEmail {
+    return Intl.message(
+      'Send email',
+      name: 'sendEmail',
       desc: '',
       args: [],
     );

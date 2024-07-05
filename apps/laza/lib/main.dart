@@ -1,59 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:laza_design/ui/atoms/orientations.dart';
-import 'package:laza_design/ui/atoms/search_bar.dart';
-import 'package:laza_design/ui/templates/scaffold.dart';
+import 'package:laza/core/l10n/l10n_generated/l10n.dart';
+import 'package:laza/core/router/routes.dart';
+import 'package:laza/core/util/themes/theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const LazaShopApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class LazaShopApp extends StatelessWidget {
+  const LazaShopApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp.router(
+      title: 'Laza shop app',
+      theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      home: HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return const LSOrientation(
-      portraitWidget: LazaShopScaffold(
-        paddingScaffold: 20,
-        body: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            LSSearchBar()
-          ],
-        ),
-      ),
-      landscapeWidget: LazaShopScaffold(
-        paddingScaffold: 20,
-        body: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            LSSearchBar()
-          ],
-        ),
-      ),
+      locale: const Locale('en', 'US'),
+      localizationsDelegates: const [
+        S.delegate,
+      ],
+      supportedLocales: [
+        ...S.delegate.supportedLocales,
+        const Locale('en', ''),
+      ],
+      routeInformationProvider: AppRouter.routes.routeInformationProvider,
+      routeInformationParser: AppRouter.routes.routeInformationParser,
+      routerDelegate: AppRouter.routes.routerDelegate,
     );
   }
 }

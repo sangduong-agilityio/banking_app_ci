@@ -4,15 +4,17 @@
     "twitterBtn":"Twitter",
     "googleBtn":"Google",
     "createAccountBtn":"Create an Account",
-    "alreadyAccount":"Already have an account?",
+    "alreadyAccount":"Already have an account? ",
     "signInTextBtn":"Signin",
+    "email":"Email",
+    "signUpBtn":"Sign Up",
     "welcome":"Welcome",
     "pleaseEnterData":"Please enter your data to continue",
     "username":"Username",
     "password":"Password",
-    "forgotPasswordTextBtn":"Forgot password",
+    "forgotPasswordTextBtn":"Forgot password?",
     "rememberMe":"Remember me",
-    "connectingYourAccount":"By connecting your account confirm that you agree with our",
+    "connectingYourAccount":"By connecting your account confirm that you agree with our ",
     "termAndCondition":"Term and Condition",
     "loginBtn":"Login",
     "hello":"Hello",
@@ -32,5 +34,6 @@
     "myCards":"My Cards",
     "wishList":"Wishlist",
     "logoutBtn":"Logout",
-    "sort":"Sort"
+    "sort":"Sort",
+    "sendEmail":"Send email"
 }

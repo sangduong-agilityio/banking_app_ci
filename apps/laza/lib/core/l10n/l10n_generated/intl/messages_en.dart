@@ -26,16 +26,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("AccountInformation"),
         "addToCart": MessageLookupByLibrary.simpleMessage("Add to Cart"),
         "alreadyAccount":
-            MessageLookupByLibrary.simpleMessage("Already have an account?"),
+            MessageLookupByLibrary.simpleMessage("Already have an account? "),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose Brand"),
         "connectingYourAccount": MessageLookupByLibrary.simpleMessage(
-            "By connecting your account confirm that you agree with our"),
+            "By connecting your account confirm that you agree with our "),
         "createAccountBtn":
             MessageLookupByLibrary.simpleMessage("Create an Account"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "email": MessageLookupByLibrary.simpleMessage("Email"),
         "facebookBtn": MessageLookupByLibrary.simpleMessage("Facebook"),
         "forgotPasswordTextBtn":
-            MessageLookupByLibrary.simpleMessage("Forgot password"),
+            MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "googleBtn": MessageLookupByLibrary.simpleMessage("Google"),
         "hello": MessageLookupByLibrary.simpleMessage("Hello"),
         "letGetStarted":
@@ -53,7 +54,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "price": MessageLookupByLibrary.simpleMessage("Price"),
         "rememberMe": MessageLookupByLibrary.simpleMessage("Remember me"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
+        "sendEmail": MessageLookupByLibrary.simpleMessage("Send email"),
         "signInTextBtn": MessageLookupByLibrary.simpleMessage("Signin"),
+        "signUpBtn": MessageLookupByLibrary.simpleMessage("Sign Up"),
         "size": MessageLookupByLibrary.simpleMessage("Size"),
         "sizeGuide": MessageLookupByLibrary.simpleMessage("Size Guide"),
         "sort": MessageLookupByLibrary.simpleMessage("Sort"),

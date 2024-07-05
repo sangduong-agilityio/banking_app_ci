@@ -15,10 +15,6 @@ dependencies:
 
   flutter:
     sdk: flutter
-
-  laza_design:
-    path: ../laza_design
-
   
 dev_dependencies:
   flutter_test:
