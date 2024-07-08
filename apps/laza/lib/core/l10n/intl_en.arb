@@ -29,11 +29,19 @@
     "description":"Description",
     "reviews":"Reviews",
     "addToCart":"Add to Cart",
-    "accountInformation":"AccountInformation",
+    "accountInformation":"Account Information",
     "order":"Order",
     "myCards":"My Cards",
     "wishList":"Wishlist",
     "logoutBtn":"Logout",
     "sort":"Sort",
-    "sendEmail":"Send email"
+    "sendEmail":"Send email",
+    "searchInput":"Search...",
+    "darkMode":"Dark Mode",
+    "verifiedProfile":"Verified Profile",
+    "availableInStock":"Available in stock",
+    "totalItems": "{total} Items",
+    "rating": "{numberOfUserRating} rating",
+    "totalPrice":"Total Price",
+    "withVatAndSd":"with VAT, SD"
 }

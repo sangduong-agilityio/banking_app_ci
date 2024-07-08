@@ -35,11 +35,28 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/icons/ic_home.svg');
 
+  /// File path: assets/icons/ic_information.svg
+  SvgGenImage get icInformation =>
+      const SvgGenImage('assets/icons/ic_information.svg');
+
+  /// File path: assets/icons/ic_inverted_menu.svg
+  SvgGenImage get icInvertedMenu =>
+      const SvgGenImage('assets/icons/ic_inverted_menu.svg');
+
+  /// File path: assets/icons/ic_logout.svg
+  SvgGenImage get icLogout => const SvgGenImage('assets/icons/ic_logout.svg');
+
   /// File path: assets/icons/ic_menu.svg
   SvgGenImage get icMenu => const SvgGenImage('assets/icons/ic_menu.svg');
 
   /// File path: assets/icons/ic_search.svg
   SvgGenImage get icSearch => const SvgGenImage('assets/icons/ic_search.svg');
+
+  /// File path: assets/icons/ic_sort.svg
+  SvgGenImage get icSort => const SvgGenImage('assets/icons/ic_sort.svg');
+
+  /// File path: assets/icons/ic_sun.svg
+  SvgGenImage get icSun => const SvgGenImage('assets/icons/ic_sun.svg');
 
   /// File path: assets/icons/ic_twitter.svg
   SvgGenImage get icTwitter => const SvgGenImage('assets/icons/ic_twitter.svg');
@@ -58,8 +75,13 @@ class $AssetsIconsGen {
         icGoogle,
         icHeart,
         icHome,
+        icInformation,
+        icInvertedMenu,
+        icLogout,
         icMenu,
         icSearch,
+        icSort,
+        icSun,
         icTwitter,
         icVoice,
         icWallet

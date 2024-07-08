@@ -350,10 +350,10 @@ class S {
     );
   }
 
-  /// `AccountInformation`
+  /// `Account Information`
   String get accountInformation {
     return Intl.message(
-      'AccountInformation',
+      'Account Information',
       name: 'accountInformation',
       desc: '',
       args: [],
@@ -415,6 +415,86 @@ class S {
     return Intl.message(
       'Send email',
       name: 'sendEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search...`
+  String get searchInput {
+    return Intl.message(
+      'Search...',
+      name: 'searchInput',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark Mode`
+  String get darkMode {
+    return Intl.message(
+      'Dark Mode',
+      name: 'darkMode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verified Profile`
+  String get verifiedProfile {
+    return Intl.message(
+      'Verified Profile',
+      name: 'verifiedProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available in stock`
+  String get availableInStock {
+    return Intl.message(
+      'Available in stock',
+      name: 'availableInStock',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{total} Items`
+  String totalItems(Object total) {
+    return Intl.message(
+      '$total Items',
+      name: 'totalItems',
+      desc: '',
+      args: [total],
+    );
+  }
+
+  /// `{numberOfUserRating} rating`
+  String rating(Object numberOfUserRating) {
+    return Intl.message(
+      '$numberOfUserRating rating',
+      name: 'rating',
+      desc: '',
+      args: [numberOfUserRating],
+    );
+  }
+
+  /// `Total Price`
+  String get totalPrice {
+    return Intl.message(
+      'Total Price',
+      name: 'totalPrice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `with VAT, SD`
+  String get withVatAndSd {
+    return Intl.message(
+      'with VAT, SD',
+      name: 'withVatAndSd',
       desc: '',
       args: [],
     );

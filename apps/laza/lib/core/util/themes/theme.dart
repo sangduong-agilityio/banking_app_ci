@@ -91,10 +91,6 @@ class AppTheme {
 
   /// SearchBarTheme
   static final SearchBarThemeData _searchBarTheme = SearchBarThemeData(
-    constraints: const BoxConstraints(
-      minWidth: double.infinity,
-      minHeight: 48,
-    ),
     elevation: WidgetStateProperty.all(0),
     textStyle: WidgetStatePropertyAll(
       _lightTextTheme.headlineMedium?.copyWith(
@@ -107,9 +103,6 @@ class AppTheme {
       _lightTextTheme.headlineMedium?.copyWith(
         color: _lightColorScheme.tertiaryContainer,
       ),
-    ),
-    padding: WidgetStateProperty.all(
-      const EdgeInsets.only(left: 10, right: 20),
     ),
     shape: WidgetStateProperty.all(
       const RoundedRectangleBorder(

@@ -20,18 +20,25 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(numberOfUserRating) => "${numberOfUserRating} rating";
+
+  static String m1(total) => "${total} Items";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountInformation":
-            MessageLookupByLibrary.simpleMessage("AccountInformation"),
+            MessageLookupByLibrary.simpleMessage("Account Information"),
         "addToCart": MessageLookupByLibrary.simpleMessage("Add to Cart"),
         "alreadyAccount":
             MessageLookupByLibrary.simpleMessage("Already have an account? "),
+        "availableInStock":
+            MessageLookupByLibrary.simpleMessage("Available in stock"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose Brand"),
         "connectingYourAccount": MessageLookupByLibrary.simpleMessage(
             "By connecting your account confirm that you agree with our "),
         "createAccountBtn":
             MessageLookupByLibrary.simpleMessage("Create an Account"),
+        "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "facebookBtn": MessageLookupByLibrary.simpleMessage("Facebook"),
@@ -52,8 +59,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterData": MessageLookupByLibrary.simpleMessage(
             "Please enter your data to continue"),
         "price": MessageLookupByLibrary.simpleMessage("Price"),
+        "rating": m0,
         "rememberMe": MessageLookupByLibrary.simpleMessage("Remember me"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
+        "searchInput": MessageLookupByLibrary.simpleMessage("Search..."),
         "sendEmail": MessageLookupByLibrary.simpleMessage("Send email"),
         "signInTextBtn": MessageLookupByLibrary.simpleMessage("Signin"),
         "signUpBtn": MessageLookupByLibrary.simpleMessage("Sign Up"),
@@ -62,12 +71,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "sort": MessageLookupByLibrary.simpleMessage("Sort"),
         "termAndCondition":
             MessageLookupByLibrary.simpleMessage("Term and Condition"),
+        "totalItems": m1,
+        "totalPrice": MessageLookupByLibrary.simpleMessage("Total Price"),
         "twitterBtn": MessageLookupByLibrary.simpleMessage("Twitter"),
         "username": MessageLookupByLibrary.simpleMessage("Username"),
+        "verifiedProfile":
+            MessageLookupByLibrary.simpleMessage("Verified Profile"),
         "viewAll": MessageLookupByLibrary.simpleMessage("View All"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
         "welcomeToLaza":
             MessageLookupByLibrary.simpleMessage("Welcome to Laza"),
-        "wishList": MessageLookupByLibrary.simpleMessage("Wishlist")
+        "wishList": MessageLookupByLibrary.simpleMessage("Wishlist"),
+        "withVatAndSd": MessageLookupByLibrary.simpleMessage("with VAT, SD")
       };
 }

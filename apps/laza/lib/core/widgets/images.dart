@@ -7,6 +7,8 @@ class LSImage extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final Widget? icon;
+  final BoxShape? shape;
+  final double borderRadius;
 
   const LSImage({
     super.key,
@@ -15,6 +17,8 @@ class LSImage extends StatelessWidget {
     this.height,
     this.fit = BoxFit.cover,
     this.icon,
+    this.shape,
+    this.borderRadius = 15,
   });
 
   @override
@@ -26,11 +30,11 @@ class LSImage extends StatelessWidget {
           height: height,
           decoration: ShapeDecoration(
             image: DecorationImage(
-              image: AssetImage(imageUrl),
+              image: NetworkImage(imageUrl),
               fit: fit,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
           ),
         ),

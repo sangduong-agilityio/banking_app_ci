@@ -8,12 +8,17 @@ class LSAppBar extends StatelessWidget {
     this.onTappedRightButton,
     this.rightButtonIcon,
     required this.icon,
+    this.centerImage,
+    this.fit = BoxFit.cover,
   });
   final VoidCallback onTappedBackButton;
   final VoidCallback? onTappedRightButton;
   // Icon for the right button
   final Widget? rightButtonIcon;
   final Widget? icon;
+  final String? centerImage;
+
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,19 @@ class LSAppBar extends StatelessWidget {
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(10),
               backgroundColor: context.colorScheme.outlineVariant,
+            ),
+          ),
+          Container(
+            width: 68,
+            height: 45,
+            decoration: ShapeDecoration(
+              image: DecorationImage(
+                image: NetworkImage(centerImage ?? ''),
+                fit: fit,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
           ),
           if (rightButtonIcon != null)

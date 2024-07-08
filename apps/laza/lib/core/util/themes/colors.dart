@@ -46,4 +46,8 @@ class LSColors {
 
   // Other color
   static const mostlyBlack = Color(0xFF1D1E20);
+
+  // Orange color
+  static const orange = Color(0xFFFFA927);
+  static const orangeLight = Color(0xFFFD853A);
 }

@@ -69,8 +69,8 @@ class LSIcons {
   );
   static Widget icSearch = OlSvgBuildInAssetImage(
     path: Assets.icons.icSearch.path,
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
     color: LSColors.grey500,
   );
   static Widget icFacebook = OlSvgBuildInAssetImage(
@@ -117,5 +117,30 @@ class LSIcons {
     path: Assets.icons.icWallet.path,
     width: 19,
     height: 20,
+  );
+  static Widget icInvertedMenu = OlSvgBuildInAssetImage(
+    path: Assets.icons.icInvertedMenu.path,
+    width: 25,
+    height: 25,
+  );
+  static Widget icSun = OlSvgBuildInAssetImage(
+    path: Assets.icons.icSun.path,
+    width: 25,
+    height: 25,
+  );
+  static Widget icInformation = OlSvgBuildInAssetImage(
+    path: Assets.icons.icInformation.path,
+    width: 25,
+    height: 25,
+  );
+  static Widget icLogout = OlSvgBuildInAssetImage(
+    path: Assets.icons.icLogout.path,
+    width: 25,
+    height: 25,
+  );
+  static Widget icSort = OlSvgBuildInAssetImage(
+    path: Assets.icons.icSort.path,
+    width: 15,
+    height: 15,
   );
 }
