@@ -80,7 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "viewAll": MessageLookupByLibrary.simpleMessage("View All"),
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
         "welcomeToLaza":
-            MessageLookupByLibrary.simpleMessage("Welcome to Laza"),
+            MessageLookupByLibrary.simpleMessage("Welcome to Laza."),
         "wishList": MessageLookupByLibrary.simpleMessage("Wishlist"),
         "withVatAndSd": MessageLookupByLibrary.simpleMessage("with VAT, SD")
       };

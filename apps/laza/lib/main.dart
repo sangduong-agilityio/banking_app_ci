@@ -13,7 +13,6 @@ class LazaShopApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Laza shop app',
       theme: AppTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       locale: const Locale('en', 'US'),

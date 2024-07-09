@@ -108,7 +108,7 @@ class AppRouter {
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state, navigationShell) => Scaffold(
-          backgroundColor: context.colorScheme.background,
+          backgroundColor: context.colorScheme.surface,
           body: navigationShell,
           bottomNavigationBar: LSBottomNavigationBar(
             currentIndex: navigationShell.currentIndex,
@@ -163,11 +163,11 @@ List<LSBottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
     /// Search
     LSBottomNavigationBarItem(
       icon: SvgPicture.asset(
-        Assets.icons.icHeart.path,
+        Assets.icons.icHeartBreak.path,
         height: 25,
       ),
       activeIcon: SvgPicture.asset(
-        Assets.icons.icHeart.path,
+        Assets.icons.icHeartBreak.path,
         colorFilter:
             ColorFilter.mode(context.colorScheme.primary, BlendMode.srcIn),
       ),

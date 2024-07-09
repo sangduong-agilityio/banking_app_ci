@@ -32,6 +32,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_heart.svg
   SvgGenImage get icHeart => const SvgGenImage('assets/icons/ic_heart.svg');
 
+  /// File path: assets/icons/ic_heart_break.svg
+  SvgGenImage get icHeartBreak =>
+      const SvgGenImage('assets/icons/ic_heart_break.svg');
+
   /// File path: assets/icons/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/icons/ic_home.svg');
 
@@ -74,6 +78,7 @@ class $AssetsIconsGen {
         icFacebook,
         icGoogle,
         icHeart,
+        icHeartBreak,
         icHome,
         icInformation,
         icInvertedMenu,
@@ -91,6 +96,10 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/data_image.png
+  AssetGenImage get dataImage =>
+      const AssetGenImage('assets/images/data_image.png');
+
   /// File path: assets/images/empty-data.png
   AssetGenImage get emptyData =>
       const AssetGenImage('assets/images/empty-data.png');
@@ -99,11 +108,15 @@ class $AssetsImagesGen {
   AssetGenImage get imageNotFound =>
       const AssetGenImage('assets/images/image-not-found.png');
 
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
   /// File path: assets/images/user.png
   AssetGenImage get user => const AssetGenImage('assets/images/user.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [emptyData, imageNotFound, user];
+  List<AssetGenImage> get values =>
+      [dataImage, emptyData, imageNotFound, logo, user];
 }
 
 class Assets {

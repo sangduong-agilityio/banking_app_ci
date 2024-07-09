@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laza/core/extenssions/context_extenssions.dart';
 
-class SocialButton extends StatelessWidget {
+class LSSocialButton extends StatelessWidget {
   final String text;
   final Color color;
   final Widget? icon;
@@ -9,7 +9,7 @@ class SocialButton extends StatelessWidget {
   final double height;
   final VoidCallback? onPressed;
 
-  const SocialButton({
+  const LSSocialButton({
     super.key,
     required this.text,
     required this.color,

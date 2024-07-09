@@ -36,20 +36,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 25),
+              const SizedBox(height: 45),
               LSAppBar(
                 onTappedBackButton: () {
-                  if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
-                    _scaffoldKey.currentState?.closeDrawer();
-                  } else {
-                    _scaffoldKey.currentState?.openDrawer();
-                  }
+                  _scaffoldKey.currentState?.openDrawer();
                 },
                 icon: LSIcons.icMenu,
                 onTappedRightButton: () {},
                 rightButtonIcon: LSIcons.icBag,
               ),
-              const SizedBox(height: 45),
+              const SizedBox(height: 30),
               Text(
                 S.current.hello,
                 style: context.textTheme.displayLarge,
@@ -76,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               sizeBox15,
-              const LSListViewBrand(),
+              const ListViewBrand(),
               sizeBox15,
               HeaderSection(
                 title: S.current.newArraival,
@@ -89,8 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              sizeBox15,
-              const LSGridViewProduct()
+              const GridViewProduct()
             ],
           ),
         ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/widgets/images.dart';
 
-class LSListViewProductDetail extends StatelessWidget {
-  const LSListViewProductDetail({
+class ListViewProductDetail extends StatelessWidget {
+  const ListViewProductDetail({
     super.key,
   });
 
@@ -17,15 +18,16 @@ class LSListViewProductDetail extends StatelessWidget {
           itemCount: 4,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            return const Padding(
-              padding: EdgeInsets.only(
+            return Padding(
+              padding: const EdgeInsets.only(
                 right: 15,
               ),
               child: LSImage(
-                  width: 77,
-                  height: 77,
-                  borderRadius: 10,
-                  imageUrl: 'https://picsum.photos/seed/picsum/200/300'),
+                width: 77,
+                height: 77,
+                borderRadius: 10,
+                imageUrl: Assets.images.dataImage.path,
+              ),
             );
           },
         ),

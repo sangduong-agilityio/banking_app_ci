@@ -8,12 +8,13 @@ class LSProductCard extends StatelessWidget {
   final int price;
   final void Function()? onTapProduct;
 
-  const LSProductCard(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.onTapProduct,
-      required this.price});
+  const LSProductCard({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.onTapProduct,
+    required this.price,
+  });
 
   @override
   Widget build(BuildContext context) {

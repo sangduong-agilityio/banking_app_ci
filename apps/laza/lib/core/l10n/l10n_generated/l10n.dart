@@ -240,10 +240,10 @@ class S {
     );
   }
 
-  /// `Welcome to Laza`
+  /// `Welcome to Laza.`
   String get welcomeToLaza {
     return Intl.message(
-      'Welcome to Laza',
+      'Welcome to Laza.',
       name: 'welcomeToLaza',
       desc: '',
       args: [],

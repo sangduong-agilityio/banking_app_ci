@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/widgets/brand.dart';
 
-class LSListViewBrand extends StatelessWidget {
-  const LSListViewBrand({
+class ListViewBrand extends StatelessWidget {
+  const ListViewBrand({
     super.key,
   });
 
@@ -15,11 +16,11 @@ class LSListViewBrand extends StatelessWidget {
         itemCount: 4,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.only(right: 10),
+          return Padding(
+            padding: const EdgeInsets.only(right: 10),
             child: LSBrand(
               brandName: 'Nike',
-              brandLogo: 'https://picsum.photos/id/237/200/300',
+              brandLogo: Assets.images.dataImage.path,
             ),
           );
         },

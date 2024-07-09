@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extenssions/context_extenssions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
+import 'package:laza/core/widgets/app_bar.dart';
 import 'package:laza/core/widgets/buttons.dart';
 import 'package:laza/core/widgets/icons.dart';
 import 'package:laza/core/widgets/scaffold.dart';
@@ -19,7 +20,14 @@ class LetStartedScreen extends StatelessWidget {
     return LazaShopScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 152),
+          const SizedBox(height: 45),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: LSAppBar(
+                onTappedBackButton: () => context.pop(),
+                icon: LSIcons.icArrowLeft),
+          ),
+          const SizedBox(height: 65),
           Center(
             child: Text(
               S.current.letGetStarted,
@@ -64,7 +72,6 @@ class LetStartedScreen extends StatelessWidget {
 
 class _SocialButtons extends StatelessWidget {
   const _SocialButtons({
-    super.key,
     required this.sizeBox10,
   });
 
@@ -76,21 +83,21 @@ class _SocialButtons extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          SocialButton(
+          LSSocialButton(
             text: S.current.facebookBtn,
             onPressed: () {},
             color: context.colorScheme.onPrimaryContainer,
             icon: LSIcons.icFacebook,
           ),
           sizeBox10,
-          SocialButton(
+          LSSocialButton(
             text: S.current.twitterBtn,
             onPressed: () {},
             color: context.colorScheme.onSurfaceVariant,
             icon: LSIcons.icTwitter,
           ),
           sizeBox10,
-          SocialButton(
+          LSSocialButton(
             text: S.current.googleBtn,
             onPressed: () {},
             color: context.colorScheme.error,

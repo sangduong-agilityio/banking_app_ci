@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laza/core/extenssions/context_extenssions.dart';
+import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/util/functions.dart';
 import 'package:laza/features/home/presentation/widget/hearder_section.dart';
@@ -27,10 +28,11 @@ class ReviewProductDetail extends StatelessWidget {
           const SizedBox(height: 15),
           Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 25,
-                backgroundImage:
-                    NetworkImage('https://picsum.photos/id/237/200/300'),
+                backgroundImage: AssetImage(
+                  Assets.images.dataImage.path,
+                ),
               ),
               const SizedBox(
                 width: 10,

@@ -22,45 +22,42 @@ class LSAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: onTappedBackButton,
+          icon: icon ?? const SizedBox.shrink(),
+          style: ElevatedButton.styleFrom(
+            shape: const CircleBorder(),
+            padding: const EdgeInsets.all(10),
+            backgroundColor: context.colorScheme.outlineVariant,
+          ),
+        ),
+        Container(
+          width: 68,
+          height: 45,
+          decoration: ShapeDecoration(
+            image: DecorationImage(
+              image: NetworkImage(centerImage ?? ''),
+              fit: fit,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
+        if (rightButtonIcon != null)
           IconButton(
-            onPressed: onTappedBackButton,
-            icon: icon ?? const SizedBox.shrink(),
+            onPressed: onTappedRightButton,
+            icon: rightButtonIcon ?? const SizedBox.shrink(),
             style: ElevatedButton.styleFrom(
               shape: const CircleBorder(),
               padding: const EdgeInsets.all(10),
               backgroundColor: context.colorScheme.outlineVariant,
             ),
           ),
-          Container(
-            width: 68,
-            height: 45,
-            decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: NetworkImage(centerImage ?? ''),
-                fit: fit,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-          if (rightButtonIcon != null)
-            IconButton(
-              onPressed: onTappedRightButton,
-              icon: rightButtonIcon ?? const SizedBox.shrink(),
-              style: ElevatedButton.styleFrom(
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(10),
-                backgroundColor: context.colorScheme.outlineVariant,
-              ),
-            ),
-        ],
-      ),
+      ],
     );
   }
 }

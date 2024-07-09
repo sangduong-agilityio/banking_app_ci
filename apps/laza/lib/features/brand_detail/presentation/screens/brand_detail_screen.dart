@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extenssions/context_extenssions.dart';
+import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/widgets/app_bar.dart';
 import 'package:laza/core/widgets/icons.dart';
@@ -25,7 +26,7 @@ class BrandDetailScreen extends StatelessWidget {
                 icon: LSIcons.icArrowLeft,
                 rightButtonIcon: LSIcons.icBag,
                 onTappedRightButton: () {},
-                centerImage: 'https://picsum.photos/id/237/200/300',
+                centerImage: Assets.images.dataImage.path,
               ),
               const SizedBox(height: 49),
               Row(
@@ -50,7 +51,7 @@ class BrandDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              const LSGridViewProduct()
+              const GridViewProduct()
             ],
           ),
         ));

@@ -30,7 +30,7 @@ class LSImage extends StatelessWidget {
           height: height,
           decoration: ShapeDecoration(
             image: DecorationImage(
-              image: NetworkImage(imageUrl),
+              image: Image.asset(imageUrl).image,
               fit: fit,
             ),
             shape: RoundedRectangleBorder(
@@ -41,7 +41,7 @@ class LSImage extends StatelessWidget {
         Positioned(
           top: 10,
           right: 10,
-          child: icon ?? LSIcons.icHeart,
+          child: icon ?? LSIcons.icHeartBreak,
         ),
       ],
     );

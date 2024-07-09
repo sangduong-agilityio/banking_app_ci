@@ -24,9 +24,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Column(
         children: [
           const SizedBox(height: 45),
-          LSAppBar(
-              onTappedBackButton: () => context.pop(),
-              icon: LSIcons.icArrowLeft),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: LSAppBar(
+                onTappedBackButton: () => context.pop(),
+                icon: LSIcons.icArrowLeft),
+          ),
           const SizedBox(height: 15),
           Text(
             S.current.welcome,

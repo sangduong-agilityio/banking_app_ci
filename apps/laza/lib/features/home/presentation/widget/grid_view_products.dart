@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/widgets/product_card.dart';
 
-class LSGridViewProduct extends StatelessWidget {
-  const LSGridViewProduct({
+class GridViewProduct extends StatelessWidget {
+  const GridViewProduct({
     super.key,
   });
 
@@ -21,7 +22,7 @@ class LSGridViewProduct extends StatelessWidget {
         itemCount: 8,
         itemBuilder: (context, index) {
           return LSProductCard(
-            image: 'https://picsum.photos/seed/picsum/200/300',
+            image: Assets.images.dataImage.path,
             title: 'Nike Sportswear Club Fleece',
             price: 123,
             onTapProduct: () {},

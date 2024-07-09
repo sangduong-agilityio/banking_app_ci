@@ -51,7 +51,7 @@ class ProductDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const LSListViewProductDetail(),
+            const ListViewProductDetail(),
             Padding(
               padding: const EdgeInsets.only(
                 left: 20,

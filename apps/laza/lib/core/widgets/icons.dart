@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/util/themes/colors.dart';
 
-class OlSvgAssetImage extends StatelessWidget {
-  OlSvgAssetImage({
+class LSSvgAssetImage extends StatelessWidget {
+  LSSvgAssetImage({
     required this.path,
     super.key,
     this.errorBuilder,
@@ -37,12 +37,12 @@ class OlSvgAssetImage extends StatelessWidget {
   }
 }
 
-class OlSvgBuildInAssetImage extends StatelessWidget {
+class LSSvgBuildInAssetImage extends StatelessWidget {
   final String path;
   final double width;
   final double height;
   final Color? color;
-  const OlSvgBuildInAssetImage({
+  const LSSvgBuildInAssetImage({
     super.key,
     required this.path,
     this.height = 24,
@@ -52,7 +52,7 @@ class OlSvgBuildInAssetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OlSvgAssetImage(
+    return LSSvgAssetImage(
       path: path,
       width: width,
       height: height,
@@ -62,85 +62,91 @@ class OlSvgBuildInAssetImage extends StatelessWidget {
 }
 
 class LSIcons {
-  static Widget icArrowLeft = OlSvgBuildInAssetImage(
+  static Widget icArrowLeft = LSSvgBuildInAssetImage(
     path: Assets.icons.icArrowLeft.path,
     width: 25,
     height: 25,
   );
-  static Widget icSearch = OlSvgBuildInAssetImage(
+  static Widget icSearch = LSSvgBuildInAssetImage(
     path: Assets.icons.icSearch.path,
     width: 20,
     height: 20,
     color: LSColors.grey500,
   );
-  static Widget icFacebook = OlSvgBuildInAssetImage(
+  static Widget icFacebook = LSSvgBuildInAssetImage(
     path: Assets.icons.icFacebook.path,
     width: 22,
     height: 22,
   );
-  static Widget icGoogle = OlSvgBuildInAssetImage(
+  static Widget icGoogle = LSSvgBuildInAssetImage(
     path: Assets.icons.icGoogle.path,
     width: 22,
     height: 22,
   );
-  static Widget icTwitter = OlSvgBuildInAssetImage(
+  static Widget icTwitter = LSSvgBuildInAssetImage(
     path: Assets.icons.icTwitter.path,
     width: 22,
     height: 22,
   );
-  static Widget icMenu = OlSvgBuildInAssetImage(
+  static Widget icMenu = LSSvgBuildInAssetImage(
     path: Assets.icons.icMenu.path,
     width: 25,
     height: 25,
   );
-  static Widget icBag = OlSvgBuildInAssetImage(
+  static Widget icBag = LSSvgBuildInAssetImage(
     path: Assets.icons.icBag.path,
     width: 25,
     height: 25,
   );
-  static Widget icVoice = OlSvgBuildInAssetImage(
+  static Widget icVoice = LSSvgBuildInAssetImage(
     path: Assets.icons.icVoice.path,
     width: 24,
     height: 24,
   );
-  static Widget icHome = OlSvgBuildInAssetImage(
+  static Widget icHome = LSSvgBuildInAssetImage(
     path: Assets.icons.icHome.path,
     width: 19,
     height: 20,
   );
-  static Widget icHeart = OlSvgBuildInAssetImage(
-    path: Assets.icons.icHeart.path,
+  static Widget icHeartBreak = LSSvgBuildInAssetImage(
+    path: Assets.icons.icHeartBreak.path,
     width: 19,
     height: 20,
   );
-  static Widget icWallet = OlSvgBuildInAssetImage(
+  static Widget icWallet = LSSvgBuildInAssetImage(
     path: Assets.icons.icWallet.path,
     width: 19,
     height: 20,
+    color: LSColors.black,
   );
-  static Widget icInvertedMenu = OlSvgBuildInAssetImage(
+  static Widget icInvertedMenu = LSSvgBuildInAssetImage(
     path: Assets.icons.icInvertedMenu.path,
     width: 25,
     height: 25,
   );
-  static Widget icSun = OlSvgBuildInAssetImage(
+  static Widget icSun = LSSvgBuildInAssetImage(
     path: Assets.icons.icSun.path,
     width: 25,
     height: 25,
   );
-  static Widget icInformation = OlSvgBuildInAssetImage(
+  static Widget icInformation = LSSvgBuildInAssetImage(
     path: Assets.icons.icInformation.path,
     width: 25,
     height: 25,
   );
-  static Widget icLogout = OlSvgBuildInAssetImage(
+  static Widget icLogout = LSSvgBuildInAssetImage(
     path: Assets.icons.icLogout.path,
     width: 25,
     height: 25,
   );
-  static Widget icSort = OlSvgBuildInAssetImage(
+  static Widget icSort = LSSvgBuildInAssetImage(
     path: Assets.icons.icSort.path,
     width: 15,
     height: 15,
+  );
+  static Widget icHeart = LSSvgBuildInAssetImage(
+    path: Assets.icons.icHeart.path,
+    width: 25,
+    height: 25,
   );
 }
