@@ -51,7 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutBtn": MessageLookupByLibrary.simpleMessage("Logout"),
         "myCards": MessageLookupByLibrary.simpleMessage("My Cards"),
-        "newArraival": MessageLookupByLibrary.simpleMessage("New Arraival"),
+        "newArrival": MessageLookupByLibrary.simpleMessage("New Arrival"),
         "nikeClubFleece":
             MessageLookupByLibrary.simpleMessage("Nike Club Fleece"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
