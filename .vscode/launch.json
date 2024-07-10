@@ -20,15 +20,6 @@
             ]
         },
         {
-            "name": "Launch app with widgetbook",
-            "request": "launch",
-            "type": "dart",
-            "program": "apps/laza_widgetbook/lib/main.dart",
-            "args": [
-                "lib/main.dart"
-            ]
-        },
-        {
             "name": "Launch app in Profile mode",
             "request": "launch",
             "type": "dart",
