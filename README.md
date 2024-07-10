@@ -15,7 +15,7 @@
 ***Start date :*** 24/6/2024
 
 
-***Timeline:*** 5 weeks ( 24/6/2024 - Update)
+***Timeline:*** 5 weeks (24/6/2024 - Update)
 
 
 ***Target :***
@@ -38,17 +38,17 @@ Before you continue, ensure you meet the following requirements:
 ## Documents
 - [Plan Training Flutter Advanced](https://docs.google.com/document/d/1zCMCYPK5DHO_5FYVHBUazRirM4LX0E7pKEQcUDL7a3c/edit)
 - [Estimate](https://docs.google.com/document/d/1n18975kA_qqnYDn0qf391Ew0WILNyV4SO2RlZZHMaGs/edit?tab=t.0#heading=h.r7uza4gjahs1)
+- [Issues board Gitlab for management plan](https://gitlab.asoft-python.com/sang.duong/flutter-training/-/boards)
 ​
 ## Deployment Plan
-- [] Epic 1: Reading what the new from the latest version of Dart, Flutter
-- [] Epic 2: Choose a UI design and develop practices to achieve the target
-- [] Epic 3: Research and apply Dart macros for practice
-- [] Epic 4: Research flutter_bloc, riverpod, zustand and choose one for practice
-- [] Epic 5: Using Figma Dev Mode generation code
-- [] Epic 6: Research profile mode and try to run
-- [] Epic 7: Learn some tips, best practices, and use the Flutter Dev Tool for the performance of the Flutter app
-
-- [] Epic 8: Choose some plugins with popular native features and apply them to the practice
+- [X] Epic 1: Reading what the new from the latest version of Dart, Flutter
+- [X] Epic 2: Choose a UI design and develop practices to achieve the target
+- [X] Epic 3: Research and apply Dart macros for practice
+- [X] Epic 4: Research flutter_bloc, riverpod, zustand and choose one for practice
+- [X] Epic 5: Using Figma Dev Mode generation code
+- [X] Epic 6: Research profile mode and try to run
+- [X] Epic 7: Learn some tips, best practices, and use the Flutter Dev Tool for the performance of the Flutter app
+- [X] Epic 8: Choose some plugins with popular native features and apply them to the practice
 
 
 ## Implement UI
@@ -60,17 +60,6 @@ Before you continue, ensure you meet the following requirements:
 - [] Drawer Menu Screen + State Management(Update) + API
 - [] Brand Detail Screen + State Management(Update) + API
 
-## Folder Structure
-```
-laza-app/
-|- apps/
-  |- laza/
-  |- laza_design/
-  |- laza_widgetbook/
-|- packages/
-  |- api/
-  |- mock_data
-```
 
 ## Installation
 1. Clone the repository:
@@ -91,14 +80,10 @@ laza-app/
 4. Run project
    ```
    Run app:
-     flutter run ./apps/laza/lib/main.dart
+     flutter run ./laza/lib/main.dart
    ```
 
    ```
    Run Device Preview:
-     flutter run ./apps/laza/lib/main_device_preview.dart
-   ```
-
-   Run WidgetBook:
-     flutter run ./apps/laza_widgetbook/lib/main.dart
+     flutter run ./laza/lib/main_device_preview.dart
    ```
