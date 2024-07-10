@@ -5,7 +5,7 @@
             "name": "Launch app",
             "request": "launch",
             "type": "dart",
-            "program": "apps/laza/lib/main.dart",
+            "program": "laza/lib/main.dart",
             "args": [
                 "lib/main.dart"
             ]
@@ -14,7 +14,7 @@
             "name": "Launch app with device preview",
             "request": "launch",
             "type": "dart",
-            "program": "apps/laza/lib/main_device_preview.dart",
+            "program": "laza/lib/main_device_preview.dart",
             "args": [
                 "lib/main_device_preview.dart"
             ]
@@ -23,7 +23,7 @@
             "name": "Launch app in Profile mode",
             "request": "launch",
             "type": "dart",
-            "program": "apps/laza/lib/main.dart",
+            "program": "laza/lib/main.dart",
             "args": [
                 "--profile"
             ]
