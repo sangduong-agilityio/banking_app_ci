@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
-import 'package:laza/core/util/functions.dart';
+import 'package:laza/core/utils/functions.dart';
 import '../../home/widget/hearder_section.dart';
 import 'star_rating.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:laza/core/color/colors.dart';
-import 'package:laza/core/typography/typography.dart';
+import 'package:laza/core/themes/colors.dart';
+import 'package:laza/core/themes/typography.dart';
 
 class AppTheme {
   static final ThemeData lightTheme = ThemeData.light().copyWith(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
-import 'package:laza/core/color/colors.dart';
+import 'package:laza/core/themes/colors.dart';
 
 class LSSvgAssetImage extends StatelessWidget {
   LSSvgAssetImage({

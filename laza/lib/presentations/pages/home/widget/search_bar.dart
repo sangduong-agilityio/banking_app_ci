@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
-import 'package:laza/core/color/colors.dart';
+import 'package:laza/core/themes/colors.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 
 class LSSearchBar extends StatelessWidget {

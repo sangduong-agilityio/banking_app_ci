@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laza/core/color/colors.dart';
+import 'package:laza/core/themes/colors.dart';
 
 class LSStarRating extends StatelessWidget {
   const LSStarRating({
