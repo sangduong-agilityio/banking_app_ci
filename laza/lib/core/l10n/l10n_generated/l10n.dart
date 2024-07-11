@@ -270,11 +270,11 @@ class S {
     );
   }
 
-  /// `New Arraival`
-  String get newArraival {
+  /// `New Arrival`
+  String get newArrival {
     return Intl.message(
-      'New Arraival',
-      name: 'newArraival',
+      'New Arrival',
+      name: 'newArrival',
       desc: '',
       args: [],
     );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
-import 'package:laza/core/util/themes/theme.dart';
+import 'package:laza/core/themes/theme.dart';
 
 void main() {
   runApp(const LazaShopApp());

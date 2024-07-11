@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:laza/presentations/widgets/icons.dart';
+
+class LSImage extends StatelessWidget {
+  final String imageUrl;
+  final double? width;
+  final double? height;
+  final BoxFit fit;
+  final Widget? icon;
+  final BoxShape? shape;
+  final double borderRadius;
+
+  const LSImage({
+    super.key,
+    required this.imageUrl,
+    this.width,
+    this.height,
+    this.fit = BoxFit.cover,
+    this.icon,
+    this.shape,
+    this.borderRadius = 15,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          width: width,
+          height: height,
+          decoration: ShapeDecoration(
+            image: DecorationImage(
+              image: Image.asset(imageUrl).image,
+              fit: fit,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+            ),
+          ),
+        ),
+        Positioned(
+          top: 10,
+          right: 10,
+          child: icon ?? LSIcons.icHeartBreak,
+        ),
+      ],
+    );
+  }
+}
