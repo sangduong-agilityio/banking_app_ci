@@ -33,7 +33,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Already have an account? "),
         "availableInStock":
             MessageLookupByLibrary.simpleMessage("Available in stock"),
+        "brands": MessageLookupByLibrary.simpleMessage("Brands"),
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose Brand"),
+        "chooseBrandYourSelf": MessageLookupByLibrary.simpleMessage(
+            "Now, let\'s choose a brand for yourself!"),
         "connectingYourAccount": MessageLookupByLibrary.simpleMessage(
             "By connecting your account confirm that you agree with our "),
         "createAccountBtn":
@@ -42,6 +45,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "facebookBtn": MessageLookupByLibrary.simpleMessage("Facebook"),
+        "featuresBrands":
+            MessageLookupByLibrary.simpleMessage("Features Brands"),
         "forgotPasswordTextBtn":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "googleBtn": MessageLookupByLibrary.simpleMessage("Google"),

@@ -43,5 +43,9 @@
     "totalItems": "{total} Items",
     "rating": "{numberOfUserRating} rating",
     "totalPrice":"Total Price",
-    "withVatAndSd":"with VAT, SD"
+    "withVatAndSd":"with VAT, SD",
+    "featuresBrands":"Features Brands",
+    "chooseBrandYourSelf":"Now, let's choose a brand for yourself!",
+    "brands":"Brands"
+
 }

@@ -42,7 +42,7 @@ class LetStartedPage extends StatelessWidget {
               children: [
                 TextSpan(
                   text: S.current.alreadyAccount,
-                  style: context.textTheme.headlineMedium!
+                  style: context.textTheme.headlineSmall!
                       .copyWith(color: context.colorScheme.tertiaryContainer),
                 ),
                 TextSpan(

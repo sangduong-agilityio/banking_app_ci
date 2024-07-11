@@ -38,7 +38,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           const SizedBox(height: 5),
           Text(
             S.current.pleaseEnterData,
-            style: context.textTheme.headlineMedium!
+            style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
           const SizedBox(height: 55),

@@ -39,7 +39,7 @@ class LSAppBar extends StatelessWidget {
           height: 45,
           decoration: ShapeDecoration(
             image: DecorationImage(
-              image: NetworkImage(centerImage ?? ''),
+              image: AssetImage(centerImage ?? ''),
               fit: fit,
             ),
             shape: RoundedRectangleBorder(
