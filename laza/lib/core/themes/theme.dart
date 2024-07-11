@@ -45,8 +45,12 @@ class AppTheme {
     headlineLarge: LSUiTypographyFoundation.textMediumTextStyle.copyWith(
       color: _lightColorScheme.primaryContainer,
     ),
+    // Font size 15, medium
+    headlineMedium: LSUiTypographyFoundation.headlineMediumTextStyle.copyWith(
+      color: _lightColorScheme.tertiaryContainer,
+    ),
     // Font size 15, regular
-    headlineMedium: LSUiTypographyFoundation.headlineNormalTextStyle.copyWith(
+    headlineSmall: LSUiTypographyFoundation.headlineNormalTextStyle.copyWith(
       color: _lightColorScheme.tertiaryContainer,
     ),
     // Font size 13, regular

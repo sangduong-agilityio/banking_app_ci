@@ -8,6 +8,7 @@ import 'package:laza/presentations/pages/auth/forgot_password.dart';
 import 'package:laza/presentations/pages/auth/sign_in.dart';
 import 'package:laza/presentations/pages/auth/sign_up.dart';
 import 'package:laza/presentations/pages/brand_detail/brand_detail.dart';
+import 'package:laza/presentations/pages/brand_detail/brand_view.dart';
 import 'package:laza/presentations/pages/home/home.dart';
 import 'package:laza/presentations/pages/let_started/let_started.dart';
 import 'package:laza/presentations/pages/product_detail/product_detail.dart';
@@ -26,6 +27,7 @@ class AppRoutesName {
       RouteName('/productDetailPage', 'productDetailPage');
   static final brandDetailPage =
       RouteName('/brandDetailPage', 'brandDetailPage');
+  static final brandViewAll = RouteName('/brandViewAll', 'brandViewAll');
 }
 
 class RouteName {
@@ -103,6 +105,17 @@ class AppRouter {
           context: context,
           state: state,
           child: const ProductDetailPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutesName.brandViewAll.path,
+        name: AppRoutesName.brandViewAll.name,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
+          transitionDuration: const Duration(milliseconds: 300),
+          context: context,
+          state: state,
+          child: const BrandViewAll(),
         ),
       ),
       StatefulShellRoute.indexedStack(

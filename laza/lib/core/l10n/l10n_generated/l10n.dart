@@ -499,6 +499,36 @@ class S {
       args: [],
     );
   }
+
+  /// `Features Brands`
+  String get featuresBrands {
+    return Intl.message(
+      'Features Brands',
+      name: 'featuresBrands',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Now, let's choose a brand for yourself!`
+  String get chooseBrandYourSelf {
+    return Intl.message(
+      'Now, let\'s choose a brand for yourself!',
+      name: 'chooseBrandYourSelf',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Brands`
+  String get brands {
+    return Intl.message(
+      'Brands',
+      name: 'brands',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

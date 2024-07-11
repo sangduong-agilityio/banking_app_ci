@@ -16,7 +16,7 @@ class LSBrand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 110,
+      width: 115,
       height: 50,
       decoration: BoxDecoration(
         color: context.colorScheme.outlineVariant,
@@ -26,24 +26,23 @@ class LSBrand extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(5),
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: ShapeDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(brandLogo),
-                  fit: fit,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                brandLogo,
+                width: 40,
+                height: 40,
+                fit: fit,
               ),
             ),
           ),
           const SizedBox(width: 8),
-          Text(brandName,
-              style: context.textTheme.headlineMedium!
-                  .copyWith(color: context.colorScheme.primaryContainer)),
+          Text(
+            brandName,
+            style: context.textTheme.headlineMedium!.copyWith(
+              color: context.colorScheme.primaryContainer,
+            ),
+          ),
         ],
       ),
     );

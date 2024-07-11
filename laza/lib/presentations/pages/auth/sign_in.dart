@@ -63,7 +63,7 @@ class SignInForm extends StatelessWidget {
           const SizedBox(height: 5),
           Text(
             S.current.pleaseEnterData,
-            style: context.textTheme.headlineMedium!
+            style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
           const SizedBox(height: 165),
@@ -111,7 +111,7 @@ class SignInForm extends StatelessWidget {
               children: [
                 TextSpan(
                   text: S.current.connectingYourAccount,
-                  style: context.textTheme.headlineMedium!
+                  style: context.textTheme.headlineSmall!
                       .copyWith(color: context.colorScheme.tertiaryContainer),
                 ),
                 TextSpan(

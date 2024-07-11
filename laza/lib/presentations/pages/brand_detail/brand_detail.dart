@@ -20,7 +20,7 @@ class BrandDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 25),
+              const SizedBox(height: 45),
               LSAppBar(
                 onTappedBackButton: () => context.pop(),
                 icon: LSIcons.icArrowLeft,
@@ -42,7 +42,7 @@ class BrandDetailPage extends StatelessWidget {
                       const SizedBox(height: 5),
                       Text(
                         S.current.availableInStock,
-                        style: context.textTheme.headlineMedium!.copyWith(
+                        style: context.textTheme.headlineSmall!.copyWith(
                             color: context.colorScheme.tertiaryContainer),
                       ),
                     ],

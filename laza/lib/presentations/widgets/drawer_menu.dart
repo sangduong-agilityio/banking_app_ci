@@ -101,7 +101,7 @@ class _LSDrawerMenuState extends State<LSDrawerMenu> {
                       leading: LSIcons.icSun,
                       title: Text(
                         S.current.darkMode,
-                        style: context.textTheme.headlineMedium!.copyWith(
+                        style: context.textTheme.headlineSmall!.copyWith(
                             color: context.colorScheme.primaryContainer),
                       ),
                       trailing: CupertinoSwitch(
@@ -114,7 +114,7 @@ class _LSDrawerMenuState extends State<LSDrawerMenu> {
                       leading: LSIcons.icInformation,
                       title: Text(
                         S.current.accountInformation,
-                        style: context.textTheme.headlineMedium!.copyWith(
+                        style: context.textTheme.headlineSmall!.copyWith(
                             color: context.colorScheme.primaryContainer),
                       ),
                       onTap: () {},
@@ -124,7 +124,7 @@ class _LSDrawerMenuState extends State<LSDrawerMenu> {
                       leading: LSIcons.icBag,
                       title: Text(
                         S.current.order,
-                        style: context.textTheme.headlineMedium!.copyWith(
+                        style: context.textTheme.headlineSmall!.copyWith(
                             color: context.colorScheme.primaryContainer),
                       ),
                       onTap: () {},
@@ -135,7 +135,7 @@ class _LSDrawerMenuState extends State<LSDrawerMenu> {
                         leading: LSIcons.icWallet,
                         title: Text(
                           S.current.myCards,
-                          style: context.textTheme.headlineMedium!.copyWith(
+                          style: context.textTheme.headlineSmall!.copyWith(
                               color: context.colorScheme.primaryContainer),
                         ),
                         onTap: () {},
@@ -147,7 +147,7 @@ class _LSDrawerMenuState extends State<LSDrawerMenu> {
                       leading: LSIcons.icHeart,
                       title: Text(
                         S.current.wishList,
-                        style: context.textTheme.headlineMedium!.copyWith(
+                        style: context.textTheme.headlineSmall!.copyWith(
                             color: context.colorScheme.primaryContainer),
                       ),
                       onTap: () {},

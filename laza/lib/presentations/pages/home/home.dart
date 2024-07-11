@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 color: context.colorScheme.tertiaryContainer,
                 onTap: () {
                   context.pushNamed(
-                    AppRoutesName.productDetailPage.name,
+                    AppRoutesName.brandViewAll.name,
                     extra: e,
                   );
                 },
