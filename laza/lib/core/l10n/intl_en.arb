@@ -46,6 +46,13 @@
     "withVatAndSd":"with VAT, SD",
     "featuresBrands":"Features Brands",
     "chooseBrandYourSelf":"Now, let's choose a brand for yourself!",
-    "brands":"Brands"
-
+    "brands":"Brands",
+    "validatorEmailRequired": "Email is required",
+    "validatorEmailWrongFormat": "Email is invalid format",
+    "validatorUsernameRequired": "Username is required",
+    "validatorUsernameCharacterMinimum": "Username 6-character minimum",
+    "validatorUsernameWrongFormat": "Username is invalid format",
+    "validatorPasswordRequired": "Password is required",
+    "validatorPasswordCharacterMinimum": "Password 8-character minimum",
+    "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter"
 }

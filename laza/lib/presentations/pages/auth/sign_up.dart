@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
+import 'package:laza/core/utils/validators.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
@@ -17,6 +18,18 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     const sizeBox20 = SizedBox(height: 20);
@@ -42,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
           const SizedBox(height: 145),
-          const SignUpForm(sizeBox20: sizeBox20),
+          SignUpForm(sizeBox20: sizeBox20),
           const SizedBox(height: 280),
           LSButton(text: S.current.signUpBtn, onPressed: () {})
         ],
@@ -52,7 +65,10 @@ class _SignUpPageState extends State<SignUpPage> {
 }
 
 class SignUpForm extends StatelessWidget {
-  const SignUpForm({
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  SignUpForm({
     super.key,
     required this.sizeBox20,
   });
@@ -67,14 +83,23 @@ class SignUpForm extends StatelessWidget {
         children: [
           TextInput(
             labelText: S.current.username,
+            controller: usernameController,
+            validatorText: (value) =>
+                InputValidationMixin.validUserName(value ?? ''),
           ),
           sizeBox20,
           TextInput(
             labelText: S.current.email,
+            controller: emailController,
+            validatorText: (value) =>
+                InputValidationMixin.validEmail(value ?? ''),
           ),
           sizeBox20,
           TextInput(
             labelText: S.current.password,
+            controller: passwordController,
+            validatorText: (value) =>
+                InputValidationMixin.validPassword(value ?? ''),
             hasObscureText: true,
           ),
         ],

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
+import 'package:laza/core/utils/validators.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
@@ -19,6 +20,16 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LazaShopScaffold(
@@ -32,7 +43,7 @@ class _SignInPageState extends State<SignInPage> {
                 icon: LSIcons.icArrowLeft),
           ),
           const SizedBox(height: 15),
-          const SignInForm(),
+          SignInForm(),
           const SizedBox(height: 20),
           LSButton(
               text: S.current.loginBtn,
@@ -46,7 +57,10 @@ class _SignInPageState extends State<SignInPage> {
 }
 
 class SignInForm extends StatelessWidget {
-  const SignInForm({
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  SignInForm({
     super.key,
   });
 
@@ -69,10 +83,16 @@ class SignInForm extends StatelessWidget {
           const SizedBox(height: 165),
           TextInput(
             labelText: S.current.username,
+            controller: usernameController,
+            validatorText: (value) =>
+                InputValidationMixin.validUserName(value ?? ''),
           ),
           const SizedBox(height: 20),
           TextInput(
             labelText: S.current.password,
+            controller: passwordController,
+            validatorText: (value) =>
+                InputValidationMixin.validPassword(value ?? ''),
             hasObscureText: true,
           ),
           const SizedBox(height: 30),

@@ -80,6 +80,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalPrice": MessageLookupByLibrary.simpleMessage("Total Price"),
         "twitterBtn": MessageLookupByLibrary.simpleMessage("Twitter"),
         "username": MessageLookupByLibrary.simpleMessage("Username"),
+        "validatorEmailRequired":
+            MessageLookupByLibrary.simpleMessage("Email is required"),
+        "validatorEmailWrongFormat":
+            MessageLookupByLibrary.simpleMessage("Email is invalid format"),
+        "validatorPasswordCharacterMinimum":
+            MessageLookupByLibrary.simpleMessage(
+                "Password 8-character minimum"),
+        "validatorPasswordRequired":
+            MessageLookupByLibrary.simpleMessage("Password is required"),
+        "validatorPasswordWrongFormat": MessageLookupByLibrary.simpleMessage(
+            "Password is least one uppercase, lowercase letter"),
+        "validatorUsernameCharacterMinimum":
+            MessageLookupByLibrary.simpleMessage(
+                "Username 6-character minimum"),
+        "validatorUsernameRequired":
+            MessageLookupByLibrary.simpleMessage("Username is required"),
+        "validatorUsernameWrongFormat":
+            MessageLookupByLibrary.simpleMessage("Username is invalid format"),
         "verifiedProfile":
             MessageLookupByLibrary.simpleMessage("Verified Profile"),
         "viewAll": MessageLookupByLibrary.simpleMessage("View All"),

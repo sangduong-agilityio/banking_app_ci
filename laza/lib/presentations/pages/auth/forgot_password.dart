@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
+import 'package:laza/core/utils/validators.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
@@ -18,6 +19,14 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return LazaShopScaffold(
@@ -46,6 +55,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: TextInput(
               labelText: S.current.email,
+              controller: emailController,
+              validatorText: (value) =>
+                  InputValidationMixin.validEmail(value ?? ''),
             ),
           ),
           const SizedBox(height: 55),

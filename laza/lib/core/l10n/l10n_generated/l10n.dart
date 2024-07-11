@@ -529,6 +529,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Email is required`
+  String get validatorEmailRequired {
+    return Intl.message(
+      'Email is required',
+      name: 'validatorEmailRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is invalid format`
+  String get validatorEmailWrongFormat {
+    return Intl.message(
+      'Email is invalid format',
+      name: 'validatorEmailWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username is required`
+  String get validatorUsernameRequired {
+    return Intl.message(
+      'Username is required',
+      name: 'validatorUsernameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username 6-character minimum`
+  String get validatorUsernameCharacterMinimum {
+    return Intl.message(
+      'Username 6-character minimum',
+      name: 'validatorUsernameCharacterMinimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username is invalid format`
+  String get validatorUsernameWrongFormat {
+    return Intl.message(
+      'Username is invalid format',
+      name: 'validatorUsernameWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is required`
+  String get validatorPasswordRequired {
+    return Intl.message(
+      'Password is required',
+      name: 'validatorPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password 8-character minimum`
+  String get validatorPasswordCharacterMinimum {
+    return Intl.message(
+      'Password 8-character minimum',
+      name: 'validatorPasswordCharacterMinimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is least one uppercase, lowercase letter`
+  String get validatorPasswordWrongFormat {
+    return Intl.message(
+      'Password is least one uppercase, lowercase letter',
+      name: 'validatorPasswordWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

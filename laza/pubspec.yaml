@@ -27,6 +27,14 @@ dependencies:
 
   flutter_native_splash: ^2.4.1
 
+  supabase_flutter: ^2.5.7
+
+  flutter_riverpod: ^2.5.1
+
+  dio: ^5.5.0+1
+  
+  macros: ^0.1.0-main.5
+
 # Config gen assets
 flutter_gen:
   output: lib/core/gen_assets/
@@ -69,15 +77,4 @@ flutter_intl:
   enabled: true
   arb_dir: lib/core/l10n
   output_dir: lib/core/l10n/l10n_generated
-
-flutter_native_splash:
-  android: true
-  color: "#3D93F8"
-  
-  android_12:
-   
-    image: assets/images/ic_launcher.png
-
-    # Splash screen background color.
-    color: "#3D93F8"
 
