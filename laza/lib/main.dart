@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/constant/constants.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
@@ -11,7 +12,7 @@ void main() async {
     url: SupabaseConfig.supabaseUrl,
     anonKey: SupabaseConfig.supabaseKey,
   );
-  runApp(const LazaShopApp());
+  runApp(const ProviderScope(child: LazaShopApp()));
 }
 
 class LazaShopApp extends StatelessWidget {

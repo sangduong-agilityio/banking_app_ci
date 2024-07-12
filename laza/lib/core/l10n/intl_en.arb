@@ -54,5 +54,6 @@
     "validatorUsernameWrongFormat": "Username is invalid format",
     "validatorPasswordRequired": "Password is required",
     "validatorPasswordCharacterMinimum": "Password 8-character minimum",
-    "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter"
+    "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter",
+    "signUpFailedMessage":"Sign up failed"
 }
