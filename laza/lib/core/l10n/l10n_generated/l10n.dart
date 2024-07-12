@@ -609,6 +609,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Sign up failed`
+  String get signUpFailedMessage {
+    return Intl.message(
+      'Sign up failed',
+      name: 'signUpFailedMessage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

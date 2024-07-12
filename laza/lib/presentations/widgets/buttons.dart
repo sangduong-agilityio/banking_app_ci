@@ -6,6 +6,8 @@ class LSButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double width;
   final double height;
+  final Widget? loading;
+  final bool isDisabled;
 
   const LSButton({
     super.key,
@@ -13,6 +15,8 @@ class LSButton extends StatelessWidget {
     required this.onPressed,
     this.width = double.infinity,
     this.height = 75,
+    this.loading,
+    this.isDisabled = false,
   });
 
   @override
@@ -21,23 +25,34 @@ class LSButton extends StatelessWidget {
       height: height,
       width: width,
       child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: context.colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: context.colorScheme.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+            textStyle: TextStyle(
+              color: context.colorScheme.onPrimary,
+            ),
           ),
-          textStyle: TextStyle(
-            color: context.colorScheme.onPrimary,
-          ),
-        ),
-        child: Text(
-          text,
-          style: context.textTheme.headlineLarge!.copyWith(
-            color: context.colorScheme.onPrimary,
-          ),
-        ),
-      ),
+          child: loading ??
+              Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  const Align(
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 14),
+                    ),
+                  ),
+                  Text(
+                    text,
+                    style: context.textTheme.headlineLarge!.copyWith(
+                      color: context.colorScheme.onPrimary,
+                    ),
+                  ),
+                ],
+              )),
     );
   }
 }

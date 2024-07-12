@@ -71,6 +71,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendEmail": MessageLookupByLibrary.simpleMessage("Send email"),
         "signInTextBtn": MessageLookupByLibrary.simpleMessage("Signin"),
         "signUpBtn": MessageLookupByLibrary.simpleMessage("Sign Up"),
+        "signUpFailedMessage":
+            MessageLookupByLibrary.simpleMessage("Sign up failed"),
         "size": MessageLookupByLibrary.simpleMessage("Size"),
         "sizeGuide": MessageLookupByLibrary.simpleMessage("Size Guide"),
         "sort": MessageLookupByLibrary.simpleMessage("Sort"),
