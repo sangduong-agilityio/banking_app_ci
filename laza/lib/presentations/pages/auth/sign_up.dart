@@ -1,23 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
+import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
+import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
+import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'widgets/text_input.dart';
 
-class SignUpPage extends StatefulWidget {
+class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
@@ -55,9 +58,43 @@ class _SignUpPageState extends State<SignUpPage> {
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
           const SizedBox(height: 145),
-          SignUpForm(sizeBox20: sizeBox20),
+          SignUpForm(
+            sizeBox20: sizeBox20,
+            usernameController: usernameController,
+            passwordController: passwordController,
+            emailController: emailController,
+          ),
           const SizedBox(height: 280),
-          LSButton(text: S.current.signUpBtn, onPressed: () {})
+          LSButton(
+            text: S.current.signUpBtn,
+            onPressed: () async {
+              final email = emailController.text;
+              final password = passwordController.text;
+              final username = usernameController.text;
+
+              try {
+                final response = await ref.read(authRepositoryProvider).signUp(
+                      email: email,
+                      password: password,
+                      username: username,
+                    );
+
+                if (response.user != null) {
+                  context.pushNamed(AppRoutesName.signInPage.name);
+                } else {
+                  LSSnackBar.buildErrorSnackbar(
+                    context,
+                    S.current.signUpFailedMessage,
+                  );
+                }
+              } catch (e) {
+                LSSnackBar.buildErrorSnackbar(
+                  context,
+                  S.current.signUpFailedMessage,
+                );
+              }
+            },
+          )
         ],
       ),
     );
@@ -65,15 +102,18 @@ class _SignUpPageState extends State<SignUpPage> {
 }
 
 class SignUpForm extends StatelessWidget {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final emailController = TextEditingController();
-  SignUpForm({
+  final TextEditingController usernameController;
+  final TextEditingController passwordController;
+  final TextEditingController emailController;
+  final SizedBox sizeBox20;
+
+  const SignUpForm({
     super.key,
     required this.sizeBox20,
+    required this.usernameController,
+    required this.passwordController,
+    required this.emailController,
   });
-
-  final SizedBox sizeBox20;
 
   @override
   Widget build(BuildContext context) {
