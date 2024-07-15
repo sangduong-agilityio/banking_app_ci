@@ -11,14 +11,14 @@ import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'widgets/text_input.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final emailController = TextEditingController();
 
   @override
@@ -41,12 +41,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ),
           const SizedBox(height: 15),
           Text(
-            S.current.welcome,
+            S.current.forgotPassword,
             style: context.textTheme.displayLarge,
           ),
           const SizedBox(height: 5),
           Text(
-            S.current.pleaseEnterData,
+            S.current.pleaseEnterYourEmail,
             style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
@@ -64,7 +64,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           LSButton(
               text: S.current.sendEmail,
               onPressed: () {
-                context.pushNamed(AppRoutesName.signInPage.name);
+                context.pushNamed(AppRoutesName.passwordResetPage.name);
               })
         ],
       ),

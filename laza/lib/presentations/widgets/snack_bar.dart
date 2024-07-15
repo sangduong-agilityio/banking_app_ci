@@ -7,8 +7,8 @@ class LSSnackBar {
   static buildErrorSnackbar(BuildContext context, String message,
       {VoidCallback? onRetry}) {
     ScaffoldMessenger.of(context).showSnackBar(
-      _buildSnackbar(context, message, context.colorScheme.errorContainer,
-          onRetry ?? () {}),
+      _buildSnackbar(
+          context, message, context.colorScheme.error, onRetry ?? () {}),
     );
   }
 
@@ -34,7 +34,7 @@ class LSSnackBar {
       content: Text(
         message,
         style: context.textTheme.bodyLarge?.copyWith(
-          color: context.colorScheme.onError,
+          color: context.colorScheme.onSecondary,
         ),
       ),
     );

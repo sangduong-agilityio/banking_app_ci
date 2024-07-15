@@ -37,6 +37,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseBrand": MessageLookupByLibrary.simpleMessage("Choose Brand"),
         "chooseBrandYourSelf": MessageLookupByLibrary.simpleMessage(
             "Now, let\'s choose a brand for yourself!"),
+        "confirmPassword":
+            MessageLookupByLibrary.simpleMessage("Confirm password"),
         "connectingYourAccount": MessageLookupByLibrary.simpleMessage(
             "By connecting your account confirm that you agree with our "),
         "createAccountBtn":
@@ -44,9 +46,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "darkMode": MessageLookupByLibrary.simpleMessage("Dark Mode"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
+        "enterNewPassword":
+            MessageLookupByLibrary.simpleMessage("Enter new password"),
         "facebookBtn": MessageLookupByLibrary.simpleMessage("Facebook"),
         "featuresBrands":
             MessageLookupByLibrary.simpleMessage("Features Brands"),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot Password"),
         "forgotPasswordTextBtn":
             MessageLookupByLibrary.simpleMessage("Forgot password?"),
         "googleBtn": MessageLookupByLibrary.simpleMessage("Google"),
@@ -63,9 +69,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterData": MessageLookupByLibrary.simpleMessage(
             "Please enter your data to continue"),
+        "pleaseEnterYourEmail": MessageLookupByLibrary.simpleMessage(
+            "Please enter your email data"),
+        "pleaseEnterYourPasswordReset": MessageLookupByLibrary.simpleMessage(
+            "Please enter your password reset data"),
         "price": MessageLookupByLibrary.simpleMessage("Price"),
         "rating": m0,
         "rememberMe": MessageLookupByLibrary.simpleMessage("Remember me"),
+        "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "searchInput": MessageLookupByLibrary.simpleMessage("Search..."),
         "sendEmail": MessageLookupByLibrary.simpleMessage("Send email"),
@@ -82,6 +93,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalPrice": MessageLookupByLibrary.simpleMessage("Total Price"),
         "twitterBtn": MessageLookupByLibrary.simpleMessage("Twitter"),
         "username": MessageLookupByLibrary.simpleMessage("Username"),
+        "validatorConfirmPasswordRequired":
+            MessageLookupByLibrary.simpleMessage(
+                "Confirm Password is required"),
+        "validatorConfirmedPasswordNotMatch":
+            MessageLookupByLibrary.simpleMessage(
+                "Password and confirm password not match"),
         "validatorEmailRequired":
             MessageLookupByLibrary.simpleMessage("Email is required"),
         "validatorEmailWrongFormat":

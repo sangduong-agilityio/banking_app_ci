@@ -32,6 +32,27 @@ mixin InputValidationMixin {
     }
     return null;
   }
+
+  static String? validConfirmPassword({
+    required String confirmPassword,
+  }) {
+    if (confirmPassword.isEmpty) {
+      return S.current.validatorConfirmPasswordRequired;
+    }
+    return null;
+  }
+
+  static String? validConfirmation({
+    required String needConfirm,
+    required String confirm,
+  }) {
+    if (needConfirm.length < 8) {
+      return S.current.validatorPasswordCharacterMinimum;
+    } else if (needConfirm != confirm) {
+      return S.current.validatorConfirmedPasswordNotMatch;
+    }
+    return null;
+  }
 }
 
 class RegExpValidator {
