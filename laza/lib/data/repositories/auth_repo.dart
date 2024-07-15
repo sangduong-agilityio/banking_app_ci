@@ -8,6 +8,18 @@ AuthRepository authRepository(AuthRepositoryRef ref) => AuthRepository();
 
 class AuthRepository {
   final _client = Supabase.instance.client;
+
+  // This method signs in with the provided email and password
+  Future<AuthResponse> signIn({
+    required String email,
+    required String password,
+  }) async {
+    return _client.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+  }
+
   // This method signs up with the provided email, password, and username.
   Future<AuthResponse> signUp({
     required String email,
@@ -20,4 +32,7 @@ class AuthRepository {
       data: {'username': username},
     );
   }
+
+  // This method logout app
+  Future<void> logout() => _client.auth.signOut();
 }
