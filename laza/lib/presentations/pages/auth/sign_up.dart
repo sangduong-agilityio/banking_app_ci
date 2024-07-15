@@ -10,7 +10,6 @@ import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
-import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'widgets/text_input.dart';
 
@@ -32,27 +31,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
     passwordController.dispose();
     emailController.dispose();
     super.dispose();
-  }
-
-  Future<void> _signUp() async {
-    try {
-      LSLoadingIndicator.show(context);
-      await ref.read(authRepositoryProvider).signUp(
-          email: emailController.text,
-          password: passwordController.text,
-          username: usernameController.text);
-
-      if (mounted) {
-        LSLoadingIndicator.hide(context);
-        context.pushNamed(AppRoutesName.signInPage.name);
-      }
-    } catch (e) {
-      LSLoadingIndicator.hide(context);
-      LSSnackBar.buildErrorSnackbar(
-        context,
-        e.toString(),
-      );
-    }
   }
 
   @override
@@ -89,7 +67,33 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           const SizedBox(height: 280),
           LSButton(
             text: S.current.signUpBtn,
-            onPressed: () => _signUp(),
+            onPressed: () async {
+              final email = emailController.text;
+              final password = passwordController.text;
+              final username = usernameController.text;
+
+              try {
+                final response = await ref.read(authRepositoryProvider).signUp(
+                      email: email,
+                      password: password,
+                      username: username,
+                    );
+
+                if (response.user != null) {
+                  context.pushNamed(AppRoutesName.signInPage.name);
+                } else {
+                  LSSnackBar.buildErrorSnackbar(
+                    context,
+                    S.current.signUpFailedMessage,
+                  );
+                }
+              } catch (e) {
+                LSSnackBar.buildErrorSnackbar(
+                  context,
+                  S.current.signUpFailedMessage,
+                );
+              }
+            },
           )
         ],
       ),
