@@ -619,6 +619,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Please enter your email data`
+  String get pleaseEnterYourEmail {
+    return Intl.message(
+      'Please enter your email data',
+      name: 'pleaseEnterYourEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your password reset data`
+  String get pleaseEnterYourPasswordReset {
+    return Intl.message(
+      'Please enter your password reset data',
+      name: 'pleaseEnterYourPasswordReset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reset Password`
+  String get resetPassword {
+    return Intl.message(
+      'Reset Password',
+      name: 'resetPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot Password`
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot Password',
+      name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter new password`
+  String get enterNewPassword {
+    return Intl.message(
+      'Enter new password',
+      name: 'enterNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm password`
+  String get confirmPassword {
+    return Intl.message(
+      'Confirm password',
+      name: 'confirmPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password is required`
+  String get validatorConfirmPasswordRequired {
+    return Intl.message(
+      'Confirm Password is required',
+      name: 'validatorConfirmPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password and confirm password not match`
+  String get validatorConfirmedPasswordNotMatch {
+    return Intl.message(
+      'Password and confirm password not match',
+      name: 'validatorConfirmedPasswordNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

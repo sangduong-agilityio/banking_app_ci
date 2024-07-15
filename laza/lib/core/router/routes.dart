@@ -5,6 +5,7 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/router/page_transition.dart';
 import 'package:laza/presentations/pages/auth/forgot_password.dart';
+import 'package:laza/presentations/pages/auth/password_reset.dart';
 import 'package:laza/presentations/pages/auth/sign_in.dart';
 import 'package:laza/presentations/pages/auth/sign_up.dart';
 import 'package:laza/presentations/pages/brand_detail/brand_detail.dart';
@@ -23,6 +24,8 @@ class AppRoutesName {
   static final signUpPage = RouteName('/signUpPage', 'signUpPage');
   static final forgotPasswordPage =
       RouteName('/forgotPasswordPage', 'forgotPasswordPage');
+  static final passwordResetPage =
+      RouteName('/passwordResetPage', 'passwordResetPage');
   static final productDetailPage =
       RouteName('/productDetailPage', 'productDetailPage');
   static final brandDetailPage =
@@ -82,7 +85,7 @@ class AppRouter {
           transitionDuration: const Duration(milliseconds: 300),
           context: context,
           state: state,
-          child: const ForgotPasswordScreen(),
+          child: const ForgotPasswordPage(),
         ),
       ),
       GoRoute(
@@ -116,6 +119,17 @@ class AppRouter {
           context: context,
           state: state,
           child: const BrandViewAll(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutesName.passwordResetPage.path,
+        name: AppRoutesName.passwordResetPage.name,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
+          transitionDuration: const Duration(milliseconds: 300),
+          context: context,
+          state: state,
+          child: const PasswordResetPage(),
         ),
       ),
       StatefulShellRoute.indexedStack(

@@ -55,5 +55,13 @@
     "validatorPasswordRequired": "Password is required",
     "validatorPasswordCharacterMinimum": "Password 8-character minimum",
     "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter",
-    "signUpFailedMessage":"Sign up failed"
+    "signUpFailedMessage":"Sign up failed",
+    "pleaseEnterYourEmail":"Please enter your email data",
+    "pleaseEnterYourPasswordReset":"Please enter your password reset data",
+    "resetPassword":"Reset Password",
+    "forgotPassword":"Forgot Password",
+    "enterNewPassword":"Enter new password",
+    "confirmPassword":"Confirm password",
+    "validatorConfirmPasswordRequired": "Confirm Password is required",
+    "validatorConfirmedPasswordNotMatch": "Password and confirm password not match"
 }
