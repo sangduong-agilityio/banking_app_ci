@@ -33,6 +33,21 @@ class AuthRepository {
     );
   }
 
+  // This method forgot password with the provided sent email
+  Future<void> forgotPassword(String email) async {
+    await _client.auth.resetPasswordForEmail(email);
+  }
+
+  // This method reset password with the provided password and confirm password
+  Future<void> resetPassword(
+    String password,
+  ) async {
+    final userAttributes = UserAttributes(
+      password: password,
+    );
+    await _client.auth.updateUser(userAttributes);
+  }
+
   // This method logout app
   Future<void> logout() => _client.auth.signOut();
 }
