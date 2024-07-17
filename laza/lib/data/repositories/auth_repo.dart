@@ -8,7 +8,7 @@ AuthRepository authRepository(AuthRepositoryRef ref) => AuthRepository();
 
 class AuthRepository {
   final _client = Supabase.instance.client;
-
+  // This method signs up with the provided email, password, and username.
   Future<AuthResponse> signUp({
     required String email,
     required String password,
