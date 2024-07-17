@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
+import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/pages/auth/widgets/text_input.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
+import 'package:laza/presentations/widgets/indicator.dart';
+import 'package:laza/presentations/widgets/snack_bar.dart';
 
-class PasswordResetPage extends StatefulWidget {
+class PasswordResetPage extends ConsumerStatefulWidget {
   const PasswordResetPage({super.key});
 
   @override
-  State<PasswordResetPage> createState() => _PasswordResetPageState();
+  ConsumerState<PasswordResetPage> createState() => _PasswordResetPageState();
 }
 
-class _PasswordResetPageState extends State<PasswordResetPage> {
+class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
 
@@ -26,6 +30,25 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
     passwordController.dispose();
     passwordConfirmController.dispose();
     super.dispose();
+  }
+
+  Future<void> _resetPassword() async {
+    try {
+      LSLoadingIndicator.show(context);
+      await ref.read(authRepositoryProvider).resetPassword(
+            passwordController.text,
+          );
+      if (mounted) {
+        LSLoadingIndicator.hide(context);
+        context.pushNamed(AppRoutesName.signInPage.name);
+      }
+    } catch (e) {
+      LSLoadingIndicator.hide(context);
+      LSSnackBar.buildErrorSnackbar(
+        context,
+        e.toString(),
+      );
+    }
   }
 
   @override
@@ -77,10 +100,9 @@ class _PasswordResetPageState extends State<PasswordResetPage> {
           ),
           const SizedBox(height: 55),
           LSButton(
-              text: S.current.resetPassword,
-              onPressed: () {
-                context.pushNamed(AppRoutesName.signInPage.name);
-              })
+            text: S.current.resetPassword,
+            onPressed: _resetPassword,
+          ),
         ],
       ),
     );
