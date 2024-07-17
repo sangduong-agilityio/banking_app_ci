@@ -43,10 +43,9 @@ class RouteName {
 class AppRouter {
   static final GoRouter routes = GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: AppRoutesName.startedPage.path,
     routes: <RouteBase>[
       GoRoute(
-        path: AppRoutesName.startedPage.path,
+        path: '/',
         name: AppRoutesName.startedPage.name,
         parentNavigatorKey: rootNavigatorKey,
         pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
