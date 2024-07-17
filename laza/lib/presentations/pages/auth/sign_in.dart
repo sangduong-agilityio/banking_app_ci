@@ -1,33 +1,59 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
+import 'package:laza/data/repositories/auth_repo.dart';
+import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
+import 'package:laza/presentations/widgets/indicator.dart';
+import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'widgets/text_input.dart';
 
-class SignInPage extends StatefulWidget {
+class SignInPage extends ConsumerStatefulWidget {
   const SignInPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  ConsumerState<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  final usernameController = TextEditingController();
+class _SignInPageState extends ConsumerState<SignInPage> {
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
   void dispose() {
-    usernameController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _login() async {
+    try {
+      LSLoadingIndicator.show(context);
+      await ref.read(authRepositoryProvider).signIn(
+            email: emailController.text,
+            password: passwordController.text,
+          );
+
+      if (mounted) {
+        LSLoadingIndicator.hide(context);
+        context.pushNamed(AppRoutesName.homePage.name);
+      }
+    } catch (e) {
+      LSLoadingIndicator.hide(context);
+      LSSnackBar.buildErrorSnackbar(
+        context,
+        e.toString(),
+      );
+    }
   }
 
   @override
@@ -39,17 +65,21 @@ class _SignInPageState extends State<SignInPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
-                onTappedBackButton: () => context.pop(),
-                icon: LSIcons.icArrowLeft),
+              onTappedBackButton: () => context.pop(),
+              icon: LSIcons.icArrowLeft,
+            ),
           ),
           const SizedBox(height: 15),
-          SignInForm(),
+          SignInForm(
+            emailController: emailController,
+            passwordController: passwordController,
+          ),
           const SizedBox(height: 20),
           LSButton(
-              text: S.current.loginBtn,
-              onPressed: () {
-                context.pushNamed(AppRoutesName.homePage.name);
-              })
+            isDisabled: false,
+            text: S.current.loginBtn,
+            onPressed: () => _login(),
+          ),
         ],
       ),
     );
@@ -57,10 +87,12 @@ class _SignInPageState extends State<SignInPage> {
 }
 
 class SignInForm extends StatelessWidget {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
 
-  SignInForm({
+  const SignInForm({
+    required this.emailController,
+    required this.passwordController,
     super.key,
   });
 
@@ -81,19 +113,23 @@ class SignInForm extends StatelessWidget {
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
           const SizedBox(height: 165),
-          TextInput(
-            labelText: S.current.username,
-            controller: usernameController,
-            validatorText: (value) =>
-                InputValidationMixin.validUserName(value ?? ''),
-          ),
-          const SizedBox(height: 20),
-          TextInput(
-            labelText: S.current.password,
-            controller: passwordController,
-            validatorText: (value) =>
-                InputValidationMixin.validPassword(value ?? ''),
-            hasObscureText: true,
+          LSForm(
+            isValidated: (value) {},
+            textFields: [
+              TextInput(
+                labelText: S.current.email,
+                controller: emailController,
+                validatorText: (value) =>
+                    InputValidationMixin.validEmail(value ?? ''),
+              ),
+              TextInput(
+                labelText: S.current.password,
+                controller: passwordController,
+                validatorText: (value) =>
+                    InputValidationMixin.validPassword(value ?? ''),
+                hasObscureText: true,
+              ),
+            ],
           ),
           const SizedBox(height: 30),
           TextButton(
@@ -104,7 +140,7 @@ class SignInForm extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Text(
                 S.current.forgotPasswordTextBtn,
-                style: context.textTheme.headlineMedium!
+                style: context.textTheme.headlineSmall!
                     .copyWith(color: context.colorScheme.error),
               ),
             ),
