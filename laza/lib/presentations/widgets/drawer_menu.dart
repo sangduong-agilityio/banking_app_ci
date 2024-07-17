@@ -2,21 +2,24 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
+import 'package:laza/core/router/routes.dart';
+import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 
-class LSDrawerMenu extends StatefulWidget {
+class LSDrawerMenu extends ConsumerStatefulWidget {
   const LSDrawerMenu({super.key});
 
   @override
-  State<LSDrawerMenu> createState() => _LSDrawerMenuState();
+  ConsumerState<LSDrawerMenu> createState() => _LSDrawerMenuState();
 }
 
-class _LSDrawerMenuState extends State<LSDrawerMenu> {
+class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,7 +164,10 @@ class _LSDrawerMenuState extends State<LSDrawerMenu> {
                         style: context.textTheme.headlineMedium!
                             .copyWith(color: context.colorScheme.error),
                       ),
-                      onTap: () {},
+                      onTap: () async {
+                        await ref.read(authRepositoryProvider).logout();
+                        context.pushNamed(AppRoutesName.startedPage.name);
+                      },
                     ),
                   ],
                 ),

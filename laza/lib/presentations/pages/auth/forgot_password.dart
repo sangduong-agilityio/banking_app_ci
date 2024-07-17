@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
-import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
 import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
@@ -39,7 +38,6 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           .forgotPassword(emailController.text);
       if (mounted) {
         LSLoadingIndicator.hide(context);
-        context.pushNamed(AppRoutesName.passwordResetPage.name);
       }
     } catch (e) {
       LSLoadingIndicator.hide(context);
