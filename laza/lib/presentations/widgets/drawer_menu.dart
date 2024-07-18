@@ -8,9 +8,9 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
-import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
+import 'package:laza/providers/auth_provider.dart';
 
 class LSDrawerMenu extends ConsumerStatefulWidget {
   const LSDrawerMenu({super.key});
