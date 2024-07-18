@@ -5,13 +5,13 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
-import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
+import 'package:laza/providers/auth_provider.dart';
 import 'widgets/text_input.dart';
 
 class SignUpPage extends ConsumerWidget {
@@ -23,25 +23,24 @@ class SignUpPage extends ConsumerWidget {
     final passwordController = TextEditingController();
     final emailController = TextEditingController();
 
-    Future<void> _signUp() async {
-      try {
-        LSLoadingIndicator.show(context);
-        await ref.read(authRepositoryProvider).signUp(
-            email: emailController.text,
-            password: passwordController.text,
-            username: usernameController.text);
-
-        if (context.mounted) {
-          LSLoadingIndicator.hide(context);
-          context.pushNamed(AppRoutesName.signInPage.name);
-        }
-      } catch (e) {
+    void signUp() {
+      LSLoadingIndicator.show(context);
+      ref
+          .read(authRepositoryProvider)
+          .signUp(
+              email: emailController.text,
+              password: passwordController.text,
+              username: usernameController.text)
+          .then((_) {
+        LSLoadingIndicator.hide(context);
+        context.pushNamed(AppRoutesName.signInPage.name);
+      }).catchError((e) {
         LSLoadingIndicator.hide(context);
         LSSnackBar.buildErrorSnackbar(
           context,
           e.toString(),
         );
-      }
+      });
     }
 
     return LazaShopScaffold(
@@ -75,7 +74,7 @@ class SignUpPage extends ConsumerWidget {
           const SizedBox(height: 280),
           LSButton(
             text: S.current.signUpBtn,
-            onPressed: () => _signUp(),
+            onPressed: () => signUp(),
           )
         ],
       ),

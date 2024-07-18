@@ -1,53 +1,61 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'auth_repo.g.dart';
-
-@riverpod
-AuthRepository authRepository(AuthRepositoryRef ref) => AuthRepository();
-
-class AuthRepository {
-  final _client = Supabase.instance.client;
-
-  // This method signs in with the provided email and password
-  Future<AuthResponse> signIn({
-    required String email,
-    required String password,
-  }) async {
-    return _client.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
-  }
-
-  // This method signs up with the provided email, password, and username.
+abstract class AuthRepository {
   Future<AuthResponse> signUp({
     required String email,
     required String password,
     required String username,
-  }) async {
-    return _client.auth.signUp(
-      email: email,
-      password: password,
-      data: {'username': username},
-    );
-  }
-
-  // This method forgot password with the provided sent email
-  Future<void> forgotPassword(String email) async {
-    await _client.auth.resetPasswordForEmail(email);
-  }
-
-  // This method reset password with the provided password and confirm password
+  });
+  Future<AuthResponse> signIn({
+    required String email,
+    required String password,
+  });
+  Future<void> forgotPassword(
+    String email,
+  );
   Future<void> resetPassword(
     String password,
-  ) async {
-    final userAttributes = UserAttributes(
-      password: password,
-    );
+  );
+  Future<void> logout();
+}
+
+class AuthRepositoryImplement implements AuthRepository {
+  final SupabaseClient _client;
+
+  AuthRepositoryImplement(this._client);
+
+  @override
+  Future<AuthResponse> signIn({
+    required String email,
+    required String password,
+  }) =>
+      _client.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+
+  @override
+  Future<AuthResponse> signUp({
+    required String email,
+    required String password,
+    required String username,
+  }) =>
+      _client.auth.signUp(
+        email: email,
+        password: password,
+        data: {'username': username},
+      );
+
+  @override
+  Future<void> forgotPassword(String email) async =>
+      await _client.auth.resetPasswordForEmail(email);
+
+  @override
+  Future<void> resetPassword(String password) async {
+    final userAttributes = UserAttributes(password: password);
     await _client.auth.updateUser(userAttributes);
   }
 
-  // This method logout app
+  @override
   Future<void> logout() => _client.auth.signOut();
 }
