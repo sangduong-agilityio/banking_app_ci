@@ -17,47 +17,35 @@ import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'widgets/text_input.dart';
 
-class SignInPage extends ConsumerStatefulWidget {
+class SignInPage extends ConsumerWidget {
   const SignInPage({super.key});
 
   @override
-  ConsumerState<SignInPage> createState() => _SignInPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
-class _SignInPageState extends ConsumerState<SignInPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+    Future<void> _login() async {
+      try {
+        LSLoadingIndicator.show(context);
+        await ref.read(authRepositoryProvider).signIn(
+              email: emailController.text,
+              password: passwordController.text,
+            );
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _login() async {
-    try {
-      LSLoadingIndicator.show(context);
-      await ref.read(authRepositoryProvider).signIn(
-            email: emailController.text,
-            password: passwordController.text,
-          );
-
-      if (mounted) {
+        if (context.mounted) {
+          LSLoadingIndicator.hide(context);
+          context.pushNamed(AppRoutesName.homePage.name);
+        }
+      } catch (e) {
         LSLoadingIndicator.hide(context);
-        context.pushNamed(AppRoutesName.homePage.name);
+        LSSnackBar.buildErrorSnackbar(
+          context,
+          e.toString(),
+        );
       }
-    } catch (e) {
-      LSLoadingIndicator.hide(context);
-      LSSnackBar.buildErrorSnackbar(
-        context,
-        e.toString(),
-      );
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return LazaShopScaffold(
       body: Column(
         children: [

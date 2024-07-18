@@ -24,8 +24,8 @@ class AppRoutesName {
   static final signUpPage = RouteName('/signUpPage', 'signUpPage');
   static final forgotPasswordPage =
       RouteName('/forgotPasswordPage', 'forgotPasswordPage');
-  static final passwordResetPage =
-      RouteName('/passwordResetPage', 'passwordResetPage');
+  static final resetPasswordPage =
+      RouteName('/resetPasswordPage', 'resetPasswordPage');
   static final productDetailPage =
       RouteName('/productDetailPage', 'productDetailPage');
   static final brandDetailPage =
@@ -121,8 +121,8 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutesName.passwordResetPage.path,
-        name: AppRoutesName.passwordResetPage.name,
+        path: AppRoutesName.resetPasswordPage.path,
+        name: AppRoutesName.resetPasswordPage.name,
         parentNavigatorKey: rootNavigatorKey,
         pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
           transitionDuration: const Duration(milliseconds: 300),
@@ -174,7 +174,6 @@ List<StatefulShellBranch> bottomNavigationBarBranches() {
 
 List<LSBottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
   return <LSBottomNavigationBarItem>[
-    /// Home
     LSBottomNavigationBarItem(
       icon: SvgPicture.asset(
         Assets.icons.icHome.path,
@@ -185,8 +184,6 @@ List<LSBottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
             ColorFilter.mode(context.colorScheme.primary, BlendMode.srcIn),
       ),
     ),
-
-    /// Search
     LSBottomNavigationBarItem(
       icon: SvgPicture.asset(
         Assets.icons.icHeartBreak.path,
@@ -198,8 +195,6 @@ List<LSBottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
             ColorFilter.mode(context.colorScheme.primary, BlendMode.srcIn),
       ),
     ),
-
-    /// Save
     LSBottomNavigationBarItem(
       icon: SvgPicture.asset(
         Assets.icons.icBag.path,
@@ -214,8 +209,6 @@ List<LSBottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
             ColorFilter.mode(context.colorScheme.primary, BlendMode.srcIn),
       ),
     ),
-
-    /// Profile
     LSBottomNavigationBarItem(
       icon: SvgPicture.asset(
         Assets.icons.icWallet.path,

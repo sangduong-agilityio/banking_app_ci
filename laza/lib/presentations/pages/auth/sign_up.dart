@@ -14,50 +14,36 @@ import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'widgets/text_input.dart';
 
-class SignUpPage extends ConsumerStatefulWidget {
+class SignUpPage extends ConsumerWidget {
   const SignUpPage({super.key});
 
   @override
-  ConsumerState<SignUpPage> createState() => _SignUpPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+    final emailController = TextEditingController();
 
-class _SignUpPageState extends ConsumerState<SignUpPage> {
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final emailController = TextEditingController();
+    Future<void> _signUp() async {
+      try {
+        LSLoadingIndicator.show(context);
+        await ref.read(authRepositoryProvider).signUp(
+            email: emailController.text,
+            password: passwordController.text,
+            username: usernameController.text);
 
-  @override
-  void dispose() {
-    usernameController.dispose();
-    passwordController.dispose();
-    emailController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _signUp() async {
-    try {
-      LSLoadingIndicator.show(context);
-      await ref.read(authRepositoryProvider).signUp(
-          email: emailController.text,
-          password: passwordController.text,
-          username: usernameController.text);
-
-      if (mounted) {
+        if (context.mounted) {
+          LSLoadingIndicator.hide(context);
+          context.pushNamed(AppRoutesName.signInPage.name);
+        }
+      } catch (e) {
         LSLoadingIndicator.hide(context);
-        context.pushNamed(AppRoutesName.signInPage.name);
+        LSSnackBar.buildErrorSnackbar(
+          context,
+          e.toString(),
+        );
       }
-    } catch (e) {
-      LSLoadingIndicator.hide(context);
-      LSSnackBar.buildErrorSnackbar(
-        context,
-        e.toString(),
-      );
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    const sizeBox20 = SizedBox(height: 20);
     return LazaShopScaffold(
       body: Column(
         children: [
@@ -81,7 +67,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           ),
           const SizedBox(height: 145),
           SignUpForm(
-            sizeBox20: sizeBox20,
+            sizeBox20: const SizedBox(height: 20),
             usernameController: usernameController,
             passwordController: passwordController,
             emailController: emailController,

@@ -100,19 +100,8 @@ class $AssetsImagesGen {
   AssetGenImage get dataImage =>
       const AssetGenImage('assets/images/data_image.png');
 
-  /// File path: assets/images/empty-data.png
-  AssetGenImage get emptyData =>
-      const AssetGenImage('assets/images/empty-data.png');
-
-  /// File path: assets/images/image-not-found.png
-  AssetGenImage get imageNotFound =>
-      const AssetGenImage('assets/images/image-not-found.png');
-
-  /// File path: assets/images/user.png
-  AssetGenImage get user => const AssetGenImage('assets/images/user.png');
-
   /// List of all assets
-  List<AssetGenImage> get values => [dataImage, emptyData, imageNotFound, user];
+  List<AssetGenImage> get values => [dataImage];
 }
 
 class Assets {
