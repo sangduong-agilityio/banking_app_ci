@@ -14,45 +14,33 @@ import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 
-class PasswordResetPage extends ConsumerStatefulWidget {
+class PasswordResetPage extends ConsumerWidget {
   const PasswordResetPage({super.key});
 
   @override
-  ConsumerState<PasswordResetPage> createState() => _PasswordResetPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final passwordController = TextEditingController();
+    final passwordConfirmController = TextEditingController();
 
-class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
-  final passwordController = TextEditingController();
-  final passwordConfirmController = TextEditingController();
-
-  @override
-  void dispose() {
-    passwordController.dispose();
-    passwordConfirmController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _resetPassword() async {
-    try {
-      LSLoadingIndicator.show(context);
-      await ref.read(authRepositoryProvider).resetPassword(
-            passwordController.text,
-          );
-      if (mounted) {
+    Future<void> _resetPassword() async {
+      try {
+        LSLoadingIndicator.show(context);
+        await ref.read(authRepositoryProvider).resetPassword(
+              passwordController.text,
+            );
+        if (context.mounted) {
+          LSLoadingIndicator.hide(context);
+          context.pushNamed(AppRoutesName.signInPage.name);
+        }
+      } catch (e) {
         LSLoadingIndicator.hide(context);
-        context.pushNamed(AppRoutesName.signInPage.name);
+        LSSnackBar.buildErrorSnackbar(
+          context,
+          e.toString(),
+        );
       }
-    } catch (e) {
-      LSLoadingIndicator.hide(context);
-      LSSnackBar.buildErrorSnackbar(
-        context,
-        e.toString(),
-      );
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return LazaShopScaffold(
       body: Column(
         children: [
@@ -60,8 +48,9 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
-                onTappedBackButton: () => context.pop(),
-                icon: LSIcons.icArrowLeft),
+              onTappedBackButton: () => context.pop(),
+              icon: LSIcons.icArrowLeft,
+            ),
           ),
           const SizedBox(height: 15),
           Text(

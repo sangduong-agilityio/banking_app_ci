@@ -14,42 +14,31 @@ import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'widgets/text_input.dart';
 
-class ForgotPasswordPage extends ConsumerStatefulWidget {
+class ForgotPasswordPage extends ConsumerWidget {
   const ForgotPasswordPage({super.key});
 
   @override
-  ConsumerState<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = TextEditingController();
 
-class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
-  final emailController = TextEditingController();
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _forgotPassword() async {
-    try {
-      LSLoadingIndicator.show(context);
-      await ref
-          .read(authRepositoryProvider)
-          .forgotPassword(emailController.text);
-      if (mounted) {
+    Future<void> _forgotPassword() async {
+      try {
+        LSLoadingIndicator.show(context);
+        await ref
+            .read(authRepositoryProvider)
+            .forgotPassword(emailController.text);
+        if (context.mounted) {
+          LSLoadingIndicator.hide(context);
+        }
+      } catch (e) {
         LSLoadingIndicator.hide(context);
+        LSSnackBar.buildErrorSnackbar(
+          context,
+          e.toString(),
+        );
       }
-    } catch (e) {
-      LSLoadingIndicator.hide(context);
-      LSSnackBar.buildErrorSnackbar(
-        context,
-        e.toString(),
-      );
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return LazaShopScaffold(
       body: Column(
         children: [
@@ -57,8 +46,9 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
-                onTappedBackButton: () => context.pop(),
-                icon: LSIcons.icArrowLeft),
+              onTappedBackButton: () => context.pop(),
+              icon: LSIcons.icArrowLeft,
+            ),
           ),
           const SizedBox(height: 15),
           Text(
