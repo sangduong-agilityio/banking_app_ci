@@ -3,12 +3,12 @@ import 'package:json/json.dart';
 @JsonCodable()
 class Brand {
   final int? id;
-  final String? name;
-  final String? logo;
+  final String name;
+  final String image;
 
   Brand({
     this.id,
-    this.name,
-    this.logo,
+    required this.name,
+    required this.image,
   });
 }
