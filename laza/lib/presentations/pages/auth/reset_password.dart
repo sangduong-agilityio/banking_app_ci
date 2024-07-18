@@ -5,7 +5,6 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
-import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/pages/auth/widgets/text_input.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
@@ -13,6 +12,7 @@ import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
+import 'package:laza/providers/auth_provider.dart';
 
 class PasswordResetPage extends ConsumerWidget {
   const PasswordResetPage({super.key});
@@ -22,23 +22,23 @@ class PasswordResetPage extends ConsumerWidget {
     final passwordController = TextEditingController();
     final passwordConfirmController = TextEditingController();
 
-    Future<void> _resetPassword() async {
-      try {
-        LSLoadingIndicator.show(context);
-        await ref.read(authRepositoryProvider).resetPassword(
-              passwordController.text,
-            );
-        if (context.mounted) {
-          LSLoadingIndicator.hide(context);
-          context.pushNamed(AppRoutesName.signInPage.name);
-        }
-      } catch (e) {
+    Future<void> resetPassword() async {
+      LSLoadingIndicator.show(context);
+      ref
+          .read(authRepositoryProvider)
+          .resetPassword(
+            passwordController.text,
+          )
+          .then((_) {
+        LSLoadingIndicator.hide(context);
+        context.pushNamed(AppRoutesName.signInPage.name);
+      }).catchError((e) {
         LSLoadingIndicator.hide(context);
         LSSnackBar.buildErrorSnackbar(
           context,
           e.toString(),
         );
-      }
+      });
     }
 
     return LazaShopScaffold(
@@ -90,7 +90,7 @@ class PasswordResetPage extends ConsumerWidget {
           const SizedBox(height: 55),
           LSButton(
             text: S.current.resetPassword,
-            onPressed: _resetPassword,
+            onPressed: resetPassword,
           ),
         ],
       ),

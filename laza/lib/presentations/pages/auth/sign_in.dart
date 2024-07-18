@@ -7,7 +7,6 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
-import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
@@ -15,6 +14,7 @@ import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
+import 'package:laza/providers/auth_provider.dart';
 import 'widgets/text_input.dart';
 
 class SignInPage extends ConsumerWidget {
@@ -25,25 +25,24 @@ class SignInPage extends ConsumerWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
-    Future<void> _login() async {
-      try {
-        LSLoadingIndicator.show(context);
-        await ref.read(authRepositoryProvider).signIn(
-              email: emailController.text,
-              password: passwordController.text,
-            );
-
-        if (context.mounted) {
-          LSLoadingIndicator.hide(context);
-          context.pushNamed(AppRoutesName.homePage.name);
-        }
-      } catch (e) {
+    Future<void> login() async {
+      LSLoadingIndicator.show(context);
+      ref
+          .read(authRepositoryProvider)
+          .signIn(
+            email: emailController.text,
+            password: passwordController.text,
+          )
+          .then((_) {
+        LSLoadingIndicator.hide(context);
+        context.pushNamed(AppRoutesName.homePage.name);
+      }).catchError((e) {
         LSLoadingIndicator.hide(context);
         LSSnackBar.buildErrorSnackbar(
           context,
           e.toString(),
         );
-      }
+      });
     }
 
     return LazaShopScaffold(
@@ -66,7 +65,7 @@ class SignInPage extends ConsumerWidget {
           LSButton(
             isDisabled: false,
             text: S.current.loginBtn,
-            onPressed: () => _login(),
+            onPressed: () => login(),
           ),
         ],
       ),
