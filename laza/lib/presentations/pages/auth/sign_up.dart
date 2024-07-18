@@ -23,7 +23,7 @@ class SignUpPage extends ConsumerWidget {
     final passwordController = TextEditingController();
     final emailController = TextEditingController();
 
-    Future<void> signUp() async {
+    void signUp() {
       LSLoadingIndicator.show(context);
       ref
           .read(authRepositoryProvider)

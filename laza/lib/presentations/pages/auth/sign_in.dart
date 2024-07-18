@@ -25,7 +25,7 @@ class SignInPage extends ConsumerWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
-    Future<void> login() async {
+    void login() {
       LSLoadingIndicator.show(context);
       ref
           .read(authRepositoryProvider)

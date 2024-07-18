@@ -21,7 +21,7 @@ class ForgotPasswordPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = TextEditingController();
 
-    Future<void> forgotPassword() async {
+    void forgotPassword() {
       LSLoadingIndicator.show(context);
       ref
           .read(authRepositoryProvider)

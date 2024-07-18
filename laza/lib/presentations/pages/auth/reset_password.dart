@@ -22,7 +22,7 @@ class PasswordResetPage extends ConsumerWidget {
     final passwordController = TextEditingController();
     final passwordConfirmController = TextEditingController();
 
-    Future<void> resetPassword() async {
+    void resetPassword() {
       LSLoadingIndicator.show(context);
       ref
           .read(authRepositoryProvider)
