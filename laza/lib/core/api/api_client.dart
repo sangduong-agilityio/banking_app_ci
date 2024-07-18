@@ -1,23 +1,33 @@
 import 'package:dio/dio.dart';
 import 'package:laza/core/api/failure.dart';
-import 'package:laza/core/constant/constants.dart';
+import 'package:laza/core/env/env.dart';
 
 class LazaApiClient {
-  final String baseUrl;
   final Dio _dio;
 
-  LazaApiClient({required this.baseUrl})
-      : _dio = Dio(BaseOptions(baseUrl: baseUrl));
+  LazaApiClient({
+    required String baseUrl,
+  }) : _dio = Dio(BaseOptions(
+          baseUrl: baseUrl,
+        ));
 
-  // GET request
-  Future<Response> get(String endpoint,
-      {Map<String, dynamic>? queryParams}) async {
+  Future<Response> _request(
+    String method, {
+    required String endpoint,
+    dynamic data,
+    Map<String, dynamic>? queryParams,
+  }) async {
     try {
-      final response = await _dio.get(
+      final response = await _dio.request(
         endpoint,
+        data: data,
         queryParameters: queryParams,
         options: Options(
-            headers: {'endpoint': endpoint = SupabaseConfig.supabaseKey}),
+          method: method,
+          headers: {
+            'endpoint': endpoint = Env.supabaseKey,
+          },
+        ),
       );
       return response;
     } catch (e) {
@@ -25,48 +35,31 @@ class LazaApiClient {
     }
   }
 
-  // POST request
-  Future<Response> post(String endpoint, {dynamic data}) async {
-    try {
-      final response = await _dio.post(
-        endpoint,
-        data: data,
-        options: Options(
-            headers: {'endpoint': endpoint = SupabaseConfig.supabaseKey}),
+  Future<Response> get(
+    String endpoint, {
+    Map<String, dynamic>? queryParams,
+  }) =>
+      _request(
+        'GET',
+        endpoint: endpoint,
+        queryParams: queryParams,
       );
-      return response;
-    } catch (e) {
-      throw ErrorMappingHandler.apiErrorMappingHandler(e);
-    }
-  }
 
-  // PATCH request
-  Future<Response> patch(String endpoint, {dynamic data}) async {
-    try {
-      final response = await _dio.patch(
-        endpoint,
+  Future<Response> post(String endpoint, {dynamic data}) => _request(
+        'POST',
+        endpoint: endpoint,
         data: data,
-        options: Options(
-            headers: {'endpoint': endpoint = SupabaseConfig.supabaseKey}),
       );
-      return response;
-    } catch (e) {
-      throw ErrorMappingHandler.apiErrorMappingHandler(e);
-    }
-  }
 
-  // DELETE request
-  Future<Response> delete(String endpoint, {dynamic data}) async {
-    try {
-      final response = await _dio.delete(
-        endpoint,
+  Future<Response> patch(String endpoint, {dynamic data}) => _request(
+        'PATCH',
+        endpoint: endpoint,
         data: data,
-        options: Options(
-            headers: {'endpoint': endpoint = SupabaseConfig.supabaseKey}),
       );
-      return response;
-    } catch (e) {
-      throw ErrorMappingHandler.apiErrorMappingHandler(e);
-    }
-  }
+
+  Future<Response> delete(String endpoint, {dynamic data}) => _request(
+        'DELETE',
+        endpoint: endpoint,
+        data: data,
+      );
 }
