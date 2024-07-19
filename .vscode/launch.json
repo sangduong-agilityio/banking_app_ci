@@ -2,6 +2,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch app with macros",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "laza/lib/main.dart",
+            "args": [
+                "--enable-experiment=macros"
+            ]
+        },
+        {
             "name": "Launch app",
             "request": "launch",
             "type": "dart",
