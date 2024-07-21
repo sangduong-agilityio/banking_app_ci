@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/themes/colors.dart';
 
@@ -64,8 +65,8 @@ class LSSvgBuildInAssetImage extends StatelessWidget {
 class LSIcons {
   static Widget icArrowLeft = LSSvgBuildInAssetImage(
     path: Assets.icons.icArrowLeft.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
   static Widget icSearch = LSSvgBuildInAssetImage(
     path: Assets.icons.icSearch.path,
@@ -90,13 +91,13 @@ class LSIcons {
   );
   static Widget icMenu = LSSvgBuildInAssetImage(
     path: Assets.icons.icMenu.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
   static Widget icBag = LSSvgBuildInAssetImage(
     path: Assets.icons.icBag.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
   static Widget icVoice = LSSvgBuildInAssetImage(
     path: Assets.icons.icVoice.path,
@@ -121,23 +122,23 @@ class LSIcons {
   );
   static Widget icInvertedMenu = LSSvgBuildInAssetImage(
     path: Assets.icons.icInvertedMenu.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
   static Widget icSun = LSSvgBuildInAssetImage(
     path: Assets.icons.icSun.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
   static Widget icInformation = LSSvgBuildInAssetImage(
     path: Assets.icons.icInformation.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
   static Widget icLogout = LSSvgBuildInAssetImage(
     path: Assets.icons.icLogout.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
   static Widget icSort = LSSvgBuildInAssetImage(
     path: Assets.icons.icSort.path,
@@ -146,7 +147,7 @@ class LSIcons {
   );
   static Widget icHeart = LSSvgBuildInAssetImage(
     path: Assets.icons.icHeart.path,
-    width: 25,
-    height: 25,
+    width: 25.w,
+    height: 25.h,
   );
 }

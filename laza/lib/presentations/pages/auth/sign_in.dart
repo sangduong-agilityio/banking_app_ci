@@ -24,6 +24,8 @@ class SignInPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final isFormValidProvider = StateProvider<bool>((ref) => false);
+    final isFormValid = ref.watch(isFormValidProvider);
 
     void login() {
       LSLoadingIndicator.show(context);
@@ -48,7 +50,7 @@ class SignInPage extends ConsumerWidget {
     return LazaShopScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 45),
+          SizedBox(height: 25.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -60,10 +62,13 @@ class SignInPage extends ConsumerWidget {
           SignInForm(
             emailController: emailController,
             passwordController: passwordController,
+            onFormValidationChanged: (isValid) {
+              ref.read(isFormValidProvider.notifier).state = isValid;
+            },
           ),
           const SizedBox(height: 20),
           LSButton(
-            isDisabled: false,
+            isDisabled: !isFormValid,
             text: S.current.loginBtn,
             onPressed: () => login(),
           ),
@@ -73,16 +78,23 @@ class SignInPage extends ConsumerWidget {
   }
 }
 
-class SignInForm extends StatelessWidget {
+class SignInForm extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final Function(bool isValid)? onFormValidationChanged;
 
   const SignInForm({
     required this.emailController,
     required this.passwordController,
+    this.onFormValidationChanged,
     super.key,
   });
 
+  @override
+  State<SignInForm> createState() => _SignInFormState();
+}
+
+class _SignInFormState extends State<SignInForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -99,26 +111,28 @@ class SignInForm extends StatelessWidget {
             style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
-          const SizedBox(height: 165),
+          SizedBox(height: 165.h),
           LSForm(
-            isValidated: (value) {},
+            isValidated: (value) {
+              widget.onFormValidationChanged?.call(value);
+            },
             textFields: [
               TextInput(
                 labelText: S.current.email,
-                controller: emailController,
+                controller: widget.emailController,
                 validatorText: (value) =>
                     InputValidationMixin.validEmail(value ?? ''),
               ),
               TextInput(
                 labelText: S.current.password,
-                controller: passwordController,
+                controller: widget.passwordController,
                 validatorText: (value) =>
                     InputValidationMixin.validPassword(value ?? ''),
                 hasObscureText: true,
               ),
             ],
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30.h),
           TextButton(
             onPressed: () {
               context.pushNamed(AppRoutesName.forgotPasswordPage.name);
@@ -132,7 +146,7 @@ class SignInForm extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 42),
+          SizedBox(height: 42.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -148,7 +162,7 @@ class SignInForm extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 110),
+          SizedBox(height: 110.h),
           Text.rich(
             TextSpan(
               children: [

@@ -18,12 +18,12 @@ class LSLoadingIndicator extends StatelessWidget {
   final Color? color;
 
   static Future<LSLoadingIndicator?> show(
-    BuildContext ctx, {
+    BuildContext context, {
     double? radius,
     Color? color,
   }) {
     return showDialog<LSLoadingIndicator>(
-      context: ctx,
+      context: context,
       builder: (_) => PopScope(
         canPop: false,
         child: BackdropFilter(

@@ -20,14 +20,13 @@ class LetStartedPage extends StatelessWidget {
     return LazaShopScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 45),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
                 onTappedBackButton: () => context.pop(),
                 icon: LSIcons.icArrowLeft),
           ),
-          const SizedBox(height: 65),
+          SizedBox(height: 65.h),
           Center(
             child: Text(
               S.current.letGetStarted,

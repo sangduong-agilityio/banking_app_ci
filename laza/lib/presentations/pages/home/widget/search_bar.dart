@@ -42,8 +42,8 @@ class LSSearchBar extends StatelessWidget {
     return Row(
       children: [
         SizedBox(
-          width: 310,
-          height: 50,
+          width: 310.w,
+          height: 50.h,
           child: SearchBar(
             onTap: onTap,
             focusNode: focusNode,
@@ -66,7 +66,7 @@ class LSSearchBar extends StatelessWidget {
           width: 10,
         ),
         Container(
-          height: 50,
+          height: 50.h,
           decoration: ShapeDecoration(
             color: context.colorScheme.primary,
             shape: RoundedRectangleBorder(
