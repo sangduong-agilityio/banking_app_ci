@@ -1,11 +1,13 @@
-import 'package:json/json.dart';
-import 'package:laza/data/models/product_model.dart';
+import 'package:laza/data/models/model.dart';
 
-@JsonCodable()
+@Model()
 class Brand {
-  int? id;
-  String? name;
-  String? logo;
-  String image;
-  List<Product> products;
+  final int id;
+  final String name;
+  final String image;
+  Brand({
+    required this.id,
+    required this.name,
+    required this.image,
+  });
 }

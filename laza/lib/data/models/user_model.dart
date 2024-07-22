@@ -1,13 +1,16 @@
-import 'package:json/json.dart';
-import 'package:laza/data/models/brand_model.dart';
-import 'package:laza/data/models/product_model.dart';
+import 'package:laza/data/models/model.dart';
 
-@JsonCodable()
+@Model()
 class User {
-  int? id;
-  String username;
-  String displayName;
-  String avatar;
-  List<Product> wishlist;
-  List<Brand> favoriteBrands;
+  final int id;
+  final String username;
+  final String displayName;
+  final String avatar;
+
+  User({
+    required this.id,
+    required this.username,
+    required this.displayName,
+    required this.avatar,
+  });
 }
