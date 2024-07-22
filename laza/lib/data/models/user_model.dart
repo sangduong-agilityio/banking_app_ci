@@ -1,8 +1,16 @@
-// import 'package:json/json.dart';
+import 'package:laza/data/models/model.dart';
 
-// @JsonCodable()
-// class User {
-//   final String? id;
-//   final String username;
-//   final String displayName;
-// }
+@Model()
+class User {
+  final int id;
+  final String username;
+  final String displayName;
+  final String avatar;
+
+  User({
+    required this.id,
+    required this.username,
+    required this.displayName,
+    required this.avatar,
+  });
+}
