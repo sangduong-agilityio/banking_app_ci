@@ -15,15 +15,19 @@ import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'package:laza/providers/auth_provider.dart';
 import 'widgets/text_input.dart';
 
-class SignUpPage extends ConsumerWidget {
+class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final usernameController = TextEditingController();
-    final passwordController = TextEditingController();
-    final emailController = TextEditingController();
-    final isFormValidProvider = StateProvider<bool>((ref) => false);
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends ConsumerState<SignUpPage> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final isFormValidProvider = StateProvider<bool>((ref) => false);
+  @override
+  Widget build(BuildContext context) {
     final isFormValid = ref.watch(isFormValidProvider);
 
     void signUp() {

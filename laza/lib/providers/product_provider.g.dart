@@ -36,5 +36,19 @@ final productRepositoryProvider = Provider<ProductRepository>.internal(
 );
 
 typedef ProductRepositoryRef = ProviderRef<ProductRepository>;
+String _$productsHash() => r'8d6ab241fafa8eb28266db6bc769217565746fb9';
+
+/// See also [products].
+@ProviderFor(products)
+final productsProvider = FutureProvider<List<Product>>.internal(
+  products,
+  name: r'productsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$productsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ProductsRef = FutureProviderRef<List<Product>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -17,16 +17,21 @@ import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'package:laza/providers/auth_provider.dart';
 import 'widgets/text_input.dart';
 
-class SignInPage extends ConsumerWidget {
+class SignInPage extends ConsumerStatefulWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final isFormValidProvider = StateProvider<bool>((ref) => false);
-    final isFormValid = ref.watch(isFormValidProvider);
+  ConsumerState<SignInPage> createState() => _SignInPageState();
+}
 
+class _SignInPageState extends ConsumerState<SignInPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final isFormValidProvider = StateProvider<bool>((ref) => false);
+
+  @override
+  Widget build(BuildContext context) {
+    final isFormValid = ref.watch(isFormValidProvider);
     void login() {
       LSLoadingIndicator.show(context);
       ref
