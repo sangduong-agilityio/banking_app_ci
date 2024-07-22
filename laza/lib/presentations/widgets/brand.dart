@@ -16,8 +16,8 @@ class LSBrand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 115,
-      height: 50,
+      width: 115.w,
+      height: 50.h,
       decoration: BoxDecoration(
         color: context.colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(8),
@@ -30,8 +30,8 @@ class LSBrand extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
                 brandLogo,
-                width: 40,
-                height: 40,
+                width: 40.w,
+                height: 40.h,
                 fit: fit,
               ),
             ),

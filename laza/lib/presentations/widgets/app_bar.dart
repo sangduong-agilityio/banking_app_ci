@@ -35,8 +35,8 @@ class LSAppBar extends StatelessWidget {
           ),
         ),
         Container(
-          width: 68,
-          height: 45,
+          width: 68.w,
+          height: 45.h,
           decoration: ShapeDecoration(
             image: DecorationImage(
               image: AssetImage(centerImage ?? ''),

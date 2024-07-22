@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
@@ -16,7 +17,7 @@ class HeaderProductDetail extends StatelessWidget {
         LSImage(
           imageUrl: Assets.images.dataImage.path,
           width: double.infinity,
-          height: 375,
+          height: 375.h,
           fit: BoxFit.cover,
           borderRadius: 0,
         ),

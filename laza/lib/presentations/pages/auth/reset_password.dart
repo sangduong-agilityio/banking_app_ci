@@ -6,6 +6,7 @@ import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
+import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/pages/auth/widgets/text_input.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
@@ -14,13 +15,21 @@ import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'package:laza/providers/auth_provider.dart';
 
-class PasswordResetPage extends ConsumerWidget {
+class PasswordResetPage extends ConsumerStatefulWidget {
   const PasswordResetPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final passwordController = TextEditingController();
-    final passwordConfirmController = TextEditingController();
+  ConsumerState<PasswordResetPage> createState() => _PasswordResetPageState();
+}
+
+class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
+  final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
+  final formValidationProvider = StateProvider<bool>((ref) => false);
+
+  @override
+  Widget build(BuildContext context) {
+    final isFormValid = ref.watch(formValidationProvider);
 
     void resetPassword() {
       LSLoadingIndicator.show(context);
@@ -44,7 +53,7 @@ class PasswordResetPage extends ConsumerWidget {
     return LazaShopScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 45),
+          SizedBox(height: 45.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -63,35 +72,42 @@ class PasswordResetPage extends ConsumerWidget {
             style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
-          const SizedBox(height: 55),
+          SizedBox(height: 55.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(children: [
-              TextInput(
-                labelText: S.current.password,
-                controller: passwordController,
-                hasObscureText: true,
-                validatorText: (value) =>
-                    InputValidationMixin.validPassword(value ?? ''),
-              ),
-              const SizedBox(height: 20),
-              TextInput(
-                labelText: S.current.confirmPassword,
-                controller: passwordConfirmController,
-                hasObscureText: true,
-                validatorText: (value) =>
-                    InputValidationMixin.validConfirmation(
-                  needConfirm: value ?? '',
-                  confirm: passwordController.text,
-                ),
+              LSForm(
+                spaceBetweenRow: 20,
+                isValidated: (isValid) {
+                  ref.read(formValidationProvider.notifier).state = isValid;
+                },
+                textFields: [
+                  TextInput(
+                    labelText: S.current.password,
+                    controller: passwordController,
+                    hasObscureText: true,
+                    validatorText: (value) =>
+                        InputValidationMixin.validPassword(value ?? ''),
+                  ),
+                  TextInput(
+                    labelText: S.current.confirmPassword,
+                    controller: passwordConfirmController,
+                    hasObscureText: true,
+                    validatorText: (value) =>
+                        InputValidationMixin.validConfirmation(
+                      needConfirm: value ?? '',
+                      confirm: passwordController.text,
+                    ),
+                  ),
+                ],
               ),
             ]),
           ),
-          const SizedBox(height: 55),
+          SizedBox(height: 55.h),
           LSButton(
-            text: S.current.resetPassword,
-            onPressed: resetPassword,
-          ),
+              isDisabled: !isFormValid,
+              text: S.current.resetPassword,
+              onPressed: resetPassword),
         ],
       ),
     );

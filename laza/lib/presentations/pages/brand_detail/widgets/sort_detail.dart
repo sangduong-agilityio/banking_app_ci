@@ -16,8 +16,8 @@ class _LSSortState extends State<LSSort> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 71,
-      height: 37,
+      width: 71.w,
+      height: 37.h,
       decoration: BoxDecoration(
         color: context.colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(8),

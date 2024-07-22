@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/brand.dart';
@@ -21,7 +22,7 @@ class ListViewBrand extends StatelessWidget {
         );
       },
       child: SizedBox(
-        height: 50,
+        height: 50.h,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: 4,

@@ -5,6 +5,7 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
+import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
@@ -22,6 +23,8 @@ class SignUpPage extends ConsumerWidget {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
     final emailController = TextEditingController();
+    final isFormValidProvider = StateProvider<bool>((ref) => false);
+    final isFormValid = ref.watch(isFormValidProvider);
 
     void signUp() {
       LSLoadingIndicator.show(context);
@@ -46,7 +49,7 @@ class SignUpPage extends ConsumerWidget {
     return LazaShopScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 45),
+          SizedBox(height: 45.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -64,15 +67,18 @@ class SignUpPage extends ConsumerWidget {
             style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
-          const SizedBox(height: 145),
+          SizedBox(height: 145.h),
           SignUpForm(
-            sizeBox20: const SizedBox(height: 20),
             usernameController: usernameController,
             passwordController: passwordController,
             emailController: emailController,
+            onFormValidationChanged: (isValid) {
+              ref.read(isFormValidProvider.notifier).state = isValid;
+            },
           ),
-          const SizedBox(height: 280),
+          SizedBox(height: 280.h),
           LSButton(
+            isDisabled: !isFormValid,
             text: S.current.signUpBtn,
             onPressed: () => signUp(),
           )
@@ -82,46 +88,57 @@ class SignUpPage extends ConsumerWidget {
   }
 }
 
-class SignUpForm extends StatelessWidget {
+class SignUpForm extends StatefulWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
   final TextEditingController emailController;
-  final SizedBox sizeBox20;
+  final Function(bool isValid)? onFormValidationChanged;
 
   const SignUpForm({
     super.key,
-    required this.sizeBox20,
     required this.usernameController,
     required this.passwordController,
     required this.emailController,
+    this.onFormValidationChanged,
   });
 
+  @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          TextInput(
-            labelText: S.current.username,
-            controller: usernameController,
-            validatorText: (value) =>
-                InputValidationMixin.validUserName(value ?? ''),
-          ),
-          sizeBox20,
-          TextInput(
-            labelText: S.current.email,
-            controller: emailController,
-            validatorText: (value) =>
-                InputValidationMixin.validEmail(value ?? ''),
-          ),
-          sizeBox20,
-          TextInput(
-            labelText: S.current.password,
-            controller: passwordController,
-            validatorText: (value) =>
-                InputValidationMixin.validPassword(value ?? ''),
-            hasObscureText: true,
+          LSForm(
+            spaceBetweenRow: 20,
+            isValidated: (value) {
+              widget.onFormValidationChanged?.call(value);
+            },
+            textFields: [
+              TextInput(
+                labelText: S.current.username,
+                controller: widget.usernameController,
+                validatorText: (value) =>
+                    InputValidationMixin.validUserName(value ?? ''),
+              ),
+              TextInput(
+                labelText: S.current.email,
+                controller: widget.emailController,
+                validatorText: (value) =>
+                    InputValidationMixin.validEmail(value ?? ''),
+              ),
+              TextInput(
+                labelText: S.current.password,
+                controller: widget.passwordController,
+                validatorText: (value) =>
+                    InputValidationMixin.validPassword(value ?? ''),
+                hasObscureText: true,
+              ),
+            ],
           ),
         ],
       ),

@@ -11,8 +11,8 @@ class LSSize extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 60,
-        height: 60,
+        width: 60.w,
+        height: 60.h,
         decoration: BoxDecoration(
           color: context.colorScheme.outlineVariant,
           borderRadius: BorderRadius.circular(10),

@@ -5,7 +5,7 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/router/page_transition.dart';
 import 'package:laza/presentations/pages/auth/forgot_password.dart';
-import 'package:laza/presentations/pages/auth/password_reset.dart';
+import 'package:laza/presentations/pages/auth/reset_password.dart';
 import 'package:laza/presentations/pages/auth/sign_in.dart';
 import 'package:laza/presentations/pages/auth/sign_up.dart';
 import 'package:laza/presentations/pages/brand_detail/brand_detail.dart';
@@ -14,6 +14,7 @@ import 'package:laza/presentations/pages/home/home.dart';
 import 'package:laza/presentations/pages/let_started/let_started.dart';
 import 'package:laza/presentations/pages/product_detail/product_detail.dart';
 import 'package:laza/presentations/layout/bottom_navigation_bar.dart';
+import 'package:laza/presentations/widgets/drawer_menu.dart'; // Import the drawer menu
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -31,6 +32,8 @@ class AppRoutesName {
   static final brandDetailPage =
       RouteName('/brandDetailPage', 'brandDetailPage');
   static final brandViewAll = RouteName('/brandViewAll', 'brandViewAll');
+  static final drawerMenu =
+      RouteName('/drawerMenu', 'drawerMenu'); // New route for drawer menu
 }
 
 class RouteName {
@@ -129,6 +132,16 @@ class AppRouter {
           context: context,
           state: state,
           child: const PasswordResetPage(),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutesName.drawerMenu.path,
+        name: AppRoutesName.drawerMenu.name,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
+          context: context,
+          state: state,
+          child: const LSDrawerMenu(),
         ),
       ),
       StatefulShellRoute.indexedStack(

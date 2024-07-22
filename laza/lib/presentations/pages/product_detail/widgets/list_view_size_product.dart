@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laza/core/extensions/context_extensions.dart';
 import 'size.dart';
 
 class ListViewSizeProduct extends StatelessWidget {
@@ -11,7 +12,7 @@ class ListViewSizeProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60,
+      height: 60.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
