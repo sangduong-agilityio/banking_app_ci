@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/presentations/widgets/images.dart';
 import 'package:laza/presentations/widgets/tag.dart';
 
@@ -25,7 +26,7 @@ class LSProductCard extends StatelessWidget {
         children: [
           LSImage(
             imageUrl: image,
-            height: 203,
+            height: 203.h,
             width: double.infinity,
           ),
           const SizedBox(height: 5),

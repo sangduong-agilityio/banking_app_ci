@@ -7,7 +7,6 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
-import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
@@ -15,6 +14,7 @@ import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
+import 'package:laza/providers/auth_provider.dart';
 import 'widgets/text_input.dart';
 
 class SignInPage extends ConsumerWidget {
@@ -24,32 +24,33 @@ class SignInPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
+    final isFormValidProvider = StateProvider<bool>((ref) => false);
+    final isFormValid = ref.watch(isFormValidProvider);
 
-    Future<void> _login() async {
-      try {
-        LSLoadingIndicator.show(context);
-        await ref.read(authRepositoryProvider).signIn(
-              email: emailController.text,
-              password: passwordController.text,
-            );
-
-        if (context.mounted) {
-          LSLoadingIndicator.hide(context);
-          context.pushNamed(AppRoutesName.homePage.name);
-        }
-      } catch (e) {
+    void login() {
+      LSLoadingIndicator.show(context);
+      ref
+          .read(authRepositoryProvider)
+          .signIn(
+            email: emailController.text,
+            password: passwordController.text,
+          )
+          .then((_) {
+        LSLoadingIndicator.hide(context);
+        context.pushNamed(AppRoutesName.homePage.name);
+      }).catchError((e) {
         LSLoadingIndicator.hide(context);
         LSSnackBar.buildErrorSnackbar(
           context,
           e.toString(),
         );
-      }
+      });
     }
 
     return LazaShopScaffold(
       body: Column(
         children: [
-          const SizedBox(height: 45),
+          SizedBox(height: 25.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -61,12 +62,15 @@ class SignInPage extends ConsumerWidget {
           SignInForm(
             emailController: emailController,
             passwordController: passwordController,
+            onFormValidationChanged: (isValid) {
+              ref.read(isFormValidProvider.notifier).state = isValid;
+            },
           ),
           const SizedBox(height: 20),
           LSButton(
-            isDisabled: false,
+            isDisabled: !isFormValid,
             text: S.current.loginBtn,
-            onPressed: () => _login(),
+            onPressed: () => login(),
           ),
         ],
       ),
@@ -74,16 +78,23 @@ class SignInPage extends ConsumerWidget {
   }
 }
 
-class SignInForm extends StatelessWidget {
+class SignInForm extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final Function(bool isValid)? onFormValidationChanged;
 
   const SignInForm({
     required this.emailController,
     required this.passwordController,
+    this.onFormValidationChanged,
     super.key,
   });
 
+  @override
+  State<SignInForm> createState() => _SignInFormState();
+}
+
+class _SignInFormState extends State<SignInForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -100,26 +111,28 @@ class SignInForm extends StatelessWidget {
             style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
-          const SizedBox(height: 165),
+          SizedBox(height: 165.h),
           LSForm(
-            isValidated: (value) {},
+            isValidated: (value) {
+              widget.onFormValidationChanged?.call(value);
+            },
             textFields: [
               TextInput(
                 labelText: S.current.email,
-                controller: emailController,
+                controller: widget.emailController,
                 validatorText: (value) =>
                     InputValidationMixin.validEmail(value ?? ''),
               ),
               TextInput(
                 labelText: S.current.password,
-                controller: passwordController,
+                controller: widget.passwordController,
                 validatorText: (value) =>
                     InputValidationMixin.validPassword(value ?? ''),
                 hasObscureText: true,
               ),
             ],
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: 30.h),
           TextButton(
             onPressed: () {
               context.pushNamed(AppRoutesName.forgotPasswordPage.name);
@@ -133,7 +146,7 @@ class SignInForm extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 42),
+          SizedBox(height: 42.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -149,7 +162,7 @@ class SignInForm extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 110),
+          SizedBox(height: 110.h),
           Text.rich(
             TextSpan(
               children: [

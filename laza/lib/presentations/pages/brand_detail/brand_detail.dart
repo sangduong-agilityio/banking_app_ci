@@ -20,7 +20,7 @@ class BrandDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 45),
+              SizedBox(height: 45.h),
               LSAppBar(
                 onTappedBackButton: () => context.pop(),
                 icon: LSIcons.icArrowLeft,
@@ -28,7 +28,7 @@ class BrandDetailPage extends StatelessWidget {
                 onTappedRightButton: () {},
                 centerImage: Assets.images.dataImage.path,
               ),
-              const SizedBox(height: 49),
+              SizedBox(height: 49.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,7 +50,7 @@ class BrandDetailPage extends StatelessWidget {
                   const LSSort()
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               const GridViewProduct()
             ],
           ),

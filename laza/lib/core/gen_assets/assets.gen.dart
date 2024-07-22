@@ -47,6 +47,9 @@ class $AssetsIconsGen {
   SvgGenImage get icInvertedMenu =>
       const SvgGenImage('assets/icons/ic_inverted_menu.svg');
 
+  /// File path: assets/icons/ic_logo.svg
+  SvgGenImage get icLogo => const SvgGenImage('assets/icons/ic_logo.svg');
+
   /// File path: assets/icons/ic_logout.svg
   SvgGenImage get icLogout => const SvgGenImage('assets/icons/ic_logout.svg');
 
@@ -82,6 +85,7 @@ class $AssetsIconsGen {
         icHome,
         icInformation,
         icInvertedMenu,
+        icLogo,
         icLogout,
         icMenu,
         icSearch,

@@ -1,7 +1,7 @@
 name: laza
 description: "A new Flutter project."
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' 
 
 version: 1.0.0+1
 
@@ -25,8 +25,6 @@ dependencies:
 
   cached_network_image: ^3.3.1
 
-  flutter_native_splash: ^2.4.1
-
   supabase_flutter: ^2.5.7
 
   flutter_riverpod: ^2.5.1
@@ -41,8 +39,8 @@ dependencies:
 
   json: ^0.20.2
 
-  envied: ^0.5.4+1
-  
+  envied: ^0.5.4+1  
+
 
 # Config gen assets
 flutter_gen:
@@ -89,3 +87,4 @@ flutter_intl:
   arb_dir: lib/core/l10n
   output_dir: lib/core/l10n/l10n_generated
 
+  

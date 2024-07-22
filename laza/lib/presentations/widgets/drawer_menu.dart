@@ -8,9 +8,9 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
-import 'package:laza/data/repositories/auth_repo.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
+import 'package:laza/providers/auth_provider.dart';
 
 class LSDrawerMenu extends ConsumerStatefulWidget {
   const LSDrawerMenu({super.key});
@@ -25,7 +25,10 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        filter: ImageFilter.blur(
+          sigmaX: 5,
+          sigmaY: 5,
+        ),
         child: Drawer(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.zero,
@@ -38,18 +41,14 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 45,
-                    ),
+                    SizedBox(height: 45.h),
                     LSAppBar(
                       onTappedBackButton: () {
                         context.pop();
                       },
                       icon: LSIcons.icInvertedMenu,
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    SizedBox(height: 30.h),
                     Row(
                       children: [
                         CircleAvatar(
@@ -75,8 +74,8 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                         ),
                         const SizedBox(width: 30),
                         Container(
-                          width: 66,
-                          height: 32,
+                          width: 66.w,
+                          height: 32.h,
                           decoration: BoxDecoration(
                             color: context.colorScheme.outlineVariant,
                             borderRadius: BorderRadius.circular(5),
@@ -94,7 +93,7 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                 ),
               ),
 
-              const SizedBox(height: 30),
+              SizedBox(height: 30.h),
               // Dark mode switch
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -155,7 +154,7 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                       ),
                       onTap: () {},
                     ),
-                    const SizedBox(height: 230),
+                    SizedBox(height: 230.h),
                     // Logout
                     ListTile(
                       leading: LSIcons.icLogout,

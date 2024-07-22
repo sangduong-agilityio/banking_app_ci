@@ -25,7 +25,7 @@ class LSButton extends StatelessWidget {
       height: height,
       width: width,
       child: ElevatedButton(
-          onPressed: onPressed,
+          onPressed: isDisabled ? null : onPressed,
           style: ElevatedButton.styleFrom(
             backgroundColor: context.colorScheme.primary,
             shape: RoundedRectangleBorder(

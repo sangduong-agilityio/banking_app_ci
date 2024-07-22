@@ -16,7 +16,7 @@ class BrandViewAll extends StatelessWidget {
       paddingScaffold: 20,
       body: Column(
         children: [
-          const SizedBox(height: 45),
+          SizedBox(height: 45.h),
           LSAppBar(
             onTappedBackButton: () => context.pop(),
             icon: LSIcons.icArrowLeft,
@@ -32,7 +32,7 @@ class BrandViewAll extends StatelessWidget {
             style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
-          const SizedBox(height: 45),
+          SizedBox(height: 45.h),
           const GridViewBrand()
         ],
       ),
