@@ -1,5 +1,5 @@
 import 'package:laza/core/api/api_client.dart';
-
+import 'package:laza/core/env/env.dart';
 import 'package:laza/data/models/product_model.dart';
 
 abstract class ProductRepository {
@@ -17,8 +17,10 @@ class ProductRepositoryImpl implements ProductRepository {
 
   @override
   Future<List<Product>> getProducts() async {
+    const String apiUrl = '${Env.endPoint}products';
+
     final response = await _apiClient.get(
-      '/rest/v1/products',
+      apiUrl,
       queryParams: {
         'select': '*',
       },
@@ -26,6 +28,7 @@ class ProductRepositoryImpl implements ProductRepository {
     final jsonData = response.data;
     final products =
         (jsonData as List).map((json) => Product.fromJson(json)).toList();
+    print('Products: $products');
     return products;
   }
 

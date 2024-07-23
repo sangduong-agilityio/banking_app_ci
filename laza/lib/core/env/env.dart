@@ -9,4 +9,7 @@ abstract class Env {
 
   @EnviedField(varName: 'SUPABASE_KEY')
   static const String supabaseKey = _Env.supabaseKey;
+
+  @EnviedField(varName: 'SUPABASE_ENDPOINT')
+  static const String endPoint = _Env.endPoint;
 }

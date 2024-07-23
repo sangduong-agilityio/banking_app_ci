@@ -4,7 +4,7 @@ import 'package:laza/data/models/model.dart';
 class Product {
   final int id;
   final String name;
-  final double price;
+  final int price;
   final String imageUrl;
   final String description;
 

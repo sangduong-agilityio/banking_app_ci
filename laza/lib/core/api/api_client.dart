@@ -13,19 +13,18 @@ class LazaApiClient {
 
   Future<Response> _request(
     String method, {
-    required String endpoint,
+    required String apiKey,
     dynamic data,
     Map<String, dynamic>? queryParams,
   }) async {
     try {
       final response = await _dio.request(
-        endpoint,
+        apiKey,
         data: data,
         queryParameters: queryParams,
         options: Options(
-          method: method,
           headers: {
-            'endpoint': endpoint = Env.supabaseKey,
+            'apikey': apiKey = Env.supabaseKey,
           },
         ),
       );
@@ -41,25 +40,25 @@ class LazaApiClient {
   }) =>
       _request(
         'GET',
-        endpoint: endpoint,
+        apiKey: endpoint,
         queryParams: queryParams,
       );
 
   Future<Response> post(String endpoint, {dynamic data}) => _request(
         'POST',
-        endpoint: endpoint,
+        apiKey: endpoint,
         data: data,
       );
 
   Future<Response> patch(String endpoint, {dynamic data}) => _request(
         'PATCH',
-        endpoint: endpoint,
+        apiKey: endpoint,
         data: data,
       );
 
   Future<Response> delete(String endpoint, {dynamic data}) => _request(
         'DELETE',
-        endpoint: endpoint,
+        apiKey: endpoint,
         data: data,
       );
 }

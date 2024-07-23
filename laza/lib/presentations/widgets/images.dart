@@ -30,7 +30,7 @@ class LSImage extends StatelessWidget {
           height: height,
           decoration: ShapeDecoration(
             image: DecorationImage(
-              image: Image.asset(imageUrl).image,
+              image: Image.network(imageUrl).image,
               fit: fit,
             ),
             shape: RoundedRectangleBorder(

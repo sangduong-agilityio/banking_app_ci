@@ -20,6 +20,7 @@ class LetStartedPage extends StatelessWidget {
     return LazaShopScaffold(
       body: Column(
         children: [
+          SizedBox(height: 25.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(

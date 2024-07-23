@@ -53,7 +53,7 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
     return LazaShopScaffold(
       body: Column(
         children: [
-          SizedBox(height: 45.h),
+          SizedBox(height: 25.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(

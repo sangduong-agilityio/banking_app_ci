@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 45.h),
+              SizedBox(height: 25.h),
               LSAppBar(
                 onTappedBackButton: () {
                   _scaffoldKey.currentState?.openDrawer();

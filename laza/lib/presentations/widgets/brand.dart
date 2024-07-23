@@ -10,14 +10,14 @@ class LSBrand extends StatelessWidget {
     super.key,
     required this.brandName,
     required this.brandLogo,
-    this.fit = BoxFit.cover,
+    this.fit = BoxFit.fill,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 115.w,
-      height: 50.h,
+      width: 115,
+      height: 50,
       decoration: BoxDecoration(
         color: context.colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(8),
@@ -28,10 +28,10 @@ class LSBrand extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
+              child: Image.network(
                 brandLogo,
-                width: 40.w,
-                height: 40.h,
+                width: 40,
+                height: 40,
                 fit: fit,
               ),
             ),
