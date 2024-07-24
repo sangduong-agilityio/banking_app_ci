@@ -28,13 +28,18 @@ class GridViewProduct extends ConsumerWidget {
           return LSProductCard(
             image: product.imageUrl,
             title: product.name,
-            price: product.price.toInt(),
+            price: product.price,
             onTapProduct: () {},
           );
         },
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      // TODO(SangDuong): Apply shimmer loading and handle error
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (error, stack) => Center(
+        child: Text('Error: $error'),
+      ),
     );
   }
 }

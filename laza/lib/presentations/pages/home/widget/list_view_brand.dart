@@ -35,14 +35,23 @@ class ListViewBrand extends ConsumerWidget {
               final brands = brand[index];
               return Padding(
                 padding: const EdgeInsets.only(right: 10),
-                child: LSBrand(brandName: brands.name, brandLogo: brands.image),
+                child: LSBrand(
+                  brandName: brands.name,
+                  brandLogo: brands.image,
+                ),
               );
             },
           ),
         ),
       ),
-      error: (error, stack) => Center(child: Text('Error: $error')),
-      loading: () => const Center(child: CircularProgressIndicator()),
+
+      // TODO(SangDuong): Apply shimmer loading and handle error
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (error, stack) => Center(
+        child: Text('Error: $error'),
+      ),
     );
   }
 }
