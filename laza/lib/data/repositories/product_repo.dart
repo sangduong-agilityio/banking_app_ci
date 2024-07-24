@@ -7,6 +7,7 @@ abstract class ProductRepository {
   Future<Product> getProductById(int id);
   Future<void> createProduct(Product product);
   Future<void> updateProduct(Product product);
+  Future<List<Product>> searchProducts(String query);
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -28,7 +29,6 @@ class ProductRepositoryImpl implements ProductRepository {
     final jsonData = response.data;
     final products =
         (jsonData as List).map((json) => Product.fromJson(json)).toList();
-    print('Products: $products');
     return products;
   }
 
@@ -47,5 +47,21 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<void> updateProduct(Product product) async {
     await _apiClient.patch('products/${product.id}', data: product.toJson());
+  }
+
+  @override
+  Future<List<Product>> searchProducts(String query) async {
+    final response = await _apiClient.get(
+      'products',
+      queryParams: {
+        'select': '*',
+        'name': query,
+      },
+    );
+
+    final jsonData = response.data;
+    final products =
+        (jsonData as List).map((json) => Product.fromJson(json)).toList();
+    return products;
   }
 }

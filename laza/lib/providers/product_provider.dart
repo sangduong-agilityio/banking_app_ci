@@ -21,3 +21,16 @@ Future<List<Product>> products(ProductsRef ref) async {
   final productRepository = ref.watch(productRepositoryProvider);
   return productRepository.getProducts();
 }
+
+@Riverpod(keepAlive: true)
+Future<Product> product(FutureProviderRef<Product> ref) async {
+  final productRepository = ref.watch(productRepositoryProvider);
+  return productRepository.getProductById(3);
+}
+
+@Riverpod(keepAlive: true)
+Future<List<Product>> searchProducts(
+    SearchProductsRef ref, String query) async {
+  final productRepository = ref.watch(productRepositoryProvider);
+  return productRepository.searchProducts(query);
+}
