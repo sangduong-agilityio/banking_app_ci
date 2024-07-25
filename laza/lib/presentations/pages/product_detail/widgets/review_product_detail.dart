@@ -27,8 +27,9 @@ class ReviewProductDetail extends StatelessWidget {
           const SizedBox(height: 15),
           Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 25,
+                // TODO(SangDuong): Handle user for the user image
                 backgroundImage: AssetImage(''),
               ),
               const SizedBox(
