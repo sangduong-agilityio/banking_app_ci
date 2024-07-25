@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/themes/colors.dart';
 import 'package:laza/presentations/widgets/icons.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-class LSSearchBar extends StatelessWidget {
+/// Create a StateProvider to store the search query
+final searchQueryProvider = StateProvider<String>((ref) => '');
+
+class LSSearchBar extends ConsumerWidget {
   const LSSearchBar({
     super.key,
     this.controller,
@@ -38,7 +43,15 @@ class LSSearchBar extends StatelessWidget {
   final Widget? icon;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    /// Get the search query notifier and current search query
+    final searchQueryNotifier = ref.watch(searchQueryProvider.notifier);
+    final searchQuery = ref.watch(searchQueryProvider);
+
+    /// Create a TextEditingController with the current search query
+    final TextEditingController textController =
+        controller ?? TextEditingController(text: searchQuery);
+
     return Row(
       children: [
         SizedBox(
@@ -47,9 +60,13 @@ class LSSearchBar extends StatelessWidget {
           child: SearchBar(
             onTap: onTap,
             focusNode: focusNode,
-            controller: controller,
-            onChanged: onChanged,
-            onSubmitted: onSubmitted,
+            controller: textController,
+            onChanged: (value) {
+              searchQueryNotifier.state = value;
+            },
+            onSubmitted: (value) {
+              searchQueryNotifier.state = value;
+            },
             backgroundColor: WidgetStateProperty.all(LSColors.grey200),
             textCapitalization: TextCapitalization.words,
             hintText: S.current.searchInput,
@@ -65,17 +82,32 @@ class LSSearchBar extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        Container(
+        SizedBox(
           height: 50,
-          decoration: ShapeDecoration(
-            color: context.colorScheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+          child: FittedBox(
+            child: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: context.colorScheme.primary,
+              onPressed: () async {
+                /// Initialize speech to text
+                final speechToText = stt.SpeechToText();
+                bool available = await speechToText.initialize(
+                  onStatus: (val) => ('onStatus: $val'),
+                  onError: (val) => ('onError: $val'),
+                );
+                if (available) {
+                  /// Start listening
+                  speechToText.listen(
+                    onResult: (val) {
+                      /// Update the text controller and search query
+                      textController.text = val.recognizedWords;
+                      searchQueryNotifier.state = val.recognizedWords;
+                    },
+                  );
+                }
+              },
+              child: LSIcons.icVoice,
             ),
-          ),
-          child: IconButton(
-            icon: LSIcons.icVoice,
-            onPressed: () {},
           ),
         )
       ],

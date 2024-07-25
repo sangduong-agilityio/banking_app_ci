@@ -39,7 +39,9 @@ dependencies:
 
   json: ^0.20.2
 
-  envied: ^0.5.4+1  
+  envied: ^0.5.4+1 
+
+  speech_to_text: ^6.6.2
 
 
 # Config gen assets
