@@ -36,7 +36,7 @@ final brandRepositoryProvider = Provider<BrandRepository>.internal(
 );
 
 typedef BrandRepositoryRef = ProviderRef<BrandRepository>;
-String _$brandHash() => r'f718b561636ed96f3a3d3e5ad9bf8450bdd2c1b5';
+String _$brandHash() => r'05d0e42995a2dd3e630c87ff1c78e61da46377e5';
 
 /// See also [brand].
 @ProviderFor(brand)

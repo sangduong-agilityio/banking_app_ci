@@ -3,11 +3,10 @@ import 'package:laza/core/env/env.dart';
 import 'package:laza/data/models/product_model.dart';
 
 abstract class ProductRepository {
-  Future<List<Product>> getProducts();
+  Future<List<Product>> getProducts({String? query});
   Future<Product> getProductById(int id);
   Future<void> createProduct(Product product);
   Future<void> updateProduct(Product product);
-  Future<List<Product>> searchProducts(String query);
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -17,26 +16,24 @@ class ProductRepositoryImpl implements ProductRepository {
       : _apiClient = apiClient;
 
   @override
-  Future<List<Product>> getProducts() async {
+  Future<List<Product>> getProducts({String? query}) async {
     const String apiUrl = '${Env.endPoint}products';
 
     final response = await _apiClient.get(
       apiUrl,
       queryParams: {
         'select': '*',
+        if (query != null) 'name': query,
       },
     );
     final jsonData = response.data;
-    final products =
-        (jsonData as List).map((json) => Product.fromJson(json)).toList();
-    return products;
+    return (jsonData as List).map((json) => Product.fromJson(json)).toList();
   }
 
   @override
   Future<Product> getProductById(int id) async {
     final response = await _apiClient.get('products/$id');
-    final jsonData = response.data;
-    return Product.fromJson(jsonData);
+    return Product.fromJson(response.data);
   }
 
   @override
@@ -47,21 +44,5 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<void> updateProduct(Product product) async {
     await _apiClient.patch('products/${product.id}', data: product.toJson());
-  }
-
-  @override
-  Future<List<Product>> searchProducts(String query) async {
-    final response = await _apiClient.get(
-      'products',
-      queryParams: {
-        'select': '*',
-        'name': query,
-      },
-    );
-
-    final jsonData = response.data;
-    final products =
-        (jsonData as List).map((json) => Product.fromJson(json)).toList();
-    return products;
   }
 }

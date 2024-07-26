@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/presentations/widgets/images.dart';
-import 'package:laza/providers/product_provider.dart';
+import 'package:laza/providers/product_notifier.dart';
 
 class ListViewProductDetail extends ConsumerWidget {
   const ListViewProductDetail({

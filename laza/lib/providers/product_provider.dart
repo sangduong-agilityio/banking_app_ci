@@ -1,8 +1,8 @@
 import 'package:laza/core/api/api_client.dart';
 import 'package:laza/core/env/env.dart';
-import 'package:laza/data/models/product_model.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:laza/data/repositories/product_repo.dart';
+import 'package:laza/services/product_service.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'product_provider.g.dart';
 
@@ -17,20 +17,7 @@ ProductRepository productRepository(ProductRepositoryRef ref) {
 }
 
 @Riverpod(keepAlive: true)
-Future<List<Product>> products(ProductsRef ref) async {
-  final productRepository = ref.watch(productRepositoryProvider);
-  return productRepository.getProducts();
-}
-
-@Riverpod(keepAlive: true)
-Future<Product> product(FutureProviderRef<Product> ref) async {
-  final productRepository = ref.watch(productRepositoryProvider);
-  return productRepository.getProductById(3);
-}
-
-@Riverpod(keepAlive: true)
-Future<List<Product>> searchProducts(
-    SearchProductsRef ref, String query) async {
-  final productRepository = ref.watch(productRepositoryProvider);
-  return productRepository.searchProducts(query);
+ProductService productService(ProductServiceRef ref) {
+  return ProductService(
+      productRepository: ref.watch(productRepositoryProvider));
 }

@@ -5,7 +5,7 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/widgets/images.dart';
-import 'package:laza/providers/product_provider.dart';
+import 'package:laza/providers/product_notifier.dart';
 
 class HeaderProductDetail extends ConsumerWidget {
   const HeaderProductDetail({super.key});
