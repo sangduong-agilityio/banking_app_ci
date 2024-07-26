@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/product_card.dart';
 import 'package:laza/providers/product_provider.dart';
 
@@ -29,7 +31,9 @@ class GridViewProduct extends ConsumerWidget {
             image: product.imageUrl,
             title: product.name,
             price: product.price,
-            onTapProduct: () {},
+            onTapProduct: () {
+              context.pushNamed(AppRoutesName.productDetailPage.name);
+            },
           );
         },
       ),
