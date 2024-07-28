@@ -17,30 +17,28 @@ class GridViewProduct extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsyncValue = ref.watch(productsNotifierProvider);
     return productsAsyncValue.when(
-      data: (products) {
-        return GridView.builder(
-          shrinkWrap: true,
-          physics: const AlwaysScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 7 / 12,
-            mainAxisSpacing: 15,
-            crossAxisCount: 2,
-            crossAxisSpacing: 15,
-          ),
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            final product = products[index];
-            return LSProductCard(
-              image: product.imageUrl,
-              title: product.name,
-              price: product.price,
-              onTapProduct: () {
-                context.pushNamed(AppRoutesName.productDetailPage.name);
-              },
-            );
-          },
-        );
-      },
+      data: (products) => GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          childAspectRatio: 7 / 11,
+          mainAxisSpacing: 15,
+          crossAxisCount: 2,
+          crossAxisSpacing: 15,
+        ),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return LSProductCard(
+            image: product.imageUrl,
+            title: product.name,
+            price: product.price,
+            onTapProduct: () {
+              context.pushNamed(AppRoutesName.productDetailPage.name);
+            },
+          );
+        },
+      ),
       // TODO(SangDuong): Apply shimmer loading and handle error
       loading: () => const Center(
         child: CircularProgressIndicator(),

@@ -52,7 +52,7 @@ class LetStartedPage extends StatelessWidget {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      context.pushNamed(AppRoutesName.signInPage.name);
+                      context.pushNamed(AppRoutesName.homePage.name);
                     },
                 )
               ],

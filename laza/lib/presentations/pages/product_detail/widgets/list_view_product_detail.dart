@@ -20,7 +20,7 @@ class ListViewProductDetail extends ConsumerWidget {
           height: 77.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: products.length,
+            itemCount: 4,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               final product = products[index];
@@ -29,10 +29,11 @@ class ListViewProductDetail extends ConsumerWidget {
                   right: 15,
                 ),
                 child: LSImage(
-                    width: 77.w,
-                    height: 77.h,
-                    borderRadius: 10,
-                    imageUrl: product.imageUrl),
+                  width: 77.w,
+                  height: 77.h,
+                  borderRadius: 10,
+                  imageUrl: product.imageUrl,
+                ),
               );
             },
           ),
