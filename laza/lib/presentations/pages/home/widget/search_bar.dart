@@ -4,6 +4,7 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/themes/colors.dart';
 import 'package:laza/presentations/widgets/icons.dart';
+import 'package:laza/providers/product_provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 /// Create a StateProvider to store the search query
@@ -45,12 +46,15 @@ class LSSearchBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// Get the search query notifier and current search query
-    final searchQueryNotifier = ref.watch(searchQueryProvider.notifier);
-    final searchQuery = ref.watch(searchQueryProvider);
+    final searchQueryNotifier = ref.read(searchQueryProvider.notifier);
+    final searchQuery = ref.read(searchQueryProvider);
 
     /// Create a TextEditingController with the current search query
     final TextEditingController textController =
         controller ?? TextEditingController(text: searchQuery);
+
+    /// Initialize speech to text
+    final speechToText = stt.SpeechToText();
 
     return Row(
       children: [
@@ -63,9 +67,8 @@ class LSSearchBar extends ConsumerWidget {
             controller: textController,
             onChanged: (value) {
               searchQueryNotifier.state = value;
-            },
-            onSubmitted: (value) {
-              searchQueryNotifier.state = value;
+              if (onChanged != null) onChanged!(value);
+              ref.read(productsNotifierProvider.notifier).search(value);
             },
             backgroundColor: WidgetStateProperty.all(LSColors.grey200),
             textCapitalization: TextCapitalization.words,
@@ -89,17 +92,13 @@ class LSSearchBar extends ConsumerWidget {
               elevation: 0,
               backgroundColor: context.colorScheme.primary,
               onPressed: () async {
-                /// Initialize speech to text
-                final speechToText = stt.SpeechToText();
                 bool available = await speechToText.initialize(
                   onStatus: (val) => ('onStatus: $val'),
                   onError: (val) => ('onError: $val'),
                 );
                 if (available) {
-                  /// Start listening
                   speechToText.listen(
                     onResult: (val) {
-                      /// Update the text controller and search query
                       textController.text = val.recognizedWords;
                       searchQueryNotifier.state = val.recognizedWords;
                     },

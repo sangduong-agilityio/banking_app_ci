@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/product_card.dart';
-import 'package:laza/providers/product_notifier.dart';
+import 'package:laza/providers/product_provider.dart';
 
 class GridViewProduct extends ConsumerWidget {
   final String? searchQuery;
@@ -15,17 +15,9 @@ class GridViewProduct extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsProvider);
-
+    final productsAsyncValue = ref.watch(productsNotifierProvider);
     return productsAsyncValue.when(
       data: (products) {
-        final searchedProducts = products.where((product) {
-          final productName = product.name;
-          return productName
-              .toLowerCase()
-              .contains(searchQuery?.toLowerCase() ?? '');
-        }).toList();
-
         return GridView.builder(
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
@@ -35,9 +27,9 @@ class GridViewProduct extends ConsumerWidget {
             crossAxisCount: 2,
             crossAxisSpacing: 15,
           ),
-          itemCount: searchedProducts.length,
+          itemCount: products.length,
           itemBuilder: (context, index) {
-            final product = searchedProducts[index];
+            final product = products[index];
             return LSProductCard(
               image: product.imageUrl,
               title: product.name,

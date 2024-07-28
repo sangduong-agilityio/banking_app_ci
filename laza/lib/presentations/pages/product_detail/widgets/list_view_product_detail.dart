@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/presentations/widgets/images.dart';
-import 'package:laza/providers/product_notifier.dart';
+import 'package:laza/providers/product_provider.dart';
 
 class ListViewProductDetail extends ConsumerWidget {
   const ListViewProductDetail({
@@ -11,7 +11,8 @@ class ListViewProductDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsProvider);
+    final productsAsyncValue = ref.watch(productsNotifierProvider);
+
     return productsAsyncValue.when(
       data: (products) => Padding(
         padding: const EdgeInsets.all(20),
