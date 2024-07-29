@@ -699,6 +699,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Price Low to High`
+  String get priceLowToHigh {
+    return Intl.message(
+      'Price Low to High',
+      name: 'priceLowToHigh',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price High to Low`
+  String get priceHighToLow {
+    return Intl.message(
+      'Price High to Low',
+      name: 'priceHighToLow',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
