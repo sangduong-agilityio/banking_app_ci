@@ -12,21 +12,13 @@
             ]
         },
         {
-            "name": "Launch app",
+            "name": "Launch app with macros device preview",
             "request": "launch",
             "type": "dart",
-            "program": "laza/lib/main.dart",
-            "args": [
-                "lib/main.dart"
-            ]
-        },
-        {
-            "name": "Launch app with device preview",
-            "request": "launch",
-            "type": "dart",
+            "flutterMode": "debug",
             "program": "laza/lib/main_device_preview.dart",
             "args": [
-                "lib/main_device_preview.dart"
+                "--enable-experiment=macros"
             ]
         },
         {

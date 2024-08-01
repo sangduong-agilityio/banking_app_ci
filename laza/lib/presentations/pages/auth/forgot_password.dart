@@ -9,7 +9,6 @@ import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'package:laza/providers/auth_provider.dart';
@@ -52,10 +51,11 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final isFormValid = ref.watch(formValidationProvider);
 
-    return LazaShopScaffold(
+    return Scaffold(
+      backgroundColor: context.colorScheme.onPrimary,
       body: Column(
         children: [
-          SizedBox(height: 25.h),
+          SizedBox(height: 45.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -74,7 +74,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
             style: context.textTheme.headlineSmall!
                 .copyWith(color: context.colorScheme.tertiaryContainer),
           ),
-          SizedBox(height: 55.h),
+          SizedBox(height: 150.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSForm(
@@ -91,7 +91,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               ],
             ),
           ),
-          SizedBox(height: 55.h),
+          const Spacer(),
           LSButton(
             isDisabled: !isFormValid,
             text: S.current.sendEmail,

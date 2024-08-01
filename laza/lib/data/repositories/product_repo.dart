@@ -28,7 +28,7 @@ class ProductRepositoryImpl implements ProductRepository {
     final jsonData = response.data;
     final products =
         (jsonData as List).map((json) => Product.fromJson(json)).toList();
-    print('Products: $products');
+
     return products;
   }
 

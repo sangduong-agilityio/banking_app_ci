@@ -19,15 +19,19 @@ class LSProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWithTablet = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: onTapProduct,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: screenWithTablet > 600
+            ? CrossAxisAlignment.center
+            : CrossAxisAlignment.start,
         children: [
           LSImage(
             imageUrl: image,
-            height: 203.h,
-            width: double.infinity,
+            height: screenWithTablet > 600 ? 290.h : 203.h,
+            width: screenWithTablet > 600 ? 250.w : double.infinity,
           ),
           const SizedBox(height: 5),
           LSTag(

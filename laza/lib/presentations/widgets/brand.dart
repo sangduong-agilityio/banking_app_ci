@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 
@@ -15,9 +16,11 @@ class LSBrand extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWithTablet = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 115,
-      height: 50,
+      width: screenWithTablet > 600 ? 160.w : 115.w,
+      height: screenWithTablet > 600 ? 50.h : 50.h,
       decoration: BoxDecoration(
         color: context.colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(8),
@@ -28,11 +31,14 @@ class LSBrand extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                brandLogo,
-                width: 40,
-                height: 40,
+              child: CachedNetworkImage(
+                imageUrl: brandLogo,
+                height: screenWithTablet > 600 ? 80.h : 40.h,
+                width: screenWithTablet > 600 ? 80.w : 40.w,
                 fit: fit,
+                placeholder: (context, url) => Container(
+                  color: context.colorScheme.tertiaryContainer,
+                ),
               ),
             ),
           ),

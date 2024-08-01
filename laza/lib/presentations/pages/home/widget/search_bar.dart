@@ -39,11 +39,13 @@ class LSSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWithTablet = MediaQuery.of(context).size.width;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          width: 310,
-          height: 50,
+          width: screenWithTablet > 600 ? 650.w : 280.w,
+          height: 50.h,
           child: SearchBar(
             onTap: onTap,
             focusNode: focusNode,
@@ -62,11 +64,10 @@ class LSSearchBar extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(
-          width: 10,
-        ),
+        const SizedBox(width: 10),
         Container(
-          height: 50,
+          width: screenWithTablet > 600 ? 60.w : 50.w,
+          height: 50.h,
           decoration: ShapeDecoration(
             color: context.colorScheme.primary,
             shape: RoundedRectangleBorder(

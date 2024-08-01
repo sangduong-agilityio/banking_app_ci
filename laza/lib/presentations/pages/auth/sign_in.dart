@@ -71,7 +71,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
               ref.read(isFormValidProvider.notifier).state = isValid;
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 63),
           LSButton(
             isDisabled: !isFormValid,
             text: S.current.loginBtn,

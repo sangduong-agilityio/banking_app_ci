@@ -9,7 +9,6 @@ import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'package:laza/providers/auth_provider.dart';
@@ -50,7 +49,8 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       });
     }
 
-    return LazaShopScaffold(
+    return Scaffold(
+      backgroundColor: context.colorScheme.onPrimary,
       body: Column(
         children: [
           SizedBox(height: 45.h),
@@ -80,7 +80,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
               ref.read(isFormValidProvider.notifier).state = isValid;
             },
           ),
-          SizedBox(height: 280.h),
+          const Spacer(),
           LSButton(
             isDisabled: !isFormValid,
             text: S.current.signUpBtn,
