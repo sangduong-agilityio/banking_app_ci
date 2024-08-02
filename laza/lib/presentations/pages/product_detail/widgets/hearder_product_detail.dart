@@ -12,7 +12,7 @@ class HeaderProductDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsNotifierProvider);
+    final productsAsyncValue = ref.watch(productsNotifierProvider(''));
     return productsAsyncValue.when(
       data: (product) => Stack(
         clipBehavior: Clip.none,

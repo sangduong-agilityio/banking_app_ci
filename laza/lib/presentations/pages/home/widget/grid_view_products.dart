@@ -15,31 +15,33 @@ class GridViewProduct extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsNotifierProvider);
+    final productsAsyncValue =
+        ref.watch(productsNotifierProvider(searchQuery ?? ''));
     return productsAsyncValue.when(
-      data: (products) => GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 7 / 11,
-          mainAxisSpacing: 15,
-          crossAxisCount: 2,
-          crossAxisSpacing: 15,
-        ),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return LSProductCard(
-            image: product.imageUrl,
-            title: product.name,
-            price: product.price,
-            onTapProduct: () {
-              context.pushNamed(AppRoutesName.productDetailPage.name);
-            },
-          );
-        },
-      ),
-      // TODO(SangDuong): Apply shimmer loading and handle error
+      data: (products) {
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: 7 / 11,
+            mainAxisSpacing: 15,
+            crossAxisCount: 2,
+            crossAxisSpacing: 15,
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return LSProductCard(
+              image: product.imageUrl,
+              title: product.name,
+              price: product.price,
+              onTapProduct: () {
+                context.pushNamed(AppRoutesName.productDetailPage.name);
+              },
+            );
+          },
+        );
+      },
       loading: () => const Center(
         child: CircularProgressIndicator(),
       ),

@@ -7,8 +7,6 @@ class ProductService {
   ProductService({required ProductRepository productRepository})
       : _productRepository = productRepository;
 
-  Future<List<Product>> getProducts() => _productRepository.getProducts();
-
-  Future<List<Product>> searchProducts(String query) =>
+  Future<List<Product>> getProducts(String query) =>
       _productRepository.getProducts(query: query);
 }

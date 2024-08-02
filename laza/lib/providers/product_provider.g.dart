@@ -51,24 +51,7 @@ final productServiceProvider = Provider<ProductService>.internal(
 );
 
 typedef ProductServiceRef = ProviderRef<ProductService>;
-String _$productsNotifierHash() => r'ac03c467f58b6a2f346603ec5b8cb43ffc688aca';
-
-/// See also [ProductsNotifier].
-@ProviderFor(ProductsNotifier)
-final productsNotifierProvider =
-    AsyncNotifierProvider<ProductsNotifier, List<Product>>.internal(
-  ProductsNotifier.new,
-  name: r'productsNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$productsNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$ProductsNotifier = AsyncNotifier<List<Product>>;
-String _$searchProductsNotifierHash() =>
-    r'4297b88f3c0919afcc42c9c1c403c3cc81f51aa8';
+String _$productsNotifierHash() => r'67f23d1571b562972c1737b5f796d05b8ba1dcb1';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -91,7 +74,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$SearchProductsNotifier
+abstract class _$ProductsNotifier
     extends BuildlessAsyncNotifier<List<Product>> {
   late final String query;
 
@@ -100,27 +83,27 @@ abstract class _$SearchProductsNotifier
   );
 }
 
-/// See also [SearchProductsNotifier].
-@ProviderFor(SearchProductsNotifier)
-const searchProductsNotifierProvider = SearchProductsNotifierFamily();
+/// See also [ProductsNotifier].
+@ProviderFor(ProductsNotifier)
+const productsNotifierProvider = ProductsNotifierFamily();
 
-/// See also [SearchProductsNotifier].
-class SearchProductsNotifierFamily extends Family<AsyncValue<List<Product>>> {
-  /// See also [SearchProductsNotifier].
-  const SearchProductsNotifierFamily();
+/// See also [ProductsNotifier].
+class ProductsNotifierFamily extends Family<AsyncValue<List<Product>>> {
+  /// See also [ProductsNotifier].
+  const ProductsNotifierFamily();
 
-  /// See also [SearchProductsNotifier].
-  SearchProductsNotifierProvider call(
+  /// See also [ProductsNotifier].
+  ProductsNotifierProvider call(
     String query,
   ) {
-    return SearchProductsNotifierProvider(
+    return ProductsNotifierProvider(
       query,
     );
   }
 
   @override
-  SearchProductsNotifierProvider getProviderOverride(
-    covariant SearchProductsNotifierProvider provider,
+  ProductsNotifierProvider getProviderOverride(
+    covariant ProductsNotifierProvider provider,
   ) {
     return call(
       provider.query,
@@ -139,30 +122,30 @@ class SearchProductsNotifierFamily extends Family<AsyncValue<List<Product>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'searchProductsNotifierProvider';
+  String? get name => r'productsNotifierProvider';
 }
 
-/// See also [SearchProductsNotifier].
-class SearchProductsNotifierProvider
-    extends AsyncNotifierProviderImpl<SearchProductsNotifier, List<Product>> {
-  /// See also [SearchProductsNotifier].
-  SearchProductsNotifierProvider(
+/// See also [ProductsNotifier].
+class ProductsNotifierProvider
+    extends AsyncNotifierProviderImpl<ProductsNotifier, List<Product>> {
+  /// See also [ProductsNotifier].
+  ProductsNotifierProvider(
     String query,
   ) : this._internal(
-          () => SearchProductsNotifier()..query = query,
-          from: searchProductsNotifierProvider,
-          name: r'searchProductsNotifierProvider',
+          () => ProductsNotifier()..query = query,
+          from: productsNotifierProvider,
+          name: r'productsNotifierProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$searchProductsNotifierHash,
-          dependencies: SearchProductsNotifierFamily._dependencies,
+                  : _$productsNotifierHash,
+          dependencies: ProductsNotifierFamily._dependencies,
           allTransitiveDependencies:
-              SearchProductsNotifierFamily._allTransitiveDependencies,
+              ProductsNotifierFamily._allTransitiveDependencies,
           query: query,
         );
 
-  SearchProductsNotifierProvider._internal(
+  ProductsNotifierProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -176,7 +159,7 @@ class SearchProductsNotifierProvider
 
   @override
   FutureOr<List<Product>> runNotifierBuild(
-    covariant SearchProductsNotifier notifier,
+    covariant ProductsNotifier notifier,
   ) {
     return notifier.build(
       query,
@@ -184,10 +167,10 @@ class SearchProductsNotifierProvider
   }
 
   @override
-  Override overrideWith(SearchProductsNotifier Function() create) {
+  Override overrideWith(ProductsNotifier Function() create) {
     return ProviderOverride(
       origin: this,
-      override: SearchProductsNotifierProvider._internal(
+      override: ProductsNotifierProvider._internal(
         () => create()..query = query,
         from: from,
         name: null,
@@ -200,14 +183,14 @@ class SearchProductsNotifierProvider
   }
 
   @override
-  AsyncNotifierProviderElement<SearchProductsNotifier, List<Product>>
+  AsyncNotifierProviderElement<ProductsNotifier, List<Product>>
       createElement() {
-    return _SearchProductsNotifierProviderElement(this);
+    return _ProductsNotifierProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SearchProductsNotifierProvider && other.query == query;
+    return other is ProductsNotifierProvider && other.query == query;
   }
 
   @override
@@ -219,18 +202,18 @@ class SearchProductsNotifierProvider
   }
 }
 
-mixin SearchProductsNotifierRef on AsyncNotifierProviderRef<List<Product>> {
+mixin ProductsNotifierRef on AsyncNotifierProviderRef<List<Product>> {
   /// The parameter `query` of this provider.
   String get query;
 }
 
-class _SearchProductsNotifierProviderElement
-    extends AsyncNotifierProviderElement<SearchProductsNotifier, List<Product>>
-    with SearchProductsNotifierRef {
-  _SearchProductsNotifierProviderElement(super.provider);
+class _ProductsNotifierProviderElement
+    extends AsyncNotifierProviderElement<ProductsNotifier, List<Product>>
+    with ProductsNotifierRef {
+  _ProductsNotifierProviderElement(super.provider);
 
   @override
-  String get query => (origin as SearchProductsNotifierProvider).query;
+  String get query => (origin as ProductsNotifierProvider).query;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

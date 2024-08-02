@@ -26,30 +26,17 @@ ProductService productService(ProductServiceRef ref) {
 @Riverpod(keepAlive: true)
 class ProductsNotifier extends _$ProductsNotifier {
   late final ProductService _productService;
-
-  @override
-  Future<List<Product>> build() async {
-    _productService = ref.watch(productServiceProvider);
-    return _productService.getProducts();
-  }
-
-  void search(String query) {
-    final products = state.valueOrNull ?? [];
-    final searchedProducts = products
-        .where((product) =>
-            product.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-    state = AsyncValue.data(searchedProducts);
-  }
-}
-
-@Riverpod(keepAlive: true)
-class SearchProductsNotifier extends _$SearchProductsNotifier {
-  late final ProductService _productService;
+  List<Product> _products = [];
 
   @override
   Future<List<Product>> build(String query) async {
     _productService = ref.watch(productServiceProvider);
-    return _productService.searchProducts(query);
+    _products = await _productService.getProducts(query);
+    return _products;
+  }
+
+  void search(String query) async {
+    final products = await _productService.getProducts(query);
+    state = AsyncValue.data(products);
   }
 }
