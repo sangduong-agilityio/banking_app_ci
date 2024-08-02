@@ -29,9 +29,7 @@ class ReviewProductDetail extends StatelessWidget {
             children: [
               const CircleAvatar(
                 radius: 25,
-                // TODO(SangDuong): Handle user for the user image
-                backgroundImage:
-                    AssetImage('https://picsum.photos/250?image=9'),
+                backgroundImage: AssetImage(''),
               ),
               const SizedBox(
                 width: 10,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/product_card.dart';
+import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/product_provider.dart';
 
 class GridViewProduct extends ConsumerWidget {
@@ -17,16 +18,22 @@ class GridViewProduct extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsyncValue =
         ref.watch(productsNotifierProvider(searchQuery ?? ''));
+    final screenWithTablet = MediaQuery.of(context).size.width;
+
     return productsAsyncValue.when(
       data: (products) {
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 7 / 11,
-            mainAxisSpacing: 15,
-            crossAxisCount: 2,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: screenWithTablet > 600 ? 4 / 6 : 7 / 12,
+            crossAxisCount: screenWithTablet > 900
+                ? 4
+                : screenWithTablet > 600
+                    ? 3
+                    : 2,
             crossAxisSpacing: 15,
+            mainAxisSpacing: 15,
           ),
           itemCount: products.length,
           itemBuilder: (context, index) {
@@ -42,9 +49,8 @@ class GridViewProduct extends ConsumerWidget {
           },
         );
       },
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      // TODO(SangDuong): Handle error
+      loading: () => const ShimmerGridView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),
       ),

@@ -6,6 +6,7 @@ import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
+import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/brand_provider.dart';
 import 'widgets/sort_detail.dart';
 import '../home/widget/grid_view_products.dart';
@@ -23,7 +24,7 @@ class BrandDetailPage extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 45.h),
+              SizedBox(height: 25.h),
               LSAppBar(
                 onTappedBackButton: () => context.pop(),
                 icon: LSIcons.icArrowLeft,
@@ -59,9 +60,9 @@ class BrandDetailPage extends ConsumerWidget {
           ),
         ),
       ),
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      // TODO(SangDuong): Handle error
+
+      loading: () => const ShimmerGridView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),
       ),

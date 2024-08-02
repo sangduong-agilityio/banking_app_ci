@@ -31,6 +31,7 @@ class LSSearchBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final screenWithTablet = MediaQuery.of(context).size.width;
     final searchQueryNotifier = ref.read(searchQueryProvider.notifier);
     final searchQuery = ref.watch(searchQueryProvider);
     final TextEditingController textController =
@@ -39,10 +40,11 @@ class LSSearchBar extends ConsumerWidget {
     final speechToText = stt.SpeechToText();
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          width: 310,
-          height: 50,
+          width: screenWithTablet > 600 ? 650.w : 280.w,
+          height: 50.h,
           child: SearchBar(
             onTap: onTap,
             focusNode: focusNode,

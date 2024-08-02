@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 
 class LSImage extends StatelessWidget {
@@ -25,16 +27,15 @@ class LSImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
-          width: width,
-          height: height,
-          decoration: ShapeDecoration(
-            image: DecorationImage(
-              image: Image.network(imageUrl).image,
-              fit: fit,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadius),
+          child: CachedNetworkImage(
+            width: width,
+            height: height,
+            imageUrl: imageUrl,
+            fit: fit,
+            placeholder: (context, url) => Container(
+              color: context.colorScheme.surface,
             ),
           ),
         ),

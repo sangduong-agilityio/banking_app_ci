@@ -28,7 +28,7 @@ class HeaderProductDetail extends ConsumerWidget {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: const EdgeInsets.only(
-                top: 65,
+                top: 45,
                 right: 20,
                 left: 20,
               ),

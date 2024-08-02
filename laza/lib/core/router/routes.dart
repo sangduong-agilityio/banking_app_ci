@@ -14,7 +14,7 @@ import 'package:laza/presentations/pages/home/home.dart';
 import 'package:laza/presentations/pages/let_started/let_started.dart';
 import 'package:laza/presentations/pages/product_detail/product_detail.dart';
 import 'package:laza/presentations/layout/bottom_navigation_bar.dart';
-import 'package:laza/presentations/widgets/drawer_menu.dart'; // Import the drawer menu
+import 'package:laza/presentations/widgets/drawer_menu.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -32,8 +32,7 @@ class AppRoutesName {
   static final brandDetailPage =
       RouteName('/brandDetailPage', 'brandDetailPage');
   static final brandViewAll = RouteName('/brandViewAll', 'brandViewAll');
-  static final drawerMenu =
-      RouteName('/drawerMenu', 'drawerMenu'); // New route for drawer menu
+  static final drawerMenu = RouteName('/drawerMenu', 'drawerMenu');
 }
 
 class RouteName {

@@ -41,7 +41,7 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 45.h),
+                    SizedBox(height: 25.h),
                     LSAppBar(
                       onTappedBackButton: () {
                         context.pop();
@@ -74,8 +74,8 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                         ),
                         const SizedBox(width: 30),
                         Container(
-                          width: 66.w,
-                          height: 32.h,
+                          width: 66,
+                          height: 32,
                           decoration: BoxDecoration(
                             color: context.colorScheme.outlineVariant,
                             borderRadius: BorderRadius.circular(5),

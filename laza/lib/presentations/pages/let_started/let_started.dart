@@ -7,7 +7,6 @@ import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'package:laza/presentations/layout/scaffold.dart';
 import 'widgets/social_button.dart';
 
 class LetStartedPage extends StatelessWidget {
@@ -15,12 +14,13 @@ class LetStartedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const sizedBox107 = SizedBox(height: 107);
-    const sizeBox10 = SizedBox(height: 10);
-    return LazaShopScaffold(
+    final sizedBox107 = SizedBox(height: 107.h);
+    final sizeBox10 = SizedBox(height: 10.h);
+    return Scaffold(
+      backgroundColor: context.colorScheme.onPrimary,
       body: Column(
         children: [
-          SizedBox(height: 25.h),
+          SizedBox(height: 45.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -35,7 +35,7 @@ class LetStartedPage extends StatelessWidget {
             ),
           ),
           sizedBox107,
-          const _SocialButtons(sizeBox10: sizeBox10),
+          _SocialButtons(sizeBox10: sizeBox10),
           sizedBox107,
           Text.rich(
             TextSpan(
@@ -58,7 +58,7 @@ class LetStartedPage extends StatelessWidget {
               ],
             ),
           ),
-          sizedBox107,
+          const Spacer(),
           LSButton(
               text: S.current.createAccountBtn,
               onPressed: () {
