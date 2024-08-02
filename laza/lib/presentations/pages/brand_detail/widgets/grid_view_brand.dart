@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/brand.dart';
+import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/brand_provider.dart';
 
 class GridViewBrand extends ConsumerWidget {
@@ -15,6 +16,7 @@ class GridViewBrand extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandAsyncValue = ref.watch(brandProvider);
+
     return brandAsyncValue.when(
       data: (brand) => GridView.builder(
         shrinkWrap: true,
@@ -43,9 +45,7 @@ class GridViewBrand extends ConsumerWidget {
           );
         },
       ),
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      loading: () => const ShimmerListView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),
       ),

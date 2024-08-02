@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/brand.dart';
+import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/brand_provider.dart';
 
 class ListViewBrand extends ConsumerWidget {
@@ -14,6 +15,7 @@ class ListViewBrand extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandAsyncValue = ref.watch(brandProvider);
+    final screenWithTablet = MediaQuery.of(context).size.width;
 
     return brandAsyncValue.when(
       data: (brand) => InkWell(
@@ -23,7 +25,7 @@ class ListViewBrand extends ConsumerWidget {
           );
         },
         child: SizedBox(
-          height: 50.h,
+          height: screenWithTablet > 600 ? 80.h : 50.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: brand.length,
@@ -31,7 +33,9 @@ class ListViewBrand extends ConsumerWidget {
             itemBuilder: (context, index) {
               final brands = brand[index];
               return Padding(
-                padding: const EdgeInsets.only(right: 10),
+                padding: EdgeInsets.only(
+                  right: screenWithTablet > 600 ? 15 : 10,
+                ),
                 child: LSBrand(
                   brandName: brands.name,
                   brandLogo: brands.image,
@@ -42,10 +46,8 @@ class ListViewBrand extends ConsumerWidget {
         ),
       ),
 
-      // TODO(SangDuong): Apply shimmer loading and handle error
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      // TODO(SangDuong): Handle error
+      loading: () => const ShimmerListView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),
       ),

@@ -9,9 +9,10 @@ import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/drawer_menu.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'widget/list_view_brand.dart';
-import 'widget/hearder_section.dart';
+
 import 'widget/grid_view_products.dart';
+import 'widget/hearder_section.dart';
+import 'widget/list_view_brand.dart';
 import 'widget/search_bar.dart';
 
 class HomePage extends ConsumerWidget {
@@ -29,70 +30,73 @@ class HomePage extends ConsumerWidget {
       backgroundColor: context.colorScheme.onPrimary,
       key: _scaffoldKey,
       drawer: const LSDrawerMenu(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 25.h),
-              LSAppBar(
-                onTappedBackButton: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-                icon: LSIcons.icMenu,
-                onTappedRightButton: () {},
-                rightButtonIcon: LSIcons.icBag,
-              ),
-              SizedBox(height: 30.h),
-              Text(
-                S.current.hello,
-                style: context.textTheme.displayLarge,
-              ),
-              const SizedBox(height: 5),
-              Text(
-                S.current.welcomeToLaza,
-                style: context.textTheme.headlineMedium!.copyWith(
-                  color: context.colorScheme.tertiaryContainer,
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 25.h),
+                LSAppBar(
+                  onTappedBackButton: () {
+                    _scaffoldKey.currentState?.openDrawer();
+                  },
+                  icon: LSIcons.icMenu,
+                  onTappedRightButton: () {},
+                  rightButtonIcon: LSIcons.icBag,
                 ),
-              ),
-              sizeBox20,
-              LSSearchBar(
-                controller: _searchController,
-              ),
-              sizeBox20,
-              HeaderSection(
-                title: S.current.chooseBrand,
-                isActivateViewAll: true,
-                color: context.colorScheme.tertiaryContainer,
-                onTap: () {
-                  context.pushNamed(
-                    AppRoutesName.brandViewAll.name,
-                    extra: e,
-                  );
-                },
-              ),
-              sizeBox15,
-              const ListViewBrand(),
-              sizeBox15,
-              HeaderSection(
-                title: S.current.newArrival,
-                color: context.colorScheme.tertiaryContainer,
-                isActivateViewAll: true,
-                onTap: () {
-                  context.pushNamed(
-                    AppRoutesName.brandDetailPage.name,
-                    extra: e,
-                  );
-                },
-              ),
-              ValueListenableBuilder(
-                valueListenable: _searchController,
-                builder: (context, value, child) {
-                  return GridViewProduct(searchQuery: _searchController.text);
-                },
-              ),
-            ],
+                SizedBox(height: 30.h),
+                Text(
+                  S.current.hello,
+                  style: context.textTheme.displayLarge,
+                ),
+                const SizedBox(height: 5),
+                Text(
+                  S.current.welcomeToLaza,
+                  style: context.textTheme.headlineMedium!.copyWith(
+                    color: context.colorScheme.tertiaryContainer,
+                  ),
+                ),
+                sizeBox20,
+                LSSearchBar(
+                  controller: _searchController,
+                ),
+                sizeBox20,
+                HeaderSection(
+                  title: S.current.chooseBrand,
+                  isActivateViewAll: true,
+                  color: context.colorScheme.tertiaryContainer,
+                  onTap: () {
+                    context.pushNamed(
+                      AppRoutesName.brandViewAll.name,
+                      extra: e,
+                    );
+                  },
+                ),
+                sizeBox15,
+                const ListViewBrand(),
+                sizeBox15,
+                HeaderSection(
+                  title: S.current.newArrival,
+                  color: context.colorScheme.tertiaryContainer,
+                  isActivateViewAll: true,
+                  onTap: () {
+                    context.pushNamed(
+                      AppRoutesName.brandDetailPage.name,
+                      extra: e,
+                    );
+                  },
+                ),
+                ValueListenableBuilder(
+                  valueListenable: _searchController,
+                  builder: (context, value, child) {
+                    return GridViewProduct(searchQuery: _searchController.text);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

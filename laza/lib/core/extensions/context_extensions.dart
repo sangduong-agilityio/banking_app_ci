@@ -27,10 +27,15 @@ extension MediaQuerySize on num {
       WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
   double get ratioDesign {
-    if (widthScreen > 600) {
-      return 1;
+    if (widthScreen > 900) {
+      // tablet landscape
+      return (widthScreen / DesignConstants.widthTabletLandscape);
+    } else if (widthScreen > 600) {
+      // tablet portrait
+      return (widthScreen / DesignConstants.widthTabletPortrait);
     } else {
-      return (widthScreen / DesignConstants.width);
+      // mobile
+      return (widthScreen / DesignConstants.widthMobile);
     }
   }
 

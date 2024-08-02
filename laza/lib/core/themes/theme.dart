@@ -57,6 +57,9 @@ class AppTheme {
     bodyLarge: LSUiTypographyFoundation.caption2TextStyle.copyWith(
       color: _lightColorScheme.tertiaryContainer,
     ),
+    bodyMedium: LSUiTypographyFoundation.caption4TextStyle.copyWith(
+      color: _lightColorScheme.tertiaryContainer,
+    ),
     // Font size 11, medium
     titleMedium: LSUiTypographyFoundation.caption1TextStyle.copyWith(
       color: _lightColorScheme.tertiaryContainer,

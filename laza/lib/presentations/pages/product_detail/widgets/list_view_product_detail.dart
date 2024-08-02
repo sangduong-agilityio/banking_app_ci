@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/presentations/widgets/images.dart';
+import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/product_provider.dart';
 
 class ListViewProductDetail extends ConsumerWidget {
@@ -39,10 +40,8 @@ class ListViewProductDetail extends ConsumerWidget {
           ),
         ),
       ),
-      // TODO(SangDuong): Apply shimmer loading and handle error
-      loading: () => const Center(
-        child: CircularProgressIndicator(),
-      ),
+      // TODO(SangDuong): Handle error
+      loading: () => const ShimmerListView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),
       ),

@@ -11,6 +11,11 @@ class DioExceptionMessages {
 }
 
 class DesignConstants {
-  static const double width = 375;
-  static const double height = 812;
+  static const double widthMobile = 375;
+  static const double heightMobile = 812;
+  static const double widthTabletPortrait = 768;
+  static const double heightTabletPortrait = 1024;
+  static const double widthTabletLandscape = 1024;
+  static const double heightTabletLandscape = 768;
+  static const double widthMobileLandscape = 640;
 }

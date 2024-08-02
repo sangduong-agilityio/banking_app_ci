@@ -25,8 +25,8 @@ class LSTag extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         Text(
-          tagPrice.toString(),
-          style: context.textTheme.titleMedium!
+          '\$${tagPrice.toString()}',
+          style: context.textTheme.bodyMedium!
               .copyWith(color: context.colorScheme.primaryContainer),
         ),
       ],

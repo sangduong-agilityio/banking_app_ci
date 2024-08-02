@@ -13,6 +13,7 @@ void main() async {
     url: Env.supabaseUrl,
     anonKey: Env.supabaseKey,
   );
+
   runApp(const ProviderScope(child: LazaShopApp()));
 }
 

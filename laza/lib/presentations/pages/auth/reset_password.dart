@@ -5,7 +5,6 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/utils/validators.dart';
-import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/pages/auth/widgets/text_input.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
@@ -50,10 +49,11 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
       });
     }
 
-    return LazaShopScaffold(
+    return Scaffold(
+      backgroundColor: context.colorScheme.onPrimary,
       body: Column(
         children: [
-          SizedBox(height: 25.h),
+          SizedBox(height: 45.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -103,7 +103,7 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
               ),
             ]),
           ),
-          SizedBox(height: 55.h),
+          const Spacer(),
           LSButton(
               isDisabled: !isFormValid,
               text: S.current.resetPassword,

@@ -16,7 +16,7 @@ class BrandViewAll extends StatelessWidget {
       paddingScaffold: 20,
       body: Column(
         children: [
-          SizedBox(height: 45.h),
+          SizedBox(height: 25.h),
           LSAppBar(
             onTappedBackButton: () => context.pop(),
             icon: LSIcons.icArrowLeft,
