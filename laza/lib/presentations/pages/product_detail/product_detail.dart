@@ -16,7 +16,7 @@ class ProductDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsNotifierProvider);
+    final productsAsyncValue = ref.watch(productsNotifierProvider(''));
     return productsAsyncValue.when(
       data: (products) => Scaffold(
         backgroundColor: context.colorScheme.onPrimary,
@@ -55,7 +55,7 @@ class ProductDetailPage extends ConsumerWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          products.first.price.toString(),
+                          '\$${products.first.price.toString()}',
                           style: context.textTheme.displayMedium,
                         ),
                       ],
@@ -118,7 +118,7 @@ class ProductDetailPage extends ConsumerWidget {
                     ),
                     const Spacer(),
                     Text(
-                      '125',
+                      '\$${products.first.price.toString()}',
                       style: context.textTheme.headlineLarge,
                     ),
                   ],

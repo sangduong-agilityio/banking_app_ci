@@ -5,6 +5,13 @@ import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/providers/product_provider.dart';
 
+final sortProvider = StateProvider<SortType>((ref) => SortType.priceLowToHigh);
+
+enum SortType {
+  priceLowToHigh,
+  priceHighToLow,
+}
+
 class LSSort extends ConsumerWidget {
   const LSSort({
     super.key,
@@ -66,10 +73,11 @@ class LSSort extends ConsumerWidget {
                     S.current.priceLowToHigh,
                   ),
                   onTap: () {
-                    ref.read(sortProvider.notifier).state =
-                        SortType.priceLowToHigh;
                     ref
-                        .read(productsNotifierProvider.notifier)
+                        .read(sortProvider.notifier)
+                        .update((state) => SortType.priceLowToHigh);
+                    ref
+                        .read(productsNotifierProvider('').notifier)
                         .sortProducts(SortType.priceLowToHigh);
                     Navigator.of(context).pop();
                   },
@@ -82,7 +90,7 @@ class LSSort extends ConsumerWidget {
                     ref.read(sortProvider.notifier).state =
                         SortType.priceHighToLow;
                     ref
-                        .read(productsNotifierProvider.notifier)
+                        .read(productsNotifierProvider('').notifier)
                         .sortProducts(SortType.priceHighToLow);
                     Navigator.of(context).pop();
                   },

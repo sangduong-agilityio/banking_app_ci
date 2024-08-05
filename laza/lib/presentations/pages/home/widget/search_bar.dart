@@ -7,7 +7,6 @@ import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/providers/product_provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-/// Create a StateProvider to store the search query
 final searchQueryProvider = StateProvider<String>((ref) => '');
 
 class LSSearchBar extends ConsumerWidget {
@@ -22,40 +21,22 @@ class LSSearchBar extends ConsumerWidget {
     this.icon,
   });
 
-  /// Controller of editing text
   final TextEditingController? controller;
-
-  /// Function trigger when onChanged
   final Function(String)? onChanged;
-
-  /// Function trigger when submit
   final Function(String)? onSubmitted;
-
-  /// Function on Tap icon
   final Function()? onTapIcon;
-
-  /// Function tap open view suggestion
   final VoidCallback? onTap;
-
-  /// FocusNode of search bar
   final FocusNode? focusNode;
-
-  /// Custom icon
   final Widget? icon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWithTablet = MediaQuery.of(context).size.width;
-
-    /// Get the search query notifier and current search query
     final searchQueryNotifier = ref.read(searchQueryProvider.notifier);
-    final searchQuery = ref.read(searchQueryProvider);
-
-    /// Create a TextEditingController with the current search query
+    final searchQuery = ref.watch(searchQueryProvider);
     final TextEditingController textController =
         controller ?? TextEditingController(text: searchQuery);
 
-    /// Initialize speech to text
     final speechToText = stt.SpeechToText();
 
     return Row(
@@ -71,7 +52,9 @@ class LSSearchBar extends ConsumerWidget {
             onChanged: (value) {
               searchQueryNotifier.state = value;
               if (onChanged != null) onChanged!(value);
-              ref.read(productsNotifierProvider.notifier).search(value);
+              ref
+                  .read(productsNotifierProvider(searchQuery).notifier)
+                  .search(value);
             },
             backgroundColor: WidgetStateProperty.all(LSColors.grey200),
             textCapitalization: TextCapitalization.words,
@@ -89,7 +72,7 @@ class LSSearchBar extends ConsumerWidget {
           width: 10,
         ),
         SizedBox(
-          height: 50,
+          height: 50.h,
           child: FittedBox(
             child: FloatingActionButton(
               elevation: 0,
@@ -104,6 +87,11 @@ class LSSearchBar extends ConsumerWidget {
                     onResult: (val) {
                       textController.text = val.recognizedWords;
                       searchQueryNotifier.state = val.recognizedWords;
+                      ref
+                          .read(productsNotifierProvider(
+                                  searchQueryNotifier.state)
+                              .notifier)
+                          .search(val.recognizedWords);
                     },
                   );
                 }

@@ -12,7 +12,7 @@ class ListViewProductDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsNotifierProvider);
+    final productsAsyncValue = ref.watch(productsNotifierProvider(''));
 
     return productsAsyncValue.when(
       data: (products) => Padding(
@@ -21,7 +21,7 @@ class ListViewProductDetail extends ConsumerWidget {
           height: 77.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 4,
+            itemCount: products.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               final product = products[index];

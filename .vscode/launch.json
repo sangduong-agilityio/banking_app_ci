@@ -26,8 +26,9 @@
             "request": "launch",
             "type": "dart",
             "program": "laza/lib/main.dart",
+            "flutterMode": "profile",
             "args": [
-                "--profile"
+                "--enable-experiment=macros"
             ]
         }
     ]
