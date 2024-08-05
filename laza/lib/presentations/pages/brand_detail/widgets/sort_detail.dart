@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/presentations/widgets/icons.dart';
+import 'package:laza/providers/product_provider.dart';
 
-class LSSort extends StatefulWidget {
+final sortProvider = StateProvider<SortType>((ref) => SortType.priceLowToHigh);
+
+enum SortType {
+  priceLowToHigh,
+  priceHighToLow,
+}
+
+class LSSort extends ConsumerWidget {
   const LSSort({
     super.key,
   });
 
   @override
-  State<LSSort> createState() => _LSSortState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(sortProvider);
 
-class _LSSortState extends State<LSSort> {
-  @override
-  Widget build(BuildContext context) {
     return Container(
       width: 71.w,
       height: 37.h,
@@ -24,7 +30,7 @@ class _LSSortState extends State<LSSort> {
       ),
       child: GestureDetector(
         onTap: () {
-          _showSortDialog(context);
+          _showSortDialog(context, ref);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +49,7 @@ class _LSSortState extends State<LSSort> {
     );
   }
 
-  void _showSortDialog(BuildContext context) {
+  void _showSortDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
       builder: (context) {
@@ -64,19 +70,28 @@ class _LSSortState extends State<LSSort> {
                 const SizedBox(height: 16),
                 ListTile(
                   title: Text(
-                    S.current.price,
+                    S.current.priceLowToHigh,
                   ),
                   onTap: () {
-                    setState(() {});
+                    ref
+                        .read(sortProvider.notifier)
+                        .update((state) => SortType.priceLowToHigh);
+                    ref
+                        .read(productsNotifierProvider('').notifier)
+                        .sortProducts(SortType.priceLowToHigh);
                     Navigator.of(context).pop();
                   },
                 ),
                 ListTile(
                   title: Text(
-                    S.current.brands,
+                    S.current.priceHighToLow,
                   ),
                   onTap: () {
-                    setState(() {});
+                    ref.read(sortProvider.notifier).state =
+                        SortType.priceHighToLow;
+                    ref
+                        .read(productsNotifierProvider('').notifier)
+                        .sortProducts(SortType.priceHighToLow);
                     Navigator.of(context).pop();
                   },
                 ),

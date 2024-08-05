@@ -4,6 +4,7 @@ import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/providers/product_provider.dart';
+
 import 'widgets/description_product_detail.dart';
 import 'widgets/hearder_product_detail.dart';
 import 'widgets/list_view_product_detail.dart';

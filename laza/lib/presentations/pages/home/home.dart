@@ -9,9 +9,10 @@ import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/drawer_menu.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'widget/list_view_brand.dart';
-import 'widget/hearder_section.dart';
+
 import 'widget/grid_view_products.dart';
+import 'widget/hearder_section.dart';
+import 'widget/list_view_brand.dart';
 import 'widget/search_bar.dart';
 
 class HomePage extends ConsumerWidget {

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/router/page_transition.dart';
+import 'package:laza/presentations/layout/bottom_navigation_bar.dart';
 import 'package:laza/presentations/pages/auth/forgot_password.dart';
 import 'package:laza/presentations/pages/auth/reset_password.dart';
 import 'package:laza/presentations/pages/auth/sign_in.dart';
@@ -13,7 +14,6 @@ import 'package:laza/presentations/pages/brand_detail/brand_view.dart';
 import 'package:laza/presentations/pages/home/home.dart';
 import 'package:laza/presentations/pages/let_started/let_started.dart';
 import 'package:laza/presentations/pages/product_detail/product_detail.dart';
-import 'package:laza/presentations/layout/bottom_navigation_bar.dart';
 import 'package:laza/presentations/widgets/drawer_menu.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();

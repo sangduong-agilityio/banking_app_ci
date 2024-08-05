@@ -2,6 +2,7 @@ import 'package:laza/core/api/api_client.dart';
 import 'package:laza/core/env/env.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/data/repositories/product_repo.dart';
+import 'package:laza/presentations/pages/brand_detail/widgets/sort_detail.dart';
 import 'package:laza/services/product_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -26,6 +27,7 @@ ProductService productService(ProductServiceRef ref) {
 @Riverpod(keepAlive: true)
 class ProductsNotifier extends _$ProductsNotifier {
   late final ProductService _productService;
+
   List<Product> _products = [];
 
   @override
@@ -37,6 +39,19 @@ class ProductsNotifier extends _$ProductsNotifier {
 
   void search(String query) async {
     final products = await _productService.getProducts(query);
+    state = AsyncValue.data(products);
+  }
+
+  void sortProducts(SortType sortType) {
+    final products = state.valueOrNull ?? [];
+    switch (sortType) {
+      case SortType.priceLowToHigh:
+        products.sort((a, b) => a.price.compareTo(b.price));
+        break;
+      case SortType.priceHighToLow:
+        products.sort((a, b) => b.price.compareTo(a.price));
+        break;
+    }
     state = AsyncValue.data(products);
   }
 }

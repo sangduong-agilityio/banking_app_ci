@@ -74,6 +74,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseEnterYourPasswordReset": MessageLookupByLibrary.simpleMessage(
             "Please enter your password reset data"),
         "price": MessageLookupByLibrary.simpleMessage("Price"),
+        "priceHighToLow":
+            MessageLookupByLibrary.simpleMessage("Price High to Low"),
+        "priceLowToHigh":
+            MessageLookupByLibrary.simpleMessage("Price Low to High"),
         "rating": m0,
         "rememberMe": MessageLookupByLibrary.simpleMessage("Remember me"),
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),

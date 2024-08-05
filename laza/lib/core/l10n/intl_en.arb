@@ -63,5 +63,7 @@
     "enterNewPassword":"Enter new password",
     "confirmPassword":"Confirm password",
     "validatorConfirmPasswordRequired": "Confirm Password is required",
-    "validatorConfirmedPasswordNotMatch": "Password and confirm password not match"
+    "validatorConfirmedPasswordNotMatch": "Password and confirm password not match",
+    "priceLowToHigh":"Price Low to High",
+    "priceHighToLow":"Price High to Low"
 }
