@@ -176,7 +176,7 @@ List<StatefulShellBranch> bottomNavigationBarBranches() {
               PageTransaction.defaultPageTransition(
             context: context,
             state: state,
-            child: const HomePage(),
+            child: HomePage(),
           ),
         ),
       ],

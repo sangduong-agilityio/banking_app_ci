@@ -72,7 +72,7 @@ class LSSearchBar extends ConsumerWidget {
           width: 10,
         ),
         SizedBox(
-          height: 50,
+          height: 50.h,
           child: FittedBox(
             child: FloatingActionButton(
               elevation: 0,
