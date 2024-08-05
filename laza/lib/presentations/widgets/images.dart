@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
-import 'package:laza/presentations/widgets/icons.dart';
 
 class LSImage extends StatelessWidget {
   final String imageUrl;
@@ -39,11 +38,12 @@ class LSImage extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          top: 10,
-          right: 10,
-          child: icon ?? LSIcons.icHeartBreak,
-        ),
+        if (icon != null)
+          Positioned(
+            top: 10,
+            right: 10,
+            child: icon ?? const SizedBox.shrink(),
+          ),
       ],
     );
   }

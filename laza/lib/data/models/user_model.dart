@@ -6,11 +6,12 @@ class User {
   final String username;
   final String displayName;
   final String avatar;
-
+  final String review;
   User({
     required this.id,
     required this.username,
     required this.displayName,
     required this.avatar,
+    required this.review,
   });
 }

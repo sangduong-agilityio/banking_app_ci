@@ -20,7 +20,7 @@ class ListViewProductDetail extends ConsumerWidget {
           height: 77.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 4,
+            itemCount: products.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               final product = products[index];

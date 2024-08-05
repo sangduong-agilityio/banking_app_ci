@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
+import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/widgets/images.dart';
 import 'package:laza/presentations/widgets/tag.dart';
 
@@ -30,6 +31,7 @@ class LSProductCard extends StatelessWidget {
         children: [
           LSImage(
             imageUrl: image,
+            icon: LSIcons.icHeartBreak,
             height: screenWithTablet > 600 ? 290.h : 203.h,
             width: screenWithTablet > 600 ? 250.w : double.infinity,
           ),

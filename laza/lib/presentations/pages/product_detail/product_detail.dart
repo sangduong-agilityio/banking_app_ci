@@ -54,7 +54,7 @@ class ProductDetailPage extends ConsumerWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          products.first.price.toString(),
+                          '\$${products.first.price.toString()}',
                           style: context.textTheme.displayMedium,
                         ),
                       ],
@@ -117,7 +117,7 @@ class ProductDetailPage extends ConsumerWidget {
                     ),
                     const Spacer(),
                     Text(
-                      '125',
+                      '\$${products.first.price.toString()}',
                       style: context.textTheme.headlineLarge,
                     ),
                   ],
