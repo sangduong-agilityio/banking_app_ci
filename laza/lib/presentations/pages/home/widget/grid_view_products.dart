@@ -7,44 +7,49 @@ import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/product_provider.dart';
 
 class GridViewProduct extends ConsumerWidget {
+  final String? searchQuery;
+
   const GridViewProduct({
     super.key,
+    this.searchQuery,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsProvider);
+    final productsAsyncValue =
+        ref.watch(productsNotifierProvider(searchQuery ?? ''));
     final screenWithTablet = MediaQuery.of(context).size.width;
 
     return productsAsyncValue.when(
-      data: (products) => GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: screenWithTablet > 600 ? 4 / 6 : 7 / 12,
-          crossAxisCount: screenWithTablet > 900
-              ? 4
-              : screenWithTablet > 600
-                  ? 3
-                  : 2,
-          crossAxisSpacing: 15,
-          mainAxisSpacing: 15,
-        ),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return LSProductCard(
-            image: product.imageUrl,
-            title: product.name,
-            price: product.price,
-            onTapProduct: () {
-              context.pushNamed(AppRoutesName.productDetailPage.name);
-            },
-          );
-        },
-      ),
+      data: (products) {
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: screenWithTablet > 600 ? 4 / 6 : 7 / 12,
+            crossAxisCount: screenWithTablet > 900
+                ? 4
+                : screenWithTablet > 600
+                    ? 3
+                    : 2,
+            crossAxisSpacing: 15,
+            mainAxisSpacing: 15,
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return LSProductCard(
+              image: product.imageUrl,
+              title: product.name,
+              price: product.price,
+              onTapProduct: () {
+                context.pushNamed(AppRoutesName.productDetailPage.name);
+              },
+            );
+          },
+        );
+      },
       // TODO(SangDuong): Handle error
-
       loading: () => const ShimmerGridView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),

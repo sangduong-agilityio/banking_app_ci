@@ -12,7 +12,8 @@ class ListViewProductDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsProvider);
+    final productsAsyncValue = ref.watch(productsNotifierProvider(''));
+
     return productsAsyncValue.when(
       data: (products) => Padding(
         padding: const EdgeInsets.all(20),

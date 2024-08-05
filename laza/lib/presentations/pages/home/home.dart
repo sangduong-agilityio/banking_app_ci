@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
@@ -13,19 +14,17 @@ import 'widget/hearder_section.dart';
 import 'widget/grid_view_products.dart';
 import 'widget/search_bar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends ConsumerWidget {
+  HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final TextEditingController _searchController = TextEditingController();
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const sizeBox20 = SizedBox(height: 20);
     const sizeBox15 = SizedBox(height: 15);
+
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       key: _scaffoldKey,
@@ -60,7 +59,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 sizeBox20,
-                const LSSearchBar(),
+                LSSearchBar(
+                  controller: _searchController,
+                ),
                 sizeBox20,
                 HeaderSection(
                   title: S.current.chooseBrand,
@@ -87,7 +88,12 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
-                const GridViewProduct()
+                ValueListenableBuilder(
+                  valueListenable: _searchController,
+                  builder: (context, value, child) {
+                    return GridViewProduct(searchQuery: _searchController.text);
+                  },
+                ),
               ],
             ),
           ),

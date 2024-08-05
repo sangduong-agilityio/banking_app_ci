@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/themes/colors.dart';
 import 'package:laza/presentations/widgets/icons.dart';
+import 'package:laza/providers/product_provider.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
-class LSSearchBar extends StatelessWidget {
+final searchQueryProvider = StateProvider<String>((ref) => '');
+
+class LSSearchBar extends ConsumerWidget {
   const LSSearchBar({
     super.key,
     this.controller,
@@ -16,30 +21,24 @@ class LSSearchBar extends StatelessWidget {
     this.icon,
   });
 
-  /// Controller of editing text
   final TextEditingController? controller;
-
-  /// Function trigger when onChanged
   final Function(String)? onChanged;
-
-  /// Function trigger when submit
   final Function(String)? onSubmitted;
-
-  /// Function on Tap icon
   final Function()? onTapIcon;
-
-  /// Function tap open view suggestion
   final VoidCallback? onTap;
-
-  /// FocusNode of search bar
   final FocusNode? focusNode;
-
-  /// Custom icon
   final Widget? icon;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final screenWithTablet = MediaQuery.of(context).size.width;
+    final searchQueryNotifier = ref.read(searchQueryProvider.notifier);
+    final searchQuery = ref.watch(searchQueryProvider);
+    final TextEditingController textController =
+        controller ?? TextEditingController(text: searchQuery);
+
+    final speechToText = stt.SpeechToText();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -49,9 +48,14 @@ class LSSearchBar extends StatelessWidget {
           child: SearchBar(
             onTap: onTap,
             focusNode: focusNode,
-            controller: controller,
-            onChanged: onChanged,
-            onSubmitted: onSubmitted,
+            controller: textController,
+            onChanged: (value) {
+              searchQueryNotifier.state = value;
+              if (onChanged != null) onChanged!(value);
+              ref
+                  .read(productsNotifierProvider(searchQuery).notifier)
+                  .search(value);
+            },
             backgroundColor: WidgetStateProperty.all(LSColors.grey200),
             textCapitalization: TextCapitalization.words,
             hintText: S.current.searchInput,
@@ -64,19 +68,36 @@ class LSSearchBar extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 10),
-        Container(
-          width: screenWithTablet > 600 ? 60.w : 50.w,
-          height: 50.h,
-          decoration: ShapeDecoration(
-            color: context.colorScheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          height: 50,
+          child: FittedBox(
+            child: FloatingActionButton(
+              elevation: 0,
+              backgroundColor: context.colorScheme.primary,
+              onPressed: () async {
+                bool available = await speechToText.initialize(
+                  onStatus: (val) => ('onStatus: $val'),
+                  onError: (val) => ('onError: $val'),
+                );
+                if (available) {
+                  speechToText.listen(
+                    onResult: (val) {
+                      textController.text = val.recognizedWords;
+                      searchQueryNotifier.state = val.recognizedWords;
+                      ref
+                          .read(productsNotifierProvider(
+                                  searchQueryNotifier.state)
+                              .notifier)
+                          .search(val.recognizedWords);
+                    },
+                  );
+                }
+              },
+              child: LSIcons.icVoice,
             ),
-          ),
-          child: IconButton(
-            icon: LSIcons.icVoice,
-            onPressed: () {},
           ),
         )
       ],
