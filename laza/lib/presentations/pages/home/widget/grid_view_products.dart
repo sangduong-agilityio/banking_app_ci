@@ -45,6 +45,7 @@ class GridViewProduct extends ConsumerWidget {
           itemBuilder: (context, index) {
             final product = products[index];
             return LSProductCard(
+              product: product,
               image: product.imageUrl,
               title: product.name,
               price: product.price,
