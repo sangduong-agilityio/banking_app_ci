@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/product_card.dart';
@@ -41,9 +40,9 @@ class GridViewWishList extends StatelessWidget {
             onDismissed: (direction) {
               wishListNotifier.removeProduct(product);
               LSSnackBar.buildErrorSnackbar(
-                  context,
-                  '${product.name}'
-                  '${S.current.removeFormCart}');
+                context,
+                product.name,
+              );
             },
             child: LSProductCard(
               product: product,

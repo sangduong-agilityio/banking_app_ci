@@ -17,7 +17,7 @@ class WishListPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: wishListProducts.isEmpty
-          ? const Center(child: Text('No products in wishlist'))
+          ? Center(child: Text(S.current.wishListProduct))
           : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20),
@@ -31,7 +31,7 @@ class WishListPage extends ConsumerWidget {
                     SizedBox(height: 20.h),
                     Center(
                       child: Text(
-                        S.current.listCartProduct,
+                        S.current.wishListProduct,
                         style: context.textTheme.displayLarge,
                       ),
                     ),
