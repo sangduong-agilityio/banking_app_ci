@@ -720,20 +720,20 @@ class S {
     );
   }
 
-  /// `No products in cart`
+  /// `No product in cart`
   String get noProductInCart {
     return Intl.message(
-      'No products in cart',
+      'No product in cart',
       name: 'noProductInCart',
       desc: '',
       args: [],
     );
   }
 
-  /// `removed from Cart`
+  /// ` removed from Cart`
   String get removeFormCart {
     return Intl.message(
-      'removed from Cart',
+      ' removed from Cart',
       name: 'removeFormCart',
       desc: '',
       args: [],
@@ -745,6 +745,16 @@ class S {
     return Intl.message(
       'List Cart Product',
       name: 'listCartProduct',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wish List Product`
+  String get wishListProduct {
+    return Intl.message(
+      'Wish List Product',
+      name: 'wishListProduct',
       desc: '',
       args: [],
     );
