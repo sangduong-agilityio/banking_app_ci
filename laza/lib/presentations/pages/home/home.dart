@@ -44,7 +44,9 @@ class HomePage extends ConsumerWidget {
                     _scaffoldKey.currentState?.openDrawer();
                   },
                   icon: LSIcons.icMenu,
-                  onTappedRightButton: () {},
+                  onTappedRightButton: () {
+                    context.pushNamed(AppRoutesName.cartProductPage.name);
+                  },
                   rightButtonIcon: LSIcons.icBag,
                 ),
                 SizedBox(height: 30.h),

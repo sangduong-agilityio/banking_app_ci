@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
+import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
@@ -33,7 +34,9 @@ class BrandDetailPage extends ConsumerWidget {
                   onTappedBackButton: () => context.pop(),
                   icon: LSIcons.icArrowLeft,
                   rightButtonIcon: LSIcons.icBag,
-                  onTappedRightButton: () {},
+                  onTappedRightButton: () {
+                    context.pushNamed(AppRoutesName.cartProductPage.name);
+                  },
                   centerImage: brand.last.image,
                 ),
                 SizedBox(height: 49.h),
