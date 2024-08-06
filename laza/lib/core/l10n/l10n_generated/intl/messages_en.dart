@@ -68,7 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nikeClubFleece":
             MessageLookupByLibrary.simpleMessage("Nike Club Fleece"),
         "noProductInCart":
-            MessageLookupByLibrary.simpleMessage("No products in cart"),
+            MessageLookupByLibrary.simpleMessage("No product in cart"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterData": MessageLookupByLibrary.simpleMessage(
@@ -85,7 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "rating": m0,
         "rememberMe": MessageLookupByLibrary.simpleMessage("Remember me"),
         "removeFormCart":
-            MessageLookupByLibrary.simpleMessage("removed from Cart"),
+            MessageLookupByLibrary.simpleMessage(" removed from Cart"),
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "searchInput": MessageLookupByLibrary.simpleMessage("Search..."),
@@ -134,6 +134,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "welcomeToLaza":
             MessageLookupByLibrary.simpleMessage("Welcome to Laza."),
         "wishList": MessageLookupByLibrary.simpleMessage("Wishlist"),
+        "wishListProduct":
+            MessageLookupByLibrary.simpleMessage("Wish List Product"),
         "withVatAndSd": MessageLookupByLibrary.simpleMessage("with VAT, SD")
       };
 }
