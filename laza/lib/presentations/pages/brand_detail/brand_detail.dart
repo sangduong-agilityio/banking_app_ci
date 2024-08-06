@@ -8,6 +8,7 @@ import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/brand_provider.dart';
+import 'package:laza/providers/product_provider.dart';
 import 'widgets/sort_detail.dart';
 import '../home/widget/grid_view_products.dart';
 
@@ -17,51 +18,57 @@ class BrandDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandAsyncValue = ref.watch(brandProvider);
+    final productsAsyncValue = ref.watch(productsNotifierProvider(''));
+
     return brandAsyncValue.when(
-      data: (brand) => LazaShopScaffold(
-        paddingScaffold: 20,
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 25.h),
-              LSAppBar(
-                onTappedBackButton: () => context.pop(),
-                icon: LSIcons.icArrowLeft,
-                rightButtonIcon: LSIcons.icBag,
-                onTappedRightButton: () {},
-                centerImage: brand.last.image,
-              ),
-              SizedBox(height: 49.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.current.totalItems(256),
-                        style: context.textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        S.current.availableInStock,
-                        style: context.textTheme.headlineSmall!.copyWith(
-                            color: context.colorScheme.tertiaryContainer),
-                      ),
-                    ],
-                  ),
-                  const LSSort()
-                ],
-              ),
-              SizedBox(height: 20.h),
-              const GridViewProduct()
-            ],
+      data: (brand) => productsAsyncValue.when(
+        data: (products) => LazaShopScaffold(
+          paddingScaffold: 20,
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 25.h),
+                LSAppBar(
+                  onTappedBackButton: () => context.pop(),
+                  icon: LSIcons.icArrowLeft,
+                  rightButtonIcon: LSIcons.icBag,
+                  onTappedRightButton: () {},
+                  centerImage: brand.last.image,
+                ),
+                SizedBox(height: 49.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          S.current.totalItems(products.length),
+                          style: context.textTheme.headlineLarge,
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          S.current.availableInStock,
+                          style: context.textTheme.headlineSmall!.copyWith(
+                              color: context.colorScheme.tertiaryContainer),
+                        ),
+                      ],
+                    ),
+                    const LSSort()
+                  ],
+                ),
+                SizedBox(height: 20.h),
+                GridViewProduct(products: products)
+              ],
+            ),
           ),
         ),
+        loading: () => const ShimmerGridView(),
+        error: (error, stack) => Center(
+          child: Text('Error: $error'),
+        ),
       ),
-      // TODO(SangDuong): Handle error
-
       loading: () => const ShimmerGridView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),

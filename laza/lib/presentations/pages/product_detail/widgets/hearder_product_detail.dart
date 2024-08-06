@@ -13,12 +13,22 @@ class HeaderProductDetail extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsyncValue = ref.watch(productsNotifierProvider(''));
+    final selectedImageUrl = ref.watch(productsNotifierProvider('')).maybeWhen(
+          data: (products) {
+            final notifier = ref.read(productsNotifierProvider('').notifier);
+            return notifier.selectedImageUrl;
+          },
+          orElse: () => '',
+        );
+
     return productsAsyncValue.when(
       data: (product) => Stack(
         clipBehavior: Clip.none,
         children: [
           LSImage(
-            imageUrl: product.last.imageUrl,
+            imageUrl: selectedImageUrl.isNotEmpty
+                ? selectedImageUrl
+                : product.last.imageUrl,
             width: double.infinity,
             height: 375.h,
             fit: BoxFit.cover,

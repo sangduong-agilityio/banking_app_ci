@@ -13,11 +13,9 @@ class LSAppBar extends StatelessWidget {
   });
   final VoidCallback onTappedBackButton;
   final VoidCallback? onTappedRightButton;
-  // Icon for the right button
   final Widget? rightButtonIcon;
   final Widget? icon;
   final String? centerImage;
-
   final BoxFit fit;
 
   @override
@@ -50,15 +48,32 @@ class LSAppBar extends StatelessWidget {
           ),
         ),
         if (rightButtonIcon != null)
-          IconButton(
-            onPressed: onTappedRightButton,
-            icon: rightButtonIcon ?? const SizedBox.shrink(),
-            style: ElevatedButton.styleFrom(
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(10),
-              backgroundColor: context.colorScheme.outlineVariant,
+          Stack(children: [
+            IconButton(
+              onPressed: onTappedRightButton,
+              icon: rightButtonIcon ?? const SizedBox.shrink(),
+              style: ElevatedButton.styleFrom(
+                shape: const CircleBorder(),
+                padding: const EdgeInsets.all(10),
+                backgroundColor: context.colorScheme.outlineVariant,
+              ),
             ),
-          ),
+            Positioned(
+              child: Container(
+                width: 18,
+                height: 18,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: context.colorScheme.error,
+                ),
+                child: const Text(
+                  '',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ]),
       ],
     );
   }

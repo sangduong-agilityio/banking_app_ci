@@ -51,7 +51,7 @@ final productServiceProvider = Provider<ProductService>.internal(
 );
 
 typedef ProductServiceRef = ProviderRef<ProductService>;
-String _$productsNotifierHash() => r'67f23d1571b562972c1737b5f796d05b8ba1dcb1';
+String _$productsNotifierHash() => r'014c1e4bca73d960bf3b1d77b3bb626e9f66eec9';
 
 /// Copied from Dart SDK
 class _SystemHash {

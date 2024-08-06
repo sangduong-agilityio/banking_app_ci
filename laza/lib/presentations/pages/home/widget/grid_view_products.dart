@@ -2,22 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/router/routes.dart';
+import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/product_card.dart';
 import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/product_provider.dart';
 
 class GridViewProduct extends ConsumerWidget {
   final String? searchQuery;
+  final List<Product>? products;
+  final int? brandId;
 
   const GridViewProduct({
     super.key,
     this.searchQuery,
+    this.brandId,
+    this.products,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue =
-        ref.watch(productsNotifierProvider(searchQuery ?? ''));
+    final productsAsyncValue = ref.watch(productsNotifierProvider(
+      searchQuery ?? '',
+    ));
     final screenWithTablet = MediaQuery.of(context).size.width;
 
     return productsAsyncValue.when(
@@ -49,7 +55,6 @@ class GridViewProduct extends ConsumerWidget {
           },
         );
       },
-      // TODO(SangDuong): Handle error
       loading: () => const ShimmerGridView(),
       error: (error, stack) => Center(
         child: Text('Error: $error'),

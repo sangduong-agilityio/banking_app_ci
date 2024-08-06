@@ -23,7 +23,7 @@ class ProductRepositoryImpl implements ProductRepository {
       apiUrl,
       queryParams: {
         'select': '*',
-        if (query != null) 'name': query,
+        if (query != null && query.isNotEmpty) 'name': 'ilike.%$query%',
       },
     );
     final jsonData = response.data;
