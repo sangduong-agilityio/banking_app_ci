@@ -59,12 +59,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "hello": MessageLookupByLibrary.simpleMessage("Hello"),
         "letGetStarted":
             MessageLookupByLibrary.simpleMessage("Let’s Get Started"),
+        "listCartProduct":
+            MessageLookupByLibrary.simpleMessage("List Cart Product"),
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutBtn": MessageLookupByLibrary.simpleMessage("Logout"),
         "myCards": MessageLookupByLibrary.simpleMessage("My Cards"),
         "newArrival": MessageLookupByLibrary.simpleMessage("New Arrival"),
         "nikeClubFleece":
             MessageLookupByLibrary.simpleMessage("Nike Club Fleece"),
+        "noProductInCart":
+            MessageLookupByLibrary.simpleMessage("No products in cart"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterData": MessageLookupByLibrary.simpleMessage(
@@ -80,6 +84,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Price Low to High"),
         "rating": m0,
         "rememberMe": MessageLookupByLibrary.simpleMessage("Remember me"),
+        "removeFormCart":
+            MessageLookupByLibrary.simpleMessage("removed from Cart"),
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "searchInput": MessageLookupByLibrary.simpleMessage("Search..."),

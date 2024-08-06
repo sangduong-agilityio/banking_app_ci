@@ -11,15 +11,20 @@ import 'package:laza/presentations/pages/auth/sign_in.dart';
 import 'package:laza/presentations/pages/auth/sign_up.dart';
 import 'package:laza/presentations/pages/brand_detail/brand_detail.dart';
 import 'package:laza/presentations/pages/brand_detail/brand_view.dart';
+import 'package:laza/presentations/pages/cart/cart_product.dart';
 import 'package:laza/presentations/pages/home/home.dart';
 import 'package:laza/presentations/pages/let_started/let_started.dart';
 import 'package:laza/presentations/pages/product_detail/product_detail.dart';
+import 'package:laza/presentations/pages/wishList/wish_list.dart';
 import 'package:laza/presentations/widgets/drawer_menu.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRoutesName {
   static final homePage = RouteName('/homePage', 'homePage');
+  static final wishListPage = RouteName('/wishListPage', 'wishListPage');
+  static final cartProductPage =
+      RouteName('/cartProductPage', 'cartProductPage');
   static final startedPage = RouteName('/startedPage', 'startedPage');
   static final signInPage = RouteName('/signInPage', 'signInPage');
   static final signUpPage = RouteName('/signUpPage', 'signUpPage');
@@ -181,6 +186,34 @@ List<StatefulShellBranch> bottomNavigationBarBranches() {
         ),
       ],
     ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: AppRoutesName.wishListPage.path,
+          name: AppRoutesName.wishListPage.name,
+          pageBuilder: (context, state) =>
+              PageTransaction.defaultPageTransition(
+            context: context,
+            state: state,
+            child: const WishListPage(),
+          ),
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: AppRoutesName.cartProductPage.path,
+          name: AppRoutesName.cartProductPage.name,
+          pageBuilder: (context, state) =>
+              PageTransaction.defaultPageTransition(
+            context: context,
+            state: state,
+            child: const CartProductPage(),
+          ),
+        ),
+      ],
+    )
   ];
 }
 

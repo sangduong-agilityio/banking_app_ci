@@ -65,5 +65,8 @@
     "validatorConfirmPasswordRequired": "Confirm Password is required",
     "validatorConfirmedPasswordNotMatch": "Password and confirm password not match",
     "priceLowToHigh":"Price Low to High",
-    "priceHighToLow":"Price High to Low"
+    "priceHighToLow":"Price High to Low",
+    "noProductInCart":"No products in cart",
+    "removeFormCart":"removed from Cart",
+    "listCartProduct":"List Cart Product"
 }

@@ -719,6 +719,36 @@ class S {
       args: [],
     );
   }
+
+  /// `No products in cart`
+  String get noProductInCart {
+    return Intl.message(
+      'No products in cart',
+      name: 'noProductInCart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `removed from Cart`
+  String get removeFormCart {
+    return Intl.message(
+      'removed from Cart',
+      name: 'removeFormCart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `List Cart Product`
+  String get listCartProduct {
+    return Intl.message(
+      'List Cart Product',
+      name: 'listCartProduct',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

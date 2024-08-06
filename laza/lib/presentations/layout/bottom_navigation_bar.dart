@@ -8,6 +8,8 @@ class LSBottomNavigationBar extends StatefulWidget {
     this.backgroundColor,
     this.currentIndex = 0,
     this.onTap,
+    this.selectedItemColor,
+    this.unselectedItemColor,
     this.itemShape = const BorderDirectional(),
     this.margin = const EdgeInsets.all(8),
     this.duration = const Duration(milliseconds: 500),
@@ -15,7 +17,7 @@ class LSBottomNavigationBar extends StatefulWidget {
     this.colorLabel,
   });
 
-  /// A list of tabs to display, ie `Home`, `Likes`, etc
+  /// A list of tabs to display, ie `Home`, `WishList`, etc
   final List<LSBottomNavigationBarItem> items;
 
   /// The tab to display.
@@ -26,6 +28,12 @@ class LSBottomNavigationBar extends StatefulWidget {
 
   /// The background color of the bar.
   final Color? backgroundColor;
+
+  /// The color of the icon and text when the item is selected.
+  final Color? selectedItemColor;
+
+  /// The color of the icon and text when the item is not selected.
+  final Color? unselectedItemColor;
 
   /// The border shape of each item.
   final ShapeBorder itemShape;
@@ -49,6 +57,8 @@ class LSBottomNavigationBar extends StatefulWidget {
 class _LSBottomNavigationBarState extends State<LSBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       height: 80,
       width: double.infinity,
@@ -56,8 +66,6 @@ class _LSBottomNavigationBarState extends State<LSBottomNavigationBar> {
       child: SafeArea(
         minimum: widget.margin,
         child: Row(
-          /// Using a different alignment when there are 2 items or less
-          /// so it behaves the same as BottomNavigationBar.
           mainAxisAlignment: widget.items.length <= 2
               ? MainAxisAlignment.spaceEvenly
               : MainAxisAlignment.spaceBetween,
@@ -72,6 +80,13 @@ class _LSBottomNavigationBarState extends State<LSBottomNavigationBar> {
                 curve: widget.curve,
                 duration: widget.duration,
                 builder: (context, t, _) {
+                  final selectedColor = item.selectedColor ??
+                      widget.selectedItemColor ??
+                      theme.primaryColor;
+
+                  final unselectedColor = item.unselectedColor ??
+                      widget.unselectedItemColor ??
+                      theme.iconTheme.color;
                   return Material(
                     shape: widget.itemShape,
                     child: Container(
@@ -83,12 +98,19 @@ class _LSBottomNavigationBarState extends State<LSBottomNavigationBar> {
                           });
                         },
                         customBorder: widget.itemShape,
+                        focusColor: selectedColor.withOpacity(0.1),
+                        highlightColor: selectedColor.withOpacity(0.1),
+                        splashColor: selectedColor.withOpacity(0.1),
+                        hoverColor: selectedColor.withOpacity(0.1),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 30,
                           ),
                           child: IconTheme(
-                            data: const IconThemeData(),
+                            data: IconThemeData(
+                              color:
+                                  Color.lerp(unselectedColor, selectedColor, t),
+                            ),
                             child: widget.items.indexOf(item) ==
                                     widget.currentIndex
                                 ? item.activeIcon ?? item.icon
@@ -109,14 +131,15 @@ class _LSBottomNavigationBarState extends State<LSBottomNavigationBar> {
 
 /// A tab to display in a [LSBottomNavigationBar]
 class LSBottomNavigationBarItem {
-  /// An icon to display.
   final Widget icon;
-
-  /// An icon to display when this tab bar is active.
+  final Color? selectedColor;
+  final Color? unselectedColor;
   final Widget? activeIcon;
 
   LSBottomNavigationBarItem({
     required this.icon,
     this.activeIcon,
+    this.selectedColor,
+    this.unselectedColor,
   });
 }
