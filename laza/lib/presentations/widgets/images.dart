@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
+import 'package:laza/core/themes/colors.dart';
 
 class LSImage extends StatelessWidget {
   final String imageUrl;
@@ -10,6 +11,8 @@ class LSImage extends StatelessWidget {
   final Widget? icon;
   final BoxShape? shape;
   final double borderRadius;
+  final bool? isFavorite;
+  final VoidCallback? onTapIcon;
 
   const LSImage({
     super.key,
@@ -20,6 +23,8 @@ class LSImage extends StatelessWidget {
     this.icon,
     this.shape,
     this.borderRadius = 15,
+    this.isFavorite,
+    this.onTapIcon,
   });
 
   @override
@@ -40,10 +45,18 @@ class LSImage extends StatelessWidget {
         ),
         if (icon != null)
           Positioned(
-            top: 10,
-            right: 10,
-            child: icon ?? const SizedBox.shrink(),
-          ),
+              top: 10,
+              right: 10,
+              child: GestureDetector(
+                onTap: onTapIcon,
+                child: Icon(
+                  isFavorite == true
+                      ? Icons.favorite_border
+                      : Icons.favorite_border,
+                  color:
+                      isFavorite == true ? LSColors.error300 : LSColors.grey500,
+                ),
+              )),
       ],
     );
   }
