@@ -6,6 +6,7 @@ abstract class ProductRepository {
   Future<List<Product>> getProducts({
     String? query,
     int? brandId,
+    int? productId,
   });
   Future<Product> getProductById(int id);
   Future<void> createProduct(Product product);
@@ -19,7 +20,11 @@ class ProductRepositoryImpl implements ProductRepository {
       : _apiClient = apiClient;
 
   @override
-  Future<List<Product>> getProducts({String? query, int? brandId}) async {
+  Future<List<Product>> getProducts({
+    String? query,
+    int? brandId,
+    int? productId,
+  }) async {
     const String apiUrl = '${Env.endPoint}products';
 
     final response = await _apiClient.get(
@@ -28,6 +33,7 @@ class ProductRepositoryImpl implements ProductRepository {
         'select': '*',
         if (query != null && query.isNotEmpty) 'name': 'ilike.%$query%',
         if (brandId != null) 'brand_id': 'eq.$brandId',
+        if (productId != null) 'product_id': 'eq.$productId',
       },
     );
     final jsonData = response.data;
