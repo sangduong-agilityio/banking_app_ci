@@ -21,10 +21,12 @@ class GridViewProduct extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productsAsyncValue = ref.watch(productsNotifierProvider(
-      searchQuery ?? '',
-      brandId: brandId,
-    ));
+    final productsAsyncValue = ref.watch(
+      productsNotifierProvider(
+        searchQuery ?? '',
+        brandId: brandId,
+      ),
+    );
     final screenWithTablet = MediaQuery.of(context).size.width;
 
     return productsAsyncValue.when(
@@ -51,7 +53,10 @@ class GridViewProduct extends ConsumerWidget {
               title: product.name,
               price: product.price,
               onTapProduct: () {
-                context.pushNamed(AppRoutesName.productDetailPage.name);
+                context.pushNamed(
+                  AppRoutesName.productDetailPage.name,
+                  extra: product,
+                );
               },
             );
           },

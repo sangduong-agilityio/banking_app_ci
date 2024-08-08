@@ -77,9 +77,9 @@ class DescriptionProductDetailState extends State<DescriptionProductDetail> {
                       _expanded = !_expanded;
                     });
                     if (_expanded) {
-                      widget.onReadMorePressed?.call();
-                    } else {
                       widget.onReadLessPressed?.call();
+                    } else {
+                      widget.onReadMorePressed?.call();
                     }
                   },
                   child: _expanded

@@ -36,19 +36,23 @@ class ProductsNotifier extends _$ProductsNotifier {
   FutureOr<List<Product>> build(
     String query, {
     int? brandId,
+    int? productId,
   }) async {
     _productService = ref.watch(productServiceProvider);
-    _products = await _productService.getProducts(
-      query,
-      brandId: brandId,
-    );
+    _products = await _productService.getProducts(query,
+        brandId: brandId, productId: productId);
     return _products;
   }
 
-  void search(String query, {int? brandId}) async {
+  void search(
+    String query, {
+    int? brandId,
+    int? productId,
+  }) async {
     final products = await _productService.getProducts(
       query,
       brandId: brandId,
+      productId: productId,
     );
     state = AsyncValue.data(products);
   }

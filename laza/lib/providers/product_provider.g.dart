@@ -51,7 +51,7 @@ final productServiceProvider = Provider<ProductService>.internal(
 );
 
 typedef ProductServiceRef = ProviderRef<ProductService>;
-String _$productsNotifierHash() => r'b991678b0c1966984e7b07d74fc2046f7d0a5401';
+String _$productsNotifierHash() => r'08f5b7419ae3a75fc4b9fe2b8409545d17517065';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -78,10 +78,12 @@ abstract class _$ProductsNotifier
     extends BuildlessAsyncNotifier<List<Product>> {
   late final String query;
   late final int? brandId;
+  late final int? productId;
 
   FutureOr<List<Product>> build(
     String query, {
     int? brandId,
+    int? productId,
   });
 }
 
@@ -98,10 +100,12 @@ class ProductsNotifierFamily extends Family<AsyncValue<List<Product>>> {
   ProductsNotifierProvider call(
     String query, {
     int? brandId,
+    int? productId,
   }) {
     return ProductsNotifierProvider(
       query,
       brandId: brandId,
+      productId: productId,
     );
   }
 
@@ -112,6 +116,7 @@ class ProductsNotifierFamily extends Family<AsyncValue<List<Product>>> {
     return call(
       provider.query,
       brandId: provider.brandId,
+      productId: provider.productId,
     );
   }
 
@@ -137,10 +142,12 @@ class ProductsNotifierProvider
   ProductsNotifierProvider(
     String query, {
     int? brandId,
+    int? productId,
   }) : this._internal(
           () => ProductsNotifier()
             ..query = query
-            ..brandId = brandId,
+            ..brandId = brandId
+            ..productId = productId,
           from: productsNotifierProvider,
           name: r'productsNotifierProvider',
           debugGetCreateSourceHash:
@@ -152,6 +159,7 @@ class ProductsNotifierProvider
               ProductsNotifierFamily._allTransitiveDependencies,
           query: query,
           brandId: brandId,
+          productId: productId,
         );
 
   ProductsNotifierProvider._internal(
@@ -163,10 +171,12 @@ class ProductsNotifierProvider
     required super.from,
     required this.query,
     required this.brandId,
+    required this.productId,
   }) : super.internal();
 
   final String query;
   final int? brandId;
+  final int? productId;
 
   @override
   FutureOr<List<Product>> runNotifierBuild(
@@ -175,6 +185,7 @@ class ProductsNotifierProvider
     return notifier.build(
       query,
       brandId: brandId,
+      productId: productId,
     );
   }
 
@@ -185,7 +196,8 @@ class ProductsNotifierProvider
       override: ProductsNotifierProvider._internal(
         () => create()
           ..query = query
-          ..brandId = brandId,
+          ..brandId = brandId
+          ..productId = productId,
         from: from,
         name: null,
         dependencies: null,
@@ -193,6 +205,7 @@ class ProductsNotifierProvider
         debugGetCreateSourceHash: null,
         query: query,
         brandId: brandId,
+        productId: productId,
       ),
     );
   }
@@ -207,7 +220,8 @@ class ProductsNotifierProvider
   bool operator ==(Object other) {
     return other is ProductsNotifierProvider &&
         other.query == query &&
-        other.brandId == brandId;
+        other.brandId == brandId &&
+        other.productId == productId;
   }
 
   @override
@@ -215,6 +229,7 @@ class ProductsNotifierProvider
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
     hash = _SystemHash.combine(hash, brandId.hashCode);
+    hash = _SystemHash.combine(hash, productId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -226,6 +241,9 @@ mixin ProductsNotifierRef on AsyncNotifierProviderRef<List<Product>> {
 
   /// The parameter `brandId` of this provider.
   int? get brandId;
+
+  /// The parameter `productId` of this provider.
+  int? get productId;
 }
 
 class _ProductsNotifierProviderElement
@@ -237,6 +255,8 @@ class _ProductsNotifierProviderElement
   String get query => (origin as ProductsNotifierProvider).query;
   @override
   int? get brandId => (origin as ProductsNotifierProvider).brandId;
+  @override
+  int? get productId => (origin as ProductsNotifierProvider).productId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

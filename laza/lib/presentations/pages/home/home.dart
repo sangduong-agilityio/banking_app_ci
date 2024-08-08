@@ -9,7 +9,6 @@ import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/drawer_menu.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-
 import 'widget/grid_view_products.dart';
 import 'widget/hearder_section.dart';
 import 'widget/list_view_brand.dart';
@@ -94,7 +93,9 @@ class HomePage extends ConsumerWidget {
                 ValueListenableBuilder(
                   valueListenable: _searchController,
                   builder: (context, value, child) {
-                    return GridViewProduct(searchQuery: _searchController.text);
+                    return GridViewProduct(
+                      searchQuery: _searchController.text,
+                    );
                   },
                 ),
               ],
