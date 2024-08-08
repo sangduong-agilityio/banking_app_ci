@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/router/page_transition.dart';
+import 'package:laza/data/models/brand_model.dart';
 import 'package:laza/presentations/layout/bottom_navigation_bar.dart';
 import 'package:laza/presentations/pages/auth/forgot_password.dart';
 import 'package:laza/presentations/pages/auth/reset_password.dart';
@@ -102,7 +103,9 @@ class AppRouter {
           transitionDuration: const Duration(milliseconds: 300),
           context: context,
           state: state,
-          child: const BrandDetailPage(),
+          child: BrandDetailPage(
+            brand: state.extra as Brand,
+          ),
         ),
       ),
       GoRoute(

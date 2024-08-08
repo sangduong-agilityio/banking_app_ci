@@ -27,17 +27,20 @@ ProductService productService(ProductServiceRef ref) {
 @Riverpod(keepAlive: true)
 class ProductsNotifier extends _$ProductsNotifier {
   late final ProductService _productService;
+
   List<Product> _products = [];
   int selectedImageIndex = -1;
   String selectedImageUrl = '';
 
   @override
-  Future<List<Product>> build(
-    String query,
-  ) async {
+  FutureOr<List<Product>> build(
+    String query, {
+    int? brandId,
+  }) async {
     _productService = ref.watch(productServiceProvider);
     _products = await _productService.getProducts(
       query,
+      brandId: brandId,
     );
     return _products;
   }
@@ -45,6 +48,7 @@ class ProductsNotifier extends _$ProductsNotifier {
   void search(String query, {int? brandId}) async {
     final products = await _productService.getProducts(
       query,
+      brandId: brandId,
     );
     state = AsyncValue.data(products);
   }

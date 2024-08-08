@@ -23,6 +23,7 @@ class GridViewProduct extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsyncValue = ref.watch(productsNotifierProvider(
       searchQuery ?? '',
+      brandId: brandId,
     ));
     final screenWithTablet = MediaQuery.of(context).size.width;
 
