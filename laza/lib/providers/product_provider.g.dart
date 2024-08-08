@@ -51,7 +51,7 @@ final productServiceProvider = Provider<ProductService>.internal(
 );
 
 typedef ProductServiceRef = ProviderRef<ProductService>;
-String _$productsNotifierHash() => r'f3505b9801cbae84fcda582d0d9b0e5614301ddd';
+String _$productsNotifierHash() => r'b991678b0c1966984e7b07d74fc2046f7d0a5401';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -77,10 +77,12 @@ class _SystemHash {
 abstract class _$ProductsNotifier
     extends BuildlessAsyncNotifier<List<Product>> {
   late final String query;
+  late final int? brandId;
 
   FutureOr<List<Product>> build(
-    String query,
-  );
+    String query, {
+    int? brandId,
+  });
 }
 
 /// See also [ProductsNotifier].
@@ -94,10 +96,12 @@ class ProductsNotifierFamily extends Family<AsyncValue<List<Product>>> {
 
   /// See also [ProductsNotifier].
   ProductsNotifierProvider call(
-    String query,
-  ) {
+    String query, {
+    int? brandId,
+  }) {
     return ProductsNotifierProvider(
       query,
+      brandId: brandId,
     );
   }
 
@@ -107,6 +111,7 @@ class ProductsNotifierFamily extends Family<AsyncValue<List<Product>>> {
   ) {
     return call(
       provider.query,
+      brandId: provider.brandId,
     );
   }
 
@@ -130,9 +135,12 @@ class ProductsNotifierProvider
     extends AsyncNotifierProviderImpl<ProductsNotifier, List<Product>> {
   /// See also [ProductsNotifier].
   ProductsNotifierProvider(
-    String query,
-  ) : this._internal(
-          () => ProductsNotifier()..query = query,
+    String query, {
+    int? brandId,
+  }) : this._internal(
+          () => ProductsNotifier()
+            ..query = query
+            ..brandId = brandId,
           from: productsNotifierProvider,
           name: r'productsNotifierProvider',
           debugGetCreateSourceHash:
@@ -143,6 +151,7 @@ class ProductsNotifierProvider
           allTransitiveDependencies:
               ProductsNotifierFamily._allTransitiveDependencies,
           query: query,
+          brandId: brandId,
         );
 
   ProductsNotifierProvider._internal(
@@ -153,9 +162,11 @@ class ProductsNotifierProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.query,
+    required this.brandId,
   }) : super.internal();
 
   final String query;
+  final int? brandId;
 
   @override
   FutureOr<List<Product>> runNotifierBuild(
@@ -163,6 +174,7 @@ class ProductsNotifierProvider
   ) {
     return notifier.build(
       query,
+      brandId: brandId,
     );
   }
 
@@ -171,13 +183,16 @@ class ProductsNotifierProvider
     return ProviderOverride(
       origin: this,
       override: ProductsNotifierProvider._internal(
-        () => create()..query = query,
+        () => create()
+          ..query = query
+          ..brandId = brandId,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         query: query,
+        brandId: brandId,
       ),
     );
   }
@@ -190,13 +205,16 @@ class ProductsNotifierProvider
 
   @override
   bool operator ==(Object other) {
-    return other is ProductsNotifierProvider && other.query == query;
+    return other is ProductsNotifierProvider &&
+        other.query == query &&
+        other.brandId == brandId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, brandId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -205,6 +223,9 @@ class ProductsNotifierProvider
 mixin ProductsNotifierRef on AsyncNotifierProviderRef<List<Product>> {
   /// The parameter `query` of this provider.
   String get query;
+
+  /// The parameter `brandId` of this provider.
+  int? get brandId;
 }
 
 class _ProductsNotifierProviderElement
@@ -214,6 +235,8 @@ class _ProductsNotifierProviderElement
 
   @override
   String get query => (origin as ProductsNotifierProvider).query;
+  @override
+  int? get brandId => (origin as ProductsNotifierProvider).brandId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

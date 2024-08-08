@@ -8,7 +8,9 @@ import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 
 class BrandViewAll extends StatelessWidget {
-  const BrandViewAll({super.key});
+  const BrandViewAll({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

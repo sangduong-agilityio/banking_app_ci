@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -30,17 +28,17 @@ class GridViewBrand extends ConsumerWidget {
         ),
         itemCount: brand.length,
         itemBuilder: (context, index) {
-          final brands = brand[index];
+          final brandIndex = brand[index];
           return InkWell(
             onTap: () {
               context.pushNamed(
                 AppRoutesName.brandDetailPage.name,
-                extra: e,
+                extra: brandIndex,
               );
             },
             child: LSBrand(
-              brandName: brands.name,
-              brandLogo: brands.image,
+              brandName: brand[index].name,
+              brandLogo: brand[index].image,
             ),
           );
         },

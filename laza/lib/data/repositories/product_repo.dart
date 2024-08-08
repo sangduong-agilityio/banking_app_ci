@@ -3,7 +3,10 @@ import 'package:laza/core/env/env.dart';
 import 'package:laza/data/models/product_model.dart';
 
 abstract class ProductRepository {
-  Future<List<Product>> getProducts({String? query});
+  Future<List<Product>> getProducts({
+    String? query,
+    int? brandId,
+  });
   Future<Product> getProductById(int id);
   Future<void> createProduct(Product product);
   Future<void> updateProduct(Product product);
@@ -16,7 +19,7 @@ class ProductRepositoryImpl implements ProductRepository {
       : _apiClient = apiClient;
 
   @override
-  Future<List<Product>> getProducts({String? query}) async {
+  Future<List<Product>> getProducts({String? query, int? brandId}) async {
     const String apiUrl = '${Env.endPoint}products';
 
     final response = await _apiClient.get(
@@ -24,6 +27,7 @@ class ProductRepositoryImpl implements ProductRepository {
       queryParams: {
         'select': '*',
         if (query != null && query.isNotEmpty) 'name': 'ilike.%$query%',
+        if (brandId != null) 'brand_id': 'eq.$brandId',
       },
     );
     final jsonData = response.data;
