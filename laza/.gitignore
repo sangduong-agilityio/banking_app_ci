@@ -45,5 +45,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# Ignore generator file
-.g.dart*
+lib/providers/*.g.dart

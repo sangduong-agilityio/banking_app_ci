@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
+import 'package:laza/providers/cart_provider.dart';
 
-class LSAppBar extends StatelessWidget {
+class LSAppBar extends ConsumerWidget {
   const LSAppBar({
     super.key,
     required this.onTappedBackButton,
@@ -19,7 +21,9 @@ class LSAppBar extends StatelessWidget {
   final BoxFit fit;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final totalProductsInCart = ref.watch(cartNotifierProvider).length;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -58,21 +62,24 @@ class LSAppBar extends StatelessWidget {
                 backgroundColor: context.colorScheme.outlineVariant,
               ),
             ),
-            Positioned(
-              child: Container(
-                width: 18,
-                height: 18,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: context.colorScheme.error,
-                ),
-                child: const Text(
-                  '',
-                  style: TextStyle(color: Colors.white),
+            if (totalProductsInCart > 0)
+              Positioned(
+                child: Container(
+                  width: 18,
+                  height: 18,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: context.colorScheme.error,
+                  ),
+                  child: Text(
+                    '$totalProductsInCart',
+                    style: TextStyle(
+                      color: context.colorScheme.onPrimary,
+                    ),
+                  ),
                 ),
               ),
-            ),
           ]),
       ],
     );
