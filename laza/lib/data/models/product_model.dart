@@ -1,4 +1,4 @@
-import 'package:laza/data/models/model.dart';
+import 'package:laza/data/models/md.dart';
 
 @Model()
 class Product {

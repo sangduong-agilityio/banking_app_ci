@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/product_card.dart';
-import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'package:laza/providers/wish_list_provider.dart';
 
 class GridViewWishList extends StatelessWidget {
@@ -34,25 +33,15 @@ class GridViewWishList extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final product = wishListProducts[index];
-        return Dismissible(
-            key: Key(product.id.toString()),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {
-              wishListNotifier.removeProduct(product);
-              LSSnackBar.buildErrorSnackbar(
-                context,
-                product.name,
-              );
-            },
-            child: LSProductCard(
-              product: product,
-              image: product.imageUrl,
-              title: product.name,
-              price: product.price,
-              onTapProduct: () {
-                context.pushNamed(AppRoutesName.productDetailPage.name);
-              },
-            ));
+        return LSProductCard(
+          product: product,
+          image: product.imageUrl,
+          title: product.name,
+          price: product.price,
+          onTapProduct: () {
+            context.pushNamed(AppRoutesName.productDetailPage.name);
+          },
+        );
       },
     );
   }

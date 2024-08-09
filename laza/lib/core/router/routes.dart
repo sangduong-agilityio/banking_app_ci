@@ -16,7 +16,8 @@ import 'package:laza/presentations/pages/brand_detail/brand_view.dart';
 import 'package:laza/presentations/pages/cart/cart_product.dart';
 import 'package:laza/presentations/pages/home/home.dart';
 import 'package:laza/presentations/pages/let_started/let_started.dart';
-import 'package:laza/presentations/pages/product_detail/product_detail.dart';
+import 'package:laza/presentations/pages/product/list_all_product.dart';
+import 'package:laza/presentations/pages/product/product_detail.dart';
 import 'package:laza/presentations/pages/wishList/wish_list.dart';
 import 'package:laza/presentations/widgets/drawer_menu.dart';
 
@@ -40,6 +41,7 @@ class AppRoutesName {
       RouteName('/brandDetailPage', 'brandDetailPage');
   static final brandViewAll = RouteName('/brandViewAll', 'brandViewAll');
   static final drawerMenu = RouteName('/drawerMenu', 'drawerMenu');
+  static final allListProduct = RouteName('/allListProduct', 'allListProduct');
 }
 
 class RouteName {
@@ -154,6 +156,17 @@ class AppRouter {
           child: const LSDrawerMenu(),
         ),
       ),
+      GoRoute(
+        path: AppRoutesName.allListProduct.path,
+        name: AppRoutesName.allListProduct.name,
+        parentNavigatorKey: rootNavigatorKey,
+        pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
+          transitionDuration: const Duration(milliseconds: 300),
+          context: context,
+          state: state,
+          child: const ListAllProduct(),
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state, navigationShell) => Scaffold(
@@ -242,6 +255,7 @@ List<LSBottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
       ),
       activeIcon: SvgPicture.asset(
         Assets.icons.icHeartBreak.path,
+        height: 25,
         colorFilter:
             ColorFilter.mode(context.colorScheme.primary, BlendMode.srcIn),
       ),

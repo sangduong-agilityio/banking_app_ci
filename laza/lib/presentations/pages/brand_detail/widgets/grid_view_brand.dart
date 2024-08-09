@@ -28,12 +28,12 @@ class GridViewBrand extends ConsumerWidget {
         ),
         itemCount: brand.length,
         itemBuilder: (context, index) {
-          final brandIndex = brand[index];
+          final brands = brand[index];
           return InkWell(
             onTap: () {
               context.pushNamed(
                 AppRoutesName.brandDetailPage.name,
-                extra: brandIndex,
+                extra: brands,
               );
             },
             child: LSBrand(

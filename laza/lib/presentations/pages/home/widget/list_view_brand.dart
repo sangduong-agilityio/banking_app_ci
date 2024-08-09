@@ -19,11 +19,6 @@ class ListViewBrand extends ConsumerWidget {
 
     return brandAsyncValue.when(
       data: (brand) => InkWell(
-        onTap: () {
-          context.pushNamed(
-            AppRoutesName.brandViewAll.name,
-          );
-        },
         child: SizedBox(
           height: screenWithTablet > 600 ? 80.h : 50.h,
           child: ListView.builder(
@@ -36,9 +31,17 @@ class ListViewBrand extends ConsumerWidget {
                 padding: EdgeInsets.only(
                   right: screenWithTablet > 600 ? 15 : 10,
                 ),
-                child: LSBrand(
-                  brandName: brands.name,
-                  brandLogo: brands.image,
+                child: InkWell(
+                  onTap: () {
+                    context.pushNamed(
+                      AppRoutesName.brandDetailPage.name,
+                      extra: brands,
+                    );
+                  },
+                  child: LSBrand(
+                    brandName: brands.name,
+                    brandLogo: brands.image,
+                  ),
                 ),
               );
             },

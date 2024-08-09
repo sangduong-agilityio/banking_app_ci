@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -72,7 +70,6 @@ class HomePage extends ConsumerWidget {
                   onTap: () {
                     context.pushNamed(
                       AppRoutesName.brandViewAll.name,
-                      extra: e,
                     );
                   },
                 ),
@@ -85,8 +82,7 @@ class HomePage extends ConsumerWidget {
                   isActivateViewAll: true,
                   onTap: () {
                     context.pushNamed(
-                      AppRoutesName.brandDetailPage.name,
-                      extra: e,
+                      AppRoutesName.allListProduct.name,
                     );
                   },
                 ),
