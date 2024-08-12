@@ -6,6 +6,7 @@ import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/pages/brand_detail/widgets/sort_detail.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
+import 'package:laza/presentations/widgets/empty_widget.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/providers/product_provider.dart';
@@ -48,15 +49,12 @@ class ListAllProduct extends ConsumerWidget {
                         '',
                       ));
                       return productsAsyncValue.when(
-                        data: (products) => Text(
-                          S.current.totalItems(products.length),
-                          style: context.textTheme.headlineLarge,
-                        ),
-                        loading: () => const CircularProgressIndicator(),
-                        error: (error, stack) => Center(
-                          child: Text('Error: $error'),
-                        ),
-                      );
+                          data: (products) => Text(
+                                S.current.totalItems(products.length),
+                                style: context.textTheme.headlineLarge,
+                              ),
+                          loading: () => const CircularProgressIndicator(),
+                          error: (error, stack) => const EmptyWidget());
                     }),
                     const SizedBox(height: 5),
                     Text(

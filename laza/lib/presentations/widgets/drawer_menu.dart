@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
-import 'package:laza/core/gen_assets/assets.gen.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
@@ -51,11 +50,9 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                     SizedBox(height: 30.h),
                     Row(
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 25,
-                          backgroundImage: AssetImage(
-                            Assets.images.dataImage.path,
-                          ),
+                          backgroundImage: AssetImage(''),
                         ),
                         const SizedBox(width: 15),
                         Column(

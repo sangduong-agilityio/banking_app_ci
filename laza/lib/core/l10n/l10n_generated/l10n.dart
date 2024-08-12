@@ -720,16 +720,6 @@ class S {
     );
   }
 
-  /// `No product in cart`
-  String get noProductInCart {
-    return Intl.message(
-      'No product in cart',
-      name: 'noProductInCart',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// ` removed from Cart`
   String get removeFormCart {
     return Intl.message(

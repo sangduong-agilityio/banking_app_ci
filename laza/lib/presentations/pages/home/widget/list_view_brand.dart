@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/brand.dart';
+import 'package:laza/presentations/widgets/empty_widget.dart';
 import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/brand_provider.dart';
 
@@ -18,42 +19,37 @@ class ListViewBrand extends ConsumerWidget {
     final screenWithTablet = MediaQuery.of(context).size.width;
 
     return brandAsyncValue.when(
-      data: (brand) => InkWell(
-        child: SizedBox(
-          height: screenWithTablet > 600 ? 80.h : 50.h,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: brand.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              final brands = brand[index];
-              return Padding(
-                padding: EdgeInsets.only(
-                  right: screenWithTablet > 600 ? 15 : 10,
-                ),
-                child: InkWell(
-                  onTap: () {
-                    context.pushNamed(
-                      AppRoutesName.brandDetailPage.name,
-                      extra: brands,
+        data: (brand) => InkWell(
+              child: SizedBox(
+                height: screenWithTablet > 600 ? 80.h : 50.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: brand.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final brands = brand[index];
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        right: screenWithTablet > 600 ? 15 : 10,
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          context.pushNamed(
+                            AppRoutesName.brandDetailPage.name,
+                            extra: brands,
+                          );
+                        },
+                        child: LSBrand(
+                          brandName: brands.name,
+                          brandLogo: brands.image,
+                        ),
+                      ),
                     );
                   },
-                  child: LSBrand(
-                    brandName: brands.name,
-                    brandLogo: brands.image,
-                  ),
                 ),
-              );
-            },
-          ),
-        ),
-      ),
-
-      // TODO(SangDuong): Handle error
-      loading: () => const ShimmerListView(),
-      error: (error, stack) => Center(
-        child: Text('Error: $error'),
-      ),
-    );
+              ),
+            ),
+        loading: () => const ShimmerListView(),
+        error: (error, stack) => const EmptyWidget());
   }
 }

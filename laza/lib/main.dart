@@ -4,7 +4,6 @@ import 'package:laza/core/env/env.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/core/themes/theme.dart';
-import 'package:laza/presentations/widgets/orientations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -36,12 +35,6 @@ class LazaShopApp extends StatelessWidget {
       routeInformationProvider: AppRouter.routes.routeInformationProvider,
       routeInformationParser: AppRouter.routes.routeInformationParser,
       routerDelegate: AppRouter.routes.routerDelegate,
-      builder: (context, child) {
-        return LSOrientation(
-          portraitWidget: child!,
-          landscapeWidget: child,
-        );
-      },
     );
   }
 }

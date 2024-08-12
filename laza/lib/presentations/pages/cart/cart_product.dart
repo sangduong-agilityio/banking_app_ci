@@ -6,6 +6,7 @@ import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/pages/cart/widgets/list_view_product.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
+import 'package:laza/presentations/widgets/empty_widget.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/providers/cart_provider.dart';
 
@@ -20,7 +21,7 @@ class CartProductPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: cartProducts.isEmpty
-          ? Center(child: Text(S.current.noProductInCart))
+          ? const EmptyWidget()
           : Column(
               children: [
                 SizedBox(height: 45.h),

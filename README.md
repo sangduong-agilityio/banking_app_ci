@@ -51,14 +51,14 @@ Before you continue, ensure you meet the following requirements:
 - [X] Epic 8: Choose some plugins with popular native features and apply them to the practice
 
 
-## Implement UI
-- [] Sign In Screen + State Management(Update) + Supabase
-- [] Sign Up Screen + State Management(Update) + Supabase
-- [] Forgot Password Screen + State Management(Update) + Supabase
-- [] Home Screen + State Management(Update) + API
-- [] Product Detail Screen + State Management(Update) + API
-- [] Drawer Menu Screen + State Management(Update) + API
-- [] Brand Detail Screen + State Management(Update) + API
+## Implement UI + Handle State Management
+- [X] Sign In Screen + State Management(Riverpod) + Supabase
+- [X] Sign Up Screen + State Management(Riverpod) + Supabase
+- [X] Forgot Password Screen + State Management(Riverpod) + Supabase
+- [X] Home Screen + State Management(Riverpod) + API
+- [X] Product Detail Screen + State Management(Riverpod) + API
+- [X] Drawer Menu Screen + State Management(Riverpod) + API
+- [X] Brand Detail Screen + State Management(Riverpod) + API
 
 
 ## Installation

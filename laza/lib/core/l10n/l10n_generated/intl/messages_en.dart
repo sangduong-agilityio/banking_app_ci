@@ -67,8 +67,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "newArrival": MessageLookupByLibrary.simpleMessage("New Arrival"),
         "nikeClubFleece":
             MessageLookupByLibrary.simpleMessage("Nike Club Fleece"),
-        "noProductInCart":
-            MessageLookupByLibrary.simpleMessage("No product in cart"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterData": MessageLookupByLibrary.simpleMessage(
