@@ -5,7 +5,7 @@ import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/widgets/images.dart';
 import 'package:laza/presentations/widgets/tag.dart';
-import 'package:laza/providers/wish_list_provider.dart';
+import 'package:laza/providers/product_list_provider.dart';
 
 class LSProductCard extends ConsumerWidget {
   final String image;
@@ -25,7 +25,7 @@ class LSProductCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wishList = ref.watch(wishListNotifierProvider);
+    final wishList = ref.watch(wishListProvider);
     final isFavorite = wishList.contains(product);
     final screenWithTablet = MediaQuery.of(context).size.width;
 
@@ -43,8 +43,7 @@ class LSProductCard extends ConsumerWidget {
             height: screenWithTablet > 600 ? 290.h : 203.h,
             width: screenWithTablet > 600 ? 250.w : double.infinity,
             onTapIcon: () {
-              final wishListNotifier =
-                  ref.read(wishListNotifierProvider.notifier);
+              final wishListNotifier = ref.read(wishListProvider.notifier);
               if (isFavorite) {
                 wishListNotifier.removeProduct(product);
               } else {

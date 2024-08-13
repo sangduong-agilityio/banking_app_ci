@@ -5,7 +5,7 @@ import 'package:laza/core/router/routes.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/pages/cart/widgets/card_product.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
-import 'package:laza/providers/cart_provider.dart';
+import 'package:laza/providers/product_list_provider.dart';
 
 class ListCartProduct extends StatelessWidget {
   const ListCartProduct({
@@ -15,7 +15,7 @@ class ListCartProduct extends StatelessWidget {
   });
 
   final List<Product> cartProducts;
-  final CartNotifier cartNotifier;
+  final ProductListNotifier cartNotifier;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +31,7 @@ class ListCartProduct extends StatelessWidget {
             onDismissed: (direction) {
               cartNotifier.removeProduct(product);
               LSSnackBar.buildErrorSnackbar(
-                  context,
-                  '${product.name}'
-                  '${S.current.removeFormCart}');
+                  context, '${product.name} ${S.current.removeFormCart}');
             },
             child: LSCardProduct(
               image: product.imageUrl,

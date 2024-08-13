@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
-import 'package:laza/providers/cart_provider.dart';
+import 'package:laza/providers/product_list_provider.dart';
 
 class LSAppBar extends ConsumerWidget {
   const LSAppBar({
@@ -22,7 +22,7 @@ class LSAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final totalProductsInCart = ref.watch(cartNotifierProvider).length;
+    final totalProductsInCart = ref.watch(cartProvider).length;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

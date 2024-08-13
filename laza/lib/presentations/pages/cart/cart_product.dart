@@ -8,15 +8,15 @@ import 'package:laza/presentations/pages/cart/widgets/list_view_product.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/empty_widget.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'package:laza/providers/cart_provider.dart';
+import 'package:laza/providers/product_list_provider.dart';
 
 class CartProductPage extends ConsumerWidget {
   const CartProductPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cartProducts = ref.watch(cartNotifierProvider);
-    final cartNotifier = ref.read(cartNotifierProvider.notifier);
+    final cartProducts = ref.watch(cartProvider);
+    final cartNotifier = ref.read(cartProvider.notifier);
     const sizeBox20 = SizedBox(height: 20);
 
     return Scaffold(

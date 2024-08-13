@@ -8,14 +8,15 @@ import 'package:laza/presentations/pages/wishList/widgets/grid_view_wish_list.da
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/empty_widget.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'package:laza/providers/wish_list_provider.dart';
+import 'package:laza/providers/product_list_provider.dart';
 
 class WishListPage extends ConsumerWidget {
   const WishListPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final wishListProducts = ref.watch(wishListNotifierProvider);
-    final wishListNotifier = ref.watch(wishListNotifierProvider.notifier);
+    final wishListProducts = ref.watch(wishListProvider);
+
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: wishListProducts.isEmpty
@@ -40,7 +41,6 @@ class WishListPage extends ConsumerWidget {
                     ),
                     SizedBox(height: 20.h),
                     GridViewWishList(
-                      wishListNotifier: wishListNotifier,
                       wishListProducts: wishListProducts,
                     ),
                   ],
