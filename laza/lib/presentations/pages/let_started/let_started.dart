@@ -15,7 +15,7 @@ class LetStartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sizedBox107 = SizedBox(height: 107.h);
-    final sizeBox10 = SizedBox(height: 10.h);
+    const sizeBox10 = SizedBox(height: 10);
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: Column(
@@ -35,7 +35,7 @@ class LetStartedPage extends StatelessWidget {
             ),
           ),
           sizedBox107,
-          _SocialButtons(sizeBox10: sizeBox10),
+          const _SocialButtons(sizeBox10: sizeBox10),
           sizedBox107,
           Text.rich(
             TextSpan(

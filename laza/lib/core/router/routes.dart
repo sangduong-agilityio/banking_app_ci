@@ -12,7 +12,7 @@ import 'package:laza/presentations/pages/auth/reset_password.dart';
 import 'package:laza/presentations/pages/auth/sign_in.dart';
 import 'package:laza/presentations/pages/auth/sign_up.dart';
 import 'package:laza/presentations/pages/brand_detail/brand_detail.dart';
-import 'package:laza/presentations/pages/brand_detail/brand_view.dart';
+import 'package:laza/presentations/pages/brand_detail/brand_view_all.dart';
 import 'package:laza/presentations/pages/cart/cart_product.dart';
 import 'package:laza/presentations/pages/home/home.dart';
 import 'package:laza/presentations/pages/let_started/let_started.dart';

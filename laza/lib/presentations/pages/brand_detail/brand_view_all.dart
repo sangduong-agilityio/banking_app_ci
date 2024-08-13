@@ -14,6 +14,7 @@ class BrandViewAll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const sizeBox15 = SizedBox(height: 15);
     return LazaShopScaffold(
       paddingScaffold: 20,
       body: Column(
@@ -23,12 +24,12 @@ class BrandViewAll extends StatelessWidget {
             onTappedBackButton: () => context.pop(),
             icon: LSIcons.icArrowLeft,
           ),
-          const SizedBox(height: 15),
+          sizeBox15,
           Text(
             S.current.featuresBrands,
             style: context.textTheme.displayLarge,
           ),
-          const SizedBox(height: 15),
+          sizeBox15,
           Text(
             S.current.chooseBrandYourSelf,
             style: context.textTheme.headlineSmall!

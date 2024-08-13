@@ -17,6 +17,7 @@ class CartProductPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cartProducts = ref.watch(cartNotifierProvider);
     final cartNotifier = ref.read(cartNotifierProvider.notifier);
+    const sizeBox20 = SizedBox(height: 20);
 
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
@@ -33,14 +34,14 @@ class CartProductPage extends ConsumerWidget {
                     icon: LSIcons.icArrowLeft,
                   ),
                 ),
-                SizedBox(height: 20.h),
+                sizeBox20,
                 Center(
                   child: Text(
                     S.current.listCartProduct,
                     style: context.textTheme.displayLarge,
                   ),
                 ),
-                SizedBox(height: 20.h),
+                sizeBox20,
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),

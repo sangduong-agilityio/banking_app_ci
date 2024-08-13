@@ -16,7 +16,6 @@ class LSForm extends StatefulWidget {
 
   final Function(bool value) isValidated;
 
-  /// Button action on keyboard in last text field
   final TextInputAction? textInputAction;
 
   @override
