@@ -5,7 +5,7 @@ import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/widgets/images.dart';
 import 'package:laza/presentations/widgets/tag.dart';
-import 'package:laza/providers/product_list_provider.dart';
+import 'package:laza/providers/card_product.dart';
 
 class LSProductCard extends ConsumerWidget {
   final String image;

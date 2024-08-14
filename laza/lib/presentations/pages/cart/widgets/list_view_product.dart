@@ -5,7 +5,7 @@ import 'package:laza/core/router/routes.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/pages/cart/widgets/card_product.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
-import 'package:laza/providers/product_list_provider.dart';
+import 'package:laza/providers/card_product.dart';
 
 class ListCartProduct extends StatelessWidget {
   const ListCartProduct({
@@ -15,7 +15,7 @@ class ListCartProduct extends StatelessWidget {
   });
 
   final List<Product> cartProducts;
-  final ProductListNotifier cartNotifier;
+  final CardProductNotifier cartNotifier;
 
   @override
   Widget build(BuildContext context) {

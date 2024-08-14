@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/router/routes.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/empty_widget.dart';
@@ -28,42 +29,54 @@ class GridViewProduct extends ConsumerWidget {
         brandId: brandId,
       ),
     );
-    final screenWithTablet = MediaQuery.of(context).size.width;
+
+    final screenWidth = context.mediaQueryData.size.width;
+
+    int crossAxisCount;
+    double childAspectRatio;
+
+    if (screenWidth > 900) {
+      crossAxisCount = 4;
+      childAspectRatio = 4 / 6;
+    } else if (screenWidth > 600) {
+      crossAxisCount = 3;
+      childAspectRatio = 4 / 6;
+    } else {
+      crossAxisCount = 2;
+      childAspectRatio = 7 / 12;
+    }
 
     return productsAsyncValue.when(
-        data: (products) {
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              childAspectRatio: screenWithTablet > 600 ? 4 / 6 : 7 / 12,
-              crossAxisCount: screenWithTablet > 900
-                  ? 4
-                  : screenWithTablet > 600
-                      ? 3
-                      : 2,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15,
-            ),
-            itemCount: products.length,
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return LSProductCard(
-                product: product,
-                image: product.imageUrl,
-                title: product.name,
-                price: product.price,
-                onTapProduct: () {
-                  context.pushNamed(
-                    AppRoutesName.productDetailPage.name,
-                    extra: product,
-                  );
-                },
-              );
-            },
-          );
-        },
-        loading: () => const ShimmerGridView(),
-        error: (error, stack) => const EmptyWidget());
+      data: (products) {
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            childAspectRatio: childAspectRatio,
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 15.w,
+            mainAxisSpacing: 15.h,
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            final product = products[index];
+            return LSProductCard(
+              product: product,
+              image: product.imageUrl,
+              title: product.name,
+              price: product.price,
+              onTapProduct: () {
+                context.pushNamed(
+                  AppRoutesName.productDetailPage.name,
+                  extra: product,
+                );
+              },
+            );
+          },
+        );
+      },
+      loading: () => const ShimmerGridView(),
+      error: (error, stack) => const EmptyWidget(),
+    );
   }
 }

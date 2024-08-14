@@ -11,7 +11,6 @@ import 'package:laza/presentations/pages/auth/widgets/form.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/presentations/widgets/icons.dart';
-import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/presentations/widgets/indicator.dart';
 import 'package:laza/presentations/widgets/snack_bar.dart';
 import 'package:laza/providers/auth_provider.dart';
@@ -52,10 +51,12 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       });
     }
 
-    return LazaShopScaffold(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: context.colorScheme.onPrimary,
       body: Column(
         children: [
-          SizedBox(height: 25.h),
+          SizedBox(height: 45.h),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: LSAppBar(
@@ -64,6 +65,17 @@ class _SignInPageState extends ConsumerState<SignInPage> {
             ),
           ),
           const SizedBox(height: 15),
+          Text(
+            S.current.welcome,
+            style: context.textTheme.displayLarge,
+          ),
+          const SizedBox(height: 5),
+          Text(
+            S.current.pleaseEnterData,
+            style: context.textTheme.headlineSmall!
+                .copyWith(color: context.colorScheme.tertiaryContainer),
+          ),
+          SizedBox(height: 165.h),
           SignInForm(
             emailController: emailController,
             passwordController: passwordController,
@@ -71,7 +83,7 @@ class _SignInPageState extends ConsumerState<SignInPage> {
               ref.read(isFormValidProvider.notifier).state = isValid;
             },
           ),
-          const SizedBox(height: 63),
+          const Spacer(),
           LSButton(
             isDisabled: !isFormValid,
             text: S.current.loginBtn,
@@ -106,17 +118,6 @@ class _SignInFormState extends State<SignInForm> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          Text(
-            S.current.welcome,
-            style: context.textTheme.displayLarge,
-          ),
-          const SizedBox(height: 5),
-          Text(
-            S.current.pleaseEnterData,
-            style: context.textTheme.headlineSmall!
-                .copyWith(color: context.colorScheme.tertiaryContainer),
-          ),
-          SizedBox(height: 165.h),
           LSForm(
             isValidated: (value) {
               widget.onFormValidationChanged?.call(value);
@@ -137,7 +138,6 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ],
           ),
-          SizedBox(height: 30.h),
           TextButton(
             onPressed: () {
               context.pushNamed(AppRoutesName.forgotPasswordPage.name);

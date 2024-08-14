@@ -3,17 +3,11 @@ import 'package:laza/core/extensions/context_extensions.dart';
 
 class LSShimmerLoading extends StatefulWidget {
   final double width;
-
   final double height;
-
   final Color? startColor;
-
   final Color? endColor;
-
   final BorderRadius borderRadius;
-
   final Duration? durationAnimated;
-
   final BuildContext context;
 
   const LSShimmerLoading({
@@ -55,7 +49,6 @@ class LSShimmerLoading extends StatefulWidget {
 class _LSShimmerLoadingState extends State<LSShimmerLoading>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  // Animation which will hold the ColorTween values
   late Animation _colorAnimation;
 
   @override
@@ -65,30 +58,23 @@ class _LSShimmerLoadingState extends State<LSShimmerLoading>
   }
 
   void init(BuildContext context) {
-    // Initializing AnimationController
     _animationController = AnimationController(
       vsync: this,
       duration: widget.durationAnimated ?? const Duration(milliseconds: 600),
     );
-    // ColorTween Animation
     _colorAnimation = ColorTween(
       begin: widget.startColor ?? context.colorScheme.surface,
       end: widget.endColor ?? context.colorScheme.outlineVariant,
     ).animate(_animationController);
 
-    // Trigger the animation only after build is rendered
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _animationController.forward();
     });
 
-    // Adding listener to the AnimationController so that
-    // we can put it in a loop based on it's status
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // Reverse the animation if it's completed
         _animationController.reverse();
       } else if (status == AnimationStatus.dismissed) {
-        // Restart the animation if it's dismissed
         _animationController.forward();
       }
     });
@@ -113,7 +99,6 @@ class _LSShimmerLoadingState extends State<LSShimmerLoading>
 
   @override
   void dispose() {
-    // Dispose the AnimationController when the widget is disposed
     _animationController.dispose();
     super.dispose();
   }
@@ -126,22 +111,22 @@ class ShimmerListView extends StatelessWidget {
     this.itemCount = 1,
   });
 
-  // Height of shimmer
   final double height;
-
-  // Number auto gen widget of shimmer
   final int itemCount;
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = MediaQuery.of(context).size.width > 600;
+    final adjustedHeight = isTablet ? height * 1.5 : height;
+
     return Center(
       child: Wrap(
-        runSpacing: 20,
+        runSpacing: 20.w,
         children: List<Widget>.filled(
           itemCount,
           LSShimmerLoading(
             width: MediaQuery.of(context).size.width,
-            height: height.h,
+            height: adjustedHeight.h,
             context: context,
           ),
         ),
@@ -158,32 +143,31 @@ class ShimmerGridView extends StatelessWidget {
     this.width = 160,
   });
 
-  // Count of item shimmer widget
   final int itemCount;
-
-  /// Width of item
   final double width;
-
-  /// Height of item
   final double height;
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = MediaQuery.of(context).size.width > 600;
+    final adjustedWidth = isTablet ? width * 1.2 : width;
+    final adjustedHeight = isTablet ? height * 1.2 : height;
+
     return SizedBox(
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 15,
-          mainAxisSpacing: 15,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: isTablet ? 300 : 200,
+          childAspectRatio: isTablet ? 4 / 3 : 3 / 2,
+          crossAxisSpacing: 15.w,
+          mainAxisSpacing: 15.h,
         ),
         itemCount: itemCount,
         itemBuilder: (context, _) {
           return LSShimmerLoading(
-            width: width,
-            height: height,
+            width: adjustedWidth.w,
+            height: adjustedHeight.h,
             context: context,
           );
         },

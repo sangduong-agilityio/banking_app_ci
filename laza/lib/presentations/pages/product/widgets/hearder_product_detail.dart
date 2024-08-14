@@ -10,6 +10,7 @@ import 'package:laza/providers/product_provider.dart';
 
 class HeaderProductDetail extends ConsumerWidget {
   final Product product;
+
   const HeaderProductDetail({
     super.key,
     required this.product,
@@ -17,6 +18,7 @@ class HeaderProductDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final screenWidth = context.mediaQueryData.size.width;
     final selectedImageUrl = ref.watch(productsNotifierProvider('')).maybeWhen(
           data: (products) {
             final notifier = ref.read(productsNotifierProvider('').notifier);
@@ -32,17 +34,17 @@ class HeaderProductDetail extends ConsumerWidget {
           imageUrl:
               selectedImageUrl.isNotEmpty ? selectedImageUrl : product.imageUrl,
           width: double.infinity,
-          height: 375.h,
+          height: screenWidth > 600 ? 750.h : 375.h,
           fit: BoxFit.cover,
           borderRadius: 0,
         ),
         Align(
           alignment: Alignment.topCenter,
           child: Padding(
-            padding: const EdgeInsets.only(
-              top: 45,
-              right: 20,
-              left: 20,
+            padding: EdgeInsets.only(
+              top: 45.h,
+              right: 20.w,
+              left: 20.w,
             ),
             child: LSAppBar(
               onTappedBackButton: () => context.pop(),

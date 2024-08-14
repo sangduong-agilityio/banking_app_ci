@@ -23,10 +23,10 @@ class LSForm extends StatefulWidget {
 }
 
 class _OLFormState extends State<LSForm> {
+  final formStateKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    final formStateKey = GlobalKey<FormState>();
-
     return Form(
       key: formStateKey,
       onChanged: () {
@@ -50,6 +50,11 @@ class _OLFormState extends State<LSForm> {
             ] else
               input.copyWith(
                 textInputAction: widget.textInputAction ?? TextInputAction.done,
+                onEditingComplete: () {
+                  if (formStateKey.currentState!.validate()) {
+                    widget.isValidated(true);
+                  }
+                },
               ),
           ],
         ],

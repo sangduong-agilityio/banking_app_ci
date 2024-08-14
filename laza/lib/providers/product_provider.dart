@@ -41,6 +41,7 @@ class ProductsNotifier extends _$ProductsNotifier {
     _productService = ref.watch(productServiceProvider);
     _products = await _productService.getProducts(query,
         brandId: brandId, productId: productId);
+    resetSelectedImage();
     return _products;
   }
 
@@ -74,5 +75,10 @@ class ProductsNotifier extends _$ProductsNotifier {
     selectedImageIndex = index;
     selectedImageUrl = _products[index].imageUrl;
     state = AsyncValue.data(_products);
+  }
+
+  void resetSelectedImage() {
+    selectedImageIndex = -1;
+    selectedImageUrl = '';
   }
 }

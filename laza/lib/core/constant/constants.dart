@@ -19,3 +19,5 @@ class DesignConstants {
   static const double heightTabletLandscape = 768;
   static const double widthMobileLandscape = 640;
 }
+
+const double vatPercentage = 15;

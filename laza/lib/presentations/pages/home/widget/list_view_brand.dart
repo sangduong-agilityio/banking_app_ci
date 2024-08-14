@@ -16,32 +16,32 @@ class ListViewBrand extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandAsyncValue = ref.watch(brandProvider);
-    final screenWithTablet = MediaQuery.of(context).size.width;
+    final screenWidth = context.mediaQueryData.size.width;
 
     return brandAsyncValue.when(
-        data: (brand) => InkWell(
+        data: (brands) => InkWell(
               child: SizedBox(
-                height: screenWithTablet > 600 ? 80.h : 50.h,
+                height: screenWidth > 600 ? 80.h : 50.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: brand.length,
+                  itemCount: brands.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    final brands = brand[index];
+                    final brand = brands[index];
                     return Padding(
                       padding: EdgeInsets.only(
-                        right: screenWithTablet > 600 ? 15 : 10,
+                        right: screenWidth > 600 ? 15.w : 10.w,
                       ),
                       child: InkWell(
                         onTap: () {
                           context.pushNamed(
                             AppRoutesName.brandDetailPage.name,
-                            extra: brands,
+                            extra: brand,
                           );
                         },
                         child: LSBrand(
-                          brandName: brands.name,
-                          brandLogo: brands.image,
+                          brandName: brand.name,
+                          brandLogo: brand.image,
                         ),
                       ),
                     );

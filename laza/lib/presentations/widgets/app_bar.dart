@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
-import 'package:laza/providers/product_list_provider.dart';
+import 'package:laza/providers/card_product.dart';
 
 class LSAppBar extends ConsumerWidget {
   const LSAppBar({
@@ -23,6 +23,7 @@ class LSAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final totalProductsInCart = ref.watch(cartProvider).length;
+    final screenWidth = context.mediaQueryData.size.width;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,8 +38,8 @@ class LSAppBar extends ConsumerWidget {
           ),
         ),
         Container(
-          width: 68.w,
-          height: 45.h,
+          width: screenWidth > 600 ? 140.w : 68.w,
+          height: screenWidth > 600 ? 120.h : 45.h,
           decoration: ShapeDecoration(
             image: DecorationImage(
               image: Image.network(
@@ -65,8 +66,8 @@ class LSAppBar extends ConsumerWidget {
             if (totalProductsInCart > 0)
               Positioned(
                 child: Container(
-                  width: 18,
-                  height: 18,
+                  width: screenWidth > 600 ? 140.w : 18,
+                  height: screenWidth > 600 ? 140.h : 18,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
