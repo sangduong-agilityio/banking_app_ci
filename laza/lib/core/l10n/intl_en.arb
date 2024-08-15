@@ -68,5 +68,7 @@
     "priceHighToLow":"Price High to Low",
     "removeFormCart":" removed from Cart",
     "listCartProduct":"List Cart Product",
-    "wishListProduct":"Wish List Product"
+    "wishListProduct":"Wish List Product",
+    "orders":" Orders"
+
 }

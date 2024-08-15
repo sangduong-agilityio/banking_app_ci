@@ -68,6 +68,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "nikeClubFleece":
             MessageLookupByLibrary.simpleMessage("Nike Club Fleece"),
         "order": MessageLookupByLibrary.simpleMessage("Order"),
+        "orders": MessageLookupByLibrary.simpleMessage(" Orders"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pleaseEnterData": MessageLookupByLibrary.simpleMessage(
             "Please enter your data to continue"),
