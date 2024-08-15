@@ -1,3 +1,4 @@
+import 'package:laza/data/models/product_image_model.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/data/repositories/product_repo.dart';
 
@@ -14,5 +15,9 @@ class ProductService {
       productId: productId,
       brandId: brandId,
     );
+  }
+
+  Future<List<ProductImage>> getProductImages(int productId) {
+    return _productRepository.getProductImages(productId);
   }
 }

@@ -44,10 +44,4 @@ extension MediaQuerySize on num {
 
   // Using for dimension of vertical (height, top, bottom)
   double get h => this * ratioDesign;
-
-  // Using for size of icon, border, container
-  double get sp => this * ratioDesign;
-
-  // Using for size of text
-  double get fs => this * ratioDesign;
 }

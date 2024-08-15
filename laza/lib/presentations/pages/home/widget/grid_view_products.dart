@@ -48,6 +48,9 @@ class GridViewProduct extends ConsumerWidget {
 
     return productsAsyncValue.when(
       data: (products) {
+        if (products.isEmpty) {
+          return const EmptyWidget();
+        }
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

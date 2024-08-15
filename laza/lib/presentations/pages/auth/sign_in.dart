@@ -144,11 +144,8 @@ class _SignInFormState extends State<SignInForm> {
             },
             child: Align(
               alignment: Alignment.centerRight,
-              child: Text(
-                S.current.forgotPasswordTextBtn,
-                style: context.textTheme.headlineSmall!
-                    .copyWith(color: context.colorScheme.error),
-              ),
+              child: Text(S.current.forgotPasswordTextBtn,
+                  style: context.textTheme.headlineSmall),
             ),
           ),
           SizedBox(height: 42.h),

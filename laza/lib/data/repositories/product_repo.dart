@@ -1,5 +1,6 @@
 import 'package:laza/core/api/api_client.dart';
 import 'package:laza/core/env/env.dart';
+import 'package:laza/data/models/product_image_model.dart';
 import 'package:laza/data/models/product_model.dart';
 
 abstract class ProductRepository {
@@ -8,9 +9,7 @@ abstract class ProductRepository {
     int? brandId,
     int? productId,
   });
-  Future<Product> getProductById(int id);
-  Future<void> createProduct(Product product);
-  Future<void> updateProduct(Product product);
+  Future<List<ProductImage>> getProductImages(int productId);
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -25,7 +24,7 @@ class ProductRepositoryImpl implements ProductRepository {
     int? brandId,
     int? productId,
   }) async {
-    const String apiUrl = '${Env.endPoint}products';
+    const String apiUrl = '${Env.endPoint}product';
 
     final response = await _apiClient.get(
       apiUrl,
@@ -44,18 +43,21 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Product> getProductById(int id) async {
-    final response = await _apiClient.get('products/$id');
-    return Product.fromJson(response.data);
-  }
+  Future<List<ProductImage>> getProductImages(int productId) async {
+    const String apiUrl = '${Env.endPoint}product_image';
+    final response = await _apiClient.get(
+      apiUrl,
+      queryParams: {
+        'select': 'id,imageUrl,productId',
+        'productId': 'eq.$productId',
+      },
+    );
+    final jsonData = response.data;
+    print('Product images response: ${response.data}');
 
-  @override
-  Future<void> createProduct(Product product) async {
-    await _apiClient.post('products', data: product.toJson());
-  }
+    final productImages =
+        (jsonData as List).map((json) => ProductImage.fromJson(json)).toList();
 
-  @override
-  Future<void> updateProduct(Product product) async {
-    await _apiClient.patch('products/${product.id}', data: product.toJson());
+    return productImages;
   }
 }

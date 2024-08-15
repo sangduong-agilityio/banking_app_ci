@@ -6,6 +6,7 @@ import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/buttons.dart';
 import 'package:laza/providers/card_product.dart';
+import 'package:laza/providers/product_provider.dart';
 import 'widgets/description_product_detail.dart';
 import 'widgets/hearder_product_detail.dart';
 import 'widgets/list_view_product_detail.dart';
@@ -26,6 +27,8 @@ class ProductDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final productsNotifier = ref.read(productsNotifierProvider('').notifier);
+    productsNotifier.fetchProductImages(product.id);
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: SingleChildScrollView(
@@ -75,7 +78,9 @@ class ProductDetailPage extends ConsumerWidget {
                 ],
               ),
             ),
-            const ListViewProductDetail(),
+            ListViewProductDetail(
+              productId: product.id,
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Row(

@@ -1,5 +1,6 @@
 import 'package:laza/core/api/api_client.dart';
 import 'package:laza/core/env/env.dart';
+import 'package:laza/data/models/product_image_model.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/data/repositories/product_repo.dart';
 import 'package:laza/presentations/pages/brand_detail/widgets/sort_detail.dart';
@@ -31,6 +32,7 @@ class ProductsNotifier extends _$ProductsNotifier {
   List<Product> _products = [];
   int selectedImageIndex = -1;
   String selectedImageUrl = '';
+  List<ProductImage> productImages = [];
 
   @override
   FutureOr<List<Product>> build(
@@ -73,12 +75,17 @@ class ProductsNotifier extends _$ProductsNotifier {
 
   void selectImage(int index) {
     selectedImageIndex = index;
-    selectedImageUrl = _products[index].imageUrl;
+    selectedImageUrl = productImages[index].imageUrl;
     state = AsyncValue.data(_products);
   }
 
   void resetSelectedImage() {
     selectedImageIndex = -1;
     selectedImageUrl = '';
+  }
+
+  Future<void> fetchProductImages(int productId) async {
+    productImages = await _productService.getProductImages(productId);
+    state = AsyncValue.data(_products);
   }
 }

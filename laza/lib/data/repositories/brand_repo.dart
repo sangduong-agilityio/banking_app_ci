@@ -15,14 +15,14 @@ class BrandRepositoryImpl implements BrandRepository {
 
   @override
   Future<Brand> getBrandByID(int id) async {
-    final response = await _apiClient.get('brands/$id');
+    final response = await _apiClient.get('brand/$id');
     final jsonData = response.data;
     return Brand.fromJson(jsonData);
   }
 
   @override
   Future<List<Brand>> getBrands() async {
-    const String apiUrl = '${Env.endPoint}brands';
+    const String apiUrl = '${Env.endPoint}brand';
 
     final response = await _apiClient.get(
       apiUrl,

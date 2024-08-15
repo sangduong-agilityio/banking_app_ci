@@ -7,7 +7,9 @@ import 'package:laza/presentations/widgets/shimmer.dart';
 import 'package:laza/providers/product_provider.dart';
 
 class ListViewProductDetail extends ConsumerWidget {
+  final int productId;
   const ListViewProductDetail({
+    required this.productId,
     super.key,
   });
 
@@ -21,16 +23,19 @@ class ListViewProductDetail extends ConsumerWidget {
 
     return productsAsyncValue.when(
         data: (products) {
+          if (productsNotifier.productImages.isEmpty) {
+            return const EmptyWidget();
+          }
           return Padding(
             padding: const EdgeInsets.all(20),
             child: SizedBox(
               height: screenWidth > 600 ? 140.h : 77.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: products.length,
+                itemCount: productsNotifier.productImages.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final productImage = productsNotifier.productImages[index];
 
                   return GestureDetector(
                     onTap: () {
@@ -41,7 +46,7 @@ class ListViewProductDetail extends ConsumerWidget {
                       child: LSImage(
                         width: screenWidth > 600 ? 140.w : 77.w,
                         borderRadius: 10,
-                        imageUrl: product.imageUrl,
+                        imageUrl: productImage.imageUrl,
                       ),
                     ),
                   );
