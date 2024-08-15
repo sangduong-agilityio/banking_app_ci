@@ -10,6 +10,7 @@ import 'package:laza/core/router/routes.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/providers/auth_provider.dart';
+import 'package:laza/providers/card_product.dart';
 
 class LSDrawerMenu extends ConsumerStatefulWidget {
   const LSDrawerMenu({super.key});
@@ -21,6 +22,9 @@ class LSDrawerMenu extends ConsumerStatefulWidget {
 class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
   @override
   Widget build(BuildContext context) {
+    final userProfileAsyncValue = ref.watch(userProfileProvider);
+    final totalProductsInCart = ref.watch(cartProvider).length;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: BackdropFilter(
@@ -48,48 +52,61 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                       icon: LSIcons.icInvertedMenu,
                     ),
                     SizedBox(height: 30.h),
-                    Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 25,
-                          backgroundImage: AssetImage(''),
-                        ),
-                        const SizedBox(width: 15),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    userProfileAsyncValue.when(
+                      data: (user) {
+                        return Row(
                           children: [
-                            Text(
-                              'Sang',
-                              style: context.textTheme.headlineLarge,
+                            CircleAvatar(
+                              radius: 25,
+                              backgroundImage: user?.avatar != null
+                                  ? NetworkImage(user!.avatar)
+                                  : null,
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              S.current.verifiedProfile,
-                              style: context.textTheme.bodyLarge,
+                            const SizedBox(width: 15),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  user?.userName ?? '',
+                                  style: context.textTheme.headlineLarge,
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  S.current.verifiedProfile,
+                                  style: context.textTheme.bodyLarge,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
+                            Container(
+                              width: 80,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: context.colorScheme.outlineVariant,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                child: TextButton(
+                                    onPressed: () {
+                                      context.pushNamed(
+                                          AppRoutesName.cartProductPage.name);
+                                    },
+                                    child: Text(
+                                      '$totalProductsInCart'
+                                      '${S.current.orders}',
+                                      style: context.textTheme.titleMedium,
+                                    )),
+                              ),
                             ),
                           ],
-                        ),
-                        const SizedBox(width: 30),
-                        Container(
-                          width: 66,
-                          height: 32,
-                          decoration: BoxDecoration(
-                            color: context.colorScheme.outlineVariant,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              '3 Orders',
-                              style: context.textTheme.bodyLarge,
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
+                      loading: () => const CircularProgressIndicator(),
+                      error: (error, stack) => Text('Error: $error'),
                     ),
                   ],
                 ),
               ),
-
               SizedBox(height: 30.h),
               // Dark mode switch
               Padding(

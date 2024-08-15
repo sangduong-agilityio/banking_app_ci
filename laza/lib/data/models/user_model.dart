@@ -1,15 +1,15 @@
 import 'package:laza/data/models/model.dart';
 
 @Model()
-class User {
-  final int id;
-  final String username;
+class Users {
+  final String id;
+  final String userName;
   final String displayName;
   final String avatar;
   final String review;
-  User({
+  Users({
     required this.id,
-    required this.username,
+    required this.userName,
     required this.displayName,
     required this.avatar,
     required this.review,

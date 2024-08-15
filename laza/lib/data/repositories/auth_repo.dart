@@ -1,3 +1,4 @@
+import 'package:laza/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRepository {
@@ -16,6 +17,7 @@ abstract class AuthRepository {
   Future<void> resetPassword(
     String password,
   );
+  Future<Users?> fetchUserProfile();
   Future<void> logout();
 }
 
@@ -54,6 +56,29 @@ class AuthRepositoryImplement implements AuthRepository {
   Future<void> resetPassword(String password) async {
     final userAttributes = UserAttributes(password: password);
     await _client.auth.updateUser(userAttributes);
+  }
+
+  @override
+  Future<Users?> fetchUserProfile() async {
+    final user = _client.auth.currentUser;
+
+    if (user == null) {
+      throw Exception('User is not logged in');
+    }
+
+    final userData = await _client
+        .from('user')
+        .select('id, userName, displayName, avatar, review')
+        .eq('id', user.id)
+        .single();
+
+    return Users(
+      id: userData['id'],
+      userName: userData['userName'],
+      displayName: userData['displayName'],
+      avatar: userData['avatar'],
+      review: userData['review'] ?? '',
+    );
   }
 
   @override
