@@ -16,10 +16,10 @@ class LSBrand extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = context.mediaQueryData.size.width;
+    final tabletScreen = context.mediaQueryData.size.width;
     return Container(
-      width: screenWidth > 600 ? 160.w : 115.w,
-      height: screenWidth > 600 ? 50.h : 50.h,
+      width: tabletScreen > 600 ? 160.w : 115.w,
+      height: tabletScreen > 600 ? 50.h : 50.h,
       decoration: BoxDecoration(
         color: context.colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(8),
@@ -32,8 +32,8 @@ class LSBrand extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: CachedNetworkImage(
                 imageUrl: brandLogo,
-                height: screenWidth > 600 ? 80.h : 40.h,
-                width: screenWidth > 600 ? 80.w : 40.w,
+                height: tabletScreen > 600 ? 80.h : 40.h,
+                width: tabletScreen > 600 ? 80.w : 40.w,
                 fit: fit,
                 placeholder: (context, url) => Container(
                   color: context.colorScheme.tertiaryContainer,

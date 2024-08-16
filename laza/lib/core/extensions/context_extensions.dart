@@ -19,7 +19,7 @@ extension MediaQueryContext on BuildContext {
 }
 
 extension MediaQuerySize on num {
-  static final double widthScreen = WidgetsBinding
+  static final double tabletScreen = WidgetsBinding
           .instance.platformDispatcher.views.first.physicalSize.width /
       WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
   static final double heightScreen = WidgetsBinding
@@ -27,15 +27,15 @@ extension MediaQuerySize on num {
       WidgetsBinding.instance.platformDispatcher.views.first.devicePixelRatio;
 
   double get ratioDesign {
-    if (widthScreen > 900) {
+    if (tabletScreen > 900) {
       // tablet landscape
-      return (widthScreen / DesignConstants.widthTabletLandscape);
-    } else if (widthScreen > 600) {
+      return (tabletScreen / DesignConstants.widthTabletLandscape);
+    } else if (tabletScreen > 600) {
       // tablet portrait
-      return (widthScreen / DesignConstants.widthTabletPortrait);
+      return (tabletScreen / DesignConstants.widthTabletPortrait);
     } else {
       // mobile
-      return (widthScreen / DesignConstants.widthMobile);
+      return (tabletScreen / DesignConstants.widthMobile);
     }
   }
 

@@ -51,45 +51,54 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       });
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.colorScheme.onPrimary,
-      body: Column(
-        children: [
-          SizedBox(height: 45.h),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: LSAppBar(
-              onTappedBackButton: () => context.pop(),
-              icon: LSIcons.icArrowLeft,
+    @override
+    void dispose() {
+      emailController.dispose();
+      passwordController.dispose();
+      super.dispose();
+    }
+
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: context.colorScheme.onPrimary,
+        body: Column(
+          children: [
+            SizedBox(height: 45.h),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: LSAppBar(
+                onTappedBackButton: () => context.pop(),
+                icon: LSIcons.icArrowLeft,
+              ),
             ),
-          ),
-          const SizedBox(height: 15),
-          Text(
-            S.current.welcome,
-            style: context.textTheme.displayLarge,
-          ),
-          const SizedBox(height: 5),
-          Text(
-            S.current.pleaseEnterData,
-            style: context.textTheme.headlineSmall!
-                .copyWith(color: context.colorScheme.tertiaryContainer),
-          ),
-          SizedBox(height: 165.h),
-          SignInForm(
-            emailController: emailController,
-            passwordController: passwordController,
-            onFormValidationChanged: (isValid) {
-              ref.read(isFormValidProvider.notifier).state = isValid;
-            },
-          ),
-          const Spacer(),
-          LSButton(
-            isDisabled: !isFormValid,
-            text: S.current.loginBtn,
-            onPressed: () => login(),
-          ),
-        ],
+            const SizedBox(height: 15),
+            Text(
+              S.current.welcome,
+              style: context.textTheme.displayLarge,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              S.current.pleaseEnterData,
+              style: context.textTheme.headlineSmall!
+                  .copyWith(color: context.colorScheme.tertiaryContainer),
+            ),
+            const Spacer(),
+            SignInForm(
+              emailController: emailController,
+              passwordController: passwordController,
+              onFormValidationChanged: (isValid) {
+                ref.read(isFormValidProvider.notifier).state = isValid;
+              },
+            ),
+            const Spacer(),
+            LSButton(
+              isDisabled: !isFormValid,
+              text: S.current.loginBtn,
+              onPressed: () => login(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -119,6 +128,7 @@ class _SignInFormState extends State<SignInForm> {
       child: Column(
         children: [
           LSForm(
+            spaceBetweenRow: 10,
             isValidated: (value) {
               widget.onFormValidationChanged?.call(value);
             },
@@ -135,7 +145,7 @@ class _SignInFormState extends State<SignInForm> {
                 validatorText: (value) =>
                     InputValidationMixin.validPassword(value ?? ''),
                 hasObscureText: true,
-              ),
+              )
             ],
           ),
           TextButton(
@@ -148,7 +158,7 @@ class _SignInFormState extends State<SignInForm> {
                   style: context.textTheme.headlineSmall),
             ),
           ),
-          SizedBox(height: 42.h),
+          const SizedBox(height: 40),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -159,12 +169,14 @@ class _SignInFormState extends State<SignInForm> {
                     .copyWith(color: context.colorScheme.tertiary),
               ),
               CupertinoSwitch(
-                value: true,
+                value: false,
                 onChanged: (bool val) {},
               ),
             ],
           ),
-          SizedBox(height: 110.h),
+          const SizedBox(
+            height: 93,
+          ),
           Text.rich(
             TextSpan(
               children: [

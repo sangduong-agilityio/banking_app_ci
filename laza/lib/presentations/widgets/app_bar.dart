@@ -23,7 +23,7 @@ class LSAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final totalProductsInCart = ref.watch(cartProvider).length;
-    final screenWidth = context.mediaQueryData.size.width;
+    final tabletScreen = context.mediaQueryData.size.width;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,8 +38,8 @@ class LSAppBar extends ConsumerWidget {
           ),
         ),
         Container(
-          width: screenWidth > 600 ? 140.w : 68.w,
-          height: screenWidth > 600 ? 120.h : 45.h,
+          width: tabletScreen > 600 ? 140.w : 68.w,
+          height: tabletScreen > 600 ? 120.h : 45.h,
           decoration: ShapeDecoration(
             image: DecorationImage(
               image: Image.network(
@@ -66,8 +66,8 @@ class LSAppBar extends ConsumerWidget {
             if (totalProductsInCart > 0)
               Positioned(
                 child: Container(
-                  width: screenWidth > 600 ? 140.w : 18,
-                  height: screenWidth > 600 ? 140.h : 18,
+                  width: tabletScreen > 600 ? 140.w : 18,
+                  height: tabletScreen > 600 ? 140.h : 18,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),

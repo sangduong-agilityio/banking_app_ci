@@ -84,8 +84,13 @@ class ProductsNotifier extends _$ProductsNotifier {
     selectedImageUrl = '';
   }
 
-  Future<void> fetchProductImages(int productId) async {
+  void fetchProductImages(int productId) async {
     productImages = await _productService.getProductImages(productId);
+    state = AsyncValue.data(_products);
+  }
+
+  Future<void> refreshProducts(String query) async {
+    _products = await _productService.getProducts(query);
     state = AsyncValue.data(_products);
   }
 }

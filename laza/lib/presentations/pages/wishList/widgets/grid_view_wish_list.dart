@@ -14,17 +14,17 @@ class GridViewWishList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final tabletScreen = MediaQuery.of(context).size.width;
 
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: wishListProducts.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        childAspectRatio: screenWidth > 600 ? 4 / 6 : 7 / 12,
-        crossAxisCount: screenWidth > 900
+        childAspectRatio: tabletScreen > 600 ? 4 / 6 : 7 / 12,
+        crossAxisCount: tabletScreen > 900
             ? 4
-            : screenWidth > 600
+            : tabletScreen > 600
                 ? 3
                 : 2,
         crossAxisSpacing: 15,

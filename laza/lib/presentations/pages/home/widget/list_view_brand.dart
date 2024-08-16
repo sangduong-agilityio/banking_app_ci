@@ -16,12 +16,12 @@ class ListViewBrand extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final brandAsyncValue = ref.watch(brandProvider);
-    final screenWidth = context.mediaQueryData.size.width;
+    final tabletScreen = context.mediaQueryData.size.width;
 
     return brandAsyncValue.when(
         data: (brands) => InkWell(
               child: SizedBox(
-                height: screenWidth > 600 ? 80.h : 50.h,
+                height: tabletScreen > 600 ? 80.h : 50.h,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: brands.length,
@@ -30,7 +30,7 @@ class ListViewBrand extends ConsumerWidget {
                     final brand = brands[index];
                     return Padding(
                       padding: EdgeInsets.only(
-                        right: screenWidth > 600 ? 15.w : 10.w,
+                        right: tabletScreen > 600 ? 15.w : 10.w,
                       ),
                       child: InkWell(
                         onTap: () {

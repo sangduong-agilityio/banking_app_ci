@@ -11,10 +11,8 @@ class LSLoadingIndicator extends StatelessWidget {
     this.color,
   });
 
-  /// The radius of the circular loading indicator.
   final double? radius;
 
-  /// The color of the circular loading indicator.
   final Color? color;
 
   static Future<LSLoadingIndicator?> show(
@@ -37,7 +35,6 @@ class LSLoadingIndicator extends StatelessWidget {
     );
   }
 
-  /// Hides the loading indicator dialog.
   static void hide(BuildContext ctx) {
     ctx.pop();
   }

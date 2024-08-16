@@ -31,7 +31,7 @@ class LSSearchBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final screenWidth = context.mediaQueryData.size.width;
+    final tabletScreen = context.mediaQueryData.size.width;
     final searchQueryNotifier = ref.read(searchQueryProvider.notifier);
     final searchQuery = ref.watch(searchQueryProvider);
     final TextEditingController textController =
@@ -43,8 +43,8 @@ class LSSearchBar extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
-          width: screenWidth > 600 ? 650.w : 280.w,
-          height: screenWidth > 600 ? 70.w : 50.h,
+          width: tabletScreen > 600 ? 650.w : 280.w,
+          height: tabletScreen > 600 ? 70.w : 50.h,
           child: SearchBar(
             onTap: onTap,
             focusNode: focusNode,
@@ -72,7 +72,7 @@ class LSSearchBar extends ConsumerWidget {
           width: 10,
         ),
         SizedBox(
-          height: screenWidth > 600 ? 70.w : 50.h,
+          height: tabletScreen > 600 ? 70.w : 50.h,
           child: FittedBox(
             child: FloatingActionButton(
               elevation: 0,

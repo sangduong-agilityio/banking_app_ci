@@ -19,7 +19,7 @@ class ListViewProductDetail extends ConsumerWidget {
     productsNotifier.resetSelectedImage();
 
     final productsAsyncValue = ref.watch(productsNotifierProvider(''));
-    final screenWidth = context.mediaQueryData.size.width;
+    final tabletScreen = context.mediaQueryData.size.width;
 
     return productsAsyncValue.when(
         data: (products) {
@@ -29,7 +29,7 @@ class ListViewProductDetail extends ConsumerWidget {
           return Padding(
             padding: const EdgeInsets.all(20),
             child: SizedBox(
-              height: screenWidth > 600 ? 140.h : 77.h,
+              height: tabletScreen > 600 ? 140.h : 77.h,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: productsNotifier.productImages.length,
@@ -44,7 +44,7 @@ class ListViewProductDetail extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: LSImage(
-                        width: screenWidth > 600 ? 140.w : 77.w,
+                        width: tabletScreen > 600 ? 140.w : 77.w,
                         borderRadius: 10,
                         imageUrl: productImage.imageUrl,
                       ),

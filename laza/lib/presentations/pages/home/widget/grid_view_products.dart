@@ -30,21 +30,7 @@ class GridViewProduct extends ConsumerWidget {
       ),
     );
 
-    final screenWidth = context.mediaQueryData.size.width;
-
-    int crossAxisCount;
-    double childAspectRatio;
-
-    if (screenWidth > 900) {
-      crossAxisCount = 4;
-      childAspectRatio = 4 / 6;
-    } else if (screenWidth > 600) {
-      crossAxisCount = 3;
-      childAspectRatio = 4 / 6;
-    } else {
-      crossAxisCount = 2;
-      childAspectRatio = 7 / 12;
-    }
+    final tabletScreen = context.mediaQueryData.size.width;
 
     return productsAsyncValue.when(
       data: (products) {
@@ -55,8 +41,8 @@ class GridViewProduct extends ConsumerWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: childAspectRatio,
-            crossAxisCount: crossAxisCount,
+            childAspectRatio: tabletScreen > 600 ? 4 / 6 : 7 / 12,
+            crossAxisCount: tabletScreen > 600 ? 3 : 2,
             crossAxisSpacing: 15.w,
             mainAxisSpacing: 15.h,
           ),

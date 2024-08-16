@@ -10,10 +10,10 @@ class LSSize extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = context.mediaQueryData.size.width;
+    final tabletScreen = context.mediaQueryData.size.width;
 
     return Container(
-        width: screenWidth > 600 ? 120.w : 60.w,
+        width: tabletScreen > 600 ? 120.w : 60.w,
         decoration: BoxDecoration(
           color: context.colorScheme.outlineVariant,
           borderRadius: BorderRadius.circular(10),

@@ -18,7 +18,7 @@ class LSTag extends StatelessWidget {
       children: [
         Text(
           tagTitle,
-          maxLines: 3,
+          maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: context.textTheme.titleMedium!
               .copyWith(color: context.colorScheme.primaryContainer),

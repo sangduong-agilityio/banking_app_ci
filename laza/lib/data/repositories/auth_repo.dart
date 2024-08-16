@@ -18,6 +18,7 @@ abstract class AuthRepository {
     String password,
   );
   Future<Users?> fetchUserProfile();
+
   Future<void> logout();
 }
 

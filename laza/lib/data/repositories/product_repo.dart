@@ -53,7 +53,6 @@ class ProductRepositoryImpl implements ProductRepository {
       },
     );
     final jsonData = response.data;
-    print('Product images response: ${response.data}');
 
     final productImages =
         (jsonData as List).map((json) => ProductImage.fromJson(json)).toList();

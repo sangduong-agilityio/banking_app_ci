@@ -18,7 +18,7 @@ class HeaderProductDetail extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final screenWidth = context.mediaQueryData.size.width;
+    final tabletScreen = context.mediaQueryData.size.width;
     final selectedImageUrl = ref.watch(productsNotifierProvider('')).maybeWhen(
           data: (products) {
             final notifier = ref.read(productsNotifierProvider('').notifier);
@@ -34,7 +34,7 @@ class HeaderProductDetail extends ConsumerWidget {
           imageUrl:
               selectedImageUrl.isNotEmpty ? selectedImageUrl : product.imageUrl,
           width: double.infinity,
-          height: screenWidth > 600 ? 750.h : 375.h,
+          height: tabletScreen > 600 ? 750.h : 375.h,
           fit: BoxFit.cover,
           borderRadius: 0,
         ),
