@@ -1,25 +1,33 @@
 import 'dart:async';
 import 'package:macros/macros.dart';
 
+// Define the macro class `Model` that implements `ClassDeclarationsMacro`.
 macro class Model implements ClassDeclarationsMacro {
   const Model();
 
+  // List of base types for primitives.
   static const _baseTypes = ['bool', 'double', 'int', 'num', 'String'];
+  // List of collection types (e.g., List) for special handling.
   static const _collectionTypes = ['List'];
 
+  // This method is called to generate code for class being processed by the macro.
   @override
   Future<void> buildDeclarationsForClass(
     ClassDeclaration classDeclaration,
     MemberDeclarationBuilder builder,
   ) async {
+    // Get the name of the class.
     final className = classDeclaration.identifier.name;
 
+    // Retrieve all fields of the class.
     final fields = await builder.fieldsOf(classDeclaration);
 
+    // Initialize containers to store field names, types, and generic types.
     final fieldNames = <String>[];
     final fieldTypes = <String, String>{};
     final fieldGenerics = <String, List<String>>{};
 
+    // Iterate through each field to categorize and store information.
     for (final field in fields) {
       final fieldName = field.identifier.name;
       fieldNames.add(fieldName);
@@ -27,6 +35,7 @@ macro class Model implements ClassDeclarationsMacro {
       final fieldType = (field.type.code as NamedTypeAnnotationCode).name.name;
       fieldTypes[fieldName] = fieldType;
 
+      // Check if the field is a collection and extract its generic types if applicable.
       if (_collectionTypes.contains(fieldType)) {
         final generics = (field.type.code as NamedTypeAnnotationCode)
             .typeArguments
@@ -36,6 +45,7 @@ macro class Model implements ClassDeclarationsMacro {
       }
     }
 
+    // Create a map that includes generic types for collection fields.
     final fieldTypesWithGenerics = fieldTypes.map(
       (name, type) {
         final generics = fieldGenerics[name];
@@ -46,6 +56,7 @@ macro class Model implements ClassDeclarationsMacro {
       },
     );
 
+    // Generate code for JSON deserialization, serialization, copyWith, toString, equality, and hashCode.
     _buildFromJson(builder, className, fieldNames, fieldTypes, fieldGenerics);
     _buildToJson(builder, fieldNames, fieldTypes);
     _buildCopyWith(builder, className, fieldNames, fieldTypesWithGenerics);
@@ -54,6 +65,7 @@ macro class Model implements ClassDeclarationsMacro {
     _buildHashCode(builder, fieldNames);
   }
 
+  // Generate the `fromJson` factory constructor.
   void _buildFromJson(
     MemberDeclarationBuilder builder,
     String className,
@@ -86,6 +98,7 @@ macro class Model implements ClassDeclarationsMacro {
     builder.declareInType(DeclarationCode.fromString(code));
   }
 
+  // Generate the `toJson` method.
   void _buildToJson(
     MemberDeclarationBuilder builder,
     List<String> fieldNames,
@@ -109,6 +122,7 @@ macro class Model implements ClassDeclarationsMacro {
     builder.declareInType(DeclarationCode.fromString(code));
   }
 
+  // Generate the `copyWith` method.
   void _buildCopyWith(
     MemberDeclarationBuilder builder,
     String className,
@@ -131,6 +145,7 @@ macro class Model implements ClassDeclarationsMacro {
     builder.declareInType(DeclarationCode.fromString(code));
   }
 
+  // Generate the `toString` method.
   void _buildToString(
     MemberDeclarationBuilder builder,
     String className,
@@ -153,6 +168,7 @@ macro class Model implements ClassDeclarationsMacro {
     builder.declareInType(DeclarationCode.fromString(code));
   }
 
+  // Generate the `==` operator method.
   void _buildEquals(
     MemberDeclarationBuilder builder,
     String className,
@@ -175,6 +191,7 @@ macro class Model implements ClassDeclarationsMacro {
     builder.declareInType(DeclarationCode.fromString(code));
   }
 
+  // Generate the `hashCode` getter.
   void _buildHashCode(
     MemberDeclarationBuilder builder,
     List<String> fieldNames,
@@ -194,6 +211,7 @@ macro class Model implements ClassDeclarationsMacro {
   }
 }
 
+// Helper extension to add indentation to generated code for readability.
 extension on String {
   String indent(int length) {
     final space = StringBuffer();
