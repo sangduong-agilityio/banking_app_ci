@@ -24,6 +24,7 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
   Widget build(BuildContext context) {
     final userProfileAsyncValue = ref.watch(userProfileProvider);
     final totalProductsInCart = ref.watch(cartProvider).length;
+    final tabletScreen = context.mediaQueryData.size.width;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -57,7 +58,7 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                         return Row(
                           children: [
                             CircleAvatar(
-                              radius: 25,
+                              radius: tabletScreen > 600 ? 30.w : 25,
                               backgroundImage: user?.avatar != null
                                   ? NetworkImage(user!.avatar)
                                   : null,
@@ -77,10 +78,10 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 15),
                             Container(
-                              width: 80,
-                              height: 32,
+                              width: tabletScreen > 600 ? 70.w : 60.w,
+                              height: tabletScreen > 600 ? 60.h : 32.h,
                               decoration: BoxDecoration(
                                 color: context.colorScheme.outlineVariant,
                                 borderRadius: BorderRadius.circular(5),
@@ -88,8 +89,8 @@ class _LSDrawerMenuState extends ConsumerState<LSDrawerMenu> {
                               child: Center(
                                 child: TextButton(
                                     onPressed: () {
-                                      context.pushNamed(
-                                          AppRoutesName.cartProductPage.name);
+                                      context.go(
+                                          AppRoutesName.cartProductPage.path);
                                     },
                                     child: Text(
                                       '$totalProductsInCart'

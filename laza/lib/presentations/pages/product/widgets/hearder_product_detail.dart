@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
+import 'package:laza/core/router/routes.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/icons.dart';
@@ -50,7 +51,11 @@ class HeaderProductDetail extends ConsumerWidget {
               onTappedBackButton: () => context.pop(),
               icon: LSIcons.icArrowLeft,
               rightButtonIcon: LSIcons.icBag,
-              onTappedRightButton: () {},
+              onTappedRightButton: () {
+                context.go(
+                  AppRoutesName.cartProductPage.path,
+                );
+              },
             ),
           ),
         ),

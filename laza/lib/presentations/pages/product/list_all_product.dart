@@ -4,16 +4,16 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'package:laza/core/l10n/l10n_generated/l10n.dart';
 import 'package:laza/core/router/routes.dart';
-import 'package:laza/presentations/pages/brand_detail/widgets/sort_detail.dart';
+import 'package:laza/presentations/pages/product/widgets/sort_product.dart';
 import 'package:laza/presentations/widgets/app_bar.dart';
 import 'package:laza/presentations/widgets/empty_widget.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/providers/product_provider.dart';
-import '../home/widget/grid_view_products.dart';
+import '../home/widgets/grid_view_product.dart';
 
-class ListAllProduct extends ConsumerWidget {
-  const ListAllProduct({
+class ListAllProductPage extends ConsumerWidget {
+  const ListAllProductPage({
     super.key,
   });
 

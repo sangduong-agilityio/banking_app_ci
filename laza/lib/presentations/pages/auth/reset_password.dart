@@ -49,13 +49,6 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
       });
     }
 
-    @override
-    void dispose() {
-      passwordConfirmController.dispose();
-      passwordController.dispose();
-      super.dispose();
-    }
-
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: Column(

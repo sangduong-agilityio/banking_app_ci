@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class NumberFormatter {
   static String formatViewer(int number, [int decimal = 0]) {
     if (number < 1000) {
@@ -12,5 +14,10 @@ class NumberFormatter {
     {
       return '${(number / 1000000000).toStringAsFixed(decimal)}B';
     }
+  }
+
+  static String dateTimeFormat(DateTime date) {
+    String convertedDate = DateFormat("dd MMMM yyyy").format(date);
+    return convertedDate;
   }
 }

@@ -32,10 +32,12 @@ class LSCardProduct extends StatelessWidget {
             width: 140.w,
           ),
           const SizedBox(width: 15),
-          LSTag(
-            tagTitle: title,
-            tagPrice: price,
-          )
+          Expanded(
+            child: LSTag(
+              tagTitle: title,
+              tagPrice: price,
+            ),
+          ),
         ],
       ),
     );

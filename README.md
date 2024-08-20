@@ -21,6 +21,7 @@
 ***Target :***
 
 - Reading what the new from the latest version of Dart, Flutter
+- Apply deeplink for practice
 - Choose a UI design and develop practices to achieve the target
 - Research and apply Dart macros for practice
 - Research flutter_bloc, riverpod, zustand and choose one for practice

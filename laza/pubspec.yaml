@@ -1,5 +1,5 @@
 name: laza
-description: "A new Flutter project."
+description: "Laza application"
 
 publish_to: 'none' 
 
@@ -12,13 +12,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # flutter_svg is a package in Flutter used to display and interact with Scalable Vector Graphics (SVG) images. 
   flutter_svg: ^2.0.10+1
-  # Package providing flexible and easy-to-use routing management for Flutter apps.
+
   go_router: ^14.2.0
-  # Package is a dart library that generates Dart localization code from ARB file. Generated code relies on Intl library.
+
   intl_utils: ^2.8.7
-  # The intl package is a package in Flutter used to support language handling and numerical formatting within applications.
+
   intl: ^0.19.0
 
   device_preview: 1.2.0
@@ -34,8 +33,6 @@ dependencies:
   macros: ^0.1.0-main.5
 
   riverpod_annotation: ^2.3.5
-
-  shared_preferences: ^2.3.1
 
   json: ^0.20.2
 

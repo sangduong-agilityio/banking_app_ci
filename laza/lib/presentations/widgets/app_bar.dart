@@ -66,8 +66,8 @@ class LSAppBar extends ConsumerWidget {
             if (totalProductsInCart > 0)
               Positioned(
                 child: Container(
-                  width: tabletScreen > 600 ? 140.w : 18,
-                  height: tabletScreen > 600 ? 140.h : 18,
+                  width: tabletScreen > 600 ? 18.w : 18,
+                  height: tabletScreen > 600 ? 18.h : 18,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),

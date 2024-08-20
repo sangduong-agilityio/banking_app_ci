@@ -49,14 +49,6 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       });
     }
 
-    @override
-    void dispose() {
-      usernameController.dispose();
-      emailController.dispose();
-      passwordController.dispose();
-      super.dispose();
-    }
-
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: Column(

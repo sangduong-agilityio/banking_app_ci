@@ -54,7 +54,7 @@ class DescriptionProductDetailState extends State<DescriptionProductDetail> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           Text(
             S.current.description,
             style: context.textTheme.headlineLarge,

@@ -10,8 +10,8 @@ import 'package:laza/presentations/widgets/empty_widget.dart';
 import 'package:laza/presentations/widgets/icons.dart';
 import 'package:laza/presentations/layout/scaffold.dart';
 import 'package:laza/providers/product_provider.dart';
-import 'widgets/sort_detail.dart';
-import '../home/widget/grid_view_products.dart';
+import '../product/widgets/sort_product.dart';
+import '../home/widgets/grid_view_product.dart';
 
 class BrandDetailPage extends ConsumerWidget {
   const BrandDetailPage({

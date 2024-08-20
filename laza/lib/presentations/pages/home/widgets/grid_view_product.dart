@@ -24,10 +24,7 @@ class GridViewProduct extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsAsyncValue = ref.watch(
-      productsNotifierProvider(
-        searchQuery ?? '',
-        brandId: brandId,
-      ),
+      productsNotifierProvider(searchQuery ?? '', brandId: brandId),
     );
 
     final tabletScreen = context.mediaQueryData.size.width;

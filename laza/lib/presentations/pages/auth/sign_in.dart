@@ -51,13 +51,6 @@ class _SignInPageState extends ConsumerState<SignInPage> {
       });
     }
 
-    @override
-    void dispose() {
-      emailController.dispose();
-      passwordController.dispose();
-      super.dispose();
-    }
-
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -158,7 +151,7 @@ class _SignInFormState extends State<SignInForm> {
                   style: context.textTheme.headlineSmall),
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 20.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -174,8 +167,8 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 93,
+          SizedBox(
+            height: 70.h,
           ),
           Text.rich(
             TextSpan(

@@ -39,9 +39,11 @@ class AppRoutesName {
       RouteName('/productDetailPage', 'productDetailPage');
   static final brandDetailPage =
       RouteName('/brandDetailPage', 'brandDetailPage');
-  static final brandViewAll = RouteName('/brandViewAll', 'brandViewAll');
+  static final brandViewAllPage =
+      RouteName('/brandViewAllPage', 'brandViewAllPage');
   static final drawerMenu = RouteName('/drawerMenu', 'drawerMenu');
-  static final allListProduct = RouteName('/allListProduct', 'allListProduct');
+  static final allListProductPage =
+      RouteName('/allListProductPage', 'allListProductPage');
 }
 
 class RouteName {
@@ -125,8 +127,8 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutesName.brandViewAll.path,
-        name: AppRoutesName.brandViewAll.name,
+        path: AppRoutesName.brandViewAllPage.path,
+        name: AppRoutesName.brandViewAllPage.name,
         parentNavigatorKey: rootNavigatorKey,
         pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
           transitionDuration: const Duration(milliseconds: 300),
@@ -157,14 +159,14 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: AppRoutesName.allListProduct.path,
-        name: AppRoutesName.allListProduct.name,
+        path: AppRoutesName.allListProductPage.path,
+        name: AppRoutesName.allListProductPage.name,
         parentNavigatorKey: rootNavigatorKey,
         pageBuilder: (context, state) => PageTransaction.defaultPageTransition(
           transitionDuration: const Duration(milliseconds: 300),
           context: context,
           state: state,
-          child: const ListAllProduct(),
+          child: const ListAllProductPage(),
         ),
       ),
       StatefulShellRoute.indexedStack(

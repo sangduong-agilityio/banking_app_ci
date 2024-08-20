@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:laza/core/constant/constants.dart';
 import 'package:laza/core/extensions/context_extensions.dart';
 import 'size.dart';
 
@@ -6,8 +7,6 @@ class ListViewSizeProduct extends StatelessWidget {
   ListViewSizeProduct({
     super.key,
   });
-
-  final sizes = ["S", "M", "L", "XL", "2XL"];
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class ListViewSizeProduct extends StatelessWidget {
                 right: 13,
               ),
               child: LSSize(
-                size: sizes[index],
+                size: Constants.sizes[index],
               ),
             );
           },

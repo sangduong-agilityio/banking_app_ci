@@ -1,3 +1,10 @@
+import 'package:intl/intl.dart';
+
+class Constants {
+  static const String dateFormat = '13 Sep, 2020';
+  static const List<String> sizes = ["S", "M", "L", "XL", "2XL"];
+}
+
 class DioExceptionMessages {
   static const String unauthenticated = 'Unauthenticated';
   static const String connectionTimeout = 'Connection request timeout';
@@ -21,3 +28,7 @@ class DesignConstants {
 }
 
 const double vatPercentage = 15;
+String dateTimeFormat(DateTime date) {
+  String convertedDate = DateFormat("dd MMMM yyyy").format(date);
+  return convertedDate;
+}

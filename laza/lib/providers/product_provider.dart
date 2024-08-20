@@ -3,7 +3,7 @@ import 'package:laza/core/env/env.dart';
 import 'package:laza/data/models/product_image_model.dart';
 import 'package:laza/data/models/product_model.dart';
 import 'package:laza/data/repositories/product_repo.dart';
-import 'package:laza/presentations/pages/brand_detail/widgets/sort_detail.dart';
+import 'package:laza/presentations/pages/product/widgets/sort_product.dart';
 import 'package:laza/services/product_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
