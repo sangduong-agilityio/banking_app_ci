@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reading_example/auth/auth.dart';
 import 'package:reading_example/form/form.dart';
 
 void main() {
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: MyForm());
+        home: LoginForm());
   }
 }
 
