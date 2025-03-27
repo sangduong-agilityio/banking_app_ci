@@ -43,6 +43,12 @@ dependencies:
 
   equatable: ^2.0.7
 
+  permission_handler: ^11.4.0
+
+  geolocator: ^13.0.3
+
+  location: ^8.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
