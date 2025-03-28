@@ -2,17 +2,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch app with macros",
+            "name": "[LazaApp][Dev] Start development",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "program": "laza/lib/main.dart",
+            "program": "laza-app/lib/main.dart",
             "args": [
                 "--enable-experiment=macros"
             ]
         },
         {
-            "name": "Launch app with macros device preview",
+            "name": "[LazaApp][Dev] Start development with Device Preview",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
@@ -21,15 +21,5 @@
                 "--enable-experiment=macros"
             ]
         },
-        {
-            "name": "Launch app in Profile mode",
-            "request": "launch",
-            "type": "dart",
-            "program": "laza/lib/main.dart",
-            "flutterMode": "profile",
-            "args": [
-                "--enable-experiment=macros"
-            ]
-        }
     ]
 }
