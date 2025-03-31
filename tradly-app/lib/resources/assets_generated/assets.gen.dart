@@ -36,6 +36,10 @@ class $AssetsIconsGen {
   SvgGenImage get icCategory =>
       const SvgGenImage('assets/icons/ic_category.svg');
 
+  /// File path: assets/icons/ic_empty_widget.svg
+  SvgGenImage get icEmptyWidget =>
+      const SvgGenImage('assets/icons/ic_empty_widget.svg');
+
   /// File path: assets/icons/ic_home.svg
   SvgGenImage get icHome => const SvgGenImage('assets/icons/ic_home.svg');
 
@@ -54,12 +58,23 @@ class $AssetsIconsGen {
   SvgGenImage get icStore => const SvgGenImage('assets/icons/ic_store.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values =>
-      [icCategory, icHome, icLocation, icOrder, icSortList, icStore];
+  List<SvgGenImage> get values => [
+        icCategory,
+        icEmptyWidget,
+        icHome,
+        icLocation,
+        icOrder,
+        icSortList,
+        icStore
+      ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/ic_launcher.png
+  AssetGenImage get icLauncher =>
+      const AssetGenImage('assets/images/ic_launcher.png');
 
   /// File path: assets/images/img_onboarding_business.png
   AssetGenImage get imgOnboardingBusiness =>
@@ -73,9 +88,17 @@ class $AssetsImagesGen {
   AssetGenImage get imgOnboardingSupport =>
       const AssetGenImage('assets/images/img_onboarding_support.png');
 
+  /// File path: assets/images/splash.png
+  AssetGenImage get splash => const AssetGenImage('assets/images/splash.png');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [imgOnboardingBusiness, imgOnboardingSocial, imgOnboardingSupport];
+  List<AssetGenImage> get values => [
+        icLauncher,
+        imgOnboardingBusiness,
+        imgOnboardingSocial,
+        imgOnboardingSupport,
+        splash
+      ];
 }
 
 class Assets {

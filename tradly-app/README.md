@@ -1,4 +1,4 @@
-# Laza Shop App
+# Tradly Shop App
 
 ## Overview
 
@@ -6,7 +6,7 @@
 
 ## Design
 
-- This is the design of the app : [link](https://www.figma.com/design/heaAiyZrYBGzJpuT0gGZfE/LAZA-UI-KIT-%F0%9F%9B%92?node-id=221-117&t=jJcji4QHrkRO6kqK-0)
+- This is the design of the app : [link](https://www.figma.com/design/cbyU4pamdddEA1uowX8Am8/grocery-marketplace-tradly.app?node-id=0-3983&t=59XXv9seipFbgdzz-0)
 
 ## Team Size 
 
@@ -48,6 +48,7 @@ Before you continue, ensure you meet the following requirements:
 ## Implement UI + Handle State Management
 - [] Sign In Screen + State Management(BLoC) + Supabase
 - [] Sign Up Screen + State Management(BLoC) + Supabase
+- [] Send OTP Screen + State Management(BLoC) + Supabase
 - [] Forgot Password Screen + State Management(BLoC) + Supabase
 - [] Home Screen + State Management(BLoC) + API
 - [] Product Detail Screen + State Management(BLoC) + API
@@ -74,10 +75,10 @@ Before you continue, ensure you meet the following requirements:
 4. Run project
    ```
    Run app:
-     flutter run ./laza/lib/main.dart
+     flutter run ./tradly-app/lib/main.dart
    ```
 
    ```
    Run Device Preview:
-     flutter run ./laza/lib/main_device_preview.dart
+     flutter run ./tradly-app/lib/main_device_preview.dart
    ```
