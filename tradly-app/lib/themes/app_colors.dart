@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:tradly_app/themes/app_palette.dart';
+
+class TaColors {
+  static ColorScheme dark = ColorScheme(
+    brightness: Brightness.dark,
+    primary: TaPalette.green[500]!,
+    onPrimary: TaPalette.genericWhite,
+    primaryContainer: TaPalette.green[700],
+    onPrimaryContainer: TaPalette.green[50],
+    secondary: TaPalette.pink[500]!,
+    onSecondary: TaPalette.genericWhite,
+    secondaryContainer: TaPalette.grey[5],
+    onSecondaryContainer: TaPalette.grey[50],
+    tertiary: TaPalette.green[500],
+    onTertiary: TaPalette.genericWhite,
+    tertiaryContainer: TaPalette.green[700],
+    onTertiaryContainer: TaPalette.green[50],
+    error: TaPalette.primaryRed,
+    onError: TaPalette.genericWhite,
+    surface: TaPalette.genericWhite,
+    onSurface: TaPalette.genericWhite,
+    onSurfaceVariant: TaPalette.grey[50],
+    outline: TaPalette.grey[400],
+    inverseSurface: TaPalette.genericBlack,
+    onInverseSurface: TaPalette.genericWhite,
+    inversePrimary: TaPalette.green[500],
+  );
+
+  static ColorScheme light = ColorScheme(
+    brightness: Brightness.light,
+    primary: TaPalette.primaryRed,
+    onPrimary: TaPalette.genericWhite,
+    primaryContainer: TaPalette.green[100],
+    onPrimaryContainer: TaPalette.green[900],
+    secondary: TaPalette.pink[500]!,
+    onSecondary: TaPalette.genericWhite,
+    secondaryContainer: TaPalette.grey[100],
+    onSecondaryContainer: TaPalette.grey[900],
+    tertiary: TaPalette.green[500],
+    onTertiary: TaPalette.genericWhite,
+    tertiaryContainer: TaPalette.green[100],
+    onTertiaryContainer: TaPalette.green[900],
+    error: TaPalette.primaryRed,
+    onError: TaPalette.genericWhite,
+    surface: TaPalette.genericWhite,
+    onSurface: TaPalette.genericBlack,
+    onSurfaceVariant: TaPalette.grey[900],
+    outline: TaPalette.grey[400],
+    onInverseSurface: TaPalette.genericWhite,
+    inversePrimary: TaPalette.green[500],
+  );
+}
