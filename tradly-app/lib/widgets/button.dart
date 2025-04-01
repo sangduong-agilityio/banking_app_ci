@@ -9,6 +9,8 @@ class TAElevatedButton extends StatefulWidget {
     this.width = double.infinity,
     this.onPressed,
     this.backgroundColor,
+    this.textColor,
+    this.textSize,
     this.padding,
     this.value,
     this.decoration,
@@ -23,6 +25,8 @@ class TAElevatedButton extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onPressed;
   final Color? backgroundColor;
+  final Color? textColor;
+  final double? textSize;
   final double? value;
   final Decoration? decoration;
   final FontWeight? fontWeight;
@@ -42,23 +46,23 @@ class _TAElevatedButtonState extends State<TAElevatedButton> {
       child: ElevatedButton(
         style: widget.style ??
             ButtonStyle(
-              backgroundColor: widget.backgroundColor != null
-                  ? WidgetStateProperty.all<Color>(
-                      widget.backgroundColor!,
-                    )
-                  : null,
+              backgroundColor: WidgetStateProperty.all<Color>(
+                widget.backgroundColor ?? context.colorScheme.primary,
+              ),
             ),
         onPressed: widget.isDisabled ? null : widget.onPressed,
         child: Text(
           widget.text,
           style: TextStyle(
-            color: widget.isDisabled
-                ? context.colorScheme.onPrimaryContainer
-                : context.colorScheme.onPrimary,
-            fontSize: TaResponsive.scale(
-              context,
-              defaultValue: widget.value ?? 16,
-            ),
+            color: widget.textColor ??
+                (widget.isDisabled
+                    ? context.colorScheme.primary
+                    : context.colorScheme.onPrimary),
+            fontSize: widget.textSize ??
+                TaResponsive.scale(
+                  context,
+                  defaultValue: widget.value ?? 18,
+                ),
             fontWeight: widget.fontWeight,
           ),
         ),

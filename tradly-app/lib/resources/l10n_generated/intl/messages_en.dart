@@ -21,5 +21,27 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{};
+  static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "onBoardingBusinessDescription": MessageLookupByLibrary.simpleMessage(
+            "Empowering Artisans, Farmers & Micro Business"),
+        "onBoardingFinishButton":
+            MessageLookupByLibrary.simpleMessage("Finish"),
+        "onBoardingNextButton": MessageLookupByLibrary.simpleMessage("Next"),
+        "onBoardingSocialDescription": MessageLookupByLibrary.simpleMessage(
+            "Connecting NGOs, Social Enterprises with Communities"),
+        "onBoardingsupportDescription": MessageLookupByLibrary.simpleMessage(
+            " Donate, Invest & Support infrastructure projects"),
+        "signInEmailOrMobileLabel":
+            MessageLookupByLibrary.simpleMessage("Email/Mobile Number"),
+        "signInForgotPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot your password?"),
+        "signInLoginButton": MessageLookupByLibrary.simpleMessage("Login"),
+        "signInLoginPrompt":
+            MessageLookupByLibrary.simpleMessage("Login to your account"),
+        "signInPasswordLabel": MessageLookupByLibrary.simpleMessage("Password"),
+        "signInSignUpPrompt": MessageLookupByLibrary.simpleMessage(
+            "Don\'t have an account? Sign up"),
+        "signInWelcomeTitle":
+            MessageLookupByLibrary.simpleMessage("Welcome to tradly")
+      };
 }

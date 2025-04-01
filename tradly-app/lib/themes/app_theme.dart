@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/themes/app_colors.dart';
+import 'package:tradly_app/themes/app_palette.dart';
 import 'package:tradly_app/themes/typography.dart';
 
 class TaTheme {
@@ -56,12 +57,38 @@ class TaTheme {
           fontSize: TaTypography.fontSizeDisplayLarge,
           fontFamily: TaTypography.familyMontserrat,
         ),
+        displayMedium: TextStyle(
+          fontSize: TaTypography.fontSizeDisplayMedium,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        displaySmall: TextStyle(
+          fontSize: TaTypography.fontSizeDisplaySmall,
+          fontFamily: TaTypography.familyMontserrat,
+          fontWeight: FontWeight.w500,
+          color: TaPalette.genericWhite,
+        ),
+        headlineLarge: TextStyle(
+          fontSize: TaTypography.fontSizeHeadlineLarge,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: TaTypography.fontSizeHeadlineMedium,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
         headlineSmall: TextStyle(
           fontSize: TaTypography.fontSizeHeadlineSmall,
           fontFamily: TaTypography.familyMontserrat,
         ),
         titleLarge: TextStyle(
           fontSize: TaTypography.fontSizeTitleLarge,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        titleMedium: TextStyle(
+          fontSize: TaTypography.fontSizeTitleMedium,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        titleSmall: TextStyle(
+          fontSize: TaTypography.fontSizeTitleSmall,
           fontFamily: TaTypography.familyMontserrat,
         ),
         labelLarge: TextStyle(
@@ -125,12 +152,38 @@ class TaTheme {
           fontSize: TaTypography.fontSizeDisplayLarge,
           fontFamily: TaTypography.familyMontserrat,
         ),
+        displayMedium: TextStyle(
+          fontSize: TaTypography.fontSizeDisplayMedium,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        displaySmall: TextStyle(
+          fontSize: TaTypography.fontSizeDisplaySmall,
+          fontFamily: TaTypography.familyMontserrat,
+          fontWeight: FontWeight.w500,
+          color: TaPalette.genericWhite,
+        ),
+        headlineLarge: TextStyle(
+          fontSize: TaTypography.fontSizeHeadlineLarge,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: TaTypography.fontSizeHeadlineMedium,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
         headlineSmall: TextStyle(
           fontSize: TaTypography.fontSizeHeadlineSmall,
           fontFamily: TaTypography.familyMontserrat,
         ),
         titleLarge: TextStyle(
           fontSize: TaTypography.fontSizeTitleLarge,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        titleMedium: TextStyle(
+          fontSize: TaTypography.fontSizeTitleMedium,
+          fontFamily: TaTypography.familyMontserrat,
+        ),
+        titleSmall: TextStyle(
+          fontSize: TaTypography.fontSizeTitleSmall,
           fontFamily: TaTypography.familyMontserrat,
         ),
         labelLarge: TextStyle(

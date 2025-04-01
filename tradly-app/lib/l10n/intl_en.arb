@@ -1,3 +1,19 @@
 {
-  "@@locale": "en"
+  "@@locale": "en",
+   "@segmentOnBoarding": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in OnBoarding feature"
+  },
+  "onBoardingBusinessDescription":"Empowering Artisans, Farmers & Micro Business",
+  "onBoardingSocialDescription":"Connecting NGOs, Social Enterprises with Communities",
+  "onBoardingsupportDescription":" Donate, Invest & Support infrastructure projects",
+  "onBoardingNextButton":"Next",
+  "onBoardingFinishButton":"Finish",
+  "signInWelcomeTitle": "Welcome to tradly",
+  "signInLoginPrompt": "Login to your account",
+  "signInEmailOrMobileLabel": "Email/Mobile Number",
+  "signInPasswordLabel": "Password",
+  "signInLoginButton": "Login",
+  "signInForgotPassword": "Forgot your password?",
+  "signInSignUpPrompt": "Don't have an account? Sign up"
 }

@@ -6,7 +6,7 @@ class TaColors {
     brightness: Brightness.dark,
     primary: TaPalette.green[500]!,
     onPrimary: TaPalette.genericWhite,
-    primaryContainer: TaPalette.green[700],
+    primaryContainer: TaPalette.green[300],
     onPrimaryContainer: TaPalette.green[50],
     secondary: TaPalette.pink[500]!,
     onSecondary: TaPalette.genericWhite,
@@ -29,9 +29,9 @@ class TaColors {
 
   static ColorScheme light = ColorScheme(
     brightness: Brightness.light,
-    primary: TaPalette.primaryRed,
+    primary: TaPalette.green[500]!,
     onPrimary: TaPalette.genericWhite,
-    primaryContainer: TaPalette.green[100],
+    primaryContainer: TaPalette.green[300],
     onPrimaryContainer: TaPalette.green[900],
     secondary: TaPalette.pink[500]!,
     onSecondary: TaPalette.genericWhite,

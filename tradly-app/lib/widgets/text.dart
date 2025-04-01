@@ -39,7 +39,6 @@ class TaDisplayLargeText extends StatelessWidget {
   });
 
   final String text;
-
   final Color? color;
   final TextAlign? textAlign;
   final FontWeight? fontWeight;
