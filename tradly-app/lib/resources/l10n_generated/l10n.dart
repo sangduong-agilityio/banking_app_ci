@@ -160,11 +160,221 @@ class S {
     );
   }
 
-  /// `Don't have an account? Sign up`
+  /// `Don't have an account? `
   String get signInSignUpPrompt {
     return Intl.message(
-      'Don\'t have an account? Sign up',
+      'Don\'t have an account? ',
       name: 'signInSignUpPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign up`
+  String get signUpButton {
+    return Intl.message(
+      'Sign up',
+      name: 'signUpButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome to tradly`
+  String get signUpWelcomeTitle {
+    return Intl.message(
+      'Welcome to tradly',
+      name: 'signUpWelcomeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Signup to your account`
+  String get signUpTitle {
+    return Intl.message(
+      'Signup to your account',
+      name: 'signUpTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name`
+  String get signUpFirstNameLabel {
+    return Intl.message(
+      'First Name',
+      name: 'signUpFirstNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Name`
+  String get signUpLastNameLabel {
+    return Intl.message(
+      'Last Name',
+      name: 'signUpLastNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email ID/Phone Number`
+  String get signUpEmailOrPhoneNumberLabel {
+    return Intl.message(
+      'Email ID/Phone Number',
+      name: 'signUpEmailOrPhoneNumberLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get signUpPasswordLabel {
+    return Intl.message(
+      'Password',
+      name: 'signUpPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Re-enter Password`
+  String get signUpReEnterPasswordLabel {
+    return Intl.message(
+      'Re-enter Password',
+      name: 'signUpReEnterPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get signUpCreateButton {
+    return Intl.message(
+      'Create',
+      name: 'signUpCreateButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Have an account? `
+  String get signUpAlreadyAcccount {
+    return Intl.message(
+      'Have an account? ',
+      name: 'signUpAlreadyAcccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sign in`
+  String get signInButton {
+    return Intl.message(
+      'Sign in',
+      name: 'signInButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify your phone number`
+  String get sendOtpTitle {
+    return Intl.message(
+      'Verify your phone number',
+      name: 'sendOtpTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We have sent you an SMS with a code to enter number`
+  String get sendOtpDescription {
+    return Intl.message(
+      'We have sent you an SMS with a code to enter number',
+      name: 'sendOtpDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Or login with Social network`
+  String get sendOtpLoginSocialNetWorkTitle {
+    return Intl.message(
+      'Or login with Social network',
+      name: 'sendOtpLoginSocialNetWorkTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Next`
+  String get sendOtpNextButton {
+    return Intl.message(
+      'Next',
+      name: 'sendOtpNextButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get sendOtpPhoneNumberTitle {
+    return Intl.message(
+      'Phone Number',
+      name: 'sendOtpPhoneNumberTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Verification`
+  String get otpVerificationTitle {
+    return Intl.message(
+      'Phone Verification',
+      name: 'otpVerificationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your OTP code here`
+  String get otpVerificationDescription {
+    return Intl.message(
+      'Enter your OTP code here',
+      name: 'otpVerificationDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Didn’t you received any code?`
+  String get otpVerificationReceivedCodeTitle {
+    return Intl.message(
+      'Didn’t you received any code?',
+      name: 'otpVerificationReceivedCodeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resent new code`
+  String get otpVerificationResentCodeTitle {
+    return Intl.message(
+      'Resent new code',
+      name: 'otpVerificationResentCodeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify`
+  String get otpVerificationButton {
+    return Intl.message(
+      'Verify',
+      name: 'otpVerificationButton',
       desc: '',
       args: [],
     );

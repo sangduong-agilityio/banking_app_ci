@@ -31,6 +31,26 @@ class MessageLookup extends MessageLookupByLibrary {
             "Connecting NGOs, Social Enterprises with Communities"),
         "onBoardingsupportDescription": MessageLookupByLibrary.simpleMessage(
             " Donate, Invest & Support infrastructure projects"),
+        "otpVerificationButton": MessageLookupByLibrary.simpleMessage("Verify"),
+        "otpVerificationDescription":
+            MessageLookupByLibrary.simpleMessage("Enter your OTP code here"),
+        "otpVerificationReceivedCodeTitle":
+            MessageLookupByLibrary.simpleMessage(
+                "Didn’t you received any code?"),
+        "otpVerificationResentCodeTitle":
+            MessageLookupByLibrary.simpleMessage("Resent new code"),
+        "otpVerificationTitle":
+            MessageLookupByLibrary.simpleMessage("Phone Verification"),
+        "sendOtpDescription": MessageLookupByLibrary.simpleMessage(
+            "We have sent you an SMS with a code to enter number"),
+        "sendOtpLoginSocialNetWorkTitle": MessageLookupByLibrary.simpleMessage(
+            "Or login with Social network"),
+        "sendOtpNextButton": MessageLookupByLibrary.simpleMessage("Next"),
+        "sendOtpPhoneNumberTitle":
+            MessageLookupByLibrary.simpleMessage("Phone Number"),
+        "sendOtpTitle":
+            MessageLookupByLibrary.simpleMessage("Verify your phone number"),
+        "signInButton": MessageLookupByLibrary.simpleMessage("Sign in"),
         "signInEmailOrMobileLabel":
             MessageLookupByLibrary.simpleMessage("Email/Mobile Number"),
         "signInForgotPassword":
@@ -39,9 +59,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "signInLoginPrompt":
             MessageLookupByLibrary.simpleMessage("Login to your account"),
         "signInPasswordLabel": MessageLookupByLibrary.simpleMessage("Password"),
-        "signInSignUpPrompt": MessageLookupByLibrary.simpleMessage(
-            "Don\'t have an account? Sign up"),
+        "signInSignUpPrompt":
+            MessageLookupByLibrary.simpleMessage("Don\'t have an account? "),
         "signInWelcomeTitle":
+            MessageLookupByLibrary.simpleMessage("Welcome to tradly"),
+        "signUpAlreadyAcccount":
+            MessageLookupByLibrary.simpleMessage("Have an account? "),
+        "signUpButton": MessageLookupByLibrary.simpleMessage("Sign up"),
+        "signUpCreateButton": MessageLookupByLibrary.simpleMessage("Create"),
+        "signUpEmailOrPhoneNumberLabel":
+            MessageLookupByLibrary.simpleMessage("Email ID/Phone Number"),
+        "signUpFirstNameLabel":
+            MessageLookupByLibrary.simpleMessage("First Name"),
+        "signUpLastNameLabel":
+            MessageLookupByLibrary.simpleMessage("Last Name"),
+        "signUpPasswordLabel": MessageLookupByLibrary.simpleMessage("Password"),
+        "signUpReEnterPasswordLabel":
+            MessageLookupByLibrary.simpleMessage("Re-enter Password"),
+        "signUpTitle":
+            MessageLookupByLibrary.simpleMessage("Signup to your account"),
+        "signUpWelcomeTitle":
             MessageLookupByLibrary.simpleMessage("Welcome to tradly")
       };
 }

@@ -23,6 +23,8 @@ class TextInput extends StatefulWidget {
     this.textStyle,
     this.hintStyle,
     this.labelStyle,
+    this.dropdownItems,
+    this.onDropdownChanged,
   });
 
   final String labelText;
@@ -63,6 +65,10 @@ class TextInput extends StatefulWidget {
 
   final TextStyle? textStyle;
 
+  final List<DropdownMenuItem<String>>? dropdownItems;
+
+  final ValueChanged<String?>? onDropdownChanged;
+
   @override
   State<TextInput> createState() => _TextInputState();
 
@@ -87,6 +93,8 @@ class TextInput extends StatefulWidget {
     TextStyle? hintStyle,
     TextStyle? labelStyle,
     TextStyle? textStyle,
+    List<DropdownMenuItem<String>>? dropdownItems,
+    ValueChanged<String?>? onDropdownChanged,
   }) {
     return TextInput(
       labelText: labelText ?? this.labelText,
@@ -108,6 +116,8 @@ class TextInput extends StatefulWidget {
       hintStyle: hintStyle ?? this.hintStyle,
       labelStyle: labelStyle ?? this.labelStyle,
       textStyle: textStyle ?? this.textStyle,
+      dropdownItems: dropdownItems ?? this.dropdownItems,
+      onDropdownChanged: onDropdownChanged ?? this.onDropdownChanged,
     );
   }
 }
@@ -157,7 +167,9 @@ class _TextInputState extends State<TextInput> {
       initialValue: widget.initialValue,
       style: widget.textStyle ??
           TextStyle(
-            color: context.colorScheme.onSurface,
+            color: context.colorScheme.onPrimary,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
           ),
       obscureText: widget.hasObscureText ? _textInvisible : false,
       maxLines: widget.maxLines ?? 1,
@@ -165,7 +177,10 @@ class _TextInputState extends State<TextInput> {
       enableSuggestions: false,
       decoration: InputDecoration(
         labelText: widget.labelText,
-        labelStyle: widget.labelStyle,
+        labelStyle: widget.labelStyle ??
+            TextStyle(
+              color: context.colorScheme.onPrimary,
+            ),
         hintStyle: widget.hintStyle,
         isDense: true,
         counterText: '',
@@ -190,6 +205,50 @@ class _TextInputState extends State<TextInput> {
             width: 2.0,
           ),
         ),
+        prefixIcon: widget.dropdownItems != null
+            ? DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  // isDense: true,
+                  items: widget.dropdownItems
+                      ?.map((item) => DropdownMenuItem<String>(
+                            value: item.value,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: item.child,
+                            ),
+                          ))
+                      .toList(),
+                  onChanged: widget.onDropdownChanged,
+                  menuWidth: 100,
+                  value: widget.dropdownItems?.first.value,
+                  dropdownColor: Colors.transparent.withOpacity(0),
+                  iconSize: 30,
+                  alignment: AlignmentDirectional.centerEnd,
+                  style: TextStyle(
+                    color: context.colorScheme.onPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  iconEnabledColor: context.colorScheme.onPrimary,
+                  iconDisabledColor: context.colorScheme.onSurface,
+                  selectedItemBuilder: (BuildContext context) {
+                    return widget.dropdownItems
+                            ?.map((item) => Center(
+                                  child: Text(
+                                    item.value ?? '',
+                                    style: TextStyle(
+                                      color: context.colorScheme.onPrimary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ))
+                            .toList() ??
+                        [];
+                  },
+                ),
+              )
+            : null,
         suffixIcon: widget.hasObscureText
             ? IconButton(
                 focusNode: FocusNode(skipTraversal: true),

@@ -9,11 +9,48 @@
   "onBoardingsupportDescription":" Donate, Invest & Support infrastructure projects",
   "onBoardingNextButton":"Next",
   "onBoardingFinishButton":"Finish",
+   "@segmentSignIn": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in SignIn feature"
+  },
   "signInWelcomeTitle": "Welcome to tradly",
   "signInLoginPrompt": "Login to your account",
   "signInEmailOrMobileLabel": "Email/Mobile Number",
   "signInPasswordLabel": "Password",
   "signInLoginButton": "Login",
   "signInForgotPassword": "Forgot your password?",
-  "signInSignUpPrompt": "Don't have an account? Sign up"
+  "signInSignUpPrompt": "Don't have an account? ",
+  "signUpButton":"Sign up",
+   "@segmentSignUp": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in SignUp feature"
+  },
+  "signUpWelcomeTitle": "Welcome to tradly",
+  "signUpTitle":"Signup to your account",
+  "signUpFirstNameLabel":"First Name",
+  "signUpLastNameLabel":"Last Name",
+  "signUpEmailOrPhoneNumberLabel":"Email ID/Phone Number",
+  "signUpPasswordLabel":"Password",
+  "signUpReEnterPasswordLabel":"Re-enter Password",
+  "signUpCreateButton":"Create",
+  "signUpAlreadyAcccount":"Have an account? ",
+  "signInButton":"Sign in",
+  "@segmentSendOtp": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in SendOtp feature"
+  },
+  "sendOtpTitle":"Verify your phone number",
+  "sendOtpDescription":"We have sent you an SMS with a code to enter number",
+  "sendOtpLoginSocialNetWorkTitle":"Or login with Social network",
+  "sendOtpNextButton":"Next",
+  "sendOtpPhoneNumberTitle":"Phone Number",
+   "@segmentOtpVerification": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in OtpVerification feature"
+  },
+  "otpVerificationTitle":"Phone Verification",
+  "otpVerificationDescription":"Enter your OTP code here",
+  "otpVerificationReceivedCodeTitle":"Didn’t you received any code?",
+  "otpVerificationResentCodeTitle":"Resent new code",
+  "otpVerificationButton":"Verify"
 }

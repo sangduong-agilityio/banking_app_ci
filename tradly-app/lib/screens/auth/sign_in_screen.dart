@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/routes/app_router.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/form.dart';
 import 'package:tradly_app/widgets/input.dart';
 import 'package:tradly_app/widgets/text.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
 
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -16,7 +23,7 @@ class SignInScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: context.colorScheme.primary,
         body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: EdgeInsets.symmetric(horizontal: 32),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -27,7 +34,7 @@ class SignInScreen extends StatelessWidget {
               TaHeadlineSmallText(
                 text: S.current.signInLoginPrompt,
               ),
-              SizedBox(height: 45),
+              SizedBox(height: 25),
               TAForm(
                   isValidated: (isValidated) {},
                   spaceBetweenRow: 20,
@@ -46,7 +53,7 @@ class SignInScreen extends StatelessWidget {
                   ]),
               SizedBox(height: 38),
               TAElevatedButton(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
                 text: S.current.signInLoginButton,
                 textSize: 16,
                 textColor: context.colorScheme.primary,
@@ -56,17 +63,31 @@ class SignInScreen extends StatelessWidget {
               SizedBox(height: 20),
               TextButton(
                 onPressed: () {},
-                child: Text(
-                  S.current.signInForgotPassword,
-                  style: TextStyle(color: Colors.white),
+                child: TaHeadlineMediumText(
+                  text: S.current.signInForgotPassword,
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 45),
               TextButton(
-                onPressed: () {},
-                child: Text(
-                  S.current.signInSignUpPrompt,
-                  style: TextStyle(color: Colors.white),
+                onPressed: () {
+                  context.pushNamed(TAPaths.signUp.name);
+                },
+                child: RichText(
+                  text: TextSpan(
+                    text: S.current.signInSignUpPrompt,
+                    style: context.textTheme.headlineMedium?.copyWith(
+                      fontSize: 18,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: S.current.signUpButton,
+                        style: context.textTheme.headlineMedium?.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
