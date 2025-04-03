@@ -52,5 +52,16 @@
   "otpVerificationDescription":"Enter your OTP code here",
   "otpVerificationReceivedCodeTitle":"Didn’t you received any code?",
   "otpVerificationResentCodeTitle":"Resent new code",
-  "otpVerificationButton":"Verify"
+  "otpVerificationButton":"Verify",
+  "validatorEmailOrPhoneNumberRequired": "Email/Mobile Number is required",
+  "validatorEmailWrongFormat": "Email or Mobile Number is invalid format",
+  "validatorPhoneWrongFormat": "Email is invalid format",
+  "validatorFirstNameRequired": "First Name is required",
+  "validatorFirstNameCharacterMinimum": "Username 6-character minimum",
+  "validatorPasswordRequired": "Password is required",
+  "validatorPasswordCharacterMinimum": "Password 8-character minimum",
+  "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter",
+  "validatorConfirmPasswordRequired": "Confirm Password is required",
+  "validatorConfirmedPasswordNotMatch": "Password and confirm password not match",
+  "validatorLastNameRequired": "Last Name is required"
 }

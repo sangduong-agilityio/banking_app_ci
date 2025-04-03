@@ -79,6 +79,33 @@ class MessageLookup extends MessageLookupByLibrary {
         "signUpTitle":
             MessageLookupByLibrary.simpleMessage("Signup to your account"),
         "signUpWelcomeTitle":
-            MessageLookupByLibrary.simpleMessage("Welcome to tradly")
+            MessageLookupByLibrary.simpleMessage("Welcome to tradly"),
+        "validatorConfirmPasswordRequired":
+            MessageLookupByLibrary.simpleMessage(
+                "Confirm Password is required"),
+        "validatorConfirmedPasswordNotMatch":
+            MessageLookupByLibrary.simpleMessage(
+                "Password and confirm password not match"),
+        "validatorEmailOrPhoneNumberRequired":
+            MessageLookupByLibrary.simpleMessage(
+                "Email/Mobile Number is required"),
+        "validatorEmailWrongFormat": MessageLookupByLibrary.simpleMessage(
+            "Email or Mobile Number is invalid format"),
+        "validatorFirstNameCharacterMinimum":
+            MessageLookupByLibrary.simpleMessage(
+                "Username 6-character minimum"),
+        "validatorFirstNameRequired":
+            MessageLookupByLibrary.simpleMessage("First Name is required"),
+        "validatorLastNameRequired":
+            MessageLookupByLibrary.simpleMessage("Last Name is required"),
+        "validatorPasswordCharacterMinimum":
+            MessageLookupByLibrary.simpleMessage(
+                "Password 8-character minimum"),
+        "validatorPasswordRequired":
+            MessageLookupByLibrary.simpleMessage("Password is required"),
+        "validatorPasswordWrongFormat": MessageLookupByLibrary.simpleMessage(
+            "Password is least one uppercase, lowercase letter"),
+        "validatorPhoneWrongFormat":
+            MessageLookupByLibrary.simpleMessage("Email is invalid format")
       };
 }

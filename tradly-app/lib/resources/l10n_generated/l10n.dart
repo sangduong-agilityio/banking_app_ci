@@ -379,6 +379,116 @@ class S {
       args: [],
     );
   }
+
+  /// `Email/Mobile Number is required`
+  String get validatorEmailOrPhoneNumberRequired {
+    return Intl.message(
+      'Email/Mobile Number is required',
+      name: 'validatorEmailOrPhoneNumberRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email or Mobile Number is invalid format`
+  String get validatorEmailWrongFormat {
+    return Intl.message(
+      'Email or Mobile Number is invalid format',
+      name: 'validatorEmailWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is invalid format`
+  String get validatorPhoneWrongFormat {
+    return Intl.message(
+      'Email is invalid format',
+      name: 'validatorPhoneWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `First Name is required`
+  String get validatorFirstNameRequired {
+    return Intl.message(
+      'First Name is required',
+      name: 'validatorFirstNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username 6-character minimum`
+  String get validatorFirstNameCharacterMinimum {
+    return Intl.message(
+      'Username 6-character minimum',
+      name: 'validatorFirstNameCharacterMinimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is required`
+  String get validatorPasswordRequired {
+    return Intl.message(
+      'Password is required',
+      name: 'validatorPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password 8-character minimum`
+  String get validatorPasswordCharacterMinimum {
+    return Intl.message(
+      'Password 8-character minimum',
+      name: 'validatorPasswordCharacterMinimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is least one uppercase, lowercase letter`
+  String get validatorPasswordWrongFormat {
+    return Intl.message(
+      'Password is least one uppercase, lowercase letter',
+      name: 'validatorPasswordWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password is required`
+  String get validatorConfirmPasswordRequired {
+    return Intl.message(
+      'Confirm Password is required',
+      name: 'validatorConfirmPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password and confirm password not match`
+  String get validatorConfirmedPasswordNotMatch {
+    return Intl.message(
+      'Password and confirm password not match',
+      name: 'validatorConfirmedPasswordNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Name is required`
+  String get validatorLastNameRequired {
+    return Intl.message(
+      'Last Name is required',
+      name: 'validatorLastNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -34,7 +34,7 @@ class TaColors {
     primaryContainer: TaPalette.green[300],
     onPrimaryContainer: TaPalette.green[900],
     secondary: TaPalette.pink[500]!,
-    onSecondary: TaPalette.genericWhite,
+    onSecondary: TaPalette.greyDark,
     secondaryContainer: TaPalette.grey[100],
     onSecondaryContainer: TaPalette.grey[900],
     tertiary: TaPalette.green[500],
