@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
-import 'package:tradly_app/repositories/auth_repo.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/routes/app_router.dart';
-import 'package:tradly_app/utils/validators.dart';
+import 'package:tradly_app/screens/auth/states/sign_up_bloc.dart';
+import 'package:tradly_app/screens/auth/states/sign_up_event.dart';
+import 'package:tradly_app/screens/auth/states/sign_up_state.dart';
+import 'package:tradly_app/utils/enumeration.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/form.dart';
+import 'package:tradly_app/widgets/indicator.dart';
 import 'package:tradly_app/widgets/input.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
+import 'package:tradly_app/widgets/snackbar.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'states/sign_up_bloc.dart';
-import 'states/sign_up_event.dart';
-import 'states/sign_up_state.dart';
+import 'package:tradly_app/repositories/auth_repo.dart';
+import 'package:tradly_app/utils/validators.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,63 +26,64 @@ class SignUpScreen extends StatefulWidget {
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
+  final _authRepository = AuthRepositoryImplement(Supabase.instance.client);
+  final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-  final _emailOrPhoneController = TextEditingController();
+  final _emailOrPhoneNumberController = TextEditingController();
   final _passwordController = TextEditingController();
   final _reEnterPasswordController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-  bool _isFormValid = false;
 
   @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
-    _emailOrPhoneController.dispose();
+    _emailOrPhoneNumberController.dispose();
     _passwordController.dispose();
     _reEnterPasswordController.dispose();
     super.dispose();
   }
 
-  void _updateFormValidity(bool isValid) {
-    setState(() {
-      _isFormValid = isValid;
-    });
-    context.read<SignUpBloc>().add(SignUpFormValidateChanged(isValid: isValid));
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SignUpBloc(
-          authRepository: AuthRepositoryImplement(Supabase.instance.client)),
-      child: BlocListener<SignUpBloc, SignUpState>(
-        listener: (context, state) {
-          if (state is SignUpSuccess) {
-            context.pushNamed(TAPaths.sendOTP.name);
-          } else if (state is SignUpFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
-            );
-          }
-        },
-        child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: BlocProvider(
+        create: (context) => SignUpBloc(
+          authRepository: _authRepository,
+        ),
+        child: BlocListener<SignUpBloc, SignUpState>(
+          listener: (context, state) {
+            if (state.viewState == SubmissionStatus.loading) {
+              LALoadingIndicator.show(context);
+            } else if (state.viewState == SubmissionStatus.successful) {
+              LALoadingIndicator.hide(context);
+              if (state.emailOrPhoneNumber.contains('@')) {
+                context.pop();
+              } else {
+                context.pushNamed(TAPaths.sendOTP.name);
+              }
+            } else if (state.viewState == SubmissionStatus.failed) {
+              LALoadingIndicator.hide(context);
+              LASnackBar.buildErrorSnackbar(
+                context,
+                state.errorMessage ?? '',
+              );
+            }
+          },
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: context.colorScheme.primary,
             appBar: TaAppBar(
               toolbarHeight: TaAppBarSize.small,
               leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                ),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () => Navigator.of(context).pop(),
               ),
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 32),
+              padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -88,98 +92,110 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TaDisplaySmallText(
                       text: S.current.signUpWelcomeTitle,
                     ),
-                    SizedBox(height: 66),
+                    const SizedBox(height: 66),
                     TaHeadlineSmallText(
                       text: S.current.signUpTitle,
                     ),
-                    SizedBox(height: 25),
-                    TAForm(
-                      isValidated: _updateFormValidity,
-                      spaceBetweenRow: 20,
-                      textFields: [
-                        TextInput(
-                          controller: _firstNameController,
-                          textInputAction: TextInputAction.next,
-                          labelText: S.current.signUpFirstNameLabel,
-                          labelStyle:
-                              TextStyle(color: context.colorScheme.onPrimary),
-                          validatorText: (value) =>
-                              InputValidationMixin.validFirstName(value ?? ''),
-                        ),
-                        TextInput(
-                          controller: _lastNameController,
-                          textInputAction: TextInputAction.next,
-                          labelText: S.current.signUpLastNameLabel,
-                          labelStyle:
-                              TextStyle(color: context.colorScheme.onPrimary),
-                          validatorText: (value) =>
-                              InputValidationMixin.validLastName(value ?? ''),
-                        ),
-                        TextInput(
-                          controller: _emailOrPhoneController,
-                          textInputAction: TextInputAction.next,
-                          labelText: S.current.signInEmailOrMobileLabel,
-                          labelStyle:
-                              TextStyle(color: context.colorScheme.onPrimary),
-                          validatorText: (value) =>
-                              InputValidationMixin.validEmailOrPhone(
-                                  value ?? ''),
-                        ),
-                        TextInput(
-                          controller: _passwordController,
-                          labelText: S.current.signInPasswordLabel,
-                          labelStyle:
-                              TextStyle(color: context.colorScheme.onPrimary),
-                          validatorText: (value) =>
-                              InputValidationMixin.validPassword(value ?? ''),
-                          hasObscureText: true,
-                        ),
-                        TextInput(
-                          controller: _reEnterPasswordController,
-                          labelText: S.current.signUpReEnterPasswordLabel,
-                          labelStyle:
-                              TextStyle(color: context.colorScheme.onPrimary),
-                          validatorText: (value) =>
-                              InputValidationMixin.validReEnterPassword(
-                            password: _passwordController.text,
-                            reEnterPassword: value ?? '',
+                    const SizedBox(height: 25),
+                    BlocBuilder<SignUpBloc, SignUpState>(
+                      buildWhen: (previous, current) =>
+                          previous.isFormValid != current.isFormValid,
+                      builder: (context, state) => TAForm(
+                        isValidated: (isValid) => context
+                            .read<SignUpBloc>()
+                            .add(
+                              SignUpFormValidateChangedEvt(
+                                isValidate: isValid,
+                                username:
+                                    '${_firstNameController.text.trim()} ${_lastNameController.text.trim()}',
+                                emailOrPhoneNumber:
+                                    _emailOrPhoneNumberController.text.trim(),
+                                password: _passwordController.text,
+                                confirmPassword:
+                                    _reEnterPasswordController.text,
+                              ),
+                            ),
+                        spaceBetweenRow: 20,
+                        textFields: [
+                          TextInput(
+                            controller: _firstNameController,
+                            textInputAction: TextInputAction.next,
+                            labelText: S.current.signUpFirstNameLabel,
+                            labelStyle: TextStyle(
+                              color: context.colorScheme.onPrimary,
+                            ),
+                            validatorText: (value) =>
+                                InputValidationMixin.validFirstName(
+                                    value ?? ''),
                           ),
-                          hasObscureText: true,
-                        ),
-                      ],
+                          TextInput(
+                            controller: _lastNameController,
+                            textInputAction: TextInputAction.next,
+                            labelText: S.current.signUpLastNameLabel,
+                            labelStyle: TextStyle(
+                              color: context.colorScheme.onPrimary,
+                            ),
+                            validatorText: (value) =>
+                                InputValidationMixin.validLastName(value ?? ''),
+                          ),
+                          TextInput(
+                            controller: _emailOrPhoneNumberController,
+                            textInputAction: TextInputAction.next,
+                            labelText: S.current.signInEmailOrMobileLabel,
+                            labelStyle: TextStyle(
+                              color: context.colorScheme.onPrimary,
+                            ),
+                            validatorText: (value) =>
+                                InputValidationMixin.validEmailOrPhone(
+                                    value ?? ''),
+                          ),
+                          TextInput(
+                            controller: _passwordController,
+                            labelText: S.current.signInPasswordLabel,
+                            labelStyle: TextStyle(
+                              color: context.colorScheme.onPrimary,
+                            ),
+                            hasObscureText: true,
+                            validatorText: (value) =>
+                                InputValidationMixin.validPassword(value ?? ''),
+                          ),
+                          TextInput(
+                            controller: _reEnterPasswordController,
+                            labelText: S.current.signUpReEnterPasswordLabel,
+                            labelStyle: TextStyle(
+                              color: context.colorScheme.onPrimary,
+                            ),
+                            hasObscureText: true,
+                            validatorText: (value) =>
+                                InputValidationMixin.validReEnterPassword(
+                              password: _passwordController.text,
+                              reEnterPassword: value ?? '',
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 38),
-                    TAElevatedButton(
-                      fontWeight: FontWeight.w500,
-                      text: S.current.signUpCreateButton,
-                      textSize: 16,
-                      textColor: context.colorScheme.primary,
-                      backgroundColor: _isFormValid
-                          ? context.colorScheme.onPrimary
-                          : context.colorScheme.onSecondary,
-                      onPressed: _isFormValid
-                          ? () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                debugPrint(
-                                    'Form is valid. Dispatching SignUpSubmitted event.');
-                                context.read<SignUpBloc>().add(
-                                      SignUpSubmitted(
-                                        email: _emailOrPhoneController.text,
-                                        password: _passwordController.text,
-                                        username:
-                                            '${_firstNameController.text} ${_lastNameController.text}',
-                                      ),
-                                    );
-                              } else {
-                                debugPrint('Form is invalid.');
-                              }
-                            }
-                          : () {
-                              debugPrint(
-                                  'Button is disabled because form is invalid.');
-                            },
+                    const SizedBox(height: 38),
+                    BlocBuilder<SignUpBloc, SignUpState>(
+                      builder: (context, state) => TAElevatedButton(
+                        isDisabled: !state.isFormValid,
+                        fontWeight: FontWeight.w500,
+                        text: S.current.signUpCreateButton,
+                        textSize: 16,
+                        textColor: context.colorScheme.primary,
+                        backgroundColor: state.isFormValid
+                            ? context.colorScheme.onPrimary
+                            : context.colorScheme.onPrimary.withOpacity(0.5),
+                        onPressed: () {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            context
+                                .read<SignUpBloc>()
+                                .add(SignUpButtonPressedEvt());
+                          }
+                        },
+                      ),
                     ),
-                    SizedBox(height: 38),
+                    const SizedBox(height: 38),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();

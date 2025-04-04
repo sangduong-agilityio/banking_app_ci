@@ -1,44 +1,33 @@
 import 'package:equatable/equatable.dart';
 
 abstract class SignInEvent extends Equatable {
+  const SignInEvent();
+
   @override
   List<Object?> get props => [];
 }
 
-class SignInSubmitted extends SignInEvent {
-  final String email;
-  final String password;
-
-  SignInSubmitted({required this.email, required this.password});
-
-  @override
-  List<Object?> get props => [email, password];
-}
-
-class SignInFormValidateChanged extends SignInEvent {
-  final bool isValid;
-  final String? email;
-  final String? password;
-
-  SignInFormValidateChanged({
-    required this.isValid,
+class SignInFormValidateChangedEvt extends SignInEvent {
+  const SignInFormValidateChangedEvt({
+    required this.isValidate,
     this.email,
     this.password,
   });
+  final bool isValidate;
+  final String? email;
+  final String? password;
 
   @override
-  List<Object?> get props => [isValid, email, password];
+  List<Object?> get props => [
+        email,
+        password,
+        isValidate,
+      ];
 }
 
-class SignInButtonPressed extends SignInEvent {
-  final String email;
-  final String password;
-
-  SignInButtonPressed({
-    required this.email,
-    required this.password,
-  });
+class SignInButtonPressedEvt extends SignInEvent {
+  const SignInButtonPressedEvt();
 
   @override
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [];
 }

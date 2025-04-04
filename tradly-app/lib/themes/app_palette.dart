@@ -16,10 +16,18 @@ class TaPalette {
       900: Color(0xFF1F5848),
     },
   );
-  static const MaterialColor pink = MaterialColor(
+  static const MaterialColor red = MaterialColor(
     0xFFFF7272,
     <int, Color>{
-      500: Color(0xFFFF7272),
+      50: Color(0xFFFFEBEE),
+      100: Color(0xFFFFCDD2),
+      200: Color(0xFFEF9A9A),
+      300: Color(0xFFE57373),
+      400: Color(0xFFEF5350),
+      600: Color(0xFFE53935),
+      700: Color(0xFFD32F2F),
+      800: Color(0xFFC62828),
+      900: Color(0xFFB71C1C),
     },
   );
   static const MaterialColor grey = MaterialColor(
@@ -33,5 +41,6 @@ class TaPalette {
   static const Color genericWhite = Color(0xFFFFFFFF);
   static const Color genericBlack = Color(0xFF000000);
   static const Color primaryRed = Color(0xFFCC0000);
+  static const Color greyLight = Color(0xFFE0E0E0);
   static const Color greyDark = Color(0xFFC4C4C4);
 }

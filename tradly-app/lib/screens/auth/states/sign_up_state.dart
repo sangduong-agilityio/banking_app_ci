@@ -5,59 +5,49 @@ class SignUpState extends Equatable {
   const SignUpState({
     required this.viewState,
     this.username = '',
-    this.email = '',
+    this.emailOrPhoneNumber = '',
     this.password = '',
-    this.passwordConfirm = '',
-    this.message = '',
+    this.confirmPassword = '',
     this.isFormValid = false,
+    this.errorMessage,
   });
-  factory SignUpState.int() {
-    return _init ??= const SignUpState(
-      viewState: SubmissionStatus.initial,
-    );
-  }
-  final String username;
-
-  final String email;
-
-  final String password;
-  final String passwordConfirm;
 
   final SubmissionStatus viewState;
-
-  final String message;
+  final String username;
+  final String emailOrPhoneNumber;
+  final String password;
+  final String confirmPassword;
   final bool isFormValid;
-
-  static SignUpState? _init;
+  final String? errorMessage;
 
   SignUpState copyWith({
-    String? username,
-    String? email,
-    String? password,
-    String? passwordConfirm,
     SubmissionStatus? viewState,
-    String? message,
+    String? username,
+    String? emailOrPhoneNumber,
+    String? password,
+    String? confirmPassword,
     bool? isFormValid,
+    String? errorMessage,
   }) {
     return SignUpState(
-      username: username ?? this.username,
-      email: email ?? this.email,
-      password: password ?? this.password,
       viewState: viewState ?? this.viewState,
-      message: message ?? this.message,
-      passwordConfirm: passwordConfirm ?? this.passwordConfirm,
+      username: username ?? this.username,
+      emailOrPhoneNumber: emailOrPhoneNumber ?? this.emailOrPhoneNumber,
+      password: password ?? this.password,
+      confirmPassword: confirmPassword ?? this.confirmPassword,
       isFormValid: isFormValid ?? this.isFormValid,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
   List<Object?> get props => [
         viewState,
-        email,
         username,
+        emailOrPhoneNumber,
         password,
-        message,
-        passwordConfirm,
+        confirmPassword,
         isFormValid,
+        errorMessage,
       ];
 }

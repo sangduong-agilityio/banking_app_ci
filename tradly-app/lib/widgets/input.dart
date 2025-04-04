@@ -9,7 +9,7 @@ class TextInput extends StatefulWidget {
     this.controller,
     this.initialValue,
     this.validatorText,
-    this.validatorStyle, // New property for validator text style
+    this.validatorStyle,
     this.hasObscureText = false,
     this.keyboardType = TextInputType.text,
     this.scrollPadding = const EdgeInsets.all(20.0),
@@ -38,7 +38,7 @@ class TextInput extends StatefulWidget {
 
   final String? Function(String?)? validatorText;
 
-  final TextStyle? validatorStyle; // New property
+  final TextStyle? validatorStyle;
 
   final bool hasObscureText;
 
@@ -212,6 +212,12 @@ class _TextInputState extends State<TextInput> {
                 width: 2.0,
               ),
             ),
+            errorStyle: widget.validatorStyle ??
+                TextStyle(
+                  color: context.colorScheme.error,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
             prefixIcon: widget.dropdownItems != null
                 ? DropdownButtonHideUnderline(
                     child: DropdownButton<String>(

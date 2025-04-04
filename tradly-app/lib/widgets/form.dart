@@ -51,9 +51,9 @@ class _TAFormState extends State<TAForm> {
               input.copyWith(
                 textInputAction: widget.textInputAction ?? TextInputAction.done,
                 onEditingComplete: () {
-                  if (formStateKey.currentState!.validate()) {
-                    widget.isValidated(true);
-                  }
+                  final isValid =
+                      formStateKey.currentState?.validate() ?? false;
+                  widget.isValidated(isValid);
                 },
               ),
           ],

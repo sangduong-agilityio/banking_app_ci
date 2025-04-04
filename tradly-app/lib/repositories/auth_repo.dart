@@ -2,7 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRepository {
   Future<AuthResponse> signUp({
-    required String email,
+    required String emailOrPhoneNumber,
     required String password,
     required String username,
   });
@@ -37,12 +37,13 @@ class AuthRepositoryImplement implements AuthRepository {
 
   @override
   Future<AuthResponse> signUp({
-    required String email,
+    required String emailOrPhoneNumber,
     required String password,
     required String username,
   }) =>
       _client.auth.signUp(
-        email: email,
+        email: emailOrPhoneNumber.contains('@') ? emailOrPhoneNumber : null,
+        phone: emailOrPhoneNumber.contains('@') ? null : emailOrPhoneNumber,
         password: password,
         data: {'username': username},
       );
