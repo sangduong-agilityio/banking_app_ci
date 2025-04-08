@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:tradly_app/core/api/failure.dart';
-import 'package:tradly_app/environments/env.dart';
+import 'package:tradly_app/core/environments/env.dart';
 
 class LazaApiClient {
   final Dio _dio;

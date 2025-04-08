@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tradly_app/repositories/auth_repo.dart';
-import 'package:tradly_app/screens/auth/states/sign_in_bloc.dart';
-import 'package:tradly_app/screens/auth/states/sign_up_bloc.dart';
+import 'package:tradly_app/data/repositories/auth_repo.dart';
+import 'package:tradly_app/presentations/pages/auth/states/sign_in_bloc.dart';
+import 'package:tradly_app/presentations/pages/auth/states/sign_up_bloc.dart';
 
 class TAProvider extends StatelessWidget {
   const TAProvider({
