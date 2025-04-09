@@ -76,12 +76,12 @@ flutter:
 
 flutter_intl:
   enabled: true
-  arb_dir: lib/l10n
-  output_dir: lib/resources/l10n_generated
+  arb_dir: lib/core/l10n
+  output_dir: lib/core/resources/l10n_generated
 
 # Config gen assets
 flutter_gen:
-  output: lib/resources/assets_generated/ 
+  output: lib/core/resources/assets_generated/ 
   # Optional
   integrations:
     flutter_svg: true  

@@ -1,6 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
+import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
+import 'package:tradly_app/data/models/category_model.dart';
+import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
 class TACard extends StatelessWidget {
@@ -70,35 +73,190 @@ class TACard extends StatelessWidget {
   }
 }
 
-class CenteredApiImage extends StatelessWidget {
-  const CenteredApiImage({
-    required this.src,
+class TACardCategory extends StatelessWidget {
+  const TACardCategory({
     super.key,
-    this.text,
+    required this.category,
+    this.onTap,
   });
 
-  final String? src;
-  final String? text;
+  final CategoryModel category;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: src ?? 'assets/images/vegetable.png',
-      imageBuilder: (context, imageProvider) => DecoratedBox(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: imageProvider,
-            fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            child: TAImageRectangle(
+              category.imageUrl ?? '',
+              width: 93,
+              height: 93,
+              boxFit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: TaTitleLargeText(
-            text: text ?? '',
-            fontWeight: FontWeight.w600,
+          TaTitleSmallText(
+            text: category.category ?? 'Vegetables',
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TACardProduct extends StatelessWidget {
+  const TACardProduct({
+    super.key,
+    required this.product,
+    required this.onTapProduct,
+    this.height,
+    this.width,
+  });
+
+  final ProductModel product;
+  final void Function()? onTapProduct;
+  final double? height;
+  final double? width;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTapProduct,
+      child: SizedBox(
+        height: height ?? 200,
+        width: width ?? 160,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TAImageRectangle(
+                product.imageUrl,
+                isBorderTop: true,
+                width: width ?? double.infinity,
+                height: height ?? 130,
+                boxFit: BoxFit.cover,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 11, right: 11),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 6),
+                    TaTitleLargeText(
+                      text: product.title,
+                      color: context.colorScheme.onSurface,
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TAImageCircle(
+                          radius: 10,
+                          Assets.images.imgTradly.path,
+                          boxFit: BoxFit.cover,
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: TaTitleLargeText(
+                            text: product.tags ?? '',
+                            fontWeight: FontWeight.w500,
+                            color: context.colorScheme.outline,
+                          ),
+                        ),
+                        TaTitleLargeText(
+                          text: product.price,
+                          color: context.colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+    );
+  }
+}
+
+class TACardStoreFollow extends StatelessWidget {
+  const TACardStoreFollow({
+    super.key,
+    required this.storeName,
+    required this.imagePath,
+    this.height,
+    this.width,
+    this.onTap,
+  });
+
+  final String storeName;
+  final String imagePath;
+  final double? height;
+  final double? width;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height ?? 200,
+      width: width ?? 160,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        margin: EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              clipBehavior: Clip.none,
+              children: [
+                TAImageRectangle(
+                  imagePath,
+                  isBorderTop: true,
+                  width: width ?? double.infinity,
+                  height: height ?? 85,
+                  boxFit: BoxFit.cover,
+                ),
+                Positioned(
+                  top: 50,
+                  left: 40,
+                  child: TAImageCircle(
+                    radius: 32,
+                    Assets.images.imgTradly.path,
+                    boxFit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 30),
+            TaTitleLargeText(
+              text: storeName,
+              color: context.colorScheme.onSurface,
+            ),
+            ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(80, 25),
+                  backgroundColor: context.colorScheme.primary,
+                ),
+                child: TaTitleMediumText(
+                  text: 'Follow',
+                )),
+          ],
+        ),
+      ),
     );
   }
 }

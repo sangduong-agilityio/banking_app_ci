@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
 
 class ProductBannerList extends StatelessWidget {
@@ -22,8 +23,8 @@ class ProductBannerList extends StatelessWidget {
             child: SizedBox(
               width: 300,
               child: TACard(
-                title: 'READY TO DELIVER TO\nYOUR HOME',
-                textButton: 'START SHOPPING',
+                title: S.current.homeBannerDescription,
+                textButton: S.current.homeBannerTextButton,
                 image: Image.asset('assets/images/vegetable.png'),
                 onPressed: () {},
               ),

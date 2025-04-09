@@ -489,6 +489,166 @@ class S {
       args: [],
     );
   }
+
+  /// `Groceries`
+  String get homeGroceriesTitle {
+    return Intl.message(
+      'Groceries',
+      name: 'homeGroceriesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `READY TO DELIVER TO\nYOUR HOME`
+  String get homeBannerDescription {
+    return Intl.message(
+      'READY TO DELIVER TO\nYOUR HOME',
+      name: 'homeBannerDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `START SHOPPING`
+  String get homeBannerTextButton {
+    return Intl.message(
+      'START SHOPPING',
+      name: 'homeBannerTextButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `See All`
+  String get homeSeeAllButton {
+    return Intl.message(
+      'See All',
+      name: 'homeSeeAllButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View All`
+  String get homeViewAllButton {
+    return Intl.message(
+      'View All',
+      name: 'homeViewAllButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Follow`
+  String get homeFollowButton {
+    return Intl.message(
+      'Follow',
+      name: 'homeFollowButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Product `
+  String get homeNewProductTitle {
+    return Intl.message(
+      'New Product ',
+      name: 'homeNewProductTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Popular Product`
+  String get homePopularProductTitle {
+    return Intl.message(
+      'Popular Product',
+      name: 'homePopularProductTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store to follow`
+  String get homeStoreToFolowTitle {
+    return Intl.message(
+      'Store to follow',
+      name: 'homeStoreToFolowTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search Product`
+  String get homeSearchProductPlaceholder {
+    return Intl.message(
+      'Search Product',
+      name: 'homeSearchProductPlaceholder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home`
+  String get homeLabel {
+    return Intl.message(
+      'Home',
+      name: 'homeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Browse`
+  String get homeBrowseLabel {
+    return Intl.message(
+      'Browse',
+      name: 'homeBrowseLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store`
+  String get homeStoreLabel {
+    return Intl.message(
+      'Store',
+      name: 'homeStoreLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order History`
+  String get homeOrderHistoryLabel {
+    return Intl.message(
+      'Order History',
+      name: 'homeOrderHistoryLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get homeProfileLabel {
+    return Intl.message(
+      'Profile',
+      name: 'homeProfileLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tradly`
+  String get homeTradlyTitle {
+    return Intl.message(
+      'Tradly',
+      name: 'homeTradlyTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

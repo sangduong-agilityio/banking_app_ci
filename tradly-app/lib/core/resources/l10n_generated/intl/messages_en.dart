@@ -22,6 +22,29 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "homeBannerDescription": MessageLookupByLibrary.simpleMessage(
+            "READY TO DELIVER TO\nYOUR HOME"),
+        "homeBannerTextButton":
+            MessageLookupByLibrary.simpleMessage("START SHOPPING"),
+        "homeBrowseLabel": MessageLookupByLibrary.simpleMessage("Browse"),
+        "homeFollowButton": MessageLookupByLibrary.simpleMessage("Follow"),
+        "homeGroceriesTitle": MessageLookupByLibrary.simpleMessage("Groceries"),
+        "homeLabel": MessageLookupByLibrary.simpleMessage("Home"),
+        "homeNewProductTitle":
+            MessageLookupByLibrary.simpleMessage("New Product "),
+        "homeOrderHistoryLabel":
+            MessageLookupByLibrary.simpleMessage("Order History"),
+        "homePopularProductTitle":
+            MessageLookupByLibrary.simpleMessage("Popular Product"),
+        "homeProfileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
+        "homeSearchProductPlaceholder":
+            MessageLookupByLibrary.simpleMessage("Search Product"),
+        "homeSeeAllButton": MessageLookupByLibrary.simpleMessage("See All"),
+        "homeStoreLabel": MessageLookupByLibrary.simpleMessage("Store"),
+        "homeStoreToFolowTitle":
+            MessageLookupByLibrary.simpleMessage("Store to follow"),
+        "homeTradlyTitle": MessageLookupByLibrary.simpleMessage("Tradly"),
+        "homeViewAllButton": MessageLookupByLibrary.simpleMessage("View All"),
         "onBoardingBusinessDescription": MessageLookupByLibrary.simpleMessage(
             "Empowering Artisans, Farmers & Micro Business"),
         "onBoardingFinishButton":

@@ -484,7 +484,7 @@ class _TAStoreImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return TAAssetImage(
       boxFit: boxfit,
-      path: Assets.icons.icSortList.path,
+      path: Assets.icons.icStore.path,
       width: TaResponsive.scale(
         context,
         defaultValue: width ?? 16,

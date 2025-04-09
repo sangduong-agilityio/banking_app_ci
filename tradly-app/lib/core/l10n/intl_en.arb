@@ -63,5 +63,25 @@
   "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter",
   "validatorConfirmPasswordRequired": "Confirm Password is required",
   "validatorConfirmedPasswordNotMatch": "Password and confirm password not match",
-  "validatorLastNameRequired": "Last Name is required"
+  "validatorLastNameRequired": "Last Name is required",
+   "@segmentHome": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Home feature"
+  },
+  "homeGroceriesTitle":"Groceries",
+  "homeBannerDescription":"READY TO DELIVER TO\nYOUR HOME",
+  "homeBannerTextButton":"START SHOPPING",
+  "homeSeeAllButton":"See All",
+  "homeViewAllButton":"View All",
+  "homeFollowButton":"Follow",
+  "homeNewProductTitle":"New Product ",
+  "homePopularProductTitle":"Popular Product",
+  "homeStoreToFolowTitle":"Store to follow",
+  "homeSearchProductPlaceholder":"Search Product",
+  "homeLabel":"Home",
+  "homeBrowseLabel":"Browse",
+  "homeStoreLabel":"Store",
+  "homeOrderHistoryLabel":"Order History",
+  "homeProfileLabel":"Profile",
+  "homeTradlyTitle":"Tradly"
 }

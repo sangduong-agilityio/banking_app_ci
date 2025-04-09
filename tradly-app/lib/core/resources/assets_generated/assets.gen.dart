@@ -88,6 +88,10 @@ class $AssetsImagesGen {
   AssetGenImage get imgOnboardingSupport =>
       const AssetGenImage('assets/images/img_onboarding_support.png');
 
+  /// File path: assets/images/img_tradly.png
+  AssetGenImage get imgTradly =>
+      const AssetGenImage('assets/images/img_tradly.png');
+
   /// File path: assets/images/payment.png
   AssetGenImage get payment => const AssetGenImage('assets/images/payment.png');
 
@@ -108,6 +112,7 @@ class $AssetsImagesGen {
         imgOnboardingBusiness,
         imgOnboardingSocial,
         imgOnboardingSupport,
+        imgTradly,
         payment,
         shopping,
         splash,
