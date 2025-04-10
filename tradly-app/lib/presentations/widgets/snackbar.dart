@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 
-class LASnackBar {
-  LASnackBar._();
+class TASnackBar {
+  TASnackBar._();
 
   static buildErrorSnackbar(BuildContext context, String message,
       {VoidCallback? onRetry}) {

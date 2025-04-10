@@ -26,17 +26,19 @@ class TAImageCircle extends _TAImage {
 }
 
 class TAImageRectangle extends _TAImage {
-  const TAImageRectangle(String imagePath,
-      {super.key,
-      super.package,
-      super.boxFit,
-      super.width,
-      super.height,
-      super.color,
-      super.errorBuilder,
-      super.borderRadius,
-      super.isBorderTop})
-      : super(
+  const TAImageRectangle(
+    String imagePath, {
+    super.key,
+    super.package,
+    super.boxFit,
+    super.width,
+    super.height,
+    super.color,
+    super.errorBuilder,
+    super.borderRadius,
+    super.isBorderTop,
+    super.opacity,
+  }) : super(
           imagePath: imagePath,
         );
 }
@@ -55,6 +57,7 @@ class _TAImage extends StatelessWidget {
     this.borderRadius,
     this.isBorderTop = false,
     this.path,
+    this.opacity,
   });
 
   final String imagePath;
@@ -68,6 +71,7 @@ class _TAImage extends StatelessWidget {
   final double? borderRadius;
   final bool isBorderTop;
   final String? path;
+  final Animation<double>? opacity;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +100,7 @@ class _TAImage extends StatelessWidget {
                   child: SizedBox.fromSize(
                     size: Size.fromRadius(borderRadius ?? 0),
                     child: Image.asset(
+                      opacity: opacity,
                       imagePath,
                       package: package,
                       fit: boxFit,

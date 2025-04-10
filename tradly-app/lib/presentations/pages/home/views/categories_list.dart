@@ -4,20 +4,18 @@ import 'package:tradly_app/presentations/widgets/card.dart';
 
 class CategoriesList extends StatelessWidget {
   const CategoriesList({
+    this.categories,
     super.key,
-    required this.category,
     this.onTap,
   });
 
-  final CategoryModel category;
-
   final VoidCallback? onTap;
+  final CategoryModel? categories;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 187,
-      width: double.infinity,
       child: GridView.builder(
         scrollDirection: Axis.horizontal,
         shrinkWrap: true,
@@ -25,13 +23,17 @@ class CategoriesList extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 2,
           mainAxisSpacing: 2,
-          mainAxisExtent: 99,
         ),
         itemBuilder: (context, index) {
-          return InkWell(
+          return GestureDetector(
             onTap: onTap,
             child: TACardCategory(
-              category: category,
+              category: CategoryModel(
+                products: [],
+                id: categories?.id,
+                category: categories?.category,
+                imageUrl: categories?.imageUrl ?? '',
+              ),
             ),
           );
         },

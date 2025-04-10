@@ -113,7 +113,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         context.pushNamed(TAPaths.home.name);
                       } else if (state.viewState == SubmissionStatus.failed) {
                         LALoadingIndicator.hide(context);
-                        LASnackBar.buildErrorSnackbar(
+                        TASnackBar.buildErrorSnackbar(
                           context,
                           state.errorMessage ?? '',
                         );

@@ -66,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
               }
             } else if (state.viewState == SubmissionStatus.failed) {
               LALoadingIndicator.hide(context);
-              LASnackBar.buildErrorSnackbar(
+              TASnackBar.buildErrorSnackbar(
                 context,
                 state.errorMessage ?? '',
               );

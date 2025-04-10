@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tradly_app/core/api/api_client.dart';
+import 'package:tradly_app/core/env/env.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
+import 'package:tradly_app/data/repositories/category_repo.dart';
 import 'package:tradly_app/presentations/pages/auth/states/sign_in_bloc.dart';
 import 'package:tradly_app/presentations/pages/auth/states/sign_up_bloc.dart';
 
@@ -15,23 +18,29 @@ class TAProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider(
+        RepositoryProvider(
           create: (context) => SignInBloc(
             authRepository: AuthRepositoryImplement(
               Supabase.instance.client,
             ),
           ),
         ),
-        BlocProvider(
+        RepositoryProvider(
           create: (context) => SignUpBloc(
             authRepository: AuthRepositoryImplement(
               Supabase.instance.client,
             ),
           ),
         ),
-        // Add other BLoCs here if needed
+        RepositoryProvider<CategoryRepository>(
+          create: (context) => CategoryRepositoryImpl(
+            apiClient: TradlyApiClient(
+              baseUrl: Env.endPoint,
+            ),
+          ),
+        ),
       ],
       child: child,
     );

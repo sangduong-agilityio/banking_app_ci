@@ -90,18 +90,14 @@ class TACardCategory extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            child: TAImageRectangle(
-              category.imageUrl ?? '',
-              width: 93,
-              height: 93,
-              boxFit: BoxFit.cover,
-            ),
+          TAImageRectangle(
+            category.imageUrl ?? '',
+            width: double.infinity,
+            height: 93,
+            boxFit: BoxFit.cover,
           ),
           TaTitleSmallText(
-            text: category.category ?? 'Vegetables',
+            text: category.category ?? '',
             textAlign: TextAlign.center,
           ),
         ],
@@ -167,7 +163,7 @@ class TACardProduct extends StatelessWidget {
                         const SizedBox(width: 6),
                         Expanded(
                           child: TaTitleLargeText(
-                            text: product.tags ?? '',
+                            text: product.brand ?? '',
                             fontWeight: FontWeight.w500,
                             color: context.colorScheme.outline,
                           ),
@@ -226,11 +222,11 @@ class TACardStoreFollow extends StatelessWidget {
                   imagePath,
                   isBorderTop: true,
                   width: width ?? double.infinity,
-                  height: height ?? 85,
+                  height: height ?? 75,
                   boxFit: BoxFit.cover,
                 ),
                 Positioned(
-                  top: 50,
+                  top: 40,
                   left: 40,
                   child: TAImageCircle(
                     radius: 32,
@@ -240,7 +236,7 @@ class TACardStoreFollow extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 35),
             TaTitleLargeText(
               text: storeName,
               color: context.colorScheme.onSurface,

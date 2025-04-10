@@ -1,87 +1,50 @@
-import 'dart:convert';
-
-import 'package:equatable/equatable.dart';
-
 enum ProductTag {
   newProduct,
   mostPopular,
 }
 
-class ProductModel extends Equatable {
-  const ProductModel({
+class ProductModel {
+  final String? id;
+  final String title;
+  final String imageUrl;
+  final String price;
+  final String? brand;
+  final String? newPrice;
+  final int? inCategory;
+
+  ProductModel({
+    this.id,
     required this.title,
     required this.imageUrl,
     required this.price,
-    this.tags,
+    this.brand,
     this.newPrice,
     this.inCategory,
   });
 
-  factory ProductModel.fromMap(Map<String, dynamic> map) {
+  // Factory method to create a ProductModel from a JSON object
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      title: map['title'] as String,
-      imageUrl: map['imageUrl'] as String,
-      price: map['price'] as String,
-      tags: map['tags'] != null ? map['tags'] as String : null,
-      newPrice: map['newPrice'] != null ? map['newPrice'] as String : null,
-      inCategory:
-          map['inCategory'] != null ? map['inCategory'] as String : null,
+      id: json['id'],
+      title: json['title'],
+      imageUrl: json['imageUrl'],
+      price: json['price'],
+      brand: json['brand'],
+      newPrice: json['newPrice'],
+      inCategory: json['inCategory'],
     );
   }
 
-  factory ProductModel.fromJson(String source) =>
-      ProductModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  final String title;
-  final String imageUrl;
-  final String price;
-  final String? tags;
-  final String? newPrice;
-  final String? inCategory;
-
-  @override
-  List<Object?> get props {
-    return [
-      title,
-      imageUrl,
-      price,
-      tags,
-      newPrice,
-      inCategory,
-    ];
-  }
-
-  ProductModel copyWith({
-    String? title,
-    String? imageUrl,
-    String? price,
-    String? tags,
-    String? newPrice,
-    String? inCategory,
-  }) {
-    return ProductModel(
-      title: title ?? this.title,
-      imageUrl: imageUrl ?? this.imageUrl,
-      price: price ?? this.price,
-      tags: tags ?? this.tags,
-      newPrice: newPrice ?? this.newPrice,
-      inCategory: inCategory ?? this.inCategory,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+  // Method to convert ProductModel to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
       'title': title,
-      'imagePath': imageUrl,
+      'imageUrl': imageUrl,
       'price': price,
-      'tags': tags,
+      'brand': brand,
       'newPrice': newPrice,
       'inCategory': inCategory,
     };
   }
-
-  String toJson() => json.encode(toMap());
-
-  @override
-  bool get stringify => true;
 }

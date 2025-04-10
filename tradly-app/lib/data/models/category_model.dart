@@ -1,53 +1,38 @@
-import 'dart:convert';
+import 'package:tradly_app/data/models/product_model.dart';
 
-import 'package:equatable/equatable.dart';
-
-class CategoryModel extends Equatable {
-  const CategoryModel({
-    required this.id,
-    required this.category,
-    required this.imageUrl,
-  });
-  factory CategoryModel.fromMap(Map<String, dynamic> map) {
-    return CategoryModel(
-      id: map['id'] as String?,
-      category: map['category'] as String?,
-      imageUrl: map['imageUrl'] as String?,
-    );
-  }
-
-  factory CategoryModel.fromJson(String source) =>
-      CategoryModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  final String? id;
+class CategoryModel {
+  final int? id;
   final String? category;
   final String? imageUrl;
+  final List<ProductModel> products;
 
-  CategoryModel copyWith({
-    String? id,
-    String? category,
-    String? imageUrl,
-  }) {
+  CategoryModel({
+    this.id,
+    this.category,
+    this.imageUrl,
+    required this.products,
+  });
+
+  // Factory method to create a CategoryModel from a JSON object
+  factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    var productList = json['products'] as List? ?? [];
+    List<ProductModel> productModels =
+        productList.map((i) => ProductModel.fromJson(i)).toList();
+
     return CategoryModel(
-      id: id ?? this.id,
-      category: category ?? this.category,
-      imageUrl: imageUrl ?? this.imageUrl,
+      id: json['id'],
+      category: json['category'],
+      imageUrl: json['imageUrl'],
+      products: productModels,
     );
   }
 
-  @override
-  List<Object?> get props => [id, category, imageUrl];
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
+  // Method to convert CategoryModel to JSON
+  Map<String, dynamic> toJson() {
+    return {
       'id': id,
       'category': category,
       'imageUrl': imageUrl,
     };
   }
-
-  String toJson() => json.encode(toMap());
-
-  @override
-  bool get stringify => true;
 }

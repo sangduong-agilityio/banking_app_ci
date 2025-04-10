@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-// import 'package:tradly_app/environments/env.dart';
+import 'package:tradly_app/core/env/env.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
@@ -16,9 +16,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
-    url: 'https://rcfffgbdtvmpzrodsyzm.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjZmZmZ2JkdHZtcHpyb2RzeXptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM2NDMzNTksImV4cCI6MjA1OTIxOTM1OX0.qrP9QiXbT3KMlTbniOj9rBc8OHAkvxseI3H6hCqgYlE',
+    url: Env.supabaseUrl,
+    anonKey: Env.supabaseKey,
   );
 
   runApp(const TradlyShopApp());
@@ -92,7 +91,7 @@ class _TradlyShopAppState extends State<TradlyShopApp>
               /// devices)
               const Breakpoint(
                 start: 0,
-                end: 768,
+                end: 800,
                 name: MOBILE,
               ),
 

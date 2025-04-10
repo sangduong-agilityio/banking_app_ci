@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:tradly_app/core/api/failure.dart';
-import 'package:tradly_app/core/environments/env.dart';
+import 'package:tradly_app/core/env/env.dart';
 
-class LazaApiClient {
+class TradlyApiClient {
   final Dio _dio;
 
-  LazaApiClient({
+  TradlyApiClient({
     required String baseUrl,
   }) : _dio = Dio(BaseOptions(
           baseUrl: baseUrl,
@@ -24,7 +24,7 @@ class LazaApiClient {
         queryParameters: queryParams,
         options: Options(
           headers: {
-            'apikey': apiKey = TAEnv.supabaseKey,
+            'apikey': apiKey = Env.supabaseKey,
           },
         ),
       );

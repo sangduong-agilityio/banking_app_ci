@@ -16,10 +16,11 @@ class PopularProductList extends StatelessWidget {
         itemBuilder: (context, index) {
           return TACardProduct(
             product: ProductModel(
+              id: '1',
               title: 'Vegetable',
               imageUrl: 'assets/images/vegetable.png',
               price: '10',
-              tags: 'Tradly',
+              brand: 'Tradly',
             ),
             onTapProduct: () {},
           );
