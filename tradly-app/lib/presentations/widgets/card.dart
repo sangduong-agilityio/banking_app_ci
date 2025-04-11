@@ -1,110 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
-import 'package:tradly_app/data/models/category_model.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
-
-class TACard extends StatelessWidget {
-  const TACard({
-    super.key,
-    this.title = '',
-    this.textButton = '',
-    this.image,
-    this.onPressed,
-  });
-
-  final String title;
-  final String textButton;
-  final Widget? image;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 165,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        image: DecorationImage(
-          image: const AssetImage('assets/images/vegetable.png'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 50),
-          Padding(
-            padding: const EdgeInsets.only(left: 17),
-            child: TaTitleLargeText(
-              text: title,
-              fontWeight: FontWeight.bold,
-              color: context.colorScheme.onPrimary,
-              letterSpacing: 1.22,
-              height: 16 / 14,
-            ),
-          ),
-          SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: ElevatedButton(
-              onPressed: onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  side: BorderSide(
-                    color: context.colorScheme.onPrimary,
-                    width: 1,
-                  ),
-                ),
-              ),
-              child: TaTitleMediumText(
-                text: textButton,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TACardCategory extends StatelessWidget {
-  const TACardCategory({
-    super.key,
-    required this.category,
-    this.onTap,
-  });
-
-  final CategoryModel category;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          TAImageRectangle(
-            category.imageUrl ?? '',
-            width: double.infinity,
-            height: 93,
-            boxFit: BoxFit.cover,
-          ),
-          TaTitleSmallText(
-            text: category.category ?? '',
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class TACardProduct extends StatelessWidget {
   const TACardProduct({
@@ -248,7 +148,7 @@ class TACardStoreFollow extends StatelessWidget {
                   backgroundColor: context.colorScheme.primary,
                 ),
                 child: TaTitleMediumText(
-                  text: 'Follow',
+                  text: S.current.homeFollowButton,
                 )),
           ],
         ),

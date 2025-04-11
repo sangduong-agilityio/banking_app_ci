@@ -3,42 +3,39 @@ import 'package:tradly_app/data/repositories/category_repo.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_event.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class HomeBloc extends Bloc<HomeEvt, HomeState> {
   HomeBloc({
-    required this.repository,
-  }) : super(HomeInitialState()) {
-    on<HomeFetchAllEvent>(_fetchAll);
+    required CategoryRepository repo,
+  })  : _repo = repo,
+        super(const HomeState()) {
+    on<HomeInitializeEvt>(_onInitializeHandler);
   }
 
-  final CategoryRepository repository;
+  final CategoryRepository _repo;
 
-  Future<void> _fetchAll(
-    HomeFetchAllEvent event,
-    Emitter<HomeState> emit,
-  ) async {
-    await Future.wait<void>([
-      _fetchCategories(emit),
-    ]);
-  }
-
-  Future<void> _fetchCategories(
+  Future<void> _onInitializeHandler(
+    HomeInitializeEvt event,
     Emitter<HomeState> emit,
   ) async {
     emit(
-      const HomeCategoryState(isLoading: true),
+      state.copyWith(
+        status: const HomeStatus.loading(),
+      ),
     );
+
     try {
-      final categories = await repository.fetchCategories();
+      final categories = await _repo.fetchCategories();
       emit(
-        HomeCategoryState(
-          courseCategories: categories,
-          isLoading: false,
+        state.copyWith(
+          status: const HomeStatus.success(),
+          categories: categories,
         ),
       );
-    } catch (e) {
+    } catch (error) {
       emit(
-        HomeCategoryState(
-          error: e.toString(),
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: error.toString(),
         ),
       );
     }

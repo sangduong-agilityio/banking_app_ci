@@ -92,7 +92,7 @@ class TAElevatedIconButton extends StatefulWidget {
     super.key,
   });
 
-  final Widget icon;
+  final String icon;
   final Widget text;
   final bool isLoading;
   final bool isDisabled;
@@ -142,7 +142,9 @@ class _TAElevatedIconButtonState extends State<TAElevatedIconButton> {
         icon: Container(
           constraints: const BoxConstraints(maxWidth: 20, maxHeight: 20),
           padding: const EdgeInsets.only(right: 8),
-          child: widget.icon,
+          child: Image.asset(
+            widget.icon,
+          ),
         ),
       ),
     );

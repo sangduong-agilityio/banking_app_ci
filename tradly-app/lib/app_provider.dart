@@ -20,6 +20,11 @@ class TAProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<TradlyApiClient>(
+          create: (context) => TradlyApiClient(
+            baseUrl: Env.endPoint,
+          ),
+        ),
         RepositoryProvider(
           create: (context) => SignInBloc(
             authRepository: AuthRepositoryImplement(

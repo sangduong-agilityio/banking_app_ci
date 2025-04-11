@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/utils/responsive.dart';
 
 class TaAppBarSize {
@@ -17,6 +18,7 @@ enum TaTitleAlignment {
 
 enum TaAppBarBottomType {
   none,
+  option,
   search,
 }
 
@@ -121,8 +123,94 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       padding: const EdgeInsets.all(20),
                       child: searchForm ?? const SizedBox.shrink(),
                     ),
-                    optionList ?? const SizedBox.shrink(),
+                    const SizedBox.shrink(),
                   ],
+                ),
+              ),
+            TaAppBarBottomType.option => PreferredSize(
+                preferredSize: const Size.fromHeight(1),
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.sort,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          'Sort by',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(10, 32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(
+                              color: context.colorScheme.onPrimary,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(
+                          size: 15,
+                          Icons.location_on,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          'Location',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(10, 32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(
+                              color: context.colorScheme.onPrimary,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(
+                          size: 15,
+                          Icons.category,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          'Category',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(10, 32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(
+                              color: context.colorScheme.onPrimary,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             TaAppBarBottomType.none => null,
