@@ -68,6 +68,14 @@ class TACardProduct extends StatelessWidget {
                             color: context.colorScheme.outline,
                           ),
                         ),
+                        TaLabelLargeText(
+                          text: product.newPrice != null
+                              ? '\$${product.newPrice}'
+                              : '',
+                          color: context.colorScheme.outline,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        const SizedBox(width: 6),
                         TaTitleLargeText(
                           text: product.price,
                           color: context.colorScheme.primary,

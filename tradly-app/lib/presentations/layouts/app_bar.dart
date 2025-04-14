@@ -130,7 +130,8 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
             TaAppBarBottomType.option => PreferredSize(
                 preferredSize: const Size.fromHeight(1),
                 child: Padding(
-                  padding: const EdgeInsets.all(5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -138,7 +139,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                         onPressed: () {},
                         icon: Icon(
                           Icons.sort,
-                          size: 15,
+                          size: 16,
                           color: Colors.white,
                         ),
                         label: Text(
@@ -149,7 +150,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(10, 32),
+                          // minimumSize: const Size(10, 32),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                             side: BorderSide(
@@ -162,7 +163,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ElevatedButton.icon(
                         onPressed: () {},
                         icon: Icon(
-                          size: 15,
+                          size: 16,
                           Icons.location_on,
                           color: Colors.white,
                         ),
@@ -174,7 +175,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(10, 32),
+                          // minimumSize: const Size(10, 32),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                             side: BorderSide(
@@ -187,7 +188,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ElevatedButton.icon(
                         onPressed: () {},
                         icon: Icon(
-                          size: 15,
+                          size: 16,
                           Icons.category,
                           color: Colors.white,
                         ),
@@ -199,7 +200,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(10, 32),
+                          // minimumSize: const Size(10, 32),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                             side: BorderSide(

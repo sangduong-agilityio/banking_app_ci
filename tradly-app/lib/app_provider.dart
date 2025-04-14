@@ -4,7 +4,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/core/api/api_client.dart';
 import 'package:tradly_app/core/env/env.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
-import 'package:tradly_app/data/repositories/category_repo.dart';
+import 'package:tradly_app/data/repositories/home_repo.dart';
+import 'package:tradly_app/data/repositories/product_repo.dart';
 import 'package:tradly_app/presentations/pages/auth/states/sign_in_bloc.dart';
 import 'package:tradly_app/presentations/pages/auth/states/sign_up_bloc.dart';
 
@@ -39,8 +40,15 @@ class TAProvider extends StatelessWidget {
             ),
           ),
         ),
-        RepositoryProvider<CategoryRepository>(
-          create: (context) => CategoryRepositoryImpl(
+        RepositoryProvider<HomeRepository>(
+          create: (context) => HomeRepositoryImpl(
+            apiClient: TradlyApiClient(
+              baseUrl: Env.endPoint,
+            ),
+          ),
+        ),
+        RepositoryProvider<ProductRepository>(
+          create: (context) => ProductRepositoryImpl(
             apiClient: TradlyApiClient(
               baseUrl: Env.endPoint,
             ),

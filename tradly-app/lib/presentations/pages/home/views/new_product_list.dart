@@ -3,8 +3,11 @@ import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
 
 class NewProductList extends StatelessWidget {
-  const NewProductList({super.key});
-
+  const NewProductList({
+    super.key,
+    this.products,
+  });
+  final List<ProductModel>? products;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -16,11 +19,11 @@ class NewProductList extends StatelessWidget {
         itemBuilder: (context, index) {
           return TACardProduct(
             product: ProductModel(
-              id: '1',
-              title: 'Vegetable',
-              imageUrl: 'assets/images/vegetable.png',
-              price: '10',
-              brand: 'Tradly',
+              id: products?[index].id ?? 0,
+              title: products?[index].title ?? '',
+              imageUrl: products?[index].imageUrl ?? '',
+              price: products?[index].price ?? '',
+              brand: products?[index].brand ?? '',
             ),
             onTapProduct: () {},
           );

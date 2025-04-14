@@ -3,25 +3,17 @@ import 'package:tradly_app/core/env/env.dart';
 import 'package:tradly_app/data/models/category_model.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 
-abstract class CategoryRepository {
-  Future<CategoryModel> fetchCategoryById(int id);
+abstract class HomeRepository {
   Future<List<CategoryModel>> fetchCategories();
-  Future<List<ProductModel>> fetchProductsByCategoryId(int categoryId);
+  Future<List<ProductModel>> fetchProductsWithTypes();
 }
 
-class CategoryRepositoryImpl implements CategoryRepository {
+class HomeRepositoryImpl implements HomeRepository {
   final TradlyApiClient _apiClient;
 
-  CategoryRepositoryImpl({
+  HomeRepositoryImpl({
     required TradlyApiClient apiClient,
   }) : _apiClient = apiClient;
-
-  @override
-  Future<CategoryModel> fetchCategoryById(int id) async {
-    final response = await _apiClient.get('${Env.endPoint}categories/$id');
-    final jsonData = response.data;
-    return CategoryModel.fromJson(jsonData);
-  }
 
   @override
   Future<List<CategoryModel>> fetchCategories() async {
@@ -41,12 +33,18 @@ class CategoryRepositoryImpl implements CategoryRepository {
   }
 
   @override
-  Future<List<ProductModel>> fetchProductsByCategoryId(int categoryId) async {
-    final response = await _apiClient.get('/categories/$categoryId/products');
-    final List<dynamic> jsonData = response.data;
+  Future<List<ProductModel>> fetchProductsWithTypes() async {
+    String apiUrl = '${Env.endPoint}product_types';
 
-    return jsonData
-        .map((productJson) => ProductModel.fromJson(productJson))
-        .toList();
+    final response = await _apiClient.get(
+      apiUrl,
+      queryParams: {
+        'select': 'id,productId,type',
+      },
+    );
+    final jsonData = response.data;
+    final products =
+        (jsonData as List).map((json) => ProductModel.fromJson(json)).toList();
+    return products;
   }
 }

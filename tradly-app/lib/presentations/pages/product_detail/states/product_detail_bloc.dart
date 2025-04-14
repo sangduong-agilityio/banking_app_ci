@@ -1,0 +1,36 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tradly_app/data/repositories/product_repo.dart';
+import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_event.dart';
+import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_state.dart';
+
+class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
+  ProductDetailBloc({
+    required ProductRepository repo,
+  })  : _repo = repo,
+        super(const ProductDetailState()) {
+    on<ProductDetailInitializeEvt>(_onInitialize);
+  }
+
+  final ProductRepository _repo;
+
+  Future<void> _onInitialize(
+    ProductDetailInitializeEvt event,
+    Emitter<ProductDetailState> emit,
+  ) async {
+    emit(state.copyWith(status: const ProductDetailStatus.loading()));
+
+    try {
+      final products = await _repo.fetchProductsByCategoryId(event.categoryId);
+      emit(
+        state.copyWith(
+          products: products,
+          status: const ProductDetailStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(state.copyWith(
+          status: const ProductDetailStatus.failure(),
+          errorMessage: e.toString()));
+    }
+  }
+}

@@ -65,50 +65,97 @@ class TARouter {
       GoRoute(
         name: TAPaths.beverages.name,
         path: TAPaths.beverages.path,
-        builder: (context, state) => const BeveragesList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return BeveragesList(
+            categoryId: categoryId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.vegetables.name,
         path: TAPaths.vegetables.path,
-        builder: (context, state) => const VegetablesList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return VegetablesList(
+            categoryId: categoryId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.breadBakely.name,
         path: TAPaths.breadBakely.path,
-        builder: (context, state) => const BreadBakeryList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return BreadBakeryList(
+            categoryId: categoryId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.egg.name,
         path: TAPaths.egg.path,
-        builder: (context, state) => const EggList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return EggList(
+            categoryId: categoryId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.fruit.name,
         path: TAPaths.fruit.path,
-        builder: (context, state) => const FruitList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return FruitList(
+            categoryId: categoryId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.homeCare.name,
         path: TAPaths.homeCare.path,
-        builder: (context, state) => const HomeCareList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return HomeCareList(
+            categoryId: categoryId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.frozenVeg.name,
         path: TAPaths.frozenVeg.path,
-        builder: (context, state) => const FrozenVegList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return FrozenVegList(
+            categoryId: categoryId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.petCare.name,
         path: TAPaths.petCare.path,
-        builder: (context, state) => const PetCareList(),
+        builder: (context, state) {
+          final categoryId = state.extra is int ? state.extra as int : null;
+          return PetCareList(
+            categoryId: categoryId,
+          );
+        },
       ),
     ];
   }
 
-  static void navigateToCategory(BuildContext context, String routeName,
-      {Map<String, String>? queryParams}) {
-    context.pushNamed(routeName,
-        queryParameters: queryParams ?? <String, dynamic>{});
+  static void navigateToCategory(
+    BuildContext context,
+    String routeName, {
+    Map<String, String>? queryParams,
+    Object? extra,
+  }) {
+    context.pushNamed(
+      routeName,
+      queryParameters: queryParams ?? <String, dynamic>{},
+      extra: extra,
+    );
   }
 }
 
