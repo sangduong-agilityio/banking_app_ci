@@ -18,7 +18,7 @@ class ProductType {
   factory ProductType.fromJson(Map<String, dynamic> json) {
     return ProductType(
       id: json['id'],
-      productId: json['product_id'],
+      productId: json['productId'],
       type: json['type'],
     );
   }
@@ -27,7 +27,7 @@ class ProductType {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'product_id': productId,
+      'productId': productId,
       'type': type,
     };
   }
@@ -40,6 +40,11 @@ class ProductModel {
   final String price;
   final String? brand;
   final String? newPrice;
+  final String? description;
+  final String? priceType;
+  final String? condition;
+  final String? location;
+  final String? categoryType;
   final int? categoryId;
   final List<ProductType>? productTypes;
 
@@ -51,7 +56,12 @@ class ProductModel {
     this.brand,
     this.newPrice,
     this.categoryId,
+    this.description,
     this.productTypes,
+    this.priceType,
+    this.condition,
+    this.location,
+    this.categoryType,
   });
 
   // Factory method to create a ProductModel from a JSON object
@@ -63,6 +73,11 @@ class ProductModel {
       price: json['price'],
       brand: json['brand'],
       newPrice: json['newPrice'],
+      description: json['description'],
+      priceType: json['priceType'],
+      condition: json['condition'],
+      location: json['location'],
+      categoryType: json['categoryType'],
       categoryId: json['categoryId'],
       productTypes: (json['product_types'] as List<dynamic>?)
           ?.map((e) => ProductType.fromJson(e))
@@ -78,7 +93,12 @@ class ProductModel {
       'imageUrl': imageUrl,
       'price': price,
       'brand': brand,
+      'description': description,
       'newPrice': newPrice,
+      'priceType': priceType,
+      'condition': condition,
+      'location': location,
+      'categoryType': categoryType,
       'categoryId': categoryId,
       'product_types': productTypes?.map((e) => e.toJson()).toList(),
     };

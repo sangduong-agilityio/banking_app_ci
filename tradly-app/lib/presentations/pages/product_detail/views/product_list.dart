@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tradly_app/core/extensions/context_extensions.dart';
+import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/data/repositories/product_repo.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
@@ -9,7 +11,6 @@ import 'package:tradly_app/presentations/pages/product_detail/states/product_det
 import 'package:tradly_app/presentations/widgets/card.dart';
 import 'package:tradly_app/presentations/widgets/indicator.dart';
 import 'package:tradly_app/presentations/widgets/snackbar.dart';
-import 'package:tradly_app/presentations/widgets/text.dart';
 
 class ProductList extends StatelessWidget {
   const ProductList({
@@ -45,17 +46,12 @@ class ProductList extends StatelessWidget {
           );
         },
         child: Scaffold(
-          appBar: TaAppBar(
-            toolbarHeight: TaAppBarSize.medium,
-            alignmentTitle: TaTitleAlignment.center,
-            bottomType: TaAppBarBottomType.option,
-            title: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: TaDisplaySmallText(
-                text: title,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+          appBar: TaAppBar.categoryDetail(
+            backgroundColor: context.colorScheme.primary,
+            title: title,
+            onBackPressed: () {
+              Navigator.pop(context);
+            },
           ),
           body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
             builder: (context, state) {
@@ -69,7 +65,13 @@ class ProductList extends StatelessWidget {
                   itemCount: state.products?.length ?? 0,
                   itemBuilder: (context, index) {
                     return TACardProduct(
-                      onTapProduct: () {},
+                      onTapProduct: () {
+                        TARouter.navigateToProductDetail(
+                          context,
+                          TAPaths.productDetail.name,
+                          extra: categoryId,
+                        );
+                      },
                       product: ProductModel(
                         id: state.products?[index].id,
                         title: state.products?[index].title ?? '',

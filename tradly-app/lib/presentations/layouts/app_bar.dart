@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/utils/responsive.dart';
+import 'package:tradly_app/presentations/widgets/text.dart';
 
 class TaAppBarSize {
   static const double small = kToolbarHeight;
@@ -10,15 +11,17 @@ class TaAppBarSize {
   static const double large = 182;
 }
 
-enum TaTitleAlignment {
-  center,
-  bottom,
-  normal,
+enum TaAppBarType {
+  home,
+  categoryDetail,
+  details,
+  wishlist,
+  custom,
 }
 
 enum TaAppBarBottomType {
   none,
-  option,
+  filter,
   search,
 }
 
@@ -29,54 +32,156 @@ enum TaAppBarShape {
 
 class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TaAppBar({
+    this.appBarType = TaAppBarType.custom,
     this.automaticallyImplyLeading = true,
-    this.toolbarHeight = TaAppBarSize.large,
-    this.alignmentTitle = TaTitleAlignment.normal,
-    this.title = const SizedBox.shrink(),
+    this.toolbarHeight = TaAppBarSize.medium,
+    this.title,
     this.leading,
     this.backgroundColor,
     this.subTitle,
     this.trailing,
     this.bottomType = TaAppBarBottomType.none,
-    this.shapeType,
+    this.shapeType = TaAppBarShape.normal,
     this.searchForm,
-    this.optionList,
+    this.filterOptions,
+    this.background,
+    this.onBackPressed,
+    this.elevation = 0,
     super.key,
   });
 
-  /// The [leading] is the widget on the left side of the AppBar.
+  /// Factory constructor for home screen app bar
+  factory TaAppBar.home({
+    required Widget title,
+    required Widget searchForm,
+    List<Widget>? actions,
+    Color? backgroundColor,
+    Widget? trailing,
+  }) {
+    return TaAppBar(
+      appBarType: TaAppBarType.home,
+      title: title,
+      backgroundColor: backgroundColor,
+      bottomType: TaAppBarBottomType.search,
+      searchForm: searchForm,
+      trailing: trailing,
+    );
+  }
+
+  /// Factory constructor for category detail screen app bar
+  factory TaAppBar.categoryDetail({
+    required String title,
+    VoidCallback? onBackPressed,
+    Color? backgroundColor,
+    TaAppBarBottomType bottomType = TaAppBarBottomType.filter,
+    Widget? filterOptions,
+  }) {
+    return TaAppBar(
+      appBarType: TaAppBarType.categoryDetail,
+      title: TaDisplaySmallText(
+        text: title,
+        fontWeight: FontWeight.w700,
+      ),
+      backgroundColor: backgroundColor ?? Colors.teal,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: onBackPressed,
+      ),
+      bottomType: bottomType,
+      filterOptions: filterOptions,
+    );
+  }
+
+  /// Factory constructor for product details screen app bar
+  factory TaAppBar.details({
+    required Widget background,
+    VoidCallback? onBackPressed,
+    Color? backgroundColor,
+    List<Widget>? actions,
+  }) {
+    return TaAppBar(
+      appBarType: TaAppBarType.details,
+      toolbarHeight: TaAppBarSize.large,
+      background: background,
+      backgroundColor: Colors.teal,
+      leading: Container(
+        margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white.withOpacity(0.2),
+        ),
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: onBackPressed,
+        ),
+      ),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: (actions ??
+            [
+              Icons.share,
+              Icons.favorite_border,
+              Icons.more_vert,
+            ].map((icon) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.2),
+                ),
+                child: IconButton(
+                  icon: Icon(
+                    icon,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              );
+            }).toList()),
+      ),
+    );
+  }
+
+  /// Factory constructor for wishlist screen app bar
+  factory TaAppBar.wishlist({
+    required String title,
+    VoidCallback? onBackPressed,
+    Color? backgroundColor,
+  }) {
+    return TaAppBar(
+      appBarType: TaAppBarType.wishlist,
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: backgroundColor ?? Colors.teal,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: onBackPressed,
+      ),
+      toolbarHeight: TaAppBarSize.small,
+    );
+  }
+
+  final TaAppBarType appBarType;
   final Widget? leading;
-
-  /// The [title] is the widget in the center of the AppBar.
   final Widget? title;
-
-  /// The [subTitle] is the widget below the [title].
   final Widget? subTitle;
-
-  /// The [toolbarHeight] is the height of the AppBar.
   final double toolbarHeight;
-
-  /// The [backgroundColor] is the background color of the AppBar.
   final Color? backgroundColor;
-
-  /// The [alignmentTitle] is the title alignment, see [TaTitleAlignment].
-  final TaTitleAlignment? alignmentTitle;
-
-  /// The [trailing] is the widget on the right side of the AppBar.
   final Widget? trailing;
-
-  /// The [automaticallyImplyLeading] is create back button
   final bool automaticallyImplyLeading;
-
-  /// The bottom is the widget below the [title].
-  final TaAppBarBottomType? bottomType;
-
-  /// The shape is the shape of the AppBar.
-  final TaAppBarShape? shapeType;
-
+  final TaAppBarBottomType bottomType;
+  final TaAppBarShape shapeType;
   final Widget? searchForm;
-
-  final Widget? optionList;
+  final Widget? filterOptions;
+  final Widget? background;
+  final VoidCallback? onBackPressed;
+  final double elevation;
 
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight);
@@ -88,144 +193,134 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: AppBar(
+          flexibleSpace: background,
           automaticallyImplyLeading: automaticallyImplyLeading,
-          elevation: 0,
+          elevation: elevation,
           titleSpacing: 0,
-          leadingWidth: 64,
+          leadingWidth: 56,
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          centerTitle: alignmentTitle == TaTitleAlignment.center,
+          centerTitle: appBarType == TaAppBarType.categoryDetail ||
+              appBarType == TaAppBarType.wishlist,
           toolbarHeight: TaResponsive.scale(
             context,
             defaultValue: toolbarHeight,
           ),
-          backgroundColor: backgroundColor,
-          leading: leading,
+          backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+          leading: leading ??
+              (automaticallyImplyLeading && Navigator.canPop(context)
+                  ? IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed:
+                          onBackPressed ?? () => Navigator.of(context).pop(),
+                    )
+                  : null),
           actions: [
             if (trailing != null) trailing!,
           ],
-          title: switch (subTitle != null) {
-            true => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  title ?? const SizedBox.shrink(),
-                  subTitle ?? const SizedBox.shrink(),
-                ],
-              ),
-            false => title,
-          },
-          bottom: switch (bottomType) {
-            TaAppBarBottomType.search => PreferredSize(
-                preferredSize: const Size.fromHeight(1),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          title: subTitle != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: searchForm ?? const SizedBox.shrink(),
-                    ),
-                    const SizedBox.shrink(),
+                    title ?? const SizedBox.shrink(),
+                    const SizedBox(height: 4),
+                    subTitle!,
                   ],
-                ),
-              ),
-            TaAppBarBottomType.option => PreferredSize(
-                preferredSize: const Size.fromHeight(1),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.sort,
-                          size: 16,
-                          color: Colors.white,
-                        ),
-                        label: Text(
-                          'Sort by',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          // minimumSize: const Size(10, 32),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            side: BorderSide(
-                              color: context.colorScheme.onPrimary,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(
-                          size: 16,
-                          Icons.location_on,
-                          color: Colors.white,
-                        ),
-                        label: Text(
-                          'Location',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          // minimumSize: const Size(10, 32),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            side: BorderSide(
-                              color: context.colorScheme.onPrimary,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: Icon(
-                          size: 16,
-                          Icons.category,
-                          color: Colors.white,
-                        ),
-                        label: Text(
-                          'Category',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          // minimumSize: const Size(10, 32),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            side: BorderSide(
-                              color: context.colorScheme.onPrimary,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                )
+              : title,
+          bottom: _buildBottom(context),
+          shape: shapeType == TaAppBarShape.rounded
+              ? const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(12),
                   ),
-                ),
-              ),
-            TaAppBarBottomType.none => null,
-            _ => null,
-          },
-          shape: switch (shapeType) {
-            TaAppBarShape.rounded => const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(12),
-                ),
-              ),
-            TaAppBarShape.normal => null,
-            _ => null,
-          },
+                )
+              : null,
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget? _buildBottom(BuildContext context) {
+    switch (bottomType) {
+      case TaAppBarBottomType.search:
+        return PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: searchForm ?? const SizedBox.shrink(),
+          ),
+        );
+
+      case TaAppBarBottomType.filter:
+        return PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: filterOptions ?? _buildDefaultFilterOptions(context),
+          ),
+        );
+
+      case TaAppBarBottomType.none:
+        return PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Container(height: 120),
+        );
+    }
+  }
+
+  Widget _buildDefaultFilterOptions(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildFilterButton(
+          context,
+          icon: Icons.sort,
+          label: 'Sort by',
+          onPressed: () {},
+        ),
+        _buildFilterButton(
+          context,
+          icon: Icons.location_on,
+          label: 'Location',
+          onPressed: () {},
+        ),
+        _buildFilterButton(
+          context,
+          icon: Icons.category,
+          label: 'Category',
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFilterButton(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: Icon(
+        icon,
+        // size: 16,
+        color: Colors.white,
+      ),
+      label: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+          side: BorderSide(
+            color: context.colorScheme.onPrimary,
+            width: 1,
+          ),
         ),
       ),
     );

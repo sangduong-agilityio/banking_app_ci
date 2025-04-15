@@ -48,6 +48,6 @@ class TaColors {
     onSurfaceVariant: TaPalette.grey[900],
     outline: TaPalette.grey[5],
     onInverseSurface: TaPalette.genericWhite,
-    inversePrimary: TaPalette.green[500],
+    inversePrimary: TaPalette.greyMedium,
   );
 }

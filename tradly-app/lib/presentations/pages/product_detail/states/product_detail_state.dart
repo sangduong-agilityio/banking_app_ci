@@ -7,26 +7,32 @@ part 'product_detail_state.freezed.dart';
 final class ProductDetailState extends Equatable {
   const ProductDetailState({
     this.products,
+    this.product,
     this.status = const ProductDetailStatus.initial(),
     this.errorMessage,
   });
+
   final ProductDetailStatus status;
   final String? errorMessage;
   final List<ProductModel>? products;
+  final ProductModel? product;
+
   ProductDetailState copyWith({
     ProductDetailStatus? status,
     String? errorMessage,
     List<ProductModel>? products,
+    ProductModel? product,
   }) {
     return ProductDetailState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       products: products ?? this.products,
+      product: product ?? this.product,
     );
   }
 
   @override
-  List<Object?> get props => [status, errorMessage, products];
+  List<Object?> get props => [status, errorMessage, products, product];
 }
 
 @freezed

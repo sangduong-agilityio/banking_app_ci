@@ -57,16 +57,19 @@ class ProductBannerList extends StatelessWidget {
                     SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(left: 12),
-                      child: ElevatedButton(
+                      child: OutlinedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black.withOpacity(0.05),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                            color: context.colorScheme.onPrimary,
+                            width: 1,
+                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
-                            side: BorderSide(
-                              color: context.colorScheme.onPrimary,
-                              width: 1,
-                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
                           ),
                         ),
                         child: TaTitleMediumText(

@@ -8,8 +8,12 @@ sealed class HomeEvt extends Equatable {
 }
 
 final class HomeInitializeEvt extends HomeEvt {
-  const HomeInitializeEvt();
+  const HomeInitializeEvt({
+    required this.productId,
+  });
+
+  final int productId;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [productId];
 }

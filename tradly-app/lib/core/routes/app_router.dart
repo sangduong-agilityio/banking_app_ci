@@ -8,6 +8,7 @@ import 'package:tradly_app/presentations/pages/auth/sign_in_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_up_screen.dart';
 import 'package:tradly_app/presentations/pages/home/home_screen.dart';
 import 'package:tradly_app/presentations/pages/on_boarding/on_boarding_screen.dart';
+import 'package:tradly_app/presentations/pages/product_detail/product_detail.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/beverages_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/bread_bakery_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/egg_list.dart';
@@ -58,9 +59,24 @@ class TARouter {
         builder: (context, state) => const OtpVerificationScreen(),
       ),
       GoRoute(
+        name: TAPaths.productDetail.name,
+        path: TAPaths.productDetail.path,
+        builder: (context, state) {
+          final productId = state.extra is int ? state.extra as int : null;
+          return ProductDetailPage(
+            productId: productId ?? 0,
+          );
+        },
+      ),
+      GoRoute(
         name: TAPaths.home.name,
         path: TAPaths.home.path,
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) {
+          final productId = state.extra is int ? state.extra as int : null;
+          return HomeScreen(
+            productId: productId,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.beverages.name,
@@ -157,6 +173,17 @@ class TARouter {
       extra: extra,
     );
   }
+
+  static void navigateToProductDetail(
+    BuildContext context,
+    String routeName, {
+    Object? extra,
+  }) {
+    context.pushNamed(
+      routeName,
+      extra: extra,
+    );
+  }
 }
 
 enum TAPaths {
@@ -183,6 +210,10 @@ enum TAPaths {
   home(
     name: 'home',
     path: '/home',
+  ),
+  productDetail(
+    name: 'productDetail',
+    path: '/productDetail',
   ),
   beverages(
     name: 'beverages',

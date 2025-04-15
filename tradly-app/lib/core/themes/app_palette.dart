@@ -43,5 +43,6 @@ class TaPalette {
   static const Color genericBlack = Color(0xFF000000);
   static const Color primaryRed = Color(0xFFCC0000);
   static const Color greyLight = Color(0xFFE0E0E0);
+  static const Color greyMedium = Color(0xFFF6F9FF);
   static const Color greyDark = Color(0xFFC4C4C4);
 }

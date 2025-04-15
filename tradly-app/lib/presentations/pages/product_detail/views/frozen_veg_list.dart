@@ -12,7 +12,7 @@ class FrozenVegList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProductList(
-      title: 'Frozen Veg ',
+      title: 'Frozen Veg',
       categoryId: categoryId ?? 0,
     );
   }

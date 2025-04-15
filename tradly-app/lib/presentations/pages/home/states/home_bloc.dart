@@ -20,12 +20,15 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
     await Future.wait<void>(
       [
         _fetchCategories(emit),
-        _fetchProducts(emit),
+        _fetchNewProductsHandler(event, emit),
+        _fetchPopularProductsHandler(event, emit),
       ],
     );
   }
 
-  Future<void> _fetchCategories(Emitter<HomeState> emit) async {
+  Future<void> _fetchCategories(
+    Emitter<HomeState> emit,
+  ) async {
     emit(
       state.copyWith(
         status: const HomeStatus.loading(),
@@ -41,27 +44,65 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
       );
     } catch (e) {
       emit(state.copyWith(
-          status: const HomeStatus.failure(), errorMessage: e.toString()));
+        status: const HomeStatus.failure(),
+        errorMessage: e.toString(),
+      ));
     }
   }
 
-  Future<void> _fetchProducts(Emitter<HomeState> emit) async {
+  Future<void> _fetchNewProductsHandler(
+    HomeInitializeEvt event,
+    Emitter<HomeState> emit,
+  ) async {
     emit(
       state.copyWith(
         status: const HomeStatus.loading(),
       ),
     );
     try {
-      final products = await _repo.fetchProductsWithTypes();
+      final productIds = [1, 2, 3, 4];
+      final products = await _repo.fetchNewProducts(productIds);
       emit(
         state.copyWith(
-          products: products,
+          newProducts: products,
           status: const HomeStatus.success(),
         ),
       );
     } catch (e) {
-      emit(state.copyWith(
-          status: const HomeStatus.failure(), errorMessage: e.toString()));
+      emit(
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _fetchPopularProductsHandler(
+    HomeInitializeEvt event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: const HomeStatus.loading(),
+      ),
+    );
+    try {
+      final productIds = [5, 4, 8];
+      final products = await _repo.fetchPopularProducts(productIds);
+      emit(
+        state.copyWith(
+          popularProducts: products,
+          status: const HomeStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

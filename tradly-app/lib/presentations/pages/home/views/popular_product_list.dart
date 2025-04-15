@@ -1,36 +1,47 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
+import 'package:tradly_app/presentations/pages/home/states/home_state.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
 
 class PopularProductList extends StatelessWidget {
   const PopularProductList({
     super.key,
-    this.products,
   });
-
-  final List<ProductModel>? products;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return TACardProduct(
-            product: ProductModel(
-              id: products?[index].id ?? 0,
-              title: products?[index].title ?? '',
-              imageUrl: products?[index].imageUrl ?? '',
-              price: products?[index].price ?? '',
-              brand: products?[index].brand ?? '',
-            ),
-            onTapProduct: () {},
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.status is HomeStatusListLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
           );
-        },
-      ),
+        }
+        return SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: state.popularProducts?.length ?? 0,
+            itemBuilder: (context, index) {
+              final product = state.popularProducts?[index];
+              return TACardProduct(
+                product: ProductModel(
+                  id: product?.id,
+                  title: product?.title ?? '',
+                  imageUrl: product?.imageUrl ?? '',
+                  price: product?.price ?? '',
+                  brand: product?.brand ?? '',
+                ),
+                onTapProduct: () {},
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

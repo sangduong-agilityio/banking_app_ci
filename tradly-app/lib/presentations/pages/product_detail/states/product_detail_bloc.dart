@@ -9,6 +9,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
   })  : _repo = repo,
         super(const ProductDetailState()) {
     on<ProductDetailInitializeEvt>(_onInitialize);
+    on<ProductDetailFetchEvt>(_onFetchProductDetail);
   }
 
   final ProductRepository _repo;
@@ -20,7 +21,9 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
     emit(state.copyWith(status: const ProductDetailStatus.loading()));
 
     try {
-      final products = await _repo.fetchProductsByCategoryId(event.categoryId);
+      final products = await _repo.fetchProductsByCategoryId(
+        event.categoryId,
+      );
       emit(
         state.copyWith(
           products: products,
@@ -31,6 +34,34 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
       emit(state.copyWith(
           status: const ProductDetailStatus.failure(),
           errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _onFetchProductDetail(
+    ProductDetailFetchEvt event,
+    Emitter<ProductDetailState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: const ProductDetailStatus.loading(),
+      ),
+    );
+
+    try {
+      final product = await _repo.fetchProductById(event.productId);
+      emit(
+        state.copyWith(
+          product: product,
+          status: const ProductDetailStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const ProductDetailStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

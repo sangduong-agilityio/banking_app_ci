@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
@@ -20,34 +21,51 @@ import 'package:tradly_app/presentations/widgets/text.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
+    required this.productId,
   });
-
+  final int? productId;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final Map<String, String> _categoryRouteMap = {
+    'Beverages': TAPaths.beverages.name,
+    'Vegetables': TAPaths.vegetables.name,
+    'Bread & Bakery': TAPaths.breadBakely.name,
+    'Egg': TAPaths.egg.name,
+    'Fruit': TAPaths.fruit.name,
+    'Pet Care': TAPaths.petCare.name,
+    'Frozen Veg': TAPaths.frozenVeg.name,
+    'Home Care': TAPaths.homeCare.name,
+  };
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeBloc(
         repo: context.read<HomeRepository>(),
-      )..add(HomeInitializeEvt()),
+      )..add(
+          HomeInitializeEvt(
+            productId: widget.productId ?? 0,
+          ),
+        ),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
           backgroundColor: context.colorScheme.onPrimary,
-          appBar: TaAppBar(
-            toolbarHeight: TaAppBarSize.medium,
+          appBar: TaAppBar.home(
             searchForm: TASearchBar(
               placeholder: S.current.homeSearchProductPlaceholder,
             ),
-            bottomType: TaAppBarBottomType.search,
+            backgroundColor: context.colorScheme.primary,
             trailing: Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.favorite),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pushNamed(TAPaths.productDetail.name);
+                  },
                 ),
                 IconButton(
                   icon: const Icon(Icons.shopping_cart),
@@ -69,64 +87,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 const ProductBannerList(),
                 CategoriesList(
                   onCategoryTap: (category) {
-                    switch (category.category) {
-                      case 'Beverages':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.beverages.name,
-                          extra: category.id,
-                        );
-                        break;
-                      case 'Vegetables':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.vegetables.name,
-                          extra: category.id,
-                        );
-                        break;
-                      case 'Bread & Bakery':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.breadBakely.name,
-                          extra: category.id,
-                        );
-                        break;
-                      case 'Egg':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.egg.name,
-                          extra: category.id,
-                        );
-                        break;
-                      case 'Fruits':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.fruit.name,
-                          extra: category.id,
-                        );
-                        break;
-                      case 'Home Care':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.homeCare.name,
-                          extra: category.id,
-                        );
-                        break;
-                      case 'Pet Care':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.petCare.name,
-                          extra: category.id,
-                        );
-                        break;
-                      case 'Frozen Veg':
-                        TARouter.navigateToCategory(
-                          context,
-                          TAPaths.frozenVeg.name,
-                          extra: category.id,
-                        );
-                        break;
-                    }
+                    final routeName = _categoryRouteMap[category.category] ??
+                        _categoryRouteMap[category.id ?? ''] ??
+                        TAPaths.home.name;
+                    TARouter.navigateToCategory(
+                      context,
+                      routeName,
+                      extra: category.id,
+                    );
                   },
                 ),
                 const SizedBox(height: 28),

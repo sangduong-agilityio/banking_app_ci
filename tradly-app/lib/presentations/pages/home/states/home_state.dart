@@ -9,6 +9,8 @@ final class HomeState extends Equatable {
   const HomeState({
     this.categories,
     this.products,
+    this.newProducts,
+    this.popularProducts,
     this.status = const HomeStatus.initial(),
     this.errorMessage,
   });
@@ -16,18 +18,24 @@ final class HomeState extends Equatable {
   final String? errorMessage;
   final List<CategoryModel>? categories;
   final List<ProductModel>? products;
+  final List<ProductModel>? newProducts;
+  final List<ProductModel>? popularProducts;
 
   HomeState copyWith({
     HomeStatus? status,
     String? errorMessage,
     List<CategoryModel>? categories,
     List<ProductModel>? products,
+    List<ProductModel>? newProducts,
+    List<ProductModel>? popularProducts,
   }) {
     return HomeState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       categories: categories ?? this.categories,
       products: products ?? this.products,
+      newProducts: newProducts ?? this.newProducts,
+      popularProducts: popularProducts ?? this.popularProducts,
     );
   }
 
@@ -37,6 +45,8 @@ final class HomeState extends Equatable {
         errorMessage,
         categories,
         products,
+        newProducts,
+        popularProducts,
       ];
 }
 

@@ -17,3 +17,14 @@ final class ProductDetailInitializeEvt extends ProductDetailEvt {
   @override
   List<Object> get props => [categoryId];
 }
+
+final class ProductDetailFetchEvt extends ProductDetailEvt {
+  const ProductDetailFetchEvt({
+    required this.productId,
+  });
+
+  final int productId;
+
+  @override
+  List<Object> get props => [productId];
+}
