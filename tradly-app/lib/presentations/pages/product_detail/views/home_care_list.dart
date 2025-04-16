@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/product_list.dart';
 
 class HomeCareList extends StatelessWidget {
@@ -12,7 +13,7 @@ class HomeCareList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProductList(
-      title: 'Home Care',
+      title: S.current.productDetailHomeCareTitle,
       categoryId: categoryId ?? 0,
     );
   }

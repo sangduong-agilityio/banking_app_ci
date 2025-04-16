@@ -2,9 +2,11 @@ import 'package:tradly_app/core/api/api_client.dart';
 import 'package:tradly_app/core/env/env.dart';
 import 'package:tradly_app/data/models/category_model.dart';
 import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/data/models/store_model.dart';
 
 abstract class HomeRepository {
   Future<List<CategoryModel>> fetchCategories();
+  Future<List<StoreModel>> fetchStores();
   Future<List<ProductModel>> fetchNewProducts(List<int> productIds);
   Future<List<ProductModel>> fetchPopularProducts(List<int> productIds);
 }
@@ -111,5 +113,22 @@ class HomeRepositoryImpl implements HomeRepository {
             .toList(),
       );
     }).toList();
+  }
+
+  @override
+  Future<List<StoreModel>> fetchStores() async {
+    String apiUrl = '${Env.endPoint}stores';
+
+    final response = await _apiClient.get(
+      apiUrl,
+      queryParams: {
+        'select': '*',
+      },
+    );
+    final jsonData = response.data;
+
+    final stores =
+        (jsonData as List).map((json) => StoreModel.fromJson(json)).toList();
+    return stores;
   }
 }

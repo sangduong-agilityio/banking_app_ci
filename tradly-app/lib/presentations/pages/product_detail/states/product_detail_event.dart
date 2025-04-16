@@ -28,3 +28,25 @@ final class ProductDetailFetchEvt extends ProductDetailEvt {
   @override
   List<Object> get props => [productId];
 }
+
+final class ProductDetailSortEvt extends ProductDetailEvt {
+  const ProductDetailSortEvt({
+    required this.sortType,
+  });
+
+  final String sortType;
+
+  @override
+  List<Object> get props => [sortType];
+}
+
+final class ProductDetailToggleWishlistEvt extends ProductDetailEvt {
+  const ProductDetailToggleWishlistEvt({
+    required this.productId,
+  });
+
+  final int productId;
+
+  @override
+  List<Object> get props => [productId];
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/utils/responsive.dart';
+import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
 class TaAppBarSize {
@@ -23,6 +24,7 @@ enum TaAppBarBottomType {
   none,
   filter,
   search,
+  imageBackground,
 }
 
 enum TaAppBarShape {
@@ -47,6 +49,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.background,
     this.onBackPressed,
     this.elevation = 0,
+    this.onPressed,
     super.key,
   });
 
@@ -75,6 +78,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     Color? backgroundColor,
     TaAppBarBottomType bottomType = TaAppBarBottomType.filter,
     Widget? filterOptions,
+    VoidCallback? onPressed,
   }) {
     return TaAppBar(
       appBarType: TaAppBarType.categoryDetail,
@@ -89,6 +93,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       bottomType: bottomType,
       filterOptions: filterOptions,
+      onPressed: onPressed,
     );
   }
 
@@ -96,8 +101,10 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
   factory TaAppBar.details({
     required Widget background,
     VoidCallback? onBackPressed,
+    VoidCallback? onPressed,
     Color? backgroundColor,
     List<Widget>? actions,
+    TaAppBarBottomType bottomType = TaAppBarBottomType.imageBackground,
   }) {
     return TaAppBar(
       appBarType: TaAppBarType.details,
@@ -115,29 +122,12 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: onBackPressed,
         ),
       ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: (actions ??
-            [
-              Icons.share,
-              Icons.favorite_border,
-              Icons.more_vert,
-            ].map((icon) {
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.2),
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    icon,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {},
-                ),
-              );
-            }).toList()),
+      bottomType: bottomType,
+      trailing: Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: Row(
+          children: (actions ?? []),
+        ),
       ),
     );
   }
@@ -147,23 +137,21 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     required String title,
     VoidCallback? onBackPressed,
     Color? backgroundColor,
+    TaAppBarBottomType bottomType = TaAppBarBottomType.none,
   }) {
     return TaAppBar(
       appBarType: TaAppBarType.wishlist,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+      title: TaDisplaySmallText(
+        text: title,
+        fontWeight: FontWeight.w700,
       ),
       backgroundColor: backgroundColor ?? Colors.teal,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white),
         onPressed: onBackPressed,
       ),
-      toolbarHeight: TaAppBarSize.small,
+      bottomType: bottomType,
+      toolbarHeight: TaAppBarSize.medium,
     );
   }
 
@@ -182,6 +170,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? background;
   final VoidCallback? onBackPressed;
   final double elevation;
+  final VoidCallback? onPressed;
 
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight);
@@ -260,10 +249,15 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         );
 
-      case TaAppBarBottomType.none:
+      case TaAppBarBottomType.imageBackground:
         return PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Container(height: 120),
+        );
+      case TaAppBarBottomType.none:
+        return PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Container(height: 20),
         );
     }
   }
@@ -274,19 +268,22 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
       children: [
         _buildFilterButton(
           context,
-          icon: Icons.sort,
+          icon: TAAssets.sortList(),
           label: 'Sort by',
           onPressed: () {},
         ),
         _buildFilterButton(
           context,
-          icon: Icons.location_on,
+          icon: Icon(
+            Icons.location_on,
+            size: 16,
+          ),
           label: 'Location',
           onPressed: () {},
         ),
         _buildFilterButton(
           context,
-          icon: Icons.category,
+          icon: TAAssets.category(),
           label: 'Category',
           onPressed: () {},
         ),
@@ -296,17 +293,13 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget _buildFilterButton(
     BuildContext context, {
-    required IconData icon,
+    required Widget icon,
     required String label,
     required VoidCallback onPressed,
   }) {
     return ElevatedButton.icon(
       onPressed: onPressed,
-      icon: Icon(
-        icon,
-        // size: 16,
-        color: Colors.white,
-      ),
+      icon: icon,
       label: Text(
         label,
         style: const TextStyle(

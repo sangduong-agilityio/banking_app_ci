@@ -64,6 +64,38 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Resent new code"),
         "otpVerificationTitle":
             MessageLookupByLibrary.simpleMessage("Phone Verification"),
+        "productDetailBeveragesTitle":
+            MessageLookupByLibrary.simpleMessage("Beverages"),
+        "productDetailBreadBakeryTitle":
+            MessageLookupByLibrary.simpleMessage("Bread & Bakery"),
+        "productDetailCategoryTitle":
+            MessageLookupByLibrary.simpleMessage("CategoryTitle"),
+        "productDetailConditionTitle":
+            MessageLookupByLibrary.simpleMessage("Condition"),
+        "productDetailDeliveryDescription":
+            MessageLookupByLibrary.simpleMessage(
+                "Home Delivery Available,\nCash On Delivery"),
+        "productDetailDeliveryOptionsTitle":
+            MessageLookupByLibrary.simpleMessage("Delivery Options"),
+        "productDetailDeliveryTitle":
+            MessageLookupByLibrary.simpleMessage("Delivery Details"),
+        "productDetailEggTitle": MessageLookupByLibrary.simpleMessage("Egg"),
+        "productDetailFrozenVegTitle":
+            MessageLookupByLibrary.simpleMessage("Frozen Veg"),
+        "productDetailFruitTitle":
+            MessageLookupByLibrary.simpleMessage("Fruit"),
+        "productDetailHomeCareTitle":
+            MessageLookupByLibrary.simpleMessage("Home Care"),
+        "productDetailLocationTitle":
+            MessageLookupByLibrary.simpleMessage("Location"),
+        "productDetailPetCareTitle":
+            MessageLookupByLibrary.simpleMessage("Pet Care"),
+        "productDetailPriceTypeTitle":
+            MessageLookupByLibrary.simpleMessage("Price Type"),
+        "productDetailSaleOffTitle":
+            MessageLookupByLibrary.simpleMessage("50% off"),
+        "productDetailVegetablesTitle":
+            MessageLookupByLibrary.simpleMessage("Vegetables"),
         "sendOtpDescription": MessageLookupByLibrary.simpleMessage(
             "We have sent you an SMS with a code to enter number"),
         "sendOtpLoginSocialNetWorkTitle": MessageLookupByLibrary.simpleMessage(

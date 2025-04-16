@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'product_list.dart';
 
 class BreadBakeryList extends StatelessWidget {
@@ -11,7 +12,7 @@ class BreadBakeryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ProductList(
-      title: 'Bread & Bakery',
+      title: S.current.productDetailBreadBakeryTitle,
       categoryId: categoryId ?? 0,
     );
   }

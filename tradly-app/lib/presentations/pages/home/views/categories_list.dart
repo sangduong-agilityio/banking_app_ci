@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/data/models/category_model.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_state.dart';
+// import 'package:tradly_app/presentations/widgets/shimmer.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
 class CategoriesList extends StatelessWidget {
@@ -27,7 +28,6 @@ class CategoriesList extends StatelessWidget {
             child: Text('No categories available'),
           );
         }
-
         return GridView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,

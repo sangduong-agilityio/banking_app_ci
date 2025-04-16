@@ -4,7 +4,7 @@ import 'package:tradly_app/data/models/product_model.dart';
 
 abstract class ProductRepository {
   Future<List<ProductModel>> fetchProductsByCategoryId(int categoryId);
-  Future<ProductModel> fetchProductById(int productId);
+  Future<List<ProductModel>> fetchProductById(int productId);
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -33,7 +33,7 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<ProductModel> fetchProductById(int productId) async {
+  Future<List<ProductModel>> fetchProductById(int productId) async {
     String apiUrl = '${Env.endPoint}products';
     final response = await _apiClient.get(
       apiUrl,
@@ -47,6 +47,6 @@ class ProductRepositoryImpl implements ProductRepository {
     final products =
         (jsonData as List).map((json) => ProductModel.fromJson(json)).toList();
 
-    return products.first;
+    return products;
   }
 }

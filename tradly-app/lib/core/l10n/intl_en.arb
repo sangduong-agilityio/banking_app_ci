@@ -83,5 +83,26 @@
   "homeStoreLabel":"Store",
   "homeOrderHistoryLabel":"Order History",
   "homeProfileLabel":"Profile",
-  "homeTradlyTitle":"Tradly"
+  "homeTradlyTitle":"Tradly",
+   "@segmentProductDetail": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Product Detail feature"
+  },
+  "productDetailBeveragesTitle":"Beverages",
+  "productDetailBreadBakeryTitle":"Bread & Bakery",
+  "productDetailEggTitle":"Egg",
+  "productDetailFrozenVegTitle":"Frozen Veg",
+  "productDetailFruitTitle":"Fruit",
+  "productDetailHomeCareTitle":"Home Care",
+  "productDetailPetCareTitle":"Pet Care",
+  "productDetailVegetablesTitle":"Vegetables",
+  "productDetailSaleOffTitle":"50% off",
+  "productDetailConditionTitle":"Condition",
+  "productDetailPriceTypeTitle":"Price Type",
+  "productDetailCategoryTitle":"CategoryTitle",
+  "productDetailLocationTitle":"Location",
+  "productDetailDeliveryOptionsTitle":"Delivery Options",
+  "productDetailDeliveryTitle":"Delivery Details",
+  "productDetailDeliveryDescription":"Home Delivery Available,\nCash On Delivery"
+
 }

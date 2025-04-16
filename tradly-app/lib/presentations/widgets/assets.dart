@@ -195,6 +195,7 @@ class TAAssets {
     double? width,
     double? height,
     BoxFit? boxfit,
+    Color? color,
   }) home = _TAHomeImage.new;
 
   static Widget Function({
@@ -202,10 +203,12 @@ class TAAssets {
     double? height,
     BoxFit? boxfit,
   }) location = _TALocationImage.new;
+
   static Widget Function({
     double? width,
     double? height,
     BoxFit? boxfit,
+    Color? color,
   }) order = _TAOrderImage.new;
 
   static Widget Function({
@@ -218,7 +221,29 @@ class TAAssets {
     double? width,
     double? height,
     BoxFit? boxfit,
+    Color? color,
   }) store = _TAStoreImage.new;
+
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  }) search = _TASearchImage.new;
+
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  }) profile = _TAProfileImage.new;
+
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  }) cart = _TACartImage.new;
 
   static Widget Function({
     double? width,
@@ -340,15 +365,17 @@ class _TACategoryImage extends StatelessWidget {
     this.width,
     this.height,
     this.boxfit,
+    this.color,
   });
   final double? height;
   final double? width;
   final BoxFit? boxfit;
-
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return TAAssetImage(
       boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
       path: Assets.icons.icCategory.path,
       width: TaResponsive.scale(
         context,
@@ -358,6 +385,7 @@ class _TACategoryImage extends StatelessWidget {
         context,
         defaultValue: height ?? 16,
       ),
+      color: color ?? context.colorScheme.onPrimary,
     );
   }
 }
@@ -367,24 +395,28 @@ class _TAHomeImage extends StatelessWidget {
     this.width,
     this.height,
     this.boxfit,
+    this.color,
   });
   final double? height;
   final double? width;
   final BoxFit? boxfit;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return TAAssetImage(
       boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
       path: Assets.icons.icHome.path,
       width: TaResponsive.scale(
         context,
-        defaultValue: width ?? 16,
+        defaultValue: width ?? 24,
       ),
       height: TaResponsive.scale(
         context,
-        defaultValue: height ?? 16,
+        defaultValue: height ?? 24,
       ),
+      color: color ?? Colors.grey,
     );
   }
 }
@@ -403,14 +435,15 @@ class _TALocationImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return TAAssetImage(
       boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
       path: Assets.icons.icLocation.path,
       width: TaResponsive.scale(
         context,
-        defaultValue: width ?? 16,
+        defaultValue: width ?? 24,
       ),
       height: TaResponsive.scale(
         context,
-        defaultValue: height ?? 16,
+        defaultValue: height ?? 24,
       ),
     );
   }
@@ -421,24 +454,27 @@ class _TAOrderImage extends StatelessWidget {
     this.width,
     this.height,
     this.boxfit,
+    this.color,
   });
   final double? height;
   final double? width;
   final BoxFit? boxfit;
-
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return TAAssetImage(
       boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
       path: Assets.icons.icOrder.path,
       width: TaResponsive.scale(
         context,
-        defaultValue: width ?? 16,
+        defaultValue: width ?? 24,
       ),
       height: TaResponsive.scale(
         context,
-        defaultValue: height ?? 16,
+        defaultValue: height ?? 24,
       ),
+      color: color ?? Colors.grey,
     );
   }
 }
@@ -448,15 +484,18 @@ class _TASortListImage extends StatelessWidget {
     this.width,
     this.height,
     this.boxfit,
+    this.color,
   });
   final double? height;
   final double? width;
   final BoxFit? boxfit;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return TAAssetImage(
       boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
       path: Assets.icons.icSortList.path,
       width: TaResponsive.scale(
         context,
@@ -466,6 +505,7 @@ class _TASortListImage extends StatelessWidget {
         context,
         defaultValue: height ?? 16,
       ),
+      color: color ?? context.colorScheme.onPrimary,
     );
   }
 }
@@ -475,24 +515,117 @@ class _TAStoreImage extends StatelessWidget {
     this.width,
     this.height,
     this.boxfit,
+    this.color,
   });
   final double? height;
   final double? width;
   final BoxFit? boxfit;
-
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     return TAAssetImage(
       boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
       path: Assets.icons.icStore.path,
       width: TaResponsive.scale(
         context,
-        defaultValue: width ?? 16,
+        defaultValue: width ?? 24,
       ),
       height: TaResponsive.scale(
         context,
-        defaultValue: height ?? 16,
+        defaultValue: height ?? 24,
       ),
+      color: color ?? Colors.grey,
+    );
+  }
+}
+
+class _TASearchImage extends StatelessWidget {
+  const _TASearchImage({
+    this.width,
+    this.height,
+    this.boxfit,
+    this.color,
+  });
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+  final Color? color;
+  @override
+  Widget build(BuildContext context) {
+    return TAAssetImage(
+      boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
+      path: Assets.icons.icSearch.path,
+      width: TaResponsive.scale(
+        context,
+        defaultValue: width ?? 23,
+      ),
+      height: TaResponsive.scale(
+        context,
+        defaultValue: height ?? 23,
+      ),
+      color: color ?? Colors.grey,
+    );
+  }
+}
+
+class _TAProfileImage extends StatelessWidget {
+  const _TAProfileImage({
+    this.width,
+    this.height,
+    this.boxfit,
+    this.color,
+  });
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+  final Color? color;
+  @override
+  Widget build(BuildContext context) {
+    return TAAssetImage(
+      boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
+      path: Assets.icons.icProfile.path,
+      width: TaResponsive.scale(
+        context,
+        defaultValue: width ?? 24,
+      ),
+      height: TaResponsive.scale(
+        context,
+        defaultValue: height ?? 24,
+      ),
+      color: color ?? Colors.grey,
+    );
+  }
+}
+
+class _TACartImage extends StatelessWidget {
+  const _TACartImage({
+    this.width,
+    this.height,
+    this.boxfit,
+    this.color,
+  });
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+  final Color? color;
+  @override
+  Widget build(BuildContext context) {
+    return TAAssetImage(
+      boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
+      path: Assets.icons.icCart.path,
+      width: TaResponsive.scale(
+        context,
+        defaultValue: width ?? 24,
+      ),
+      height: TaResponsive.scale(
+        context,
+        defaultValue: height ?? 24,
+      ),
+      color: color ?? context.colorScheme.onPrimary,
     );
   }
 }

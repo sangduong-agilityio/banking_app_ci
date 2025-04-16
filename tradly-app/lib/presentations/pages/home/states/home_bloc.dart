@@ -22,6 +22,7 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
         _fetchCategories(emit),
         _fetchNewProductsHandler(event, emit),
         _fetchPopularProductsHandler(event, emit),
+        _fetchStores(emit)
       ],
     );
   }
@@ -93,6 +94,32 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
       emit(
         state.copyWith(
           popularProducts: products,
+          status: const HomeStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _fetchStores(
+    Emitter<HomeState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: const HomeStatus.loading(),
+      ),
+    );
+    try {
+      final stores = await _repo.fetchStores();
+      emit(
+        state.copyWith(
+          stores: stores,
           status: const HomeStatus.success(),
         ),
       );

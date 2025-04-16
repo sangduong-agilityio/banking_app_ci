@@ -1,14 +1,14 @@
 class StoreModel {
-  final String id;
-  final String store;
+  final int id;
+  final String name;
   final String imageUrl;
   final String logoStore;
   final String? isFollowed;
-  final String? userId;
+  final int? userId;
 
   StoreModel({
     required this.id,
-    required this.store,
+    required this.name,
     required this.imageUrl,
     required this.logoStore,
     this.isFollowed,
@@ -19,7 +19,7 @@ class StoreModel {
   factory StoreModel.fromJson(Map<String, dynamic> json) {
     return StoreModel(
       id: json['id'],
-      store: json['store'],
+      name: json['name'],
       imageUrl: json['imageUrl'],
       logoStore: json['logoStore'],
       isFollowed: json['isFollowed'],
@@ -31,7 +31,7 @@ class StoreModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'store': store,
+      'name': name,
       'imageUrl': imageUrl,
       'logoStore': logoStore,
       'isFollowed': isFollowed,

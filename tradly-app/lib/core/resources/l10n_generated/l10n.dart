@@ -649,6 +649,166 @@ class S {
       args: [],
     );
   }
+
+  /// `Beverages`
+  String get productDetailBeveragesTitle {
+    return Intl.message(
+      'Beverages',
+      name: 'productDetailBeveragesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bread & Bakery`
+  String get productDetailBreadBakeryTitle {
+    return Intl.message(
+      'Bread & Bakery',
+      name: 'productDetailBreadBakeryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Egg`
+  String get productDetailEggTitle {
+    return Intl.message(
+      'Egg',
+      name: 'productDetailEggTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Frozen Veg`
+  String get productDetailFrozenVegTitle {
+    return Intl.message(
+      'Frozen Veg',
+      name: 'productDetailFrozenVegTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fruit`
+  String get productDetailFruitTitle {
+    return Intl.message(
+      'Fruit',
+      name: 'productDetailFruitTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home Care`
+  String get productDetailHomeCareTitle {
+    return Intl.message(
+      'Home Care',
+      name: 'productDetailHomeCareTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pet Care`
+  String get productDetailPetCareTitle {
+    return Intl.message(
+      'Pet Care',
+      name: 'productDetailPetCareTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vegetables`
+  String get productDetailVegetablesTitle {
+    return Intl.message(
+      'Vegetables',
+      name: 'productDetailVegetablesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `50% off`
+  String get productDetailSaleOffTitle {
+    return Intl.message(
+      '50% off',
+      name: 'productDetailSaleOffTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Condition`
+  String get productDetailConditionTitle {
+    return Intl.message(
+      'Condition',
+      name: 'productDetailConditionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price Type`
+  String get productDetailPriceTypeTitle {
+    return Intl.message(
+      'Price Type',
+      name: 'productDetailPriceTypeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CategoryTitle`
+  String get productDetailCategoryTitle {
+    return Intl.message(
+      'CategoryTitle',
+      name: 'productDetailCategoryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location`
+  String get productDetailLocationTitle {
+    return Intl.message(
+      'Location',
+      name: 'productDetailLocationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery Options`
+  String get productDetailDeliveryOptionsTitle {
+    return Intl.message(
+      'Delivery Options',
+      name: 'productDetailDeliveryOptionsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery Details`
+  String get productDetailDeliveryTitle {
+    return Intl.message(
+      'Delivery Details',
+      name: 'productDetailDeliveryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home Delivery Available,\nCash On Delivery`
+  String get productDetailDeliveryDescription {
+    return Intl.message(
+      'Home Delivery Available,\nCash On Delivery',
+      name: 'productDetailDeliveryDescription',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

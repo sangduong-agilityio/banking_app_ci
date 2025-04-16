@@ -32,6 +32,9 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/ic_cart.svg
+  SvgGenImage get icCart => const SvgGenImage('assets/icons/ic_cart.svg');
+
   /// File path: assets/icons/ic_category.svg
   SvgGenImage get icCategory =>
       const SvgGenImage('assets/icons/ic_category.svg');
@@ -50,6 +53,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/ic_order.svg
   SvgGenImage get icOrder => const SvgGenImage('assets/icons/ic_order.svg');
 
+  /// File path: assets/icons/ic_profile.svg
+  SvgGenImage get icProfile => const SvgGenImage('assets/icons/ic_profile.svg');
+
+  /// File path: assets/icons/ic_search.svg
+  SvgGenImage get icSearch => const SvgGenImage('assets/icons/ic_search.svg');
+
   /// File path: assets/icons/ic_sort_list.svg
   SvgGenImage get icSortList =>
       const SvgGenImage('assets/icons/ic_sort_list.svg');
@@ -59,11 +68,14 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        icCart,
         icCategory,
         icEmptyWidget,
         icHome,
         icLocation,
         icOrder,
+        icProfile,
+        icSearch,
         icSortList,
         icStore
       ];
@@ -72,9 +84,9 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/ic_launcher.png
-  AssetGenImage get icLauncher =>
-      const AssetGenImage('assets/images/ic_launcher.png');
+  /// File path: assets/images/img_empty_store.png
+  AssetGenImage get imgEmptyStore =>
+      const AssetGenImage('assets/images/img_empty_store.png');
 
   /// File path: assets/images/img_onboarding_business.png
   AssetGenImage get imgOnboardingBusiness =>
@@ -99,23 +111,19 @@ class $AssetsImagesGen {
   AssetGenImage get shopping =>
       const AssetGenImage('assets/images/shopping.png');
 
-  /// File path: assets/images/splash.png
-  AssetGenImage get splash => const AssetGenImage('assets/images/splash.png');
-
   /// File path: assets/images/vegetable.png
   AssetGenImage get vegetable =>
       const AssetGenImage('assets/images/vegetable.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        icLauncher,
+        imgEmptyStore,
         imgOnboardingBusiness,
         imgOnboardingSocial,
         imgOnboardingSupport,
         imgTradly,
         payment,
         shopping,
-        splash,
         vegetable
       ];
 }

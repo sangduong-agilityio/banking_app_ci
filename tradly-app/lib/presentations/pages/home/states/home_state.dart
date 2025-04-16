@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tradly_app/data/models/category_model.dart';
 import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/data/models/store_model.dart';
 
 part 'home_state.freezed.dart';
 
@@ -11,6 +12,7 @@ final class HomeState extends Equatable {
     this.products,
     this.newProducts,
     this.popularProducts,
+    this.stores,
     this.status = const HomeStatus.initial(),
     this.errorMessage,
   });
@@ -20,6 +22,7 @@ final class HomeState extends Equatable {
   final List<ProductModel>? products;
   final List<ProductModel>? newProducts;
   final List<ProductModel>? popularProducts;
+  final List<StoreModel>? stores;
 
   HomeState copyWith({
     HomeStatus? status,
@@ -28,6 +31,7 @@ final class HomeState extends Equatable {
     List<ProductModel>? products,
     List<ProductModel>? newProducts,
     List<ProductModel>? popularProducts,
+    List<StoreModel>? stores,
   }) {
     return HomeState(
       status: status ?? this.status,
@@ -35,6 +39,7 @@ final class HomeState extends Equatable {
       categories: categories ?? this.categories,
       products: products ?? this.products,
       newProducts: newProducts ?? this.newProducts,
+      stores: stores ?? this.stores,
       popularProducts: popularProducts ?? this.popularProducts,
     );
   }
@@ -47,6 +52,7 @@ final class HomeState extends Equatable {
         products,
         newProducts,
         popularProducts,
+        stores,
       ];
 }
 

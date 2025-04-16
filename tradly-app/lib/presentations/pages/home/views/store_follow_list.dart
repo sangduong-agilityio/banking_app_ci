@@ -1,25 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tradly_app/data/models/store_model.dart';
+import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
+import 'package:tradly_app/presentations/pages/home/states/home_state.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
+// import 'package:tradly_app/presentations/widgets/shimmer.dart';
 
 class StoreFollowList extends StatelessWidget {
   const StoreFollowList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return TACardStoreFollow(
-            storeName: S.current.homeStoreToFolowTitle,
-            imagePath: 'assets/images/shopping.png',
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state.status is HomeStatusListLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
           );
-        },
-      ),
+        }
+
+        return SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: state.stores?.length ?? 0,
+            itemBuilder: (context, index) {
+              return TACardStoreFollow(
+                stores: StoreModel(
+                  id: state.stores?[index].id ?? 0,
+                  name: state.stores?[index].name ?? '',
+                  imageUrl: state.stores?[index].imageUrl ?? '',
+                  logoStore: state.stores?[index].logoStore ?? '',
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

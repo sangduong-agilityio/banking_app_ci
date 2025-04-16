@@ -17,6 +17,7 @@ import 'package:tradly_app/presentations/pages/product_detail/views/fruit_list.d
 import 'package:tradly_app/presentations/pages/product_detail/views/home_care_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/pet_care.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/vegetables_list.dart';
+import 'package:tradly_app/presentations/pages/product_detail/views/wish_list.dart';
 import 'package:tradly_app/presentations/widgets/not_found.dart';
 
 class TARouter {
@@ -57,6 +58,16 @@ class TARouter {
         name: TAPaths.otpVerification.name,
         path: TAPaths.otpVerification.path,
         builder: (context, state) => const OtpVerificationScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.wishlist.name,
+        path: TAPaths.wishlist.path,
+        builder: (context, state) {
+          final productId = state.extra is int ? state.extra as int : null;
+          return WishListPage(
+            productId: productId ?? 0,
+          );
+        },
       ),
       GoRoute(
         name: TAPaths.productDetail.name,
@@ -177,10 +188,12 @@ class TARouter {
   static void navigateToProductDetail(
     BuildContext context,
     String routeName, {
+    Map<String, String>? queryParams,
     Object? extra,
   }) {
     context.pushNamed(
       routeName,
+      queryParameters: queryParams ?? <String, dynamic>{},
       extra: extra,
     );
   }
@@ -214,6 +227,10 @@ enum TAPaths {
   productDetail(
     name: 'productDetail',
     path: '/productDetail',
+  ),
+  wishlist(
+    name: 'wishlist',
+    path: '/wishlist',
   ),
   beverages(
     name: 'beverages',

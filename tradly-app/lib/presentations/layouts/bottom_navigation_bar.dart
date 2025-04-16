@@ -9,6 +9,8 @@ class TABottomNavigationBar extends StatefulWidget {
     this.selectedItemColor = const Color(0xFF007A70),
     this.unselectedItemColor = Colors.grey,
     this.margin = const EdgeInsets.all(8),
+    this.currentIndex = 0,
+    this.onTap,
   });
 
   final List<TASBottomNavigationBarItem> items;
@@ -16,24 +18,39 @@ class TABottomNavigationBar extends StatefulWidget {
   final Color selectedItemColor;
   final Color unselectedItemColor;
   final EdgeInsets margin;
+  final int currentIndex;
+  final Function(int)? onTap;
 
   @override
   State<TABottomNavigationBar> createState() => _TABottomNavigationBarState();
 }
 
 class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.currentIndex;
+  }
+
+  @override
+  void didUpdateWidget(TABottomNavigationBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.currentIndex != oldWidget.currentIndex) {
+      _selectedIndex = widget.currentIndex;
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+    widget.onTap?.call(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    Theme.of(context);
-
     return Container(
       height: 90,
       width: double.infinity,
@@ -49,25 +66,26 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
             final selectedColor = widget.selectedItemColor;
             final unselectedColor = widget.unselectedItemColor;
 
-            return GestureDetector(
-              onTap: () => _onItemTapped(index),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconTheme(
-                    data: IconThemeData(
-                      color: isSelected ? selectedColor : unselectedColor,
+            return Expanded(
+              child: GestureDetector(
+                onTap: () => _onItemTapped(index),
+                behavior: HitTestBehavior.opaque,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    isSelected ? item.activeIcon : item.icon,
+                    const SizedBox(height: 4),
+                    Text(
+                      item.label,
+                      style: TextStyle(
+                        color: isSelected ? selectedColor : unselectedColor,
+                        fontSize: 12,
+                        fontWeight:
+                            isSelected ? FontWeight.w500 : FontWeight.normal,
+                      ),
                     ),
-                    child: item.icon,
-                  ),
-                  Text(
-                    item.label,
-                    style: TextStyle(
-                      color: isSelected ? selectedColor : unselectedColor,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           }).toList(),
@@ -79,10 +97,12 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
 
 class TASBottomNavigationBarItem {
   final Widget icon;
+  final Widget activeIcon;
   final String label;
 
   TASBottomNavigationBarItem({
     required this.icon,
+    Widget? activeIcon,
     required this.label,
-  });
+  }) : activeIcon = activeIcon ?? icon;
 }

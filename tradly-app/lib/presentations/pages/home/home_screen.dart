@@ -16,6 +16,7 @@ import 'package:tradly_app/presentations/pages/home/views/popular_product_list.d
 import 'package:tradly_app/presentations/pages/home/views/product_banner_list.dart';
 import 'package:tradly_app/presentations/pages/home/views/search_view.dart';
 import 'package:tradly_app/presentations/pages/home/views/store_follow_list.dart';
+import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,14 +31,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final Map<String, String> _categoryRouteMap = {
-    'Beverages': TAPaths.beverages.name,
-    'Vegetables': TAPaths.vegetables.name,
-    'Bread & Bakery': TAPaths.breadBakely.name,
-    'Egg': TAPaths.egg.name,
-    'Fruit': TAPaths.fruit.name,
-    'Pet Care': TAPaths.petCare.name,
-    'Frozen Veg': TAPaths.frozenVeg.name,
-    'Home Care': TAPaths.homeCare.name,
+    S.current.productDetailBeveragesTitle: TAPaths.beverages.name,
+    S.current.productDetailVegetablesTitle: TAPaths.vegetables.name,
+    S.current.productDetailBreadBakeryTitle: TAPaths.breadBakely.name,
+    S.current.productDetailEggTitle: TAPaths.egg.name,
+    S.current.productDetailFruitTitle: TAPaths.fruit.name,
+    S.current.productDetailPetCareTitle: TAPaths.petCare.name,
+    S.current.productDetailFrozenVegTitle: TAPaths.frozenVeg.name,
+    S.current.productDetailHomeCareTitle: TAPaths.homeCare.name,
   };
 
   @override
@@ -53,25 +54,34 @@ class _HomeScreenState extends State<HomeScreen> {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
-          backgroundColor: context.colorScheme.onPrimary,
+          backgroundColor: context.colorScheme.inversePrimary,
           appBar: TaAppBar.home(
-            searchForm: TASearchBar(
-              placeholder: S.current.homeSearchProductPlaceholder,
+            searchForm: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: TASearchBar(
+                placeholder: S.current.homeSearchProductPlaceholder,
+              ),
             ),
             backgroundColor: context.colorScheme.primary,
-            trailing: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.favorite),
-                  onPressed: () {
-                    context.pushNamed(TAPaths.productDetail.name);
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.shopping_cart),
-                  onPressed: () {},
-                ),
-              ],
+            trailing: Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.favorite),
+                    onPressed: () {
+                      context.pushNamed(
+                        TAPaths.wishlist.name,
+                        extra: widget.productId,
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: TAAssets.cart(),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
             title: Padding(
               padding: const EdgeInsets.only(left: 16),
@@ -152,24 +162,39 @@ class _HomeScreenState extends State<HomeScreen> {
           bottomNavigationBar: TABottomNavigationBar(
             items: [
               TASBottomNavigationBarItem(
-                icon: const Icon(Icons.home),
+                icon: TAAssets.home(),
                 label: S.current.homeLabel,
+                activeIcon: TAAssets.home(
+                  color: context.colorScheme.primary,
+                ),
               ),
               TASBottomNavigationBarItem(
-                icon: const Icon(Icons.search),
+                icon: TAAssets.search(),
                 label: S.current.homeBrowseLabel,
+                activeIcon: TAAssets.search(
+                  color: context.colorScheme.primary,
+                ),
               ),
               TASBottomNavigationBarItem(
-                icon: const Icon(Icons.store),
+                icon: TAAssets.store(),
                 label: S.current.homeStoreLabel,
+                activeIcon: TAAssets.store(
+                  color: context.colorScheme.primary,
+                ),
               ),
               TASBottomNavigationBarItem(
-                icon: const Icon(Icons.history),
+                icon: TAAssets.order(),
                 label: S.current.homeOrderHistoryLabel,
+                activeIcon: TAAssets.order(
+                  color: context.colorScheme.primary,
+                ),
               ),
               TASBottomNavigationBarItem(
-                icon: const Icon(Icons.person),
+                icon: TAAssets.profile(),
                 label: S.current.homeProfileLabel,
+                activeIcon: TAAssets.profile(
+                  color: context.colorScheme.primary,
+                ),
               ),
             ],
           ),

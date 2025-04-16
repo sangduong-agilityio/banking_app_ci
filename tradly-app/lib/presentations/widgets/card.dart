@@ -3,6 +3,7 @@ import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/data/models/store_model.dart';
 import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
@@ -97,15 +98,13 @@ class TACardProduct extends StatelessWidget {
 class TACardStoreFollow extends StatelessWidget {
   const TACardStoreFollow({
     super.key,
-    required this.storeName,
-    required this.imagePath,
+    required this.stores,
     this.height,
     this.width,
     this.onTap,
   });
 
-  final String storeName;
-  final String imagePath;
+  final StoreModel stores;
   final double? height;
   final double? width;
   final VoidCallback? onTap;
@@ -127,7 +126,7 @@ class TACardStoreFollow extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 TAImageRectangle(
-                  imagePath,
+                  stores.imageUrl,
                   isBorderTop: true,
                   width: width ?? double.infinity,
                   height: height ?? 75,
@@ -138,7 +137,7 @@ class TACardStoreFollow extends StatelessWidget {
                   left: 40,
                   child: TAImageCircle(
                     radius: 32,
-                    Assets.images.imgTradly.path,
+                    stores.logoStore,
                     boxFit: BoxFit.cover,
                   ),
                 ),
@@ -146,7 +145,7 @@ class TACardStoreFollow extends StatelessWidget {
             ),
             SizedBox(height: 35),
             TaTitleLargeText(
-              text: storeName,
+              text: stores.name,
               color: context.colorScheme.onSurface,
             ),
             ElevatedButton(

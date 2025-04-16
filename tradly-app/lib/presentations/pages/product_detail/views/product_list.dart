@@ -17,10 +17,12 @@ class ProductList extends StatelessWidget {
     super.key,
     required this.title,
     required this.categoryId,
+    this.productId,
   });
 
   final String title;
   final int categoryId;
+  final int? productId;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class ProductList extends StatelessWidget {
             onBackPressed: () {
               Navigator.pop(context);
             },
+            onPressed: () => _showSortBottomSheet(context),
           ),
           body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
             builder: (context, state) {
@@ -69,7 +72,7 @@ class ProductList extends StatelessWidget {
                         TARouter.navigateToProductDetail(
                           context,
                           TAPaths.productDetail.name,
-                          extra: categoryId,
+                          extra: state.products?[index].id,
                         );
                       },
                       product: ProductModel(
@@ -89,6 +92,44 @@ class ProductList extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showSortBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text('Price: lowest to highest'),
+              onTap: () {
+                context.read<ProductDetailBloc>().add(
+                    ProductDetailSortEvt(sortType: 'Price: lowest to highest'));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Price: highest to lowest'),
+              onTap: () {
+                context.read<ProductDetailBloc>().add(
+                    ProductDetailSortEvt(sortType: 'Price: highest to lowest'));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Sort by alphabet'),
+              onTap: () {
+                context
+                    .read<ProductDetailBloc>()
+                    .add(ProductDetailSortEvt(sortType: 'Sort by alphabet'));
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
