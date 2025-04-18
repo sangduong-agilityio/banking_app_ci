@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tradly_app/presentations/widgets/input.dart';
+import 'package:tradly_app/presentations/widgets/text_field.dart';
 
 class TAForm extends StatefulWidget {
   const TAForm({
@@ -10,12 +10,9 @@ class TAForm extends StatefulWidget {
     this.textInputAction,
   });
 
-  final List<TextInput> textFields;
-
+  final List<TATextField> textFields;
   final double spaceBetweenRow;
-
   final Function(bool value) isValidated;
-
   final TextInputAction? textInputAction;
 
   @override

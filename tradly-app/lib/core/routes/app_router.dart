@@ -18,6 +18,8 @@ import 'package:tradly_app/presentations/pages/product_detail/views/home_care_li
 import 'package:tradly_app/presentations/pages/product_detail/views/pet_care.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/vegetables_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/wish_list.dart';
+import 'package:tradly_app/presentations/pages/profile/profile.dart';
+import 'package:tradly_app/presentations/pages/store/store.dart';
 import 'package:tradly_app/presentations/widgets/not_found.dart';
 
 class TARouter {
@@ -58,6 +60,16 @@ class TARouter {
         name: TAPaths.otpVerification.name,
         path: TAPaths.otpVerification.path,
         builder: (context, state) => const OtpVerificationScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.profile.name,
+        path: TAPaths.profile.path,
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.store.name,
+        path: TAPaths.store.path,
+        builder: (context, state) => const StoreScreen(),
       ),
       GoRoute(
         name: TAPaths.wishlist.name,
@@ -227,6 +239,14 @@ enum TAPaths {
   productDetail(
     name: 'productDetail',
     path: '/productDetail',
+  ),
+  profile(
+    name: 'profile',
+    path: '/profile',
+  ),
+  store(
+    name: 'store',
+    path: '/store',
   ),
   wishlist(
     name: 'wishlist',

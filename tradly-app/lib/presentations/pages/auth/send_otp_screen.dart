@@ -4,7 +4,7 @@ import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
-import 'package:tradly_app/presentations/widgets/input.dart';
+import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 import 'package:tradly_app/presentations/widgets/form.dart';
@@ -44,8 +44,8 @@ class SendOtpScreen extends StatelessWidget {
               SizedBox(height: 25),
               TAForm(
                 textFields: [
-                  TextInput(
-                    labelText: S.current.sendOtpPhoneNumberTitle,
+                  TATextField(
+                    label: S.current.sendOtpPhoneNumberTitle,
                     controller: phoneController,
                     keyboardType: TextInputType.phone,
                     dropdownItems: [

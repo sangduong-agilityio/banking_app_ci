@@ -50,6 +50,8 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onBackPressed,
     this.elevation = 0,
     this.onPressed,
+    this.actions,
+    this.centerTitle = true,
     super.key,
   });
 
@@ -60,6 +62,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     List<Widget>? actions,
     Color? backgroundColor,
     Widget? trailing,
+    bool? centerTitle,
   }) {
     return TaAppBar(
       appBarType: TaAppBarType.home,
@@ -68,6 +71,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottomType: TaAppBarBottomType.search,
       searchForm: searchForm,
       trailing: trailing,
+      centerTitle: centerTitle ?? true,
     );
   }
 
@@ -171,7 +175,8 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBackPressed;
   final double elevation;
   final VoidCallback? onPressed;
-
+  final List<Widget>? actions;
+  final bool centerTitle;
   @override
   Size get preferredSize => Size.fromHeight(toolbarHeight);
 
@@ -188,8 +193,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
           titleSpacing: 0,
           leadingWidth: 56,
           systemOverlayStyle: SystemUiOverlayStyle.light,
-          centerTitle: appBarType == TaAppBarType.categoryDetail ||
-              appBarType == TaAppBarType.wishlist,
+          centerTitle: centerTitle,
           toolbarHeight: TaResponsive.scale(
             context,
             defaultValue: toolbarHeight,

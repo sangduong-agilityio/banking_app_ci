@@ -1,131 +1,123 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 
-class TextInput extends StatefulWidget {
-  const TextInput({
+class TATextField extends StatefulWidget {
+  const TATextField({
     super.key,
-    required this.labelText,
-    this.onChanged,
+    required this.label,
     this.controller,
+    this.hint,
     this.initialValue,
-    this.validatorText,
+    this.validator,
     this.validatorStyle,
-    this.hasObscureText = false,
+    this.isPassword = false,
     this.keyboardType = TextInputType.text,
     this.scrollPadding = const EdgeInsets.all(20.0),
     this.onTap,
     this.textInputAction,
     this.focusNode,
     this.onFieldSubmitted,
+    this.onChanged,
     this.autoFocus = false,
     this.onEditingComplete,
-    this.maxLines,
+    this.maxLines = 1,
     this.maxLength,
     this.textStyle,
     this.hintStyle,
     this.labelStyle,
+    this.suffixIcon,
     this.dropdownItems,
     this.onDropdownChanged,
+    this.useMaterialStyle = true,
   });
 
-  final String labelText;
-
-  final TextStyle? labelStyle;
-
-  final String? initialValue;
-
-  final ValueChanged<String>? onChanged;
-
-  final String? Function(String?)? validatorText;
-
-  final TextStyle? validatorStyle;
-
-  final bool hasObscureText;
-
-  final TextInputType keyboardType;
-
-  final EdgeInsets scrollPadding;
-
-  final VoidCallback? onTap;
-
-  final FocusNode? focusNode;
-
-  final TextInputAction? textInputAction;
-
-  final Function(String)? onFieldSubmitted;
-
+  final String label;
   final TextEditingController? controller;
-
-  final VoidCallback? onEditingComplete;
-
+  final String? hint;
+  final String? initialValue;
+  final String? Function(String?)? validator;
+  final TextStyle? validatorStyle;
+  final bool isPassword;
+  final TextInputType keyboardType;
+  final EdgeInsets scrollPadding;
+  final VoidCallback? onTap;
+  final TextInputAction? textInputAction;
+  final FocusNode? focusNode;
+  final Function(String)? onFieldSubmitted;
+  final ValueChanged<String>? onChanged;
   final bool autoFocus;
-
+  final VoidCallback? onEditingComplete;
   final int? maxLines;
-
   final int? maxLength;
-
-  final TextStyle? hintStyle;
-
   final TextStyle? textStyle;
-
+  final TextStyle? hintStyle;
+  final TextStyle? labelStyle;
+  final IconData? suffixIcon;
   final List<DropdownMenuItem<String>>? dropdownItems;
-
   final ValueChanged<String?>? onDropdownChanged;
+  final bool useMaterialStyle;
 
   @override
-  State<TextInput> createState() => _TextInputState();
+  State<TATextField> createState() => _TATextFieldState();
 
-  TextInput copyWith({
-    String? hintText,
-    String? labelText,
-    Function(String? string)? onChanged,
-    VoidCallback? onEditingComplete,
-    bool? autoFocus,
-    TextInputAction? textInputAction,
-    String? Function(String?)? validatorText,
+  TATextField copyWith({
+    String? label,
+    TextEditingController? controller,
+    String? hint,
     String? initialValue,
-    bool? hasObscureText,
+    String? Function(String?)? validator,
+    TextStyle? validatorStyle,
+    bool? isPassword,
     TextInputType? keyboardType,
     EdgeInsets? scrollPadding,
     VoidCallback? onTap,
+    TextInputAction? textInputAction,
     FocusNode? focusNode,
     Function(String)? onFieldSubmitted,
-    TextEditingController? controller,
+    ValueChanged<String>? onChanged,
+    bool? autoFocus,
+    VoidCallback? onEditingComplete,
     int? maxLines,
     int? maxLength,
+    TextStyle? textStyle,
     TextStyle? hintStyle,
     TextStyle? labelStyle,
-    TextStyle? textStyle,
+    IconData? suffixIcon,
     List<DropdownMenuItem<String>>? dropdownItems,
     ValueChanged<String?>? onDropdownChanged,
+    bool? useMaterialStyle,
   }) {
-    return TextInput(
-      labelText: labelText ?? this.labelText,
-      onChanged: onChanged ?? this.onChanged,
-      onEditingComplete: onEditingComplete ?? this.onEditingComplete,
-      autoFocus: autoFocus ?? this.autoFocus,
-      textInputAction: textInputAction ?? this.textInputAction,
-      validatorText: validatorText ?? this.validatorText,
+    return TATextField(
+      label: label ?? this.label,
+      controller: controller ?? this.controller,
+      hint: hint ?? this.hint,
       initialValue: initialValue ?? this.initialValue,
-      hasObscureText: hasObscureText ?? this.hasObscureText,
+      validator: validator ?? this.validator,
+      validatorStyle: validatorStyle ?? this.validatorStyle,
+      isPassword: isPassword ?? this.isPassword,
       keyboardType: keyboardType ?? this.keyboardType,
       scrollPadding: scrollPadding ?? this.scrollPadding,
       onTap: onTap ?? this.onTap,
+      textInputAction: textInputAction ?? this.textInputAction,
       focusNode: focusNode ?? this.focusNode,
       onFieldSubmitted: onFieldSubmitted ?? this.onFieldSubmitted,
-      controller: controller ?? this.controller,
+      onChanged: onChanged ?? this.onChanged,
+      autoFocus: autoFocus ?? this.autoFocus,
+      onEditingComplete: onEditingComplete ?? this.onEditingComplete,
       maxLines: maxLines ?? this.maxLines,
       maxLength: maxLength ?? this.maxLength,
+      textStyle: textStyle ?? this.textStyle,
       hintStyle: hintStyle ?? this.hintStyle,
       labelStyle: labelStyle ?? this.labelStyle,
-      textStyle: textStyle ?? this.textStyle,
+      suffixIcon: suffixIcon ?? this.suffixIcon,
       dropdownItems: dropdownItems ?? this.dropdownItems,
       onDropdownChanged: onDropdownChanged ?? this.onDropdownChanged,
+      useMaterialStyle: useMaterialStyle ?? this.useMaterialStyle,
     );
   }
 }
 
-class _TextInputState extends State<TextInput> {
+class _TATextFieldState extends State<TATextField> {
   late bool _textInvisible;
 
   @override
@@ -142,6 +134,79 @@ class _TextInputState extends State<TextInput> {
 
   @override
   Widget build(BuildContext context) {
+    return widget.useMaterialStyle
+        ? _buildMaterialTextField(context)
+        : _buildCustomTextField(context);
+  }
+
+  Widget _buildMaterialTextField(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.label,
+            style: widget.labelStyle ??
+                TextStyle(
+                  color: context.colorScheme.outline,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+          ),
+          TextFormField(
+            controller: widget.controller,
+            initialValue: widget.initialValue,
+            maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
+            keyboardType: widget.keyboardType,
+            obscureText: widget.isPassword ? _textInvisible : false,
+            obscuringCharacter: '*',
+            textInputAction: widget.textInputAction,
+            focusNode: widget.focusNode,
+            onFieldSubmitted: widget.onFieldSubmitted,
+            onChanged: widget.onChanged,
+            onTap: widget.onTap,
+            onEditingComplete: widget.onEditingComplete,
+            autofocus: widget.autoFocus,
+            scrollPadding: widget.scrollPadding,
+            style: widget.textStyle ??
+                TextStyle(color: context.colorScheme.onSurface),
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.zero,
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: context.colorScheme.primary),
+              ),
+              hintText: widget.hint,
+              hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),
+              counterText: '',
+              suffixIcon: widget.isPassword
+                  ? IconButton(
+                      icon: Icon(
+                        _textInvisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.grey,
+                      ),
+                      onPressed: togglePasswordVisibility,
+                    )
+                  : widget.suffixIcon != null
+                      ? Icon(widget.suffixIcon, color: Colors.grey)
+                      : null,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomTextField(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -151,6 +216,7 @@ class _TextInputState extends State<TextInput> {
           focusNode: widget.focusNode,
           controller: widget.controller,
           onFieldSubmitted: widget.onFieldSubmitted,
+          onChanged: widget.onChanged,
           onTap: widget.onTap,
           obscuringCharacter: '*',
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -164,12 +230,15 @@ class _TextInputState extends State<TextInput> {
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
-          obscureText: widget.hasObscureText ? _textInvisible : false,
-          maxLines: widget.maxLines ?? 1,
-          maxLength: widget.maxLength ?? 50,
+          obscureText: widget.isPassword ? _textInvisible : false,
+          maxLines: widget.maxLines,
+          maxLength: widget.maxLength,
           enableSuggestions: false,
+          onEditingComplete: widget.onEditingComplete,
+          autofocus: widget.autoFocus,
           decoration: InputDecoration(
-            labelText: widget.labelText,
+            labelText: widget.label,
+            hintText: widget.hint,
             labelStyle: widget.labelStyle ??
                 TextStyle(
                   color: context.colorScheme.onPrimary,
@@ -221,7 +290,6 @@ class _TextInputState extends State<TextInput> {
             prefixIcon: widget.dropdownItems != null
                 ? DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      // isDense: true,
                       items: widget.dropdownItems
                           ?.map((item) => DropdownMenuItem<String>(
                                 value: item.value,
@@ -262,7 +330,7 @@ class _TextInputState extends State<TextInput> {
                     ),
                   )
                 : null,
-            suffixIcon: widget.hasObscureText
+            suffixIcon: widget.isPassword
                 ? IconButton(
                     focusNode: FocusNode(skipTraversal: true),
                     icon: Icon(
@@ -274,9 +342,18 @@ class _TextInputState extends State<TextInput> {
                     ),
                     onPressed: togglePasswordVisibility,
                   )
-                : null,
+                : widget.suffixIcon != null
+                    ? Icon(widget.suffixIcon,
+                        color: context.colorScheme.onTertiary)
+                    : null,
           ),
-          validator: widget.validatorText,
+          validator: widget.validator ??
+              (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter ${widget.label}';
+                }
+                return null;
+              },
         )
       ],
     );

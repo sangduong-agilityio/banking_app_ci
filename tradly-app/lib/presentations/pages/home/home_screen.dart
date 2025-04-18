@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             backgroundColor: context.colorScheme.primary,
+            centerTitle: false,
             trailing: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Row(

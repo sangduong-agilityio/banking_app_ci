@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
+import 'package:tradly_app/core/routes/app_router.dart';
 
 class TABottomNavigationBar extends StatefulWidget {
   const TABottomNavigationBar({
@@ -28,6 +30,14 @@ class TABottomNavigationBar extends StatefulWidget {
 class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
   late int _selectedIndex;
 
+  final Map<int, String> _tabRoutes = {
+    0: TAPaths.home.name,
+    // 1: TAPaths.beverages.name,
+    2: TAPaths.store.name,
+    // 3: TAPaths.order.name,
+    4: TAPaths.profile.name, // Profile route
+  };
+
   @override
   void initState() {
     super.initState();
@@ -43,10 +53,17 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    widget.onTap?.call(index);
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+      widget.onTap?.call(index);
+
+      final routeName = _tabRoutes[index];
+      if (routeName != null) {
+        context.goNamed(routeName);
+      }
+    }
   }
 
   @override

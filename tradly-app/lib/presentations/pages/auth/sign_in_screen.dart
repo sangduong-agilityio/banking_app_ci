@@ -13,7 +13,7 @@ import 'package:tradly_app/core/utils/validators.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/form.dart';
 import 'package:tradly_app/presentations/widgets/indicator.dart';
-import 'package:tradly_app/presentations/widgets/input.dart';
+import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:tradly_app/presentations/widgets/snackbar.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
@@ -78,23 +78,23 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                       spaceBetweenRow: 20,
                       textFields: [
-                        TextInput(
+                        TATextField(
                           controller: _emailController,
                           textInputAction: TextInputAction.next,
-                          labelText: S.current.signInEmailOrMobileLabel,
+                          label: S.current.signInEmailOrMobileLabel,
                           labelStyle:
                               TextStyle(color: context.colorScheme.onPrimary),
-                          validatorText: (value) =>
+                          validator: (value) =>
                               InputValidationMixin.validEmailOrPhone(
                                   value ?? ''),
                         ),
-                        TextInput(
+                        TATextField(
                           controller: _passwordController,
-                          labelText: S.current.signInPasswordLabel,
+                          label: S.current.signInPasswordLabel,
                           labelStyle:
                               TextStyle(color: context.colorScheme.onPrimary),
-                          hasObscureText: true,
-                          validatorText: (value) =>
+                          isPassword: true,
+                          validator: (value) =>
                               InputValidationMixin.validPassword(value ?? ''),
                         ),
                       ],
