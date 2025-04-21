@@ -137,7 +137,7 @@ class TACardStoreFollow extends StatelessWidget {
                   left: 40,
                   child: TAImageCircle(
                     radius: 32,
-                    stores.logoStore,
+                    stores.logoStore ?? '',
                     boxFit: BoxFit.cover,
                   ),
                 ),

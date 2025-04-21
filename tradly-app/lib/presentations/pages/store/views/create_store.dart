@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/data/repositories/store_repo.dart.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
+import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
+import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
@@ -13,143 +18,153 @@ class CreateStoreScreen extends StatefulWidget {
 }
 
 class _CreateStoreScreenState extends State<CreateStoreScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _storeNameController = TextEditingController();
-  final _webAddressController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _storeTypeController = TextEditingController();
-  final _addressLine1Controller = TextEditingController();
-  final _addressLine2Controller = TextEditingController();
-  final _cityController = TextEditingController();
-  final _stateController = TextEditingController();
-  final _countryController = TextEditingController();
-  final _courierNameController = TextEditingController();
-  final _taglineController = TextEditingController(text: 'Groceries');
-
-  @override
-  void dispose() {
-    _storeNameController.dispose();
-    _webAddressController.dispose();
-    _descriptionController.dispose();
-    _storeTypeController.dispose();
-    _addressLine1Controller.dispose();
-    _addressLine2Controller.dispose();
-    _cityController.dispose();
-    _stateController.dispose();
-    _countryController.dispose();
-    _courierNameController.dispose();
-    _taglineController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colorScheme.inversePrimary,
-      appBar: TaAppBar(
-        toolbarHeight: TaAppBarSize.small,
-        backgroundColor: context.colorScheme.primary,
-        title: const Padding(
-          padding: EdgeInsets.only(left: 16),
-          child: TaDisplaySmallText(
-            text: 'My Store',
-            fontWeight: FontWeight.w700,
+    final formKey = GlobalKey<FormState>();
+    final storeNameController = TextEditingController();
+    final webAddressController = TextEditingController();
+    final descriptionController = TextEditingController();
+    final storeTypeController = TextEditingController();
+    final addressLine1Controller = TextEditingController();
+    final cityController = TextEditingController();
+    final courierNameController = TextEditingController();
+    final countryController = TextEditingController();
+    final taglineController = TextEditingController(text: 'Groceries');
+
+    return BlocProvider(
+      create: (context) => StoreBloc(
+        repo: context.read<StoreRepository>(),
+      )..add(
+          CreateStoreEvent(
+            storeName: storeNameController.text,
+            webAddress: webAddressController.text,
+            description: descriptionController.text,
+            storeType: storeTypeController.text,
+            address: addressLine1Controller.text,
+            city: cityController.text,
+            country: countryController.text,
+            courierName: courierNameController.text,
+            tagLine: taglineController.text,
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Image.asset(
-                Assets.images.imgEmptyStore.path,
-                fit: BoxFit.cover,
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TaTitleLargeText(
-                  text: "This information is used to set up your shop",
-                  color: context.colorScheme.onSurface,
+      child: Scaffold(
+        backgroundColor: context.colorScheme.inversePrimary,
+        appBar: TaAppBar(
+          toolbarHeight: TaAppBarSize.small,
+          backgroundColor: context.colorScheme.primary,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: TaDisplaySmallText(
+              text: S.current.storeTitle,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                Image.asset(
+                  height: 120,
+                  Assets.images.imgEmptyStore.path,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                color: context.colorScheme.surface,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 24),
-                      TATextField(
-                        label: 'Store Name',
-                        controller: _storeNameController,
-                      ),
-                      TATextField(
-                        label: 'Store Web Address',
-                        controller: _webAddressController,
-                      ),
-                      TATextField(
-                        label: 'Store Description',
-                        controller: _descriptionController,
-                      ),
-                      TATextField(
-                        label: 'Store Type',
-                        controller: _storeTypeController,
-                      ),
-                      TATextField(
-                        label: 'Address',
-                        controller: _addressLine1Controller,
-                      ),
-                      TATextField(
-                        label: 'City',
-                        controller: _cityController,
-                      ),
-                      TATextField(
-                        label: 'Country',
-                        controller: _countryController,
-                      ),
-                      TATextField(
-                        label: 'Courier Name',
-                        controller: _courierNameController,
-                      ),
-                      _taglineField(),
-                    ],
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TaTitleLargeText(
+                    textAlign: TextAlign.center,
+                    text: S.current.storeDetailTitle,
+                    color: context.colorScheme.onSurface,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context, true);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.colorScheme.primary,
-              disabledBackgroundColor:
-                  context.colorScheme.primary.withOpacity(0.6),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            child: const Text(
-              'Create',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+                const SizedBox(height: 20),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  color: context.colorScheme.surface,
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 24),
+                        TATextField(
+                          label: S.current.storeNameLabel,
+                          controller: storeNameController,
+                        ),
+                        TATextField(
+                          label: S.current.storeWebAddressLabel,
+                          controller: webAddressController,
+                        ),
+                        TATextField(
+                          label: S.current.storeDescriptionLabel,
+                          controller: descriptionController,
+                        ),
+                        TATextField(
+                          label: S.current.storeTypeLabel,
+                          controller: storeTypeController,
+                        ),
+                        TATextField(
+                          label: S.current.storeAddressLabel,
+                          controller: addressLine1Controller,
+                        ),
+                        TATextField(
+                          label: S.current.storeCityLabel,
+                          controller: cityController,
+                        ),
+                        TATextField(
+                          label: S.current.storeCountryLabel,
+                          controller: countryController,
+                        ),
+                        TATextField(
+                          label: S.current.storeCourierNameLabel,
+                          controller: courierNameController,
+                        ),
+                        _taglineField(),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context, true);
+                              if (formKey.currentState?.validate() ?? false) {
+                                context.read<StoreBloc>().add(
+                                      CreateStoreEvent(
+                                        country: countryController.text,
+                                        storeName: storeNameController.text,
+                                        webAddress: webAddressController.text,
+                                        description: descriptionController.text,
+                                        storeType: storeTypeController.text,
+                                        address: addressLine1Controller.text,
+                                        city: cityController.text,
+                                        courierName: courierNameController.text,
+                                        tagLine: taglineController.text,
+                                      ),
+                                    );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: context.colorScheme.primary,
+                              disabledBackgroundColor:
+                                  context.colorScheme.primary.withOpacity(0.6),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: TaHeadlineMediumText(
+                              text: S.current.storeCreateButton,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -161,11 +176,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 8),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
           child: Text(
-            'Tagline',
-            style: TextStyle(
+            S.current.storeTaglineLabel,
+            style: const TextStyle(
               fontSize: 14,
               color: Colors.black,
             ),
@@ -182,17 +197,15 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    _taglineController.text,
-                    style: const TextStyle(fontSize: 12),
-                  ),
+                  // Text(
+                  //   _taglineController.text,
+                  //   style: const TextStyle(fontSize: 12),
+                  // ),
                   const SizedBox(width: 4),
                   InkWell(
-                    onTap: () {
-                      setState(() {
-                        _taglineController.clear();
-                      });
-                    },
+                    // onTap: () {
+                    //   _taglineController.clear();
+                    // },
                     child: const Icon(
                       Icons.close,
                       size: 16,

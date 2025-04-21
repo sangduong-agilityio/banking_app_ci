@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/presentations/widgets/assets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
 
 class TABottomNavigationBar extends StatefulWidget {
   const TABottomNavigationBar({
     super.key,
-    required this.items,
     this.backgroundColor,
     this.selectedItemColor = const Color(0xFF007A70),
     this.unselectedItemColor = Colors.grey,
@@ -15,7 +16,6 @@ class TABottomNavigationBar extends StatefulWidget {
     this.onTap,
   });
 
-  final List<TASBottomNavigationBarItem> items;
   final Color? backgroundColor;
   final Color selectedItemColor;
   final Color unselectedItemColor;
@@ -29,14 +29,6 @@ class TABottomNavigationBar extends StatefulWidget {
 
 class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
   late int _selectedIndex;
-
-  final Map<int, String> _tabRoutes = {
-    0: TAPaths.home.name,
-    // 1: TAPaths.beverages.name,
-    2: TAPaths.store.name,
-    // 3: TAPaths.order.name,
-    4: TAPaths.profile.name, // Profile route
-  };
 
   @override
   void initState() {
@@ -59,9 +51,22 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
       });
       widget.onTap?.call(index);
 
-      final routeName = _tabRoutes[index];
-      if (routeName != null) {
-        context.goNamed(routeName);
+      switch (index) {
+        case 0:
+          context.goNamed(TAPaths.home.name);
+          break;
+        case 1:
+          context.goNamed(TAPaths.beverages.name);
+          break;
+        case 2:
+          context.goNamed(TAPaths.store.name);
+          break;
+        case 3:
+          context.goNamed(TAPaths.egg.name);
+          break;
+        case 4:
+          context.goNamed(TAPaths.profile.name);
+          break;
       }
     }
   }
@@ -76,12 +81,10 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
         minimum: widget.margin,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: widget.items.asMap().entries.map((entry) {
+          children: _navigationItems.asMap().entries.map((entry) {
             final index = entry.key;
             final item = entry.value;
             final isSelected = index == _selectedIndex;
-            final selectedColor = widget.selectedItemColor;
-            final unselectedColor = widget.unselectedItemColor;
 
             return Expanded(
               child: GestureDetector(
@@ -95,7 +98,9 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
                     Text(
                       item.label,
                       style: TextStyle(
-                        color: isSelected ? selectedColor : unselectedColor,
+                        color: isSelected
+                            ? widget.selectedItemColor
+                            : widget.unselectedItemColor,
                         fontSize: 12,
                         fontWeight:
                             isSelected ? FontWeight.w500 : FontWeight.normal,
@@ -110,16 +115,44 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
       ),
     );
   }
+
+  final List<_NavigationItem> _navigationItems = [
+    _NavigationItem(
+      icon: TAAssets.home(),
+      activeIcon: TAAssets.home(color: const Color(0xFF007A70)),
+      label: S.current.homeLabel,
+    ),
+    _NavigationItem(
+      icon: TAAssets.search(),
+      activeIcon: TAAssets.search(color: const Color(0xFF007A70)),
+      label: S.current.homeBrowseLabel,
+    ),
+    _NavigationItem(
+      icon: TAAssets.store(),
+      activeIcon: TAAssets.store(color: const Color(0xFF007A70)),
+      label: S.current.homeStoreLabel,
+    ),
+    _NavigationItem(
+      icon: TAAssets.order(),
+      activeIcon: TAAssets.order(color: const Color(0xFF007A70)),
+      label: S.current.homeOrderHistoryLabel,
+    ),
+    _NavigationItem(
+      icon: TAAssets.profile(),
+      activeIcon: TAAssets.profile(color: const Color(0xFF007A70)),
+      label: S.current.homeProfileLabel,
+    ),
+  ];
 }
 
-class TASBottomNavigationBarItem {
+class _NavigationItem {
   final Widget icon;
   final Widget activeIcon;
   final String label;
 
-  TASBottomNavigationBarItem({
+  _NavigationItem({
     required this.icon,
-    Widget? activeIcon,
+    required this.activeIcon,
     required this.label,
-  }) : activeIcon = activeIcon ?? icon;
+  });
 }

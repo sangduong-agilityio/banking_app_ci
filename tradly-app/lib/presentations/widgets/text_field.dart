@@ -155,6 +155,7 @@ class _TATextFieldState extends State<TATextField> {
                 ),
           ),
           TextFormField(
+            cursorColor: context.colorScheme.onSurface,
             controller: widget.controller,
             initialValue: widget.initialValue,
             maxLines: widget.maxLines,
@@ -178,10 +179,12 @@ class _TATextFieldState extends State<TATextField> {
                 borderSide: BorderSide(color: Colors.grey),
               ),
               enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
+                borderSide: BorderSide(
+                  color: Color(0xffdbdbde),
+                ),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.primary),
+                borderSide: BorderSide(color: context.colorScheme.onSurface),
               ),
               hintText: widget.hint,
               hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),

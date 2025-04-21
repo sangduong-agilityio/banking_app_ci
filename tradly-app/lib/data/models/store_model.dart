@@ -1,18 +1,20 @@
 class StoreModel {
   final int id;
   final String name;
+  final String? description;
   final String imageUrl;
-  final String logoStore;
-  final String? isFollowed;
-  final int? userId;
+  final String? address;
+  final String? webAddress;
+  final String? logoStore;
 
   StoreModel({
     required this.id,
     required this.name,
     required this.imageUrl,
-    required this.logoStore,
-    this.isFollowed,
-    this.userId,
+    this.logoStore,
+    this.description,
+    this.address,
+    this.webAddress,
   });
 
   // Factory method to create a StoreModel from a JSON object
@@ -22,8 +24,9 @@ class StoreModel {
       name: json['name'],
       imageUrl: json['imageUrl'],
       logoStore: json['logoStore'],
-      isFollowed: json['isFollowed'],
-      userId: json['userId'],
+      description: json['description'],
+      address: json['address'],
+      webAddress: json['webAddress'],
     );
   }
 
@@ -34,8 +37,9 @@ class StoreModel {
       'name': name,
       'imageUrl': imageUrl,
       'logoStore': logoStore,
-      'isFollowed': isFollowed,
-      'userId': userId,
+      'description': description,
+      'address': address,
+      'webAddress': webAddress,
     };
   }
 }

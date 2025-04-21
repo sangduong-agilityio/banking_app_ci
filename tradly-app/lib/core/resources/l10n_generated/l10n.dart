@@ -809,6 +809,276 @@ class S {
       args: [],
     );
   }
+
+  /// `My Store`
+  String get storeTitle {
+    return Intl.message(
+      'My Store',
+      name: 'storeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Products`
+  String get storeProductsTitle {
+    return Intl.message(
+      'Products',
+      name: 'storeProductsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You Don't Have a Store`
+  String get storeNoStore {
+    return Intl.message(
+      'You Don\'t Have a Store',
+      name: 'storeNoStore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have product`
+  String get storeNoProduct {
+    return Intl.message(
+      'You don\'t have product',
+      name: 'storeNoProduct',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create Store`
+  String get storeCreateStoreButton {
+    return Intl.message(
+      'Create Store',
+      name: 'storeCreateStoreButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get storeCreateButton {
+    return Intl.message(
+      'Create',
+      name: 'storeCreateButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Product`
+  String get storeAddProductButton {
+    return Intl.message(
+      'Add Product',
+      name: 'storeAddProductButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This information is used to set up \nyour shop`
+  String get storeDetailTitle {
+    return Intl.message(
+      'This information is used to set up \nyour shop',
+      name: 'storeDetailTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store Name`
+  String get storeNameLabel {
+    return Intl.message(
+      'Store Name',
+      name: 'storeNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store Web Address`
+  String get storeWebAddressLabel {
+    return Intl.message(
+      'Store Web Address',
+      name: 'storeWebAddressLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store Description`
+  String get storeDescriptionLabel {
+    return Intl.message(
+      'Store Description',
+      name: 'storeDescriptionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store Type`
+  String get storeTypeLabel {
+    return Intl.message(
+      'Store Type',
+      name: 'storeTypeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address`
+  String get storeAddressLabel {
+    return Intl.message(
+      'Address',
+      name: 'storeAddressLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `City`
+  String get storeCityLabel {
+    return Intl.message(
+      'City',
+      name: 'storeCityLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Country`
+  String get storeCountryLabel {
+    return Intl.message(
+      'Country',
+      name: 'storeCountryLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Courier Name`
+  String get storeCourierNameLabel {
+    return Intl.message(
+      'Courier Name',
+      name: 'storeCourierNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tagline`
+  String get storeTaglineLabel {
+    return Intl.message(
+      'Tagline',
+      name: 'storeTaglineLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Product Name`
+  String get storeProductNameLabel {
+    return Intl.message(
+      'Product Name',
+      name: 'storeProductNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category Product`
+  String get storeCategoryProductLabel {
+    return Intl.message(
+      'Category Product',
+      name: 'storeCategoryProductLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price`
+  String get storePriceLabel {
+    return Intl.message(
+      'Price',
+      name: 'storePriceLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offer Price`
+  String get storeOfferPriceLabel {
+    return Intl.message(
+      'Offer Price',
+      name: 'storeOfferPriceLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location Details`
+  String get storeLocationDetailsLabel {
+    return Intl.message(
+      'Location Details',
+      name: 'storeLocationDetailsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Product Description`
+  String get storeProductDescriptionLabel {
+    return Intl.message(
+      'Product Description',
+      name: 'storeProductDescriptionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price Type`
+  String get storePriceTypeLabel {
+    return Intl.message(
+      'Price Type',
+      name: 'storePriceTypeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Additional Details`
+  String get storeAddDeataisLabel {
+    return Intl.message(
+      'Additional Details',
+      name: 'storeAddDeataisLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add photos`
+  String get storeAddPhotoTitle {
+    return Intl.message(
+      'Add photos',
+      name: 'storeAddPhotoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1600 x 1200 for hi res`
+  String get storeAddPhotoDescription {
+    return Intl.message(
+      '1600 x 1200 for hi res',
+      name: 'storeAddPhotoDescription',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -31,6 +31,9 @@ class StoreFollowList extends StatelessWidget {
                   id: state.stores?[index].id ?? 0,
                   name: state.stores?[index].name ?? '',
                   imageUrl: state.stores?[index].imageUrl ?? '',
+                  description: state.stores?[index].description ?? '',
+                  address: state.stores?[index].address ?? '',
+                  webAddress: state.stores?[index].webAddress ?? '',
                   logoStore: state.stores?[index].logoStore ?? '',
                 ),
               );

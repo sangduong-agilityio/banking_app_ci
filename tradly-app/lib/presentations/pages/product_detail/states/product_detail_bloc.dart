@@ -21,7 +21,11 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
     ProductDetailInitializeEvt event,
     Emitter<ProductDetailState> emit,
   ) async {
-    emit(state.copyWith(status: const ProductDetailStatus.loading()));
+    emit(
+      state.copyWith(
+        status: const ProductDetailStatus.loading(),
+      ),
+    );
 
     try {
       final products = await _repo.fetchProductsByCategoryId(

@@ -161,43 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           bottomNavigationBar: TABottomNavigationBar(
-            items: [
-              TASBottomNavigationBarItem(
-                icon: TAAssets.home(),
-                label: S.current.homeLabel,
-                activeIcon: TAAssets.home(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-              TASBottomNavigationBarItem(
-                icon: TAAssets.search(),
-                label: S.current.homeBrowseLabel,
-                activeIcon: TAAssets.search(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-              TASBottomNavigationBarItem(
-                icon: TAAssets.store(),
-                label: S.current.homeStoreLabel,
-                activeIcon: TAAssets.store(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-              TASBottomNavigationBarItem(
-                icon: TAAssets.order(),
-                label: S.current.homeOrderHistoryLabel,
-                activeIcon: TAAssets.order(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-              TASBottomNavigationBarItem(
-                icon: TAAssets.profile(),
-                label: S.current.homeProfileLabel,
-                activeIcon: TAAssets.profile(
-                  color: context.colorScheme.primary,
-                ),
-              ),
-            ],
+            currentIndex: 0,
           ),
         ),
       ),

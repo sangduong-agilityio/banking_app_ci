@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
-import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
@@ -16,6 +15,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: TaAppBar(
+        centerTitle: false,
         toolbarHeight: TaAppBarSize.small,
         title: Padding(
           padding: const EdgeInsets.only(left: 16),
@@ -137,45 +137,7 @@ class ProfileScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: TABottomNavigationBar(
-        items: [
-          TASBottomNavigationBarItem(
-            icon: TAAssets.home(),
-            label: S.current.homeLabel,
-            activeIcon: TAAssets.home(
-              color: context.colorScheme.primary,
-            ),
-          ),
-          TASBottomNavigationBarItem(
-            icon: TAAssets.search(),
-            label: S.current.homeBrowseLabel,
-            activeIcon: TAAssets.search(
-              color: context.colorScheme.primary,
-            ),
-          ),
-          TASBottomNavigationBarItem(
-            icon: TAAssets.store(),
-            label: S.current.homeStoreLabel,
-            activeIcon: TAAssets.store(
-              color: context.colorScheme.primary,
-            ),
-          ),
-          TASBottomNavigationBarItem(
-            icon: TAAssets.order(),
-            label: S.current.homeOrderHistoryLabel,
-            activeIcon: TAAssets.order(
-              color: context.colorScheme.primary,
-            ),
-          ),
-          TASBottomNavigationBarItem(
-            icon: TAAssets.profile(),
-            label: S.current.homeProfileLabel,
-            activeIcon: TAAssets.profile(
-              color: context.colorScheme.primary,
-            ),
-          ),
-        ],
-      ),
+      bottomNavigationBar: TABottomNavigationBar(),
     );
   }
 

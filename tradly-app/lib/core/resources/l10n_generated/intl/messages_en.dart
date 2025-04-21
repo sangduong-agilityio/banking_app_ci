@@ -135,6 +135,50 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Signup to your account"),
         "signUpWelcomeTitle":
             MessageLookupByLibrary.simpleMessage("Welcome to tradly"),
+        "storeAddDeataisLabel":
+            MessageLookupByLibrary.simpleMessage("Additional Details"),
+        "storeAddPhotoDescription":
+            MessageLookupByLibrary.simpleMessage("1600 x 1200 for hi res"),
+        "storeAddPhotoTitle":
+            MessageLookupByLibrary.simpleMessage("Add photos"),
+        "storeAddProductButton":
+            MessageLookupByLibrary.simpleMessage("Add Product"),
+        "storeAddressLabel": MessageLookupByLibrary.simpleMessage("Address"),
+        "storeCategoryProductLabel":
+            MessageLookupByLibrary.simpleMessage("Category Product"),
+        "storeCityLabel": MessageLookupByLibrary.simpleMessage("City"),
+        "storeCountryLabel": MessageLookupByLibrary.simpleMessage("Country"),
+        "storeCourierNameLabel":
+            MessageLookupByLibrary.simpleMessage("Courier Name"),
+        "storeCreateButton": MessageLookupByLibrary.simpleMessage("Create"),
+        "storeCreateStoreButton":
+            MessageLookupByLibrary.simpleMessage("Create Store"),
+        "storeDescriptionLabel":
+            MessageLookupByLibrary.simpleMessage("Store Description"),
+        "storeDetailTitle": MessageLookupByLibrary.simpleMessage(
+            "This information is used to set up \nyour shop"),
+        "storeLocationDetailsLabel":
+            MessageLookupByLibrary.simpleMessage("Location Details"),
+        "storeNameLabel": MessageLookupByLibrary.simpleMessage("Store Name"),
+        "storeNoProduct":
+            MessageLookupByLibrary.simpleMessage("You don\'t have product"),
+        "storeNoStore":
+            MessageLookupByLibrary.simpleMessage("You Don\'t Have a Store"),
+        "storeOfferPriceLabel":
+            MessageLookupByLibrary.simpleMessage("Offer Price"),
+        "storePriceLabel": MessageLookupByLibrary.simpleMessage("Price"),
+        "storePriceTypeLabel":
+            MessageLookupByLibrary.simpleMessage("Price Type"),
+        "storeProductDescriptionLabel":
+            MessageLookupByLibrary.simpleMessage("Product Description"),
+        "storeProductNameLabel":
+            MessageLookupByLibrary.simpleMessage("Product Name"),
+        "storeProductsTitle": MessageLookupByLibrary.simpleMessage("Products"),
+        "storeTaglineLabel": MessageLookupByLibrary.simpleMessage("Tagline"),
+        "storeTitle": MessageLookupByLibrary.simpleMessage("My Store"),
+        "storeTypeLabel": MessageLookupByLibrary.simpleMessage("Store Type"),
+        "storeWebAddressLabel":
+            MessageLookupByLibrary.simpleMessage("Store Web Address"),
         "validatorConfirmPasswordRequired":
             MessageLookupByLibrary.simpleMessage(
                 "Confirm Password is required"),
