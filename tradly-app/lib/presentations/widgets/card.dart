@@ -126,7 +126,7 @@ class TACardStoreFollow extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 TAImageRectangle(
-                  stores.imageUrl,
+                  stores.imageUrl ?? '',
                   isBorderTop: true,
                   width: width ?? double.infinity,
                   height: height ?? 75,

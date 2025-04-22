@@ -1,16 +1,16 @@
 class StoreModel {
-  final int id;
+  final int? id;
   final String name;
   final String? description;
-  final String imageUrl;
+  final String? imageUrl;
   final String? address;
   final String? webAddress;
   final String? logoStore;
 
   StoreModel({
-    required this.id,
+    this.id,
     required this.name,
-    required this.imageUrl,
+    this.imageUrl,
     this.logoStore,
     this.description,
     this.address,

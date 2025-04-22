@@ -1,83 +1,94 @@
 import 'package:equatable/equatable.dart';
 import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/data/models/store_model.dart';
 
-sealed class StoreEvent extends Equatable {
-  const StoreEvent();
+sealed class StoreEvt extends Equatable {
+  const StoreEvt();
 
   @override
   List<Object?> get props => [];
 }
 
-class StoreInitializeEvt extends StoreEvent {}
+class CreateStoreEvt extends StoreEvt {
+  final StoreModel store;
 
-class CreateStoreEvent extends StoreEvent {
-  final String storeName;
-  final String description;
-  final String webAddress;
-  final String storeType;
-  final String address;
-  final String city;
-  final String country;
-  final String courierName;
-  final String tagLine;
-
-  const CreateStoreEvent(
-      {required this.storeName,
-      required this.description,
-      required this.webAddress,
-      required this.storeType,
-      required this.address,
-      required this.city,
-      required this.courierName,
-      required this.tagLine,
-      required this.country});
+  const CreateStoreEvt({
+    required this.store,
+  });
 
   @override
-  List<Object?> get props => [
-        storeName,
-        description,
-        webAddress,
-        storeType,
-        address,
-        city,
-        courierName,
-        country,
-        tagLine
-      ];
+  List<Object?> get props => [store];
 }
 
-class AddProductEvent extends StoreEvent {
+class AddProductEvt extends StoreEvt {
   final ProductModel product;
 
-  const AddProductEvent({required this.product});
+  const AddProductEvt({
+    required this.product,
+  });
 
   @override
   List<Object?> get props => [product];
 }
 
-class EditProductEvent extends StoreEvent {
+class EditProductEvt extends StoreEvt {
   final ProductModel product;
 
-  const EditProductEvent({required this.product});
+  const EditProductEvt({
+    required this.product,
+  });
 
   @override
   List<Object?> get props => [product];
 }
 
-class DeleteProductEvent extends StoreEvent {
+class DeleteProductEvt extends StoreEvt {
+  const DeleteProductEvt({
+    required this.productId,
+  });
   final String productId;
-
-  const DeleteProductEvent({required this.productId});
 
   @override
   List<Object?> get props => [productId];
 }
 
-class DeleteStoreEvent extends StoreEvent {
-  final String storeId;
+class DeleteStoreEvt extends StoreEvt {
+  const DeleteStoreEvt({
+    required this.storeId,
+  });
 
-  const DeleteStoreEvent({required this.storeId});
+  final String storeId;
 
   @override
   List<Object?> get props => [storeId];
+}
+
+class PickImageEvt extends StoreEvt {
+  const PickImageEvt({
+    required this.maxPhotos,
+  });
+
+  final int maxPhotos;
+
+  @override
+  List<Object?> get props => [maxPhotos];
+}
+
+class RemoveImageEvt extends StoreEvt {
+  const RemoveImageEvt({
+    required this.index,
+  });
+
+  final int index;
+  @override
+  List<Object?> get props => [index];
+}
+
+class EditProductPickImageEvt extends StoreEvt {
+  final int maxPhotos;
+
+  const EditProductPickImageEvt({required this.maxPhotos});
+
+  @override
+  List<Object?> get props => [maxPhotos];
 }

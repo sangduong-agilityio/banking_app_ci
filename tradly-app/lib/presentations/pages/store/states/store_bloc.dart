@@ -1,54 +1,29 @@
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/data/repositories/store_repo.dart.dart';
 import 'store_event.dart';
 import 'store_state.dart';
 
-class StoreBloc extends Bloc<StoreEvent, StoreState> {
+class StoreBloc extends Bloc<StoreEvt, StoreState> {
+  final ImagePicker _picker = ImagePicker();
+
   StoreBloc({required StoreRepository repo})
       : _repo = repo,
         super(const StoreState()) {
-    on<StoreInitializeEvt>(_onInitialize);
-    on<CreateStoreEvent>(_onCreateStore);
-    on<AddProductEvent>(_onAddProduct);
-    on<EditProductEvent>(_onEditProduct);
-    on<DeleteProductEvent>(_onDeleteProduct);
+    on<CreateStoreEvt>(_onCreateStore);
+    on<AddProductEvt>(_onAddProduct);
+    on<EditProductEvt>(_onEditProduct);
+    on<DeleteProductEvt>(_onDeleteProduct);
+    on<PickImageEvt>(_onPickImage);
+    on<RemoveImageEvt>(_onRemoveImage);
+    on<EditProductPickImageEvt>(_onEditProductPickImage);
   }
   final StoreRepository _repo;
 
-  Future<void> _onInitialize(
-    StoreInitializeEvt event,
-    Emitter<StoreState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        status: const StoreStatus.loading(),
-      ),
-    );
-    try {
-      final hasStore = await _repo.hasStore();
-      final products = hasStore
-          ? (await _repo.getProducts()).cast<ProductModel>()
-          : <ProductModel>[];
-      emit(
-        state.copyWith(
-          hasStore: hasStore,
-          products: products,
-          status: const StoreStatus.success(),
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: const StoreStatus.failure(),
-          errorMessage: e.toString(),
-        ),
-      );
-    }
-  }
-
   Future<void> _onCreateStore(
-    CreateStoreEvent event,
+    CreateStoreEvt event,
     Emitter<StoreState> emit,
   ) async {
     emit(
@@ -57,13 +32,11 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       ),
     );
     try {
-      await _repo.createStore(
-        event.storeName,
-        event.description,
-      );
+      await _repo.createStore(event.store);
       emit(
         state.copyWith(
           hasStore: true,
+          stores: event.store,
           status: const StoreStatus.success(),
         ),
       );
@@ -78,7 +51,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   Future<void> _onAddProduct(
-    AddProductEvent event,
+    AddProductEvt event,
     Emitter<StoreState> emit,
   ) async {
     emit(
@@ -88,11 +61,13 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     );
     try {
       await _repo.addProduct(event.product);
-      final updatedProducts = List<ProductModel>.from(state.products ?? [])
-        ..add(event.product);
+      final updatedProducts = List<ProductModel>.from(
+        state.products ?? [],
+      )..add(event.product);
       emit(
         state.copyWith(
           products: updatedProducts,
+          hasProducts: updatedProducts.isNotEmpty,
           status: const StoreStatus.success(),
         ),
       );
@@ -107,7 +82,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   Future<void> _onEditProduct(
-    EditProductEvent event,
+    EditProductEvt event,
     Emitter<StoreState> emit,
   ) async {
     emit(
@@ -139,7 +114,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   }
 
   Future<void> _onDeleteProduct(
-    DeleteProductEvent event,
+    DeleteProductEvt event,
     Emitter<StoreState> emit,
   ) async {
     emit(
@@ -163,6 +138,99 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
         state.copyWith(
           status: const StoreStatus.failure(),
           errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onPickImage(
+    PickImageEvt event,
+    Emitter<StoreState> emit,
+  ) async {
+    if ((state.imageFiles?.length ?? 0) >= event.maxPhotos) {
+      emit(
+        state.copyWith(
+          errorMessage: 'Maximum ${event.maxPhotos} photos allowed',
+        ),
+      );
+      return;
+    }
+
+    try {
+      final pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1600,
+        maxHeight: 1200,
+      );
+
+      if (pickedFile != null) {
+        final updatedImages = List<File>.from(state.imageFiles ?? [])
+          ..add(File(pickedFile.path));
+        emit(
+          state.copyWith(
+            imageFiles: updatedImages,
+            errorMessage: null,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          errorMessage: 'Failed to pick image: $e',
+        ),
+      );
+    }
+  }
+
+  Future<void> _onRemoveImage(
+    RemoveImageEvt event,
+    Emitter<StoreState> emit,
+  ) async {
+    final updatedImages = List<File>.from(
+      state.imageFiles ?? [],
+    )..removeAt(event.index);
+    emit(
+      state.copyWith(
+        imageFiles: updatedImages,
+        errorMessage: null,
+      ),
+    );
+  }
+
+  Future<void> _onEditProductPickImage(
+    EditProductPickImageEvt event,
+    Emitter<StoreState> emit,
+  ) async {
+    if ((state.imageFiles?.length ?? 0) >= event.maxPhotos) {
+      emit(
+        state.copyWith(
+          errorMessage: 'Maximum ${event.maxPhotos} photos allowed',
+        ),
+      );
+      return;
+    }
+
+    try {
+      final pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1600,
+        maxHeight: 1200,
+      );
+
+      if (pickedFile != null) {
+        final updatedImages = List<File>.from(state.imageFiles ?? [])
+          ..add(File(pickedFile.path));
+        emit(
+          state.copyWith(
+            imageFiles: updatedImages,
+            errorMessage: null,
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          errorMessage: 'Failed to pick image: $e',
         ),
       );
     }

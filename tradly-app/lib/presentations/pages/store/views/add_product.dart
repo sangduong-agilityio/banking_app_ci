@@ -1,11 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
+import 'package:tradly_app/presentations/pages/store/states/store_state.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
-import 'dart:io';
-
 import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/data/models/product_model.dart';
@@ -30,8 +29,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _additionalDetailsController = TextEditingController();
   final _priceTypeController = TextEditingController();
 
-  final List<File> _imageFiles = [];
-  final _picker = ImagePicker();
   final int _maxPhotos = 4;
 
   @override
@@ -45,36 +42,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     _additionalDetailsController.dispose();
     _priceTypeController.dispose();
     super.dispose();
-  }
-
-  Future<void> _pickImage() async {
-    if (_imageFiles.length >= _maxPhotos) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Maximum $_maxPhotos photos allowed'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    final pickedFile = await _picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1600,
-      maxHeight: 1200,
-    );
-
-    if (pickedFile != null) {
-      setState(() {
-        _imageFiles.add(File(pickedFile.path));
-      });
-    }
-  }
-
-  void _removeImage(int index) {
-    setState(() {
-      _imageFiles.removeAt(index);
-    });
   }
 
   @override
@@ -92,93 +59,99 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: _buildPhotoUploadSection(),
-            ),
-            const SizedBox(height: 14),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TaTitleLargeText(
-                text: 'Max. $_maxPhotos photos per product',
-                color: context.colorScheme.outline,
-              ),
-            ),
-            const SizedBox(height: 27),
-            Form(
-              key: _formKey,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                color: context.colorScheme.onPrimary,
-                child: Column(
-                  children: [
-                    TATextField(
-                      label: S.current.storeProductNameLabel,
-                      controller: _productNameController,
+      body: BlocBuilder<StoreBloc, StoreState>(
+        builder: (context, state) {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: _buildPhotoUploadSection(state),
+                ),
+                const SizedBox(height: 14),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TaTitleLargeText(
+                    text: 'Max. $_maxPhotos photos per product',
+                    color: context.colorScheme.outline,
+                  ),
+                ),
+                const SizedBox(height: 27),
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
                     ),
-                    TATextField(
-                      label: S.current.storeCategoryProductLabel,
-                      controller: _categoryController,
-                    ),
-                    Row(
+                    color: context.colorScheme.onPrimary,
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: TATextField(
-                            label: S.current.storePriceLabel,
-                            controller: _priceController,
-                            keyboardType: TextInputType.number,
-                          ),
+                        TATextField(
+                          label: S.current.storeProductNameLabel,
+                          controller: _productNameController,
                         ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: TATextField(
-                            label: S.current.storeOfferPriceLabel,
-                            controller: _stockController,
-                            keyboardType: TextInputType.number,
-                          ),
+                        TATextField(
+                          label: S.current.storeCategoryProductLabel,
+                          controller: _categoryController,
                         ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TATextField(
+                                label: S.current.storePriceLabel,
+                                controller: _priceController,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: TATextField(
+                                label: S.current.storeOfferPriceLabel,
+                                controller: _stockController,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        TATextField(
+                          label: S.current.storeLocationDetailsLabel,
+                          controller: _locationController,
+                          suffixIcon: Icons.map,
+                        ),
+                        TATextField(
+                          label: S.current.storeProductDescriptionLabel,
+                          controller: _descriptionController,
+                        ),
+                        const SizedBox(height: 16),
+                        TATextField(
+                          label: S.current.storePriceTypeLabel,
+                          controller: _priceTypeController,
+                        ),
+                        const SizedBox(height: 16),
+                        TATextField(
+                          label: S.current.storeAddDeataisLabel,
+                          controller: _additionalDetailsController,
+                        ),
+                        const SizedBox(height: 8),
+                        // Row(
+                        //   children: const [
+                        //     ProductChip(label: 'Cash on delivery'),
+                        //     SizedBox(width: 8),
+                        //     ProductChip(label: 'Available'),
+                        //   ],
+                        // ),
                       ],
                     ),
-                    TATextField(
-                      label: S.current.storeLocationDetailsLabel,
-                      controller: _locationController,
-                      suffixIcon: Icons.map,
-                    ),
-                    TATextField(
-                      label: S.current.storeProductDescriptionLabel,
-                      controller: _descriptionController,
-                    ),
-                    const SizedBox(height: 16),
-                    TATextField(
-                      label: S.current.storePriceTypeLabel,
-                      controller: _priceTypeController,
-                    ),
-                    const SizedBox(height: 16),
-                    TATextField(
-                      label: S.current.storeAddDeataisLabel,
-                      controller: _additionalDetailsController,
-                    ),
-                    const SizedBox(height: 8),
-                    // Row(
-                    //   children: const [
-                    //     ProductChip(label: 'Cash on delivery'),
-                    //     SizedBox(width: 8),
-                    //     ProductChip(label: 'Available'),
-                    //   ],
-                    // ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 32),
+              ],
             ),
-            const SizedBox(height: 32),
-          ],
-        ),
+          );
+        },
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(20),
@@ -187,7 +160,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
           child: ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                if (_imageFiles.isEmpty) {
+                if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
+                    true)) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Please add at least one product image'),
@@ -204,14 +178,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   location: _locationController.text,
                   description: _descriptionController.text,
                   priceType: _priceTypeController.text,
-                  imageUrl:
-                      _imageFiles.isNotEmpty ? _imageFiles.first.path : '',
+                  imageUrl: context
+                          .read<StoreBloc>()
+                          .state
+                          .imageFiles!
+                          .isNotEmpty
+                      ? context.read<StoreBloc>().state.imageFiles!.first.path
+                      : '',
                 );
 
-                context
-                    .read<StoreBloc>()
-                    .add(AddProductEvent(product: product));
-                Navigator.pop(context, true);
+                context.read<StoreBloc>().add(AddProductEvt(
+                      product: product,
+                    ));
+
+                Navigator.pop(context, product);
               }
             },
             style: ElevatedButton.styleFrom(
@@ -233,12 +213,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 
-  Widget _buildPhotoUploadSection() {
+  Widget _buildPhotoUploadSection(StoreState state) {
     return SizedBox(
       height: 105,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: _imageFiles.length + 1,
+        itemCount: (state.imageFiles?.length ?? 0) + 1,
         itemBuilder: (context, index) {
           if (index == 0) {
             return Padding(
@@ -246,7 +226,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               child: _buildAddPhotoBox(),
             );
           } else {
-            return _buildPhotoBox(index - 1);
+            return _buildPhotoBox(state.imageFiles![index - 1], index - 1);
           }
         },
       ),
@@ -255,7 +235,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   Widget _buildAddPhotoBox() {
     return GestureDetector(
-      onTap: _pickImage,
+      onTap: () {
+        context.read<StoreBloc>().add(PickImageEvt(maxPhotos: _maxPhotos));
+      },
       child: Container(
         width: 140,
         decoration: BoxDecoration(
@@ -286,7 +268,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 
-  Widget _buildPhotoBox(int index) {
+  Widget _buildPhotoBox(
+    File imageFile,
+    int index,
+  ) {
     return Container(
       margin: const EdgeInsets.only(right: 16),
       width: 140,
@@ -296,7 +281,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.file(
-              _imageFiles[index],
+              imageFile,
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
@@ -306,7 +291,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
             top: 4,
             right: 4,
             child: GestureDetector(
-              onTap: () => _removeImage(index),
+              onTap: () {
+                context.read<StoreBloc>().add(RemoveImageEvt(index: index));
+              },
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.5),

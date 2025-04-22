@@ -3,12 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/data/models/product_model.dart';
-import 'package:tradly_app/data/repositories/store_repo.dart.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
-import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_state.dart';
 import 'package:tradly_app/presentations/pages/store/views/add_product.dart';
 import 'package:tradly_app/presentations/pages/store/views/add_product_cart.dart';
@@ -27,192 +24,187 @@ class StoreScreen extends StatefulWidget {
 }
 
 class _StoreScreenState extends State<StoreScreen> {
-  bool hasStore = false;
-  bool hasProducts = false;
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => StoreBloc(
-        repo: context.read<StoreRepository>(),
-      )..add(StoreInitializeEvt()),
-      child: BlocBuilder<StoreBloc, StoreState>(
+    return Scaffold(
+      backgroundColor: context.colorScheme.inversePrimary,
+      appBar: TaAppBar(
+        toolbarHeight: TaAppBarSize.small,
+        bottomType: TaAppBarBottomType.none,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: TaDisplaySmallText(
+            text: S.current.storeTitle,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        centerTitle: false,
+        backgroundColor: context.colorScheme.primary,
+        trailing: Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.favorite),
+                onPressed: () {},
+              ),
+              IconButton(
+                icon: TAAssets.cart(),
+                onPressed: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: BlocBuilder<StoreBloc, StoreState>(
+        buildWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.stores != current.stores ||
+            previous.products != current.products,
         builder: (context, state) {
-          return Scaffold(
-            backgroundColor: context.colorScheme.inversePrimary,
-            appBar: TaAppBar(
-              toolbarHeight: TaAppBarSize.small,
-              bottomType: TaAppBarBottomType.none,
-              title: Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: TaDisplaySmallText(
-                  text: S.current.storeTitle,
-                  fontWeight: FontWeight.w700,
-                ),
+          if (state.status is StoreStatusLoading) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: context.colorScheme.primary,
               ),
-              centerTitle: false,
-              backgroundColor: context.colorScheme.primary,
-              trailing: Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.favorite),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: TAAssets.cart(),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            body: hasStore
-                ? SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          color: context.colorScheme.onPrimary,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 30),
-                              Center(
-                                child: TAImageCircle(
-                                  radius: 32,
-                                  Assets.images.imgTradly.path,
-                                  boxFit: BoxFit.cover,
-                                ),
+            );
+          }
+          return state.hasStore
+              ? SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        color: context.colorScheme.onPrimary,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 30),
+                            Center(
+                              child: TAImageCircle(
+                                radius: 32,
+                                Assets.images.imgTradly.path,
+                                boxFit: BoxFit.cover,
                               ),
-                              const SizedBox(height: 16),
-                              TaDisplaySmallText(
-                                text: 'Tradly Store',
-                                fontWeight: FontWeight.w700,
-                                color: context.colorScheme.onSurface,
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  OutlinedButton(
-                                    onPressed: () {},
-                                    style: OutlinedButton.styleFrom(
-                                      minimumSize: const Size(100, 25),
-                                      side: BorderSide(
-                                        color: context.colorScheme.primary,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
-                                    ),
-                                    child: TaTitleMediumText(
-                                      text: 'Edit Store',
+                            ),
+                            const SizedBox(height: 16),
+                            TaDisplaySmallText(
+                              text: state.stores?.name ?? '',
+                              fontWeight: FontWeight.w700,
+                              color: context.colorScheme.onSurface,
+                            ),
+                            const SizedBox(height: 12),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                OutlinedButton(
+                                  onPressed: () {},
+                                  style: OutlinedButton.styleFrom(
+                                    minimumSize: const Size(100, 25),
+                                    side: BorderSide(
                                       color: context.colorScheme.primary,
                                     ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  OutlinedButton(
-                                    onPressed: () {},
-                                    style: OutlinedButton.styleFrom(
-                                      minimumSize: const Size(100, 25),
-                                      side: BorderSide(
-                                        color: context.colorScheme.primary,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                    child: TaTitleMediumText(
-                                      text: 'View Store',
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                  ),
+                                  child: TaTitleMediumText(
+                                    text: 'Edit Store',
+                                    color: context.colorScheme.primary,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                OutlinedButton(
+                                  onPressed: () {},
+                                  style: OutlinedButton.styleFrom(
+                                    minimumSize: const Size(100, 25),
+                                    side: BorderSide(
                                       color: context.colorScheme.primary,
                                     ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Divider(color: Colors.grey[300]),
-                              TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    hasStore = false;
-                                  });
-                                },
-                                child: TaTitleLargeText(
-                                  text: 'Remove Store',
-                                  color: Colors.grey,
+                                  child: TaTitleMediumText(
+                                    text: 'View Store',
+                                    color: context.colorScheme.primary,
+                                  ),
                                 ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Divider(color: Colors.grey[300]),
+                            TextButton(
+                              onPressed: () {},
+                              child: TaTitleLargeText(
+                                text: 'Remove Store',
+                                color: Colors.grey,
                               ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 60),
+                      state.hasProducts
+                          ? _buildProductsList(context, state)
+                          : _buildNoProductsContent(),
+                    ],
+                  ),
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        height: 120,
+                        Assets.images.imgEmptyStore.path,
+                        fit: BoxFit.cover,
+                      ),
+                      const SizedBox(height: 30),
+                      TaHeadlineMediumText(
+                        text: S.current.storeNoStore,
+                        color: context.colorScheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      const SizedBox(height: 37),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                value: context.read<StoreBloc>(),
+                                child: const CreateStoreScreen(),
+                              ),
+                            ),
+                          ).then((value) {
+                            if (value == true) {}
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: context.colorScheme.primary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        const SizedBox(height: 60),
-                        state.products!.isNotEmpty
-                            ? _buildProductsList(state.products ?? [])
-                            : _buildNoProductsContent(),
-                      ],
-                    ),
-                  )
-                : Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          height: 120,
-                          Assets.images.imgEmptyStore.path,
-                          fit: BoxFit.cover,
-                        ),
-                        const SizedBox(height: 30),
-                        TaHeadlineMediumText(
-                          text: S.current.storeNoStore,
-                          color: context.colorScheme.onSurface,
+                        child: TaHeadlineMediumText(
+                          text: S.current.storeCreateStoreButton,
                           fontWeight: FontWeight.w600,
                         ),
-                        const SizedBox(height: 37),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider.value(
-                                  value: context.read<StoreBloc>(),
-                                  child: const CreateStoreScreen(),
-                                ),
-                              ),
-                            ).then((value) {
-                              if (value == true) {
-                                setState(() {
-                                  hasStore = true;
-                                });
-                              }
-                            });
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: context.colorScheme.primary,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 40,
-                              vertical: 12,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
-                          child: TaHeadlineMediumText(
-                            text: S.current.storeCreateStoreButton,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-            bottomNavigationBar: _buildBottomNavigationBar(),
-          );
+                );
         },
       ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -231,11 +223,7 @@ class _StoreScreenState extends State<StoreScreen> {
               context,
               MaterialPageRoute(builder: (context) => const AddProductScreen()),
             ).then((value) {
-              if (value == true) {
-                setState(() {
-                  hasProducts = true;
-                });
-              }
+              if (value == true) {}
             });
           },
           style: OutlinedButton.styleFrom(
@@ -258,7 +246,12 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  Widget _buildProductsList(List<ProductModel> products) {
+  Widget _buildProductsList(
+    BuildContext context,
+    StoreState state,
+  ) {
+    final products = state.products ?? [];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -273,34 +266,45 @@ class _StoreScreenState extends State<StoreScreen> {
         const SizedBox(height: 12),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              Expanded(
-                child: TACardProduct(
-                  product: products[0],
-                  onTapProduct: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const EditProductScreen(),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: AddProductCard(
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.9,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemCount: products.length + 1,
+            itemBuilder: (context, index) {
+              if (index == products.length) {
+                return AddProductCard(
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AddProductScreen()),
+                        builder: (context) => const AddProductScreen(),
+                      ),
                     );
                   },
-                ),
-              ),
-            ],
+                );
+              } else {
+                final product = products[index];
+                return TACardProduct(
+                  product: product,
+                  onTapProduct: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditProductScreen(
+                          product: product,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
+            },
           ),
         ),
       ],

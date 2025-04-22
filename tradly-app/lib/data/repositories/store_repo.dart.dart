@@ -1,13 +1,11 @@
 import 'package:tradly_app/core/api/api_client.dart';
 import 'package:tradly_app/core/env/env.dart';
 import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/data/models/store_model.dart';
 
 abstract class StoreRepository {
   Future<bool> hasStore();
-  Future<void> createStore(
-    String storeName,
-    String description,
-  );
+  Future<void> createStore(StoreModel store);
   Future<void> addProduct(ProductModel product);
   Future<void> editProduct(ProductModel product);
   Future<void> deleteProduct(String productId);
@@ -32,13 +30,10 @@ class StoreRepositoryImpl implements StoreRepository {
   }
 
   @override
-  Future<void> createStore(String storeName, String description) async {
+  Future<void> createStore(StoreModel store) async {
     String apiUrl = '${Env.endPoint}stores';
 
-    final data = {
-      'name': storeName,
-      'description': description,
-    };
+    final data = store.toJson();
     await _apiClient.post(
       apiUrl,
       data: data,
@@ -47,7 +42,7 @@ class StoreRepositoryImpl implements StoreRepository {
 
   @override
   Future<void> addProduct(ProductModel product) async {
-    String apiUrl = '${Env.endPoint}products';
+    String apiUrl = 'products';
 
     final data = product.toJson();
     data['imageUrl'] = product.imageUrl;

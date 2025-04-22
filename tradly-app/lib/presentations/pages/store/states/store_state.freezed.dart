@@ -43,26 +43,26 @@ mixin _$StoreStatus {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(StorelStatusInitial value) initial,
-    required TResult Function(StorelStatusLoading value) loading,
-    required TResult Function(StorelStatusSuccess value) success,
-    required TResult Function(StorelStatusFailure value) failure,
+    required TResult Function(StoreStatusInitial value) initial,
+    required TResult Function(StoreStatusLoading value) loading,
+    required TResult Function(StoreStatusSuccess value) success,
+    required TResult Function(StoreStatusFailure value) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(StorelStatusInitial value)? initial,
-    TResult? Function(StorelStatusLoading value)? loading,
-    TResult? Function(StorelStatusSuccess value)? success,
-    TResult? Function(StorelStatusFailure value)? failure,
+    TResult? Function(StoreStatusInitial value)? initial,
+    TResult? Function(StoreStatusLoading value)? loading,
+    TResult? Function(StoreStatusSuccess value)? success,
+    TResult? Function(StoreStatusFailure value)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(StorelStatusInitial value)? initial,
-    TResult Function(StorelStatusLoading value)? loading,
-    TResult Function(StorelStatusSuccess value)? success,
-    TResult Function(StorelStatusFailure value)? failure,
+    TResult Function(StoreStatusInitial value)? initial,
+    TResult Function(StoreStatusLoading value)? loading,
+    TResult Function(StoreStatusSuccess value)? success,
+    TResult Function(StoreStatusFailure value)? failure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -110,7 +110,7 @@ class __$$StorelStatusInitialImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StorelStatusInitialImpl implements StorelStatusInitial {
+class _$StorelStatusInitialImpl implements StoreStatusInitial {
   const _$StorelStatusInitialImpl();
 
   @override
@@ -168,10 +168,10 @@ class _$StorelStatusInitialImpl implements StorelStatusInitial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(StorelStatusInitial value) initial,
-    required TResult Function(StorelStatusLoading value) loading,
-    required TResult Function(StorelStatusSuccess value) success,
-    required TResult Function(StorelStatusFailure value) failure,
+    required TResult Function(StoreStatusInitial value) initial,
+    required TResult Function(StoreStatusLoading value) loading,
+    required TResult Function(StoreStatusSuccess value) success,
+    required TResult Function(StoreStatusFailure value) failure,
   }) {
     return initial(this);
   }
@@ -179,10 +179,10 @@ class _$StorelStatusInitialImpl implements StorelStatusInitial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(StorelStatusInitial value)? initial,
-    TResult? Function(StorelStatusLoading value)? loading,
-    TResult? Function(StorelStatusSuccess value)? success,
-    TResult? Function(StorelStatusFailure value)? failure,
+    TResult? Function(StoreStatusInitial value)? initial,
+    TResult? Function(StoreStatusLoading value)? loading,
+    TResult? Function(StoreStatusSuccess value)? success,
+    TResult? Function(StoreStatusFailure value)? failure,
   }) {
     return initial?.call(this);
   }
@@ -190,10 +190,10 @@ class _$StorelStatusInitialImpl implements StorelStatusInitial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(StorelStatusInitial value)? initial,
-    TResult Function(StorelStatusLoading value)? loading,
-    TResult Function(StorelStatusSuccess value)? success,
-    TResult Function(StorelStatusFailure value)? failure,
+    TResult Function(StoreStatusInitial value)? initial,
+    TResult Function(StoreStatusLoading value)? loading,
+    TResult Function(StoreStatusSuccess value)? success,
+    TResult Function(StoreStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -203,8 +203,8 @@ class _$StorelStatusInitialImpl implements StorelStatusInitial {
   }
 }
 
-abstract class StorelStatusInitial implements StoreStatus {
-  const factory StorelStatusInitial() = _$StorelStatusInitialImpl;
+abstract class StoreStatusInitial implements StoreStatus {
+  const factory StoreStatusInitial() = _$StorelStatusInitialImpl;
 }
 
 /// @nodoc
@@ -228,7 +228,7 @@ class __$$StorelStatusLoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StorelStatusLoadingImpl implements StorelStatusLoading {
+class _$StorelStatusLoadingImpl implements StoreStatusLoading {
   const _$StorelStatusLoadingImpl();
 
   @override
@@ -286,10 +286,10 @@ class _$StorelStatusLoadingImpl implements StorelStatusLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(StorelStatusInitial value) initial,
-    required TResult Function(StorelStatusLoading value) loading,
-    required TResult Function(StorelStatusSuccess value) success,
-    required TResult Function(StorelStatusFailure value) failure,
+    required TResult Function(StoreStatusInitial value) initial,
+    required TResult Function(StoreStatusLoading value) loading,
+    required TResult Function(StoreStatusSuccess value) success,
+    required TResult Function(StoreStatusFailure value) failure,
   }) {
     return loading(this);
   }
@@ -297,10 +297,10 @@ class _$StorelStatusLoadingImpl implements StorelStatusLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(StorelStatusInitial value)? initial,
-    TResult? Function(StorelStatusLoading value)? loading,
-    TResult? Function(StorelStatusSuccess value)? success,
-    TResult? Function(StorelStatusFailure value)? failure,
+    TResult? Function(StoreStatusInitial value)? initial,
+    TResult? Function(StoreStatusLoading value)? loading,
+    TResult? Function(StoreStatusSuccess value)? success,
+    TResult? Function(StoreStatusFailure value)? failure,
   }) {
     return loading?.call(this);
   }
@@ -308,10 +308,10 @@ class _$StorelStatusLoadingImpl implements StorelStatusLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(StorelStatusInitial value)? initial,
-    TResult Function(StorelStatusLoading value)? loading,
-    TResult Function(StorelStatusSuccess value)? success,
-    TResult Function(StorelStatusFailure value)? failure,
+    TResult Function(StoreStatusInitial value)? initial,
+    TResult Function(StoreStatusLoading value)? loading,
+    TResult Function(StoreStatusSuccess value)? success,
+    TResult Function(StoreStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -321,8 +321,8 @@ class _$StorelStatusLoadingImpl implements StorelStatusLoading {
   }
 }
 
-abstract class StorelStatusLoading implements StoreStatus {
-  const factory StorelStatusLoading() = _$StorelStatusLoadingImpl;
+abstract class StoreStatusLoading implements StoreStatus {
+  const factory StoreStatusLoading() = _$StorelStatusLoadingImpl;
 }
 
 /// @nodoc
@@ -346,7 +346,7 @@ class __$$StorelStatusSuccessImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StorelStatusSuccessImpl implements StorelStatusSuccess {
+class _$StorelStatusSuccessImpl implements StoreStatusSuccess {
   const _$StorelStatusSuccessImpl();
 
   @override
@@ -404,10 +404,10 @@ class _$StorelStatusSuccessImpl implements StorelStatusSuccess {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(StorelStatusInitial value) initial,
-    required TResult Function(StorelStatusLoading value) loading,
-    required TResult Function(StorelStatusSuccess value) success,
-    required TResult Function(StorelStatusFailure value) failure,
+    required TResult Function(StoreStatusInitial value) initial,
+    required TResult Function(StoreStatusLoading value) loading,
+    required TResult Function(StoreStatusSuccess value) success,
+    required TResult Function(StoreStatusFailure value) failure,
   }) {
     return success(this);
   }
@@ -415,10 +415,10 @@ class _$StorelStatusSuccessImpl implements StorelStatusSuccess {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(StorelStatusInitial value)? initial,
-    TResult? Function(StorelStatusLoading value)? loading,
-    TResult? Function(StorelStatusSuccess value)? success,
-    TResult? Function(StorelStatusFailure value)? failure,
+    TResult? Function(StoreStatusInitial value)? initial,
+    TResult? Function(StoreStatusLoading value)? loading,
+    TResult? Function(StoreStatusSuccess value)? success,
+    TResult? Function(StoreStatusFailure value)? failure,
   }) {
     return success?.call(this);
   }
@@ -426,10 +426,10 @@ class _$StorelStatusSuccessImpl implements StorelStatusSuccess {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(StorelStatusInitial value)? initial,
-    TResult Function(StorelStatusLoading value)? loading,
-    TResult Function(StorelStatusSuccess value)? success,
-    TResult Function(StorelStatusFailure value)? failure,
+    TResult Function(StoreStatusInitial value)? initial,
+    TResult Function(StoreStatusLoading value)? loading,
+    TResult Function(StoreStatusSuccess value)? success,
+    TResult Function(StoreStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -439,8 +439,8 @@ class _$StorelStatusSuccessImpl implements StorelStatusSuccess {
   }
 }
 
-abstract class StorelStatusSuccess implements StoreStatus {
-  const factory StorelStatusSuccess() = _$StorelStatusSuccessImpl;
+abstract class StoreStatusSuccess implements StoreStatus {
+  const factory StoreStatusSuccess() = _$StorelStatusSuccessImpl;
 }
 
 /// @nodoc
@@ -464,7 +464,7 @@ class __$$StorelStatusFailureImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StorelStatusFailureImpl implements StorelStatusFailure {
+class _$StorelStatusFailureImpl implements StoreStatusFailure {
   const _$StorelStatusFailureImpl();
 
   @override
@@ -522,10 +522,10 @@ class _$StorelStatusFailureImpl implements StorelStatusFailure {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(StorelStatusInitial value) initial,
-    required TResult Function(StorelStatusLoading value) loading,
-    required TResult Function(StorelStatusSuccess value) success,
-    required TResult Function(StorelStatusFailure value) failure,
+    required TResult Function(StoreStatusInitial value) initial,
+    required TResult Function(StoreStatusLoading value) loading,
+    required TResult Function(StoreStatusSuccess value) success,
+    required TResult Function(StoreStatusFailure value) failure,
   }) {
     return failure(this);
   }
@@ -533,10 +533,10 @@ class _$StorelStatusFailureImpl implements StorelStatusFailure {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(StorelStatusInitial value)? initial,
-    TResult? Function(StorelStatusLoading value)? loading,
-    TResult? Function(StorelStatusSuccess value)? success,
-    TResult? Function(StorelStatusFailure value)? failure,
+    TResult? Function(StoreStatusInitial value)? initial,
+    TResult? Function(StoreStatusLoading value)? loading,
+    TResult? Function(StoreStatusSuccess value)? success,
+    TResult? Function(StoreStatusFailure value)? failure,
   }) {
     return failure?.call(this);
   }
@@ -544,10 +544,10 @@ class _$StorelStatusFailureImpl implements StorelStatusFailure {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(StorelStatusInitial value)? initial,
-    TResult Function(StorelStatusLoading value)? loading,
-    TResult Function(StorelStatusSuccess value)? success,
-    TResult Function(StorelStatusFailure value)? failure,
+    TResult Function(StoreStatusInitial value)? initial,
+    TResult Function(StoreStatusLoading value)? loading,
+    TResult Function(StoreStatusSuccess value)? success,
+    TResult Function(StoreStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -557,6 +557,6 @@ class _$StorelStatusFailureImpl implements StorelStatusFailure {
   }
 }
 
-abstract class StorelStatusFailure implements StoreStatus {
-  const factory StorelStatusFailure() = _$StorelStatusFailureImpl;
+abstract class StoreStatusFailure implements StoreStatus {
+  const factory StoreStatusFailure() = _$StorelStatusFailureImpl;
 }
