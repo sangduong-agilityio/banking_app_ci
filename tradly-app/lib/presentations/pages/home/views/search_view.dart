@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 
-class TASearchBar extends StatelessWidget {
-  const TASearchBar({
+class TASearchView extends StatelessWidget {
+  const TASearchView({
     super.key,
     required this.placeholder,
     this.onChanged,

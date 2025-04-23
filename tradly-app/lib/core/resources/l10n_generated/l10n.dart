@@ -820,6 +820,16 @@ class S {
     );
   }
 
+  /// `Edit Product`
+  String get storeEditProductTitle {
+    return Intl.message(
+      'Edit Product',
+      name: 'storeEditProductTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Products`
   String get storeProductsTitle {
     return Intl.message(
@@ -865,6 +875,46 @@ class S {
     return Intl.message(
       'Create',
       name: 'storeCreateButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Store`
+  String get storeEditStoreButton {
+    return Intl.message(
+      'Edit Store',
+      name: 'storeEditStoreButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Store`
+  String get storeViewButton {
+    return Intl.message(
+      'View Store',
+      name: 'storeViewButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Product`
+  String get storeEditProductButton {
+    return Intl.message(
+      'Edit Product',
+      name: 'storeEditProductButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Remove Store`
+  String get storeRemoveButton {
+    return Intl.message(
+      'Remove Store',
+      name: 'storeRemoveButton',
       desc: '',
       args: [],
     );
@@ -1075,6 +1125,26 @@ class S {
     return Intl.message(
       '1600 x 1200 for hi res',
       name: 'storeAddPhotoDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Max. 4 photos per product`
+  String get storeMaxPhotoProductTitle {
+    return Intl.message(
+      'Max. 4 photos per product',
+      name: 'storeMaxPhotoProductTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please add at least one product image`
+  String get storeMessageProduct {
+    return Intl.message(
+      'Please add at least one product image',
+      name: 'storeMessageProduct',
       desc: '',
       args: [],
     );

@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: TaAppBar.home(
             searchForm: Padding(
               padding: const EdgeInsets.only(bottom: 10),
-              child: TASearchBar(
+              child: TASearchView(
                 placeholder: S.current.homeSearchProductPlaceholder,
               ),
             ),

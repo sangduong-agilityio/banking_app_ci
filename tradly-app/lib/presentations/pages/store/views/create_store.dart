@@ -7,6 +7,7 @@ import 'package:tradly_app/data/models/store_model.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
+import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
@@ -18,19 +19,33 @@ class CreateStoreScreen extends StatefulWidget {
 }
 
 class _CreateStoreScreenState extends State<CreateStoreScreen> {
+  final formKey = GlobalKey<FormState>();
+  final storeNameController = TextEditingController();
+  final webAddressController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final storeTypeController = TextEditingController();
+  final addressLine1Controller = TextEditingController();
+  final cityController = TextEditingController();
+  final courierNameController = TextEditingController();
+  final countryController = TextEditingController();
+
+  List<String> _tagLineDetail = ['Vegetables', 'Fruit'];
+
+  @override
+  void dispose() {
+    storeNameController.dispose();
+    webAddressController.dispose();
+    descriptionController.dispose();
+    storeTypeController.dispose();
+    addressLine1Controller.dispose();
+    cityController.dispose();
+    courierNameController.dispose();
+    countryController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final storeNameController = TextEditingController();
-    final webAddressController = TextEditingController();
-    final descriptionController = TextEditingController();
-    final storeTypeController = TextEditingController();
-    final addressLine1Controller = TextEditingController();
-    final cityController = TextEditingController();
-    final courierNameController = TextEditingController();
-    final countryController = TextEditingController();
-    // final taglineController = TextEditingController(text: 'Groceries');
-
     return Scaffold(
       backgroundColor: context.colorScheme.inversePrimary,
       appBar: TaAppBar(
@@ -106,8 +121,17 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                         label: S.current.storeCourierNameLabel,
                         controller: courierNameController,
                       ),
-                      _taglineField(),
                       const SizedBox(height: 20),
+                      TATextField(
+                        label: S.current.storeTaglineLabel,
+                        isChipInput: true,
+                        chips: _tagLineDetail,
+                        onChipsChanged: (chips) {
+                          setState(() {
+                            _tagLineDetail = chips;
+                          });
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -116,37 +140,24 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: Container(
         padding: const EdgeInsets.all(20),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              if (formKey.currentState?.validate() ?? false) {
-                final store = StoreModel(
-                  name: storeNameController.text,
-                  webAddress: webAddressController.text,
-                  description: descriptionController.text,
-                  address: addressLine1Controller.text,
-                );
-                context.read<StoreBloc>().add(CreateStoreEvt(store: store));
-                Navigator.pop(context, store);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.colorScheme.primary,
-              disabledBackgroundColor:
-                  context.colorScheme.primary.withOpacity(0.6),
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            child: TaHeadlineMediumText(
-              text: S.current.storeCreateButton,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+        color: context.colorScheme.onPrimary,
+        child: TAElevatedButton(
+          text: S.current.storeCreateButton,
+          backgroundColor: context.colorScheme.primary,
+          onPressed: () {
+            if (formKey.currentState?.validate() ?? false) {
+              final store = StoreModel(
+                name: storeNameController.text,
+                webAddress: webAddressController.text,
+                description: descriptionController.text,
+                address: addressLine1Controller.text,
+              );
+              context.read<StoreBloc>().add(CreateStoreEvt(store: store));
+              Navigator.pop(context, store);
+            }
+          },
         ),
       ),
     );

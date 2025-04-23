@@ -157,8 +157,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Store Description"),
         "storeDetailTitle": MessageLookupByLibrary.simpleMessage(
             "This information is used to set up \nyour shop"),
+        "storeEditProductButton":
+            MessageLookupByLibrary.simpleMessage("Edit Product"),
+        "storeEditProductTitle":
+            MessageLookupByLibrary.simpleMessage("Edit Product"),
+        "storeEditStoreButton":
+            MessageLookupByLibrary.simpleMessage("Edit Store"),
         "storeLocationDetailsLabel":
             MessageLookupByLibrary.simpleMessage("Location Details"),
+        "storeMaxPhotoProductTitle":
+            MessageLookupByLibrary.simpleMessage("Max. 4 photos per product"),
+        "storeMessageProduct": MessageLookupByLibrary.simpleMessage(
+            "Please add at least one product image"),
         "storeNameLabel": MessageLookupByLibrary.simpleMessage("Store Name"),
         "storeNoProduct":
             MessageLookupByLibrary.simpleMessage("You don\'t have product"),
@@ -174,9 +184,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "storeProductNameLabel":
             MessageLookupByLibrary.simpleMessage("Product Name"),
         "storeProductsTitle": MessageLookupByLibrary.simpleMessage("Products"),
+        "storeRemoveButton":
+            MessageLookupByLibrary.simpleMessage("Remove Store"),
         "storeTaglineLabel": MessageLookupByLibrary.simpleMessage("Tagline"),
         "storeTitle": MessageLookupByLibrary.simpleMessage("My Store"),
         "storeTypeLabel": MessageLookupByLibrary.simpleMessage("Store Type"),
+        "storeViewButton": MessageLookupByLibrary.simpleMessage("View Store"),
         "storeWebAddressLabel":
             MessageLookupByLibrary.simpleMessage("Store Web Address"),
         "validatorConfirmPasswordRequired":

@@ -11,7 +11,7 @@ class TACardProduct extends StatelessWidget {
   const TACardProduct({
     super.key,
     required this.product,
-    required this.onTapProduct,
+    this.onTapProduct,
     this.height,
     this.width,
   });
@@ -83,7 +83,8 @@ class TACardProduct extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ],
-                    )
+                    ),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ),

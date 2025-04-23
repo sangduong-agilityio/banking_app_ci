@@ -9,34 +9,41 @@ sealed class StoreEvt extends Equatable {
   List<Object?> get props => [];
 }
 
-class CreateStoreEvt extends StoreEvt {
-  final StoreModel store;
+class InitializeStoreEvt extends StoreEvt {
+  const InitializeStoreEvt();
 
+  @override
+  List<Object?> get props => [];
+}
+
+class CreateStoreEvt extends StoreEvt {
   const CreateStoreEvt({
     required this.store,
   });
+
+  final StoreModel store;
 
   @override
   List<Object?> get props => [store];
 }
 
 class AddProductEvt extends StoreEvt {
-  final ProductModel product;
-
   const AddProductEvt({
     required this.product,
   });
+
+  final ProductModel product;
 
   @override
   List<Object?> get props => [product];
 }
 
 class EditProductEvt extends StoreEvt {
-  final ProductModel product;
-
   const EditProductEvt({
     required this.product,
   });
+
+  final ProductModel product;
 
   @override
   List<Object?> get props => [product];
@@ -46,6 +53,7 @@ class DeleteProductEvt extends StoreEvt {
   const DeleteProductEvt({
     required this.productId,
   });
+
   final String productId;
 
   @override
@@ -82,13 +90,4 @@ class RemoveImageEvt extends StoreEvt {
   final int index;
   @override
   List<Object?> get props => [index];
-}
-
-class EditProductPickImageEvt extends StoreEvt {
-  final int maxPhotos;
-
-  const EditProductPickImageEvt({required this.maxPhotos});
-
-  @override
-  List<Object?> get props => [maxPhotos];
 }

@@ -1,63 +1,49 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
-import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
-import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_state.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/icons.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 import 'package:tradly_app/presentations/widgets/text_field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
+import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 
-class EditProductScreen extends StatefulWidget {
-  const EditProductScreen({
-    super.key,
-    required this.product,
-  });
-
-  final ProductModel product;
+class AddProductDetailScreen extends StatefulWidget {
+  const AddProductDetailScreen({super.key});
 
   @override
-  State<EditProductScreen> createState() => _EditProductScreenState();
+  State<AddProductDetailScreen> createState() => _AddProductDetailScreenState();
 }
 
-class _EditProductScreenState extends State<EditProductScreen> {
+class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
   final _formKey = GlobalKey<FormState>();
   final _productNameController = TextEditingController();
-  final _categoryController = TextEditingController();
+  final _categoryProductController = TextEditingController();
   final _priceController = TextEditingController();
-  final _stockController = TextEditingController();
+  final _offerPriceController = TextEditingController();
   final _locationController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  final _productDescriptionController = TextEditingController();
+  final _additionalDetailsController = TextEditingController();
   final _priceTypeController = TextEditingController();
+
   final int _maxPhotos = 4;
 
   List<String> _additionalDetails = ['Cash on delivery', 'Available'];
 
   @override
-  void initState() {
-    super.initState();
-    _productNameController.text = widget.product.title;
-    _categoryController.text = widget.product.categoryType ?? '';
-    _priceController.text = widget.product.price;
-    _stockController.text = widget.product.newPrice ?? '';
-    _locationController.text = widget.product.location ?? '';
-    _descriptionController.text = widget.product.description ?? '';
-    _priceTypeController.text = widget.product.priceType ?? '';
-  }
-
-  @override
   void dispose() {
     _productNameController.dispose();
-    _categoryController.dispose();
+    _categoryProductController.dispose();
     _priceController.dispose();
-    _stockController.dispose();
+    _offerPriceController.dispose();
     _locationController.dispose();
-    _descriptionController.dispose();
+    _productDescriptionController.dispose();
+    _additionalDetailsController.dispose();
     _priceTypeController.dispose();
     super.dispose();
   }
@@ -72,7 +58,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         title: Padding(
           padding: EdgeInsets.only(left: 16),
           child: TaDisplaySmallText(
-            text: S.current.storeEditProductTitle,
+            text: S.current.storeAddProductButton,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -92,7 +78,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ),
                 const SizedBox(height: 14),
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TaTitleLargeText(
                     text: S.current.storeMaxPhotoProductTitle,
                     color: context.colorScheme.outline,
@@ -100,7 +86,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ),
                 const SizedBox(height: 27),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.all(20),
                   color: context.colorScheme.onPrimary,
                   child: Form(
                     key: _formKey,
@@ -112,12 +98,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ),
                         TATextField(
                           label: S.current.storeCategoryProductLabel,
-                          controller: _categoryController,
+                          controller: _categoryProductController,
                         ),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: TATextField(
+                                prefixIcon: TAIcons.attachMoney(),
                                 label: S.current.storePriceLabel,
                                 controller: _priceController,
                                 keyboardType: TextInputType.number,
@@ -126,8 +114,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             const SizedBox(width: 16),
                             Expanded(
                               child: TATextField(
+                                prefixIcon: TAIcons.attachMoney(),
                                 label: S.current.storeOfferPriceLabel,
-                                controller: _stockController,
+                                controller: _offerPriceController,
                                 keyboardType: TextInputType.number,
                               ),
                             ),
@@ -140,7 +129,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ),
                         TATextField(
                           label: S.current.storeProductDescriptionLabel,
-                          controller: _descriptionController,
+                          controller: _productDescriptionController,
                         ),
                         TATextField(
                           label: S.current.storePriceTypeLabel,
@@ -169,29 +158,38 @@ class _EditProductScreenState extends State<EditProductScreen> {
         padding: const EdgeInsets.all(20),
         color: context.colorScheme.onPrimary,
         child: TAElevatedButton(
-          text: S.current.storeEditProductButton,
           backgroundColor: context.colorScheme.primary,
+          text: S.current.storeAddProductButton,
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              final updatedProduct = widget.product.copyWith(
+              if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
+                  true)) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(S.current.storeMessageProduct),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+                return;
+              }
+
+              final product = ProductModel(
                 title: _productNameController.text,
-                categoryType: _categoryController.text,
+                categoryType: _categoryProductController.text,
                 price: _priceController.text,
-                newPrice: _stockController.text,
                 location: _locationController.text,
-                description: _descriptionController.text,
+                description: _productDescriptionController.text,
                 priceType: _priceTypeController.text,
-                imageUrl:
-                    context.read<StoreBloc>().state.imageFiles?.isNotEmpty ??
-                            false
-                        ? context.read<StoreBloc>().state.imageFiles!.first.path
-                        : widget.product.imageUrl,
+                imageUrl: context.read<StoreBloc>().state.imageFiles!.isNotEmpty
+                    ? context.read<StoreBloc>().state.imageFiles!.first.path
+                    : '',
               );
 
-              context
-                  .read<StoreBloc>()
-                  .add(EditProductEvt(product: updatedProduct));
-              Navigator.pop(context, updatedProduct);
+              context.read<StoreBloc>().add(AddProductEvt(
+                    product: product,
+                  ));
+
+              Navigator.pop(context, product);
             }
           },
         ),
@@ -223,7 +221,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     return GestureDetector(
       onTap: () {
         context.read<StoreBloc>().add(
-              PickImageEvt(maxPhotos: _maxPhotos),
+              EditProductPickImageEvt(maxPhotos: _maxPhotos),
             );
       },
       child: Container(
@@ -240,7 +238,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             TAIcons.add(),
             TaTitleLargeText(
               text: S.current.storeAddPhotoTitle,
-              color: context.colorScheme.onPrimaryContainer,
+              color: context.colorScheme.onSecondary,
               fontWeight: FontWeight.w600,
             ),
             TaLabelLargeText(
@@ -278,10 +276,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 context.read<StoreBloc>().add(RemoveImageEvt(index: index));
               },
               child: Container(
-                decoration: BoxDecoration(
-                    color: context.colorScheme.onSecondaryContainer
-                        .withOpacity(0.5),
-                    shape: BoxShape.circle),
+                decoration: BoxDecoration(shape: BoxShape.circle),
                 child: TAIcons.close(),
               ),
             ),

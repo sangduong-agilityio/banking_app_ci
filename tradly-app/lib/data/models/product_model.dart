@@ -103,4 +103,36 @@ class ProductModel {
       'product_types': productTypes?.map((e) => e.toJson()).toList(),
     };
   }
+
+  ProductModel copyWith({
+    int? id,
+    String? title,
+    String? imageUrl,
+    String? price,
+    String? brand,
+    String? newPrice,
+    String? description,
+    String? priceType,
+    String? condition,
+    String? location,
+    String? categoryType,
+    int? categoryId,
+    List<ProductType>? productTypes,
+  }) {
+    return ProductModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      imageUrl: imageUrl ?? this.imageUrl,
+      price: price ?? this.price,
+      brand: brand ?? this.brand,
+      newPrice: newPrice ?? this.newPrice,
+      description: description ?? this.description,
+      priceType: priceType ?? this.priceType,
+      condition: condition ?? this.condition,
+      location: location ?? this.location,
+      categoryType: categoryType ?? this.categoryType,
+      categoryId: categoryId ?? this.categoryId,
+      productTypes: productTypes ?? this.productTypes,
+    );
+  }
 }

@@ -109,11 +109,16 @@
     "description": "Store translations that are likely to be used only in Store feature"
   },
   "storeTitle":"My Store",
+  "storeEditProductTitle":"Edit Product",
   "storeProductsTitle":"Products",
   "storeNoStore":"You Don't Have a Store",
   "storeNoProduct":"You don't have product",
   "storeCreateStoreButton":"Create Store",
   "storeCreateButton":"Create",
+  "storeEditStoreButton":"Edit Store",
+  "storeViewButton":"View Store",
+  "storeEditProductButton":"Edit Product",
+  "storeRemoveButton":"Remove Store",
   "storeAddProductButton":"Add Product",
   "storeDetailTitle":"This information is used to set up \nyour shop",
   "storeNameLabel":"Store Name",
@@ -134,5 +139,7 @@
   "storePriceTypeLabel":"Price Type",
   "storeAddDeataisLabel":"Additional Details",
   "storeAddPhotoTitle":"Add photos",
-  "storeAddPhotoDescription":"1600 x 1200 for hi res"
+  "storeAddPhotoDescription":"1600 x 1200 for hi res",
+  "storeMaxPhotoProductTitle":"Max. 4 photos per product",
+  "storeMessageProduct":"Please add at least one product image"
 }

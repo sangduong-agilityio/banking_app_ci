@@ -33,8 +33,14 @@ class TaPalette {
   static const MaterialColor grey = MaterialColor(
     0xFF4F4F4F,
     <int, Color>{
+      0: Color(0xFFC4C4C4),
+      1: Color(0xFFBDBDBD),
+      2: Color(0xFFB0B0B0),
+      3: Color(0xFF9E9E9E),
+      4: Color(0xFF757575),
       5: Color(0xFF4F4F4F),
       6: Color(0x00f6f9ff),
+      7: Color(0xFF212121),
     },
   );
 
@@ -45,4 +51,5 @@ class TaPalette {
   static const Color greyLight = Color(0xFFE0E0E0);
   static const Color greyMedium = Color(0xFFF6F9FF);
   static const Color greyDark = Color(0xFFC4C4C4);
+  static const Color greyDarkest = Color(0x0f4f4f4f);
 }

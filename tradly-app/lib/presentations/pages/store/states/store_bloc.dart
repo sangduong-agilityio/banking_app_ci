@@ -18,8 +18,8 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     on<DeleteProductEvt>(_onDeleteProduct);
     on<PickImageEvt>(_onPickImage);
     on<RemoveImageEvt>(_onRemoveImage);
-    on<EditProductPickImageEvt>(_onEditProductPickImage);
   }
+
   final StoreRepository _repo;
 
   Future<void> _onCreateStore(
@@ -38,6 +38,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
           hasStore: true,
           stores: event.store,
           status: const StoreStatus.success(),
+          errorMessage: null,
         ),
       );
     } catch (e) {
@@ -67,8 +68,10 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
       emit(
         state.copyWith(
           products: updatedProducts,
-          hasProducts: updatedProducts.isNotEmpty,
+          hasProducts: true,
           status: const StoreStatus.success(),
+          errorMessage: null,
+          imageFiles: [],
         ),
       );
     } catch (e) {
@@ -92,15 +95,14 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     );
     try {
       await _repo.editProduct(event.product);
-      final updatedProducts = state.products?.map(
-        (product) {
-          return product.id == event.product.id ? event.product : product;
-        },
-      ).toList();
+      final updatedProducts = state.products?.map((product) {
+        return product.id == event.product.id ? event.product : product;
+      }).toList();
       emit(
         state.copyWith(
           products: updatedProducts,
           status: const StoreStatus.success(),
+          imageFiles: [],
         ),
       );
     } catch (e) {
@@ -124,12 +126,16 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     );
     try {
       await _repo.deleteProduct(event.productId);
+      final productIdInt = int.tryParse(event.productId);
       final updatedProducts = state.products
-          ?.where((product) => product.id != event.productId)
+          ?.where((product) => productIdInt != null
+              ? product.id != productIdInt
+              : product.id.toString() != event.productId)
           .toList();
       emit(
         state.copyWith(
           products: updatedProducts,
+          hasProducts: updatedProducts?.isNotEmpty ?? false,
           status: const StoreStatus.success(),
         ),
       );
@@ -138,45 +144,6 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
         state.copyWith(
           status: const StoreStatus.failure(),
           errorMessage: e.toString(),
-        ),
-      );
-    }
-  }
-
-  Future<void> _onPickImage(
-    PickImageEvt event,
-    Emitter<StoreState> emit,
-  ) async {
-    if ((state.imageFiles?.length ?? 0) >= event.maxPhotos) {
-      emit(
-        state.copyWith(
-          errorMessage: 'Maximum ${event.maxPhotos} photos allowed',
-        ),
-      );
-      return;
-    }
-
-    try {
-      final pickedFile = await _picker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 1600,
-        maxHeight: 1200,
-      );
-
-      if (pickedFile != null) {
-        final updatedImages = List<File>.from(state.imageFiles ?? [])
-          ..add(File(pickedFile.path));
-        emit(
-          state.copyWith(
-            imageFiles: updatedImages,
-            errorMessage: null,
-          ),
-        );
-      }
-    } catch (e) {
-      emit(
-        state.copyWith(
-          errorMessage: 'Failed to pick image: $e',
         ),
       );
     }
@@ -197,8 +164,8 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     );
   }
 
-  Future<void> _onEditProductPickImage(
-    EditProductPickImageEvt event,
+  Future<void> _onPickImage(
+    PickImageEvt event,
     Emitter<StoreState> emit,
   ) async {
     if ((state.imageFiles?.length ?? 0) >= event.maxPhotos) {

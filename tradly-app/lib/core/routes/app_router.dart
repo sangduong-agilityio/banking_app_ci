@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/core/routes/router_guard.dart';
+import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/pages/auth/otp_verification_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/send_otp_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_in_screen.dart';
@@ -20,6 +21,9 @@ import 'package:tradly_app/presentations/pages/product_detail/views/vegetables_l
 import 'package:tradly_app/presentations/pages/product_detail/views/wish_list.dart';
 import 'package:tradly_app/presentations/pages/profile/profile.dart';
 import 'package:tradly_app/presentations/pages/store/store.dart';
+import 'package:tradly_app/presentations/pages/store/views/add_product_detail.dart';
+import 'package:tradly_app/presentations/pages/store/views/create_store.dart';
+import 'package:tradly_app/presentations/pages/store/views/edit_product.dart';
 import 'package:tradly_app/presentations/widgets/not_found.dart';
 
 class TARouter {
@@ -70,6 +74,24 @@ class TARouter {
         name: TAPaths.store.name,
         path: TAPaths.store.path,
         builder: (context, state) => const StoreScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.addProduct.name,
+        path: TAPaths.addProduct.path,
+        builder: (context, state) => const AddProductDetailScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.createStore.name,
+        path: TAPaths.createStore.path,
+        builder: (context, state) => const CreateStoreScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.editProduct.name,
+        path: TAPaths.editProduct.path,
+        builder: (context, state) {
+          final product = state.extra as ProductModel;
+          return EditProductScreen(product: product);
+        },
       ),
       GoRoute(
         name: TAPaths.wishlist.name,
@@ -209,6 +231,19 @@ class TARouter {
       extra: extra,
     );
   }
+
+  static void navigateTo(
+    BuildContext context,
+    String routeName, {
+    Map<String, String>? queryParams,
+    Object? extra,
+  }) {
+    context.pushNamed(
+      routeName,
+      queryParameters: queryParams ?? <String, dynamic>{},
+      extra: extra,
+    );
+  }
 }
 
 enum TAPaths {
@@ -247,6 +282,18 @@ enum TAPaths {
   store(
     name: 'store',
     path: '/store',
+  ),
+  addProduct(
+    name: 'addProduct',
+    path: '/addProduct',
+  ),
+  createStore(
+    name: 'createStore',
+    path: '/createStore',
+  ),
+  editProduct(
+    name: 'editProduct',
+    path: '/editProduct',
   ),
   wishlist(
     name: 'wishlist',

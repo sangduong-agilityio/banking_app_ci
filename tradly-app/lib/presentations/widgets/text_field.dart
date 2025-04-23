@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
+import 'package:tradly_app/presentations/widgets/text.dart';
 
 class TATextField extends StatefulWidget {
   const TATextField({
@@ -26,9 +27,13 @@ class TATextField extends StatefulWidget {
     this.hintStyle,
     this.labelStyle,
     this.suffixIcon,
+    this.prefixIcon,
     this.dropdownItems,
     this.onDropdownChanged,
     this.useMaterialStyle = true,
+    this.isChipInput = false,
+    this.chips = const [],
+    this.onChipsChanged,
   });
 
   final String label;
@@ -52,10 +57,14 @@ class TATextField extends StatefulWidget {
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
   final TextStyle? labelStyle;
-  final IconData? suffixIcon;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final List<DropdownMenuItem<String>>? dropdownItems;
   final ValueChanged<String?>? onDropdownChanged;
   final bool useMaterialStyle;
+  final bool isChipInput;
+  final List<String> chips;
+  final Function(List<String>)? onChipsChanged;
 
   @override
   State<TATextField> createState() => _TATextFieldState();
@@ -82,10 +91,14 @@ class TATextField extends StatefulWidget {
     TextStyle? textStyle,
     TextStyle? hintStyle,
     TextStyle? labelStyle,
-    IconData? suffixIcon,
+    Widget? suffixIcon,
+    Widget? prefixIcon,
     List<DropdownMenuItem<String>>? dropdownItems,
     ValueChanged<String?>? onDropdownChanged,
     bool? useMaterialStyle,
+    bool? isChipInput,
+    List<String>? chips,
+    Function(List<String>)? onChipsChanged,
   }) {
     return TATextField(
       label: label ?? this.label,
@@ -113,17 +126,29 @@ class TATextField extends StatefulWidget {
       dropdownItems: dropdownItems ?? this.dropdownItems,
       onDropdownChanged: onDropdownChanged ?? this.onDropdownChanged,
       useMaterialStyle: useMaterialStyle ?? this.useMaterialStyle,
+      isChipInput: isChipInput ?? this.isChipInput,
+      chips: chips ?? this.chips,
+      onChipsChanged: onChipsChanged ?? this.onChipsChanged,
     );
   }
 }
 
 class _TATextFieldState extends State<TATextField> {
   late bool _textInvisible;
+  final TextEditingController _chipController = TextEditingController();
+  final FocusNode _chipFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _textInvisible = true;
+  }
+
+  @override
+  void dispose() {
+    _chipController.dispose();
+    _chipFocusNode.dispose();
+    super.dispose();
   }
 
   void togglePasswordVisibility() {
@@ -132,11 +157,30 @@ class _TATextFieldState extends State<TATextField> {
     });
   }
 
+  void _addChip(String value) {
+    if (value.isNotEmpty &&
+        !widget.chips.contains(value) &&
+        widget.onChipsChanged != null) {
+      widget.onChipsChanged!([...widget.chips, value]);
+      _chipController.clear();
+    }
+  }
+
+  void _removeChip(String chip) {
+    if (widget.onChipsChanged != null) {
+      widget.onChipsChanged!(widget.chips.where((c) => c != chip).toList());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return widget.useMaterialStyle
-        ? _buildMaterialTextField(context)
-        : _buildCustomTextField(context);
+    if (widget.isChipInput) {
+      return _buildMaterialChipInput(context);
+    } else {
+      return widget.useMaterialStyle
+          ? _buildMaterialTextField(context)
+          : _buildCustomTextField(context);
+    }
   }
 
   Widget _buildMaterialTextField(BuildContext context) {
@@ -149,7 +193,7 @@ class _TATextFieldState extends State<TATextField> {
             widget.label,
             style: widget.labelStyle ??
                 TextStyle(
-                  color: context.colorScheme.outline,
+                  color: context.colorScheme.onSecondary,
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
                 ),
@@ -174,7 +218,10 @@ class _TATextFieldState extends State<TATextField> {
             style: widget.textStyle ??
                 TextStyle(color: context.colorScheme.onSurface),
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.zero,
+              // prefixIconConstraints: BoxConstraints(
+              //   minWidth: 0,
+              // ),
+              contentPadding: const EdgeInsets.only(top: 10),
               border: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
@@ -189,19 +236,8 @@ class _TATextFieldState extends State<TATextField> {
               hintText: widget.hint,
               hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),
               counterText: '',
-              suffixIcon: widget.isPassword
-                  ? IconButton(
-                      icon: Icon(
-                        _textInvisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: Colors.grey,
-                      ),
-                      onPressed: togglePasswordVisibility,
-                    )
-                  : widget.suffixIcon != null
-                      ? Icon(widget.suffixIcon, color: Colors.grey)
-                      : null,
+              // prefixIcon: widget.prefixIcon,
+              suffixIcon: widget.suffixIcon,
             ),
           ),
         ],
@@ -240,116 +276,113 @@ class _TATextFieldState extends State<TATextField> {
           onEditingComplete: widget.onEditingComplete,
           autofocus: widget.autoFocus,
           decoration: InputDecoration(
-            labelText: widget.label,
-            hintText: widget.hint,
-            labelStyle: widget.labelStyle ??
-                TextStyle(
+              labelText: widget.label,
+              hintText: widget.hint,
+              labelStyle: widget.labelStyle ??
+                  TextStyle(
+                    color: context.colorScheme.onPrimary,
+                  ),
+              hintStyle: widget.hintStyle,
+              isDense: true,
+              counterText: '',
+              filled: true,
+              fillColor: context.colorScheme.primary,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(24),
+                borderSide: BorderSide(
                   color: context.colorScheme.onPrimary,
                 ),
-            hintStyle: widget.hintStyle,
-            isDense: true,
-            counterText: '',
-            filled: true,
-            fillColor: context.colorScheme.primary,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: BorderSide(
-                color: context.colorScheme.onPrimary,
               ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: BorderSide(
-                color: context.colorScheme.onPrimary,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: BorderSide(
-                color: context.colorScheme.onPrimary,
-                width: 2.0,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: BorderSide(
-                color: context.colorScheme.onPrimary,
-                width: 2.0,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: BorderSide(
-                color: context.colorScheme.onPrimary,
-                width: 2.0,
-              ),
-            ),
-            errorStyle: widget.validatorStyle ??
-                TextStyle(
-                  color: context.colorScheme.error,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(24),
+                borderSide: BorderSide(
+                  color: context.colorScheme.onPrimary,
                 ),
-            prefixIcon: widget.dropdownItems != null
-                ? DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      items: widget.dropdownItems
-                          ?.map((item) => DropdownMenuItem<String>(
-                                value: item.value,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: item.child,
-                                ),
-                              ))
-                          .toList(),
-                      onChanged: widget.onDropdownChanged,
-                      menuWidth: 100,
-                      value: widget.dropdownItems?.first.value,
-                      dropdownColor: Colors.transparent.withOpacity(0),
-                      iconSize: 30,
-                      alignment: AlignmentDirectional.centerEnd,
-                      style: TextStyle(
-                        color: context.colorScheme.onPrimary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      iconEnabledColor: context.colorScheme.onPrimary,
-                      iconDisabledColor: context.colorScheme.onSurface,
-                      selectedItemBuilder: (BuildContext context) {
-                        return widget.dropdownItems
-                                ?.map((item) => Center(
-                                      child: Text(
-                                        item.value ?? '',
-                                        style: TextStyle(
-                                          color: context.colorScheme.onPrimary,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(24),
+                borderSide: BorderSide(
+                  color: context.colorScheme.onPrimary,
+                  width: 2.0,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(24),
+                borderSide: BorderSide(
+                  color: context.colorScheme.onPrimary,
+                  width: 2.0,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(24),
+                borderSide: BorderSide(
+                  color: context.colorScheme.onPrimary,
+                  width: 2.0,
+                ),
+              ),
+              errorStyle: widget.validatorStyle ??
+                  TextStyle(
+                    color: context.colorScheme.error,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+              prefixIcon: widget.dropdownItems != null
+                  ? DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        items: widget.dropdownItems
+                            ?.map((item) => DropdownMenuItem<String>(
+                                  value: item.value,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 15),
+                                    child: item.child,
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: widget.onDropdownChanged,
+                        menuWidth: 100,
+                        value: widget.dropdownItems?.first.value,
+                        dropdownColor: Colors.transparent.withOpacity(0),
+                        iconSize: 30,
+                        alignment: AlignmentDirectional.centerEnd,
+                        style: TextStyle(
+                          color: context.colorScheme.onPrimary,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        iconEnabledColor: context.colorScheme.onPrimary,
+                        iconDisabledColor: context.colorScheme.onSurface,
+                        selectedItemBuilder: (BuildContext context) {
+                          return widget.dropdownItems
+                                  ?.map((item) => Center(
+                                        child: Text(
+                                          item.value ?? '',
+                                          style: TextStyle(
+                                            color:
+                                                context.colorScheme.onPrimary,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
-                                      ),
-                                    ))
-                                .toList() ??
-                            [];
-                      },
-                    ),
-                  )
-                : null,
-            suffixIcon: widget.isPassword
-                ? IconButton(
-                    focusNode: FocusNode(skipTraversal: true),
-                    icon: Icon(
-                      _textInvisible
-                          ? Icons.visibility_off_rounded
-                          : Icons.visibility_rounded,
-                      color: context.colorScheme.onTertiary,
-                      size: 24,
-                    ),
-                    onPressed: togglePasswordVisibility,
-                  )
-                : widget.suffixIcon != null
-                    ? Icon(widget.suffixIcon,
-                        color: context.colorScheme.onTertiary)
-                    : null,
-          ),
+                                      ))
+                                  .toList() ??
+                              [];
+                        },
+                      ),
+                    )
+                  : null,
+              suffixIcon: widget.isPassword
+                  ? IconButton(
+                      focusNode: FocusNode(skipTraversal: true),
+                      icon: Icon(
+                        _textInvisible
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded,
+                        color: context.colorScheme.onTertiary,
+                        size: 24,
+                      ),
+                      onPressed: togglePasswordVisibility,
+                    )
+                  : widget.suffixIcon),
           validator: widget.validator ??
               (value) {
                 if (value == null || value.isEmpty) {
@@ -359,6 +392,81 @@ class _TATextFieldState extends State<TATextField> {
               },
         )
       ],
+    );
+  }
+
+  Widget _buildMaterialChipInput(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.label,
+            style: widget.labelStyle ??
+                TextStyle(
+                  color: context.colorScheme.onSecondary,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              ...widget.chips.map((chip) => _buildChip(context, chip)),
+            ],
+          ),
+          TextFormField(
+            cursorColor: context.colorScheme.onSurface,
+            initialValue: widget.initialValue,
+            controller: _chipController,
+            maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
+            focusNode: _chipFocusNode,
+            style: widget.textStyle ??
+                TextStyle(color: context.colorScheme.onSurface),
+            decoration: InputDecoration(
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xffdbdbde),
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: context.colorScheme.onSurface),
+              ),
+              contentPadding: const EdgeInsets.only(top: 10),
+            ),
+            onFieldSubmitted: (value) {
+              _addChip(value);
+              _chipFocusNode.requestFocus();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChip(BuildContext context, String label) {
+    return Chip(
+      label: TaTitleLargeText(
+        text: label,
+        color: context.colorScheme.onSurface,
+      ),
+      backgroundColor: Colors.grey[300],
+      deleteIcon: const Icon(Icons.close, size: 18),
+      onDeleted: () => _removeChip(label),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+        side: BorderSide(
+          style: BorderStyle.none,
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
     );
   }
 }
