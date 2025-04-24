@@ -76,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
             resizeToAvoidBottomInset: false,
             backgroundColor: context.colorScheme.primary,
             appBar: TaAppBar(
-              toolbarHeight: TaAppBarSize.small,
+              toolbarHeight: TaAppBarSize.medium,
               backgroundColor: context.colorScheme.primary,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),

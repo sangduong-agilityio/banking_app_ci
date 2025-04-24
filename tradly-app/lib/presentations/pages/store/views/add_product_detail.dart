@@ -221,7 +221,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
     return GestureDetector(
       onTap: () {
         context.read<StoreBloc>().add(
-              EditProductPickImageEvt(maxPhotos: _maxPhotos),
+              PickImageEvt(maxPhotos: _maxPhotos),
             );
       },
       child: Container(

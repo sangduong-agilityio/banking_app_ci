@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/core/routes/app_router.dart';
+import 'package:tradly_app/data/models/user_model.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
-import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({
+    super.key,
+    this.user,
+  });
+
+  final UserModel? user;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: context.colorScheme.inversePrimary,
       appBar: TaAppBar(
         centerTitle: false,
         toolbarHeight: TaAppBarSize.small,
         title: Padding(
           padding: const EdgeInsets.only(left: 16),
-          child: const TaDisplaySmallText(
-            text: 'Profile',
+          child: TaDisplaySmallText(
+            text: S.current.profileTitle,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -35,7 +44,13 @@ class ProfileScreen extends StatelessWidget {
               ),
               IconButton(
                 icon: TAAssets.cart(),
-                onPressed: () {},
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('session_token');
+                  if (context.mounted) {
+                    context.go(TAPaths.onboarding.path);
+                  }
+                },
               ),
             ],
           ),
@@ -58,32 +73,22 @@ class ProfileScreen extends StatelessWidget {
                   boxFit: BoxFit.cover,
                 ),
                 const SizedBox(width: 16),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Tradly Team',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    TaTitleLargeText(
+                      text: user?.userName ?? '',
+                      color: context.colorScheme.onPrimary,
                     ),
                     SizedBox(height: 4),
-                    Text(
-                      '+1 (234) 5678776',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                    TaTitleLargeText(
+                      text: user?.phoneNumber ?? '',
+                      color: context.colorScheme.onPrimary,
                     ),
                     SizedBox(height: 2),
-                    Text(
-                      'info@tradly.co',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                    TaTitleLargeText(
+                      text: user?.email ?? '',
+                      color: context.colorScheme.onPrimary,
                     ),
                   ],
                 ),
@@ -96,52 +101,56 @@ class ProfileScreen extends StatelessWidget {
               width: MediaQuery.of(context).size.width - 32,
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: context.colorScheme.onPrimary,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildMenuItem(
-                    title: 'Edit Profile',
+                  _menuItem(
+                    title: S.current.profileEditTitle,
                     onTap: () {},
                   ),
-                  _buildMenuItem(
-                    title: 'Language & Currency',
+                  _menuItem(
+                    title: S.current.profileLanguageCurrencyTitle,
                     onTap: () {},
                   ),
-                  _buildDivider(),
-                  _buildMenuItem(
-                    title: 'Feedback',
+                  _divider(),
+                  _menuItem(
+                    title: S.current.profileFeedbackTitle,
                     onTap: () {},
                   ),
-                  _buildDivider(),
-                  _buildMenuItem(
-                    title: 'Refer a Friend',
+                  _divider(),
+                  _menuItem(
+                    title: S.current.profileReferFriendTitle,
                     onTap: () {},
                   ),
-                  _buildDivider(),
-                  _buildMenuItem(
-                    title: 'Terms & Conditions',
+                  _divider(),
+                  _menuItem(
+                    title: S.current.profileTermsAndConditionsTitle,
                     onTap: () {},
                   ),
-                  _buildDivider(),
-                  _buildMenuItem(
-                    title: 'Logout',
-                    textColor: const Color(0xFF2A8572),
-                    onTap: () {},
-                  ),
+                  _divider(),
+                  _menuItem(
+                      title: S.current.profileLogoutTitle,
+                      textColor: context.colorScheme.primary,
+                      onTap: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.remove('session_token');
+                        if (context.mounted) {
+                          context.go(TAPaths.onboarding.path);
+                        }
+                      }),
                 ],
               ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: TABottomNavigationBar(),
     );
   }
 
-  Widget _buildMenuItem({
+  Widget _menuItem({
     required String title,
     required VoidCallback onTap,
     Color? textColor,
@@ -159,7 +168,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDivider() {
+  Widget _divider() {
     return const Divider(
       height: 1,
       thickness: 1,

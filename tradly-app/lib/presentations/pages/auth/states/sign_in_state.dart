@@ -8,6 +8,7 @@ class SignInState extends Equatable {
     this.password = '',
     this.isFormValid = false,
     this.errorMessage,
+    this.sessionToken,
   });
 
   final SubmissionStatus viewState;
@@ -15,6 +16,7 @@ class SignInState extends Equatable {
   final String password;
   final bool isFormValid;
   final String? errorMessage;
+  final String? sessionToken;
 
   SignInState copyWith({
     SubmissionStatus? viewState,
@@ -22,6 +24,7 @@ class SignInState extends Equatable {
     bool? isFormValid,
     String? email,
     String? password,
+    String? sessionToken,
   }) {
     return SignInState(
       viewState: viewState ?? this.viewState,
@@ -29,6 +32,7 @@ class SignInState extends Equatable {
       isFormValid: isFormValid ?? this.isFormValid,
       email: email ?? this.email,
       password: password ?? this.password,
+      sessionToken: sessionToken ?? this.sessionToken,
     );
   }
 
@@ -39,5 +43,6 @@ class SignInState extends Equatable {
         isFormValid,
         email,
         password,
+        sessionToken,
       ];
 }

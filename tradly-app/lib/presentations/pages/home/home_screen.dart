@@ -6,7 +6,6 @@ import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/data/repositories/home_repo.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
-import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_event.dart';
 import 'package:tradly_app/presentations/pages/home/views/categories_list.dart';
@@ -56,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           backgroundColor: context.colorScheme.inversePrimary,
           appBar: TaAppBar.home(
+            automaticallyImplyLeading: false,
             searchForm: Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: TASearchView(
@@ -159,9 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 100),
               ],
             ),
-          ),
-          bottomNavigationBar: TABottomNavigationBar(
-            currentIndex: 0,
           ),
         ),
       ),

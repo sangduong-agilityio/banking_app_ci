@@ -1,14 +1,17 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/router_guard.dart';
 import 'package:tradly_app/data/models/product_model.dart';
+import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/presentations/pages/auth/otp_verification_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/send_otp_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_in_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_up_screen.dart';
+import 'package:tradly_app/presentations/pages/browse/browse.dart';
 import 'package:tradly_app/presentations/pages/home/home_screen.dart';
 import 'package:tradly_app/presentations/pages/on_boarding/on_boarding_screen.dart';
+import 'package:tradly_app/presentations/pages/order_history/order_history_screen.dart';
 import 'package:tradly_app/presentations/pages/product_detail/product_detail.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/beverages_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/bread_bakery_list.dart';
@@ -24,21 +27,21 @@ import 'package:tradly_app/presentations/pages/store/store.dart';
 import 'package:tradly_app/presentations/pages/store/views/add_product_detail.dart';
 import 'package:tradly_app/presentations/pages/store/views/create_store.dart';
 import 'package:tradly_app/presentations/pages/store/views/edit_product.dart';
+import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/not_found.dart';
 
 class TARouter {
   static final rootNavigatorKey = GlobalKey<NavigatorState>();
 
   static final router = GoRouter(
-    debugLogDiagnostics: kDebugMode,
-    initialLocation: TAPaths.home.path,
+    initialLocation: TAPaths.onboarding.path,
     navigatorKey: rootNavigatorKey,
     routes: _getRoutes(),
     errorBuilder: (context, state) => const NotFoundScreen(),
     redirect: (context, state) => RouterGuard.authGuard(context, state),
   );
 
-  static List<GoRoute> _getRoutes() {
+  static List<RouteBase> _getRoutes() {
     return [
       GoRoute(
         name: TAPaths.onboarding.name,
@@ -56,6 +59,16 @@ class TARouter {
         builder: (context, state) => const SignUpScreen(),
       ),
       GoRoute(
+        name: TAPaths.productDetail.name,
+        path: TAPaths.productDetail.path,
+        builder: (context, state) {
+          final productId = state.extra is int ? state.extra as int : null;
+          return ProductDetailPage(
+            productId: productId ?? 0,
+          );
+        },
+      ),
+      GoRoute(
         name: TAPaths.sendOTP.name,
         path: TAPaths.sendOTP.path,
         builder: (context, state) => const SendOtpScreen(),
@@ -64,16 +77,6 @@ class TARouter {
         name: TAPaths.otpVerification.name,
         path: TAPaths.otpVerification.path,
         builder: (context, state) => const OtpVerificationScreen(),
-      ),
-      GoRoute(
-        name: TAPaths.profile.name,
-        path: TAPaths.profile.path,
-        builder: (context, state) => const ProfileScreen(),
-      ),
-      GoRoute(
-        name: TAPaths.store.name,
-        path: TAPaths.store.path,
-        builder: (context, state) => const StoreScreen(),
       ),
       GoRoute(
         name: TAPaths.addProduct.name,
@@ -100,26 +103,6 @@ class TARouter {
           final productId = state.extra is int ? state.extra as int : null;
           return WishListPage(
             productId: productId ?? 0,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.productDetail.name,
-        path: TAPaths.productDetail.path,
-        builder: (context, state) {
-          final productId = state.extra is int ? state.extra as int : null;
-          return ProductDetailPage(
-            productId: productId ?? 0,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.home.name,
-        path: TAPaths.home.path,
-        builder: (context, state) {
-          final productId = state.extra is int ? state.extra as int : null;
-          return HomeScreen(
-            productId: productId,
           );
         },
       ),
@@ -203,6 +186,74 @@ class TARouter {
           );
         },
       ),
+      StatefulShellRoute.indexedStack(
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state, navigationShell) => Scaffold(
+          body: navigationShell,
+          bottomNavigationBar: TABottomNavigationBar(
+            currentIndex: navigationShell.currentIndex,
+            onTap: (index) {
+              navigationShell.goBranch(
+                index,
+                initialLocation: index == navigationShell.currentIndex,
+              );
+            },
+            items: bottomNavigationBarItems(context),
+          ),
+        ),
+        branches: [
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            routes: [
+              GoRoute(
+                name: TAPaths.home.name,
+                path: TAPaths.home.path,
+                builder: (context, state) => const HomeScreen(productId: 1),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            routes: [
+              GoRoute(
+                name: TAPaths.browse.name,
+                path: TAPaths.browse.path,
+                builder: (context, state) => const BrowseScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            routes: [
+              GoRoute(
+                name: TAPaths.store.name,
+                path: TAPaths.store.path,
+                builder: (context, state) => const StoreScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            routes: [
+              GoRoute(
+                name: TAPaths.orderHistory.name,
+                path: TAPaths.orderHistory.path,
+                builder: (context, state) => const OrderHistoryScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            routes: [
+              GoRoute(
+                name: TAPaths.profile.name,
+                path: TAPaths.profile.path,
+                builder: (context, state) => const ProfileScreen(),
+              ),
+            ],
+          ),
+        ],
+      ),
     ];
   }
 
@@ -283,6 +334,14 @@ enum TAPaths {
     name: 'store',
     path: '/store',
   ),
+  browse(
+    name: 'browse',
+    path: '/browse',
+  ),
+  orderHistory(
+    name: 'orderHistory',
+    path: '/orderHistory',
+  ),
   addProduct(
     name: 'addProduct',
     path: '/addProduct',
@@ -343,4 +402,45 @@ enum TAPaths {
 
   @override
   String toString() => name;
+}
+
+List<LABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
+  final List<LABottomNavigationBarItem> navigationItems = [
+    LABottomNavigationBarItem(
+      icon: TAAssets.home(),
+      activeIcon: TAAssets.home(
+        color: const Color(0xFF007A70),
+      ),
+      label: S.current.homeLabel,
+    ),
+    LABottomNavigationBarItem(
+      icon: TAAssets.search(),
+      activeIcon: TAAssets.search(
+        color: const Color(0xFF007A70),
+      ),
+      label: S.current.homeBrowseLabel,
+    ),
+    LABottomNavigationBarItem(
+      icon: TAAssets.store(),
+      activeIcon: TAAssets.store(
+        color: const Color(0xFF007A70),
+      ),
+      label: S.current.homeStoreLabel,
+    ),
+    LABottomNavigationBarItem(
+      icon: TAAssets.order(),
+      activeIcon: TAAssets.order(
+        color: const Color(0xFF007A70),
+      ),
+      label: S.current.homeOrderHistoryLabel,
+    ),
+    LABottomNavigationBarItem(
+      icon: TAAssets.profile(),
+      activeIcon: TAAssets.profile(
+        color: const Color(0xFF007A70),
+      ),
+      label: S.current.homeProfileLabel,
+    ),
+  ];
+  return navigationItems;
 }

@@ -41,8 +41,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
           viewState: response.user != null
               ? SubmissionStatus.successful
               : SubmissionStatus.failed,
-          errorMessage:
-              response.user != null ? '' : 'Invalid email or password',
+          errorMessage: response.user != null ? '' : '',
+          sessionToken: response.session?.accessToken,
         ),
       );
     } catch (e) {

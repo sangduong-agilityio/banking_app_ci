@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRepository {
@@ -10,14 +11,10 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
-  Future<void> forgotPassword(
-    String email,
-  );
-  Future<void> resetPassword(
-    String password,
-  );
-
+  Future<void> forgotPassword(String email);
+  Future<void> resetPassword(String password);
   Future<void> logout();
+  Future<String?> getSessionToken();
 }
 
 class AuthRepositoryImplement implements AuthRepository {
@@ -29,11 +26,17 @@ class AuthRepositoryImplement implements AuthRepository {
   Future<AuthResponse> signIn({
     required String email,
     required String password,
-  }) =>
-      _client.auth.signInWithPassword(
-        email: email,
-        password: password,
-      );
+  }) async {
+    final response = await _client.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+    if (response.session != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('session_token', response.session!.accessToken);
+    }
+    return response;
+  }
 
   @override
   Future<AuthResponse> signUp({
@@ -59,5 +62,15 @@ class AuthRepositoryImplement implements AuthRepository {
   }
 
   @override
-  Future<void> logout() => _client.auth.signOut();
+  Future<void> logout() async {
+    await _client.auth.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('session_token');
+  }
+
+  @override
+  Future<String?> getSessionToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('session_token');
+  }
 }

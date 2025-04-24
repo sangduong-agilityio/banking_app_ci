@@ -96,6 +96,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("50% off"),
         "productDetailVegetablesTitle":
             MessageLookupByLibrary.simpleMessage("Vegetables"),
+        "profileEditTitle":
+            MessageLookupByLibrary.simpleMessage("Edit Profile"),
+        "profileFeedbackTitle":
+            MessageLookupByLibrary.simpleMessage("Feedback"),
+        "profileLanguageCurrencyTitle":
+            MessageLookupByLibrary.simpleMessage("Language & Currency"),
+        "profileLogoutTitle": MessageLookupByLibrary.simpleMessage("Logout"),
+        "profileReferFriendTitle":
+            MessageLookupByLibrary.simpleMessage("Refer a Friend"),
+        "profileTermsAndConditionsTitle":
+            MessageLookupByLibrary.simpleMessage("Terms & Conditions"),
+        "profileTitle": MessageLookupByLibrary.simpleMessage("Profile"),
         "sendOtpDescription": MessageLookupByLibrary.simpleMessage(
             "We have sent you an SMS with a code to enter number"),
         "sendOtpLoginSocialNetWorkTitle": MessageLookupByLibrary.simpleMessage(

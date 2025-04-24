@@ -1149,6 +1149,76 @@ class S {
       args: [],
     );
   }
+
+  /// `Profile`
+  String get profileTitle {
+    return Intl.message(
+      'Profile',
+      name: 'profileTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Profile`
+  String get profileEditTitle {
+    return Intl.message(
+      'Edit Profile',
+      name: 'profileEditTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Language & Currency`
+  String get profileLanguageCurrencyTitle {
+    return Intl.message(
+      'Language & Currency',
+      name: 'profileLanguageCurrencyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Feedback`
+  String get profileFeedbackTitle {
+    return Intl.message(
+      'Feedback',
+      name: 'profileFeedbackTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refer a Friend`
+  String get profileReferFriendTitle {
+    return Intl.message(
+      'Refer a Friend',
+      name: 'profileReferFriendTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms & Conditions`
+  String get profileTermsAndConditionsTitle {
+    return Intl.message(
+      'Terms & Conditions',
+      name: 'profileTermsAndConditionsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get profileLogoutTitle {
+    return Intl.message(
+      'Logout',
+      name: 'profileLogoutTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

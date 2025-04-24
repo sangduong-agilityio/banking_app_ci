@@ -14,16 +14,6 @@ class OnBoardingScreen extends StatefulWidget {
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-class OnboardingItem {
-  final Widget image;
-  final String description;
-
-  OnboardingItem({
-    required this.image,
-    required this.description,
-  });
-}
-
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final PageController pageController = PageController();
 
@@ -64,33 +54,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     });
   }
 
-  Widget _buildActionButton() {
-    final isLastPage = currentPage == numPages - 1;
-    return TAElevatedButton(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 35,
-        vertical: 30,
-      ),
-      fontWeight: FontWeight.w600,
-      text: isLastPage
-          ? S.current.onBoardingFinishButton
-          : S.current.onBoardingNextButton,
-      backgroundColor: context.colorScheme.primary,
-      onPressed: () {
-        if (isLastPage) {
-          context.pushNamed(TAPaths.signIn.name);
-        } else {
-          pageController.nextPage(
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.ease,
-          );
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final isLastPage = currentPage == numPages - 1;
+
     return Scaffold(
       backgroundColor: context.colorScheme.onPrimary,
       body: Stack(
@@ -101,10 +68,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               Container(
                 height: 358,
                 color: context.colorScheme.primary,
-              ),
-              Container(
-                height: 454,
-                color: context.colorScheme.onPrimary,
               ),
             ],
           ),
@@ -154,12 +117,41 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: _buildPageIndicator(),
               ),
-              const SizedBox(height: 25),
-              _buildActionButton(),
+              const SizedBox(height: 50),
             ],
           ),
         ],
       ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20),
+        child: TAElevatedButton(
+          fontWeight: FontWeight.w600,
+          text: isLastPage
+              ? S.current.onBoardingFinishButton
+              : S.current.onBoardingNextButton,
+          backgroundColor: context.colorScheme.primary,
+          onPressed: () {
+            if (isLastPage) {
+              context.pushNamed(TAPaths.signIn.name);
+            } else {
+              pageController.nextPage(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.ease,
+              );
+            }
+          },
+        ),
+      ),
     );
   }
+}
+
+class OnboardingItem {
+  final Widget image;
+  final String description;
+
+  OnboardingItem({
+    required this.image,
+    required this.description,
+  });
 }

@@ -63,6 +63,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     Color? backgroundColor,
     Widget? trailing,
     bool? centerTitle,
+    bool? automaticallyImplyLeading,
   }) {
     return TaAppBar(
       appBarType: TaAppBarType.home,
@@ -71,6 +72,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottomType: TaAppBarBottomType.search,
       searchForm: searchForm,
       trailing: trailing,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? true,
       centerTitle: centerTitle ?? true,
     );
   }

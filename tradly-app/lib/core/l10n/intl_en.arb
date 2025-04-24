@@ -141,5 +141,16 @@
   "storeAddPhotoTitle":"Add photos",
   "storeAddPhotoDescription":"1600 x 1200 for hi res",
   "storeMaxPhotoProductTitle":"Max. 4 photos per product",
-  "storeMessageProduct":"Please add at least one product image"
+  "storeMessageProduct":"Please add at least one product image",
+    "@segmentProfile": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Profile feature"
+  },
+  "profileTitle":"Profile",
+  "profileEditTitle":"Edit Profile",
+  "profileLanguageCurrencyTitle":"Language & Currency",
+  "profileFeedbackTitle":"Feedback",
+  "profileReferFriendTitle":"Refer a Friend",
+  "profileTermsAndConditionsTitle":"Terms & Conditions",
+  "profileLogoutTitle":"Logout"
 }

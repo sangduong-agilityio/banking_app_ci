@@ -6,7 +6,6 @@ import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
-import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/presentations/pages/home/views/search_view.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
@@ -187,7 +186,6 @@ class _StoreScreenState extends State<StoreScreen> {
                 );
         },
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
@@ -328,9 +326,5 @@ class _StoreScreenState extends State<StoreScreen> {
         ),
       ],
     );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return TABottomNavigationBar(currentIndex: 2);
   }
 }
