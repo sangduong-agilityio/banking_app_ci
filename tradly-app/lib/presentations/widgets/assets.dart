@@ -595,7 +595,7 @@ class _TAProfileImage extends StatelessWidget {
         context,
         defaultValue: height ?? 24,
       ),
-      color: color ?? Colors.grey,
+      color: color ?? Colors.black,
     );
   }
 }

@@ -7,7 +7,7 @@ class TABottomNavigationBar extends StatefulWidget {
     super.key,
     required this.items,
     this.backgroundColor,
-    this.selectedItemColor = const Color(0xFF007A70),
+    this.selectedItemColor = const Color(0xFF33907C),
     this.unselectedItemColor = Colors.grey,
     this.margin = const EdgeInsets.all(8),
     this.currentIndex = 0,

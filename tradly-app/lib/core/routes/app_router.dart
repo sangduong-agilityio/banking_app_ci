@@ -409,35 +409,35 @@ List<LABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
     LABottomNavigationBarItem(
       icon: TAAssets.home(),
       activeIcon: TAAssets.home(
-        color: const Color(0xFF007A70),
+        color: const Color(0xFF33907C),
       ),
       label: S.current.homeLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.search(),
       activeIcon: TAAssets.search(
-        color: const Color(0xFF007A70),
+        color: const Color(0xFF33907C),
       ),
       label: S.current.homeBrowseLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.store(),
       activeIcon: TAAssets.store(
-        color: const Color(0xFF007A70),
+        color: const Color(0xFF33907C),
       ),
       label: S.current.homeStoreLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.order(),
       activeIcon: TAAssets.order(
-        color: const Color(0xFF007A70),
+        color: const Color(0xFF33907C),
       ),
       label: S.current.homeOrderHistoryLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.profile(),
       activeIcon: TAAssets.profile(
-        color: const Color(0xFF007A70),
+        color: const Color(0xFF33907C),
       ),
       label: S.current.homeProfileLabel,
     ),
