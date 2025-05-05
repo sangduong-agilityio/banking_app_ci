@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/utils/responsive.dart';
 
-class TaText extends StatelessWidget {
-  const TaText({
+class TAText extends StatelessWidget {
+  const TAText({
     required this.text,
     super.key,
     this.style,
@@ -28,8 +28,8 @@ class TaText extends StatelessWidget {
   }
 }
 
-class TaDisplayLargeText extends StatelessWidget {
-  const TaDisplayLargeText({
+class TADisplayLargeText extends StatelessWidget {
+  const TADisplayLargeText({
     required this.text,
     super.key,
     this.color,
@@ -46,7 +46,7 @@ class TaDisplayLargeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.displayLarge?.copyWith(
@@ -62,8 +62,8 @@ class TaDisplayLargeText extends StatelessWidget {
   }
 }
 
-class TaDisplayMediumText extends StatelessWidget {
-  const TaDisplayMediumText({
+class TADisplayMediumText extends StatelessWidget {
+  const TADisplayMediumText({
     required this.text,
     super.key,
     this.color,
@@ -80,7 +80,7 @@ class TaDisplayMediumText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.displayMedium?.copyWith(
@@ -96,8 +96,8 @@ class TaDisplayMediumText extends StatelessWidget {
   }
 }
 
-class TaDisplaySmallText extends StatelessWidget {
-  const TaDisplaySmallText({
+class TADisplaySmallText extends StatelessWidget {
+  const TADisplaySmallText({
     required this.text,
     super.key,
     this.color,
@@ -114,7 +114,7 @@ class TaDisplaySmallText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.displaySmall?.copyWith(
@@ -130,8 +130,8 @@ class TaDisplaySmallText extends StatelessWidget {
   }
 }
 
-class TaHeadlineLargeText extends StatelessWidget {
-  const TaHeadlineLargeText({
+class TAHeadlineLargeText extends StatelessWidget {
+  const TAHeadlineLargeText({
     required this.text,
     super.key,
     this.color,
@@ -150,7 +150,7 @@ class TaHeadlineLargeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.headlineLarge?.copyWith(
@@ -167,8 +167,8 @@ class TaHeadlineLargeText extends StatelessWidget {
   }
 }
 
-class TaHeadlineMediumText extends StatelessWidget {
-  const TaHeadlineMediumText({
+class TAHeadlineMediumText extends StatelessWidget {
+  const TAHeadlineMediumText({
     required this.text,
     super.key,
     this.color,
@@ -185,7 +185,7 @@ class TaHeadlineMediumText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.headlineMedium?.copyWith(
@@ -201,8 +201,8 @@ class TaHeadlineMediumText extends StatelessWidget {
   }
 }
 
-class TaHeadlineSmallText extends StatelessWidget {
-  const TaHeadlineSmallText({
+class TAHeadlineSmallText extends StatelessWidget {
+  const TAHeadlineSmallText({
     required this.text,
     super.key,
     this.color,
@@ -221,7 +221,7 @@ class TaHeadlineSmallText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.headlineSmall?.copyWith(
@@ -238,8 +238,8 @@ class TaHeadlineSmallText extends StatelessWidget {
   }
 }
 
-class TaTitleLargeText extends StatelessWidget {
-  const TaTitleLargeText({
+class TATitleLargeText extends StatelessWidget {
+  const TATitleLargeText({
     required this.text,
     super.key,
     this.color,
@@ -260,7 +260,7 @@ class TaTitleLargeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.titleLarge?.copyWith(
@@ -278,8 +278,8 @@ class TaTitleLargeText extends StatelessWidget {
   }
 }
 
-class TaTitleMediumText extends StatelessWidget {
-  const TaTitleMediumText({
+class TATitleMediumText extends StatelessWidget {
+  const TATitleMediumText({
     required this.text,
     super.key,
     this.color,
@@ -300,7 +300,7 @@ class TaTitleMediumText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.titleMedium?.copyWith(
@@ -318,8 +318,8 @@ class TaTitleMediumText extends StatelessWidget {
   }
 }
 
-class TaTitleSmallText extends StatelessWidget {
-  const TaTitleSmallText({
+class TATitleSmallText extends StatelessWidget {
+  const TATitleSmallText({
     required this.text,
     super.key,
     this.color,
@@ -340,7 +340,7 @@ class TaTitleSmallText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       maxLines: maxLines,
@@ -358,8 +358,8 @@ class TaTitleSmallText extends StatelessWidget {
   }
 }
 
-class TaLabelLargeText extends StatelessWidget {
-  const TaLabelLargeText({
+class TALabelLargeText extends StatelessWidget {
+  const TALabelLargeText({
     required this.text,
     super.key,
     this.color,
@@ -381,7 +381,7 @@ class TaLabelLargeText extends StatelessWidget {
   final int? maxLines;
   @override
   Widget build(BuildContext context) {
-    return TaText(
+    return TAText(
       text: text,
       textAlign: textAlign,
       style: context.textTheme.labelLarge?.copyWith(

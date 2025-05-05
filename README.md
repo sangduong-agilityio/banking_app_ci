@@ -6,7 +6,7 @@
 
 ## Design
 
-- This is the design of the app : [link](https://www.figma.com/design/cbyU4pamdddEA1uowX8Am8/grocery-marketplace-tradly.app?node-id=0-3983&t=59XXv9seipFbgdzz-0)
+- This is the design of the app : [link](https://www.figma.com/design/cbyU4pamdddEA1uowX8Am8/grocery-marketplace-tradly.app?node-id=0-1&p=f&t=1gTQ8lihGdQYaCQL-0)
 
 ## Team Size 
 
@@ -38,22 +38,26 @@ Before you continue, ensure you meet the following requirements:
 - [Issues board Gitlab for management plan](https://gitlab.asoft-python.com/sang.duong/flutter-training/-/boards)
 ​
 ## Deployment Plan
-- [] Epic 1: Flutter Form Builder: Learn to create dynamic forms using various field types and validate inputs (e.g., email, phone number). Handle form submissions and data saving.
-- [] Epic 2: Material 3 Design System: Explore the evolution to Material 3 and integrate components like buttons and sliders, with a focus on dynamic theming and responsive UIs.
-- [] Epic 3: Advanced UI & Animation: Handle scrolling views, learn animation basics (AnimationController, Tween), and implement responsive UIs for mobile and tablet devices.
-- [] Epic 4: State Management with BLoC: Master BLoC architecture, event/state flow, and manage app state with asynchronous API calls and error handling.
-- [] Epic 5: Native Features Integration: Use image_picker for image selection, manage app permissions, and handle camera/gallery access.
+- [X] Epic 1: Flutter Form Builder: Learn to create dynamic forms using various field types and validate inputs (e.g., email, phone number). Handle form submissions and data saving.
+- [X] Epic 2: Material 3 Design System: Explore the evolution to Material 3 and integrate components like buttons and sliders, with a focus on dynamic theming and responsive UIs.
+- [X] Epic 3: Advanced UI & Animation: Handle scrolling views, learn animation basics (AnimationController, Tween), and implement responsive UIs for mobile and tablet devices.
+- [X] Epic 4: State Management with BLoC: Master BLoC architecture, event/state flow, and manage app state with asynchronous API calls and error handling.
+- [X] Epic 5: Native Features Integration: Use image_picker for image selection, manage app permissions, and handle camera/gallery access.
+- [X] Epic 6: Integrate push notifications with Firebase Cloud Messaging (FCM).
+- [X] Epic 7: Implement Semantics widgets to enhance screen reader support.
 
 
 ## Implement UI + Handle State Management
-- [] Sign In Screen + State Management(BLoC) + Supabase
-- [] Sign Up Screen + State Management(BLoC) + Supabase
-- [] Send OTP Screen + State Management(BLoC) + Supabase
-- [] Forgot Password Screen + State Management(BLoC) + Supabase
-- [] Home Screen + State Management(BLoC) + API
-- [] Product Detail Screen + State Management(BLoC) + API
-- [] Drawer Menu Screen + State Management(BLoC) + API
-- [] Brand Detail Screen + State Management(BLoC) + API
+- [X] Sign In Screen + State Management(BLoC) + Supabase
+- [X] Sign Up Screen + State Management(BLoC) + Supabase
+- [X] Home Screen + State Management(BLoC) + API
+- [X] Product Detail Screen + State Management(BLoC) + API
+- [X] Browse Screen + State Management(BLoC) + API
+- [X] My Store Screen + State Management(BLoC) + API
+- [X] Order History Screen + State Management(BLoC) + API
+- [X] Checkout Screen + State Management(BLoC)
+- [X] Profile Screen + State Management(BLoC)
+
 
 
 ## Installation

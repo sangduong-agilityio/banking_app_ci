@@ -15,7 +15,7 @@ class TATextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.scrollPadding = const EdgeInsets.all(20.0),
     this.onTap,
-    this.textInputAction,
+    this.textInputAction = TextInputAction.next,
     this.focusNode,
     this.onFieldSubmitted,
     this.onChanged,
@@ -209,7 +209,14 @@ class _TATextFieldState extends State<TATextField> {
             obscuringCharacter: '*',
             textInputAction: widget.textInputAction,
             focusNode: widget.focusNode,
-            onFieldSubmitted: widget.onFieldSubmitted,
+            onFieldSubmitted: (value) {
+              if (widget.textInputAction == TextInputAction.next) {
+                FocusScope.of(context).nextFocus();
+              }
+              if (widget.onFieldSubmitted != null) {
+                widget.onFieldSubmitted!(value);
+              }
+            },
             onChanged: widget.onChanged,
             onTap: widget.onTap,
             onEditingComplete: widget.onEditingComplete,
@@ -236,7 +243,6 @@ class _TATextFieldState extends State<TATextField> {
               hintText: widget.hint,
               hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),
               counterText: '',
-              // prefixIcon: widget.prefixIcon,
               suffixIcon: widget.suffixIcon,
             ),
           ),
@@ -254,7 +260,14 @@ class _TATextFieldState extends State<TATextField> {
           cursorErrorColor: context.colorScheme.onPrimary,
           focusNode: widget.focusNode,
           controller: widget.controller,
-          onFieldSubmitted: widget.onFieldSubmitted,
+          onFieldSubmitted: (value) {
+            if (widget.textInputAction == TextInputAction.next) {
+              FocusScope.of(context).nextFocus();
+            }
+            if (widget.onFieldSubmitted != null) {
+              widget.onFieldSubmitted!(value);
+            }
+          },
           onChanged: widget.onChanged,
           onTap: widget.onTap,
           obscuringCharacter: '*',
@@ -453,7 +466,7 @@ class _TATextFieldState extends State<TATextField> {
 
   Widget _buildChip(BuildContext context, String label) {
     return Chip(
-      label: TaTitleLargeText(
+      label: TATitleLargeText(
         text: label,
         color: context.colorScheme.onSurface,
       ),

@@ -12,9 +12,11 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<String?> getSessionToken();
+
   Future<void> logout();
 
-  Future<String?> getSessionToken();
+  Future<User?> getCurrentUser();
 }
 
 class AuthRepositoryImplement implements AuthRepository {
@@ -75,5 +77,11 @@ class AuthRepositoryImplement implements AuthRepository {
     await _client.auth.signOut();
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('session_token');
+  }
+
+  @override
+  Future<User?> getCurrentUser() async {
+    final user = _client.auth.currentUser;
+    return user;
   }
 }

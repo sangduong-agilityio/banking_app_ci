@@ -12,8 +12,14 @@ android {
     namespace = "com.example.tradly_app"
     compileSdk = 35
     ndkVersion = "25.1.8937393"
+<<<<<<< HEAD
+
     
 
+=======
+    
+
+>>>>>>> b98ed6c8e89660d93e38c0f9c1d64812db541e2d
      compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
