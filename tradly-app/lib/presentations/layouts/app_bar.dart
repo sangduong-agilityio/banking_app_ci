@@ -196,7 +196,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
           leadingWidth: 56,
           systemOverlayStyle: SystemUiOverlayStyle.light,
           centerTitle: centerTitle,
-          toolbarHeight: TaResponsive.scale(
+          toolbarHeight: TAResponsive.scale(
             context,
             defaultValue: toolbarHeight,
           ),

@@ -63,13 +63,13 @@ class ProductList extends StatelessWidget {
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 0.95,
+                    childAspectRatio: 0.9,
                   ),
                   itemCount: state.products?.length ?? 0,
                   itemBuilder: (context, index) {
                     return TACardProduct(
                       onTapProduct: () {
-                        TARouter.navigateToProductDetail(
+                        TARouter.navigateTo(
                           context,
                           TAPaths.productDetail.name,
                           extra: state.products?[index].id,

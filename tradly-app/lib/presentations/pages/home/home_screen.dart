@@ -1,8 +1,6 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
@@ -31,37 +29,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final supabase = Supabase.instance.client;
-
-  @override
-  void initState() {
-    super.initState();
-    supabase.auth.onAuthStateChange.listen((event) async {
-      if (event.event == AuthChangeEvent.signedIn) {
-        await FirebaseMessaging.instance.requestPermission();
-
-        await FirebaseMessaging.instance.getAPNSToken();
-
-        final fcmToken = await FirebaseMessaging.instance.getToken();
-
-        if (fcmToken != null) {
-          _setFcmToken(fcmToken);
-        }
-      }
-    });
-
-    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async {
-      await _setFcmToken(fcmToken);
-    });
-  }
-
-  Future<void> _setFcmToken(String fcmToken) async {
-    final userId = supabase.auth.currentUser!.id;
-    await supabase
-        .from('profiles')
-        .upsert({'id': userId, 'fcm_token': fcmToken});
-  }
-
   final Map<String, String> _categoryRouteMap = {
     S.current.productDetailBeveragesTitle: TAPaths.beverages.name,
     S.current.productDetailVegetablesTitle: TAPaths.vegetables.name,
@@ -134,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     final routeName = _categoryRouteMap[category.category] ??
                         _categoryRouteMap[category.id ?? ''] ??
                         TAPaths.home.name;
-                    TARouter.navigateToCategory(
+                    TARouter.navigateTo(
                       context,
                       routeName,
                       extra: category.id,

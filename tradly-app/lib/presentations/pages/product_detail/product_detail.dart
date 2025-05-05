@@ -8,6 +8,8 @@ import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_bloc.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_event.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_state.dart';
+import 'package:tradly_app/presentations/pages/product_detail/views/checkout.dart';
+import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
@@ -241,24 +243,22 @@ class ProductDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-            bottomNavigationBar: Padding(
+            bottomNavigationBar: Container(
               padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: context.colorScheme.primary,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: TaHeadlineMediumText(
-                    text: 'Add To Cart',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+              color: context.colorScheme.onPrimary,
+              child: TAElevatedButton(
+                backgroundColor: context.colorScheme.primary,
+                text: S.current.productDetailAddToCartButton,
+                onPressed: () {
+                  if (product != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CheckoutScreen(product: product),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           );

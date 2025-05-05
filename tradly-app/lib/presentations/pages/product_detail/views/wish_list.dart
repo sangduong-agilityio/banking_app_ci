@@ -45,7 +45,7 @@ class WishListPage extends StatelessWidget {
                   final product = wishlistProducts?[index];
                   return TACardProduct(
                     onTapProduct: () {
-                      TARouter.navigateToProductDetail(
+                      TARouter.navigateTo(
                         context,
                         TAPaths.productDetail.name,
                         extra: product?.id,

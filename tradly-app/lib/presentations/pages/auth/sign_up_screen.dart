@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/presentations/pages/auth/states/sign_up_bloc.dart';
 import 'package:tradly_app/presentations/pages/auth/states/sign_up_event.dart';
 import 'package:tradly_app/presentations/pages/auth/states/sign_up_state.dart';
@@ -59,11 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
               LALoadingIndicator.show(context);
             } else if (state.viewState == SubmissionStatus.successful) {
               LALoadingIndicator.hide(context);
-              if (state.emailOrPhoneNumber.contains('@')) {
-                context.pop();
-              } else {
-                context.pushNamed(TAPaths.sendOTP.name);
-              }
+              context.pop();
             } else if (state.viewState == SubmissionStatus.failed) {
               LALoadingIndicator.hide(context);
               TASnackBar.buildErrorSnackbar(
