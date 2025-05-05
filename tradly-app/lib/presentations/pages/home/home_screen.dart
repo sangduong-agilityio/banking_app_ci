@@ -16,6 +16,7 @@ import 'package:tradly_app/presentations/pages/home/views/popular_product_list.d
 import 'package:tradly_app/presentations/pages/home/views/product_banner_list.dart';
 import 'package:tradly_app/presentations/pages/home/views/search_view.dart';
 import 'package:tradly_app/presentations/pages/home/views/store_follow_list.dart';
+import 'package:tradly_app/presentations/pages/product_detail/views/product_list.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
@@ -29,17 +30,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Map<String, String> _categoryRouteMap = {
-    S.current.productDetailBeveragesTitle: TAPaths.beverages.name,
-    S.current.productDetailVegetablesTitle: TAPaths.vegetables.name,
-    S.current.productDetailBreadBakeryTitle: TAPaths.breadBakely.name,
-    S.current.productDetailEggTitle: TAPaths.egg.name,
-    S.current.productDetailFruitTitle: TAPaths.fruit.name,
-    S.current.productDetailPetCareTitle: TAPaths.petCare.name,
-    S.current.productDetailFrozenVegTitle: TAPaths.frozenVeg.name,
-    S.current.productDetailHomeCareTitle: TAPaths.homeCare.name,
-  };
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -93,13 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 const ProductBannerList(),
                 CategoriesList(
                   onCategoryTap: (category) {
-                    final routeName = _categoryRouteMap[category.category] ??
-                        _categoryRouteMap[category.id ?? ''] ??
-                        TAPaths.home.name;
-                    TARouter.navigateTo(
+                    Navigator.push(
                       context,
-                      routeName,
-                      extra: category.id,
+                      MaterialPageRoute(
+                        builder: (context) => ProductList(
+                          title: category.category ?? '',
+                          categoryId: category.id ?? 0,
+                        ),
+                      ),
                     );
                   },
                 ),

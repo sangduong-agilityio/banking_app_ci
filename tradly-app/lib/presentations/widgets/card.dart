@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
@@ -23,6 +25,7 @@ class TACardProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isLocalFile = product.imageUrl.startsWith('/http');
     return GestureDetector(
       onTap: onTapProduct,
       child: SizedBox(
@@ -35,13 +38,26 @@ class TACardProduct extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TAImageRectangle(
-                product.imageUrl,
-                isBorderTop: true,
-                width: width ?? double.infinity,
-                height: height ?? 130,
-                boxFit: BoxFit.cover,
-              ),
+              isLocalFile
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                      child: Image.file(
+                        File(product.imageUrl),
+                        width: width ?? double.infinity,
+                        height: height ?? 130,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : TAImageRectangle(
+                      product.imageUrl,
+                      isBorderTop: true,
+                      width: width ?? double.infinity,
+                      height: height ?? 130,
+                      boxFit: BoxFit.cover,
+                    ),
               Padding(
                 padding: const EdgeInsets.only(left: 11, right: 11),
                 child: Column(

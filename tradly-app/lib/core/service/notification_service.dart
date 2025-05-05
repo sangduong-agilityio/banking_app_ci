@@ -16,7 +16,7 @@ class NotificationService {
     if (_initialized) return;
 
     const initSettingAndroid =
-        AndroidInitializationSettings('ic_launcher'); // Fix icon
+        AndroidInitializationSettings('mipmap/ic_launcher');
 
     const initSettingIOS = DarwinInitializationSettings(
       requestAlertPermission: true,

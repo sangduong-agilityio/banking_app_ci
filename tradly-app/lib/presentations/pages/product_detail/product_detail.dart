@@ -28,9 +28,7 @@ class ProductDetailPage extends StatelessWidget {
       create: (context) => ProductDetailBloc(
         repo: context.read<ProductRepository>(),
       )..add(
-          ProductDetailFetchEvt(
-            productId: productId,
-          ),
+          ProductDetailFetchEvt(productId: productId),
         ),
       child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
         builder: (context, state) {

@@ -45,15 +45,12 @@ dependencies:
 
   flutter_local_notifications: ^19.1.0
 
-<<<<<<< HEAD
-  device_preview: ^1.2.0
-
   freezed_annotation: ^2.4.4
 
   image_picker: ^1.1.2
 
-=======
->>>>>>> b98ed6c8e89660d93e38c0f9c1d64812db541e2d
+  device_preview: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:

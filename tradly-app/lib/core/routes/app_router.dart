@@ -13,15 +13,8 @@ import 'package:tradly_app/presentations/pages/home/home_screen.dart';
 import 'package:tradly_app/presentations/pages/on_boarding/on_boarding_screen.dart';
 import 'package:tradly_app/presentations/pages/order_history/order_history.dart';
 import 'package:tradly_app/presentations/pages/product_detail/product_detail.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/beverages_list.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/bread_bakery_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/checkout.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/egg_list.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/frozen_veg_list.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/fruit_list.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/home_care_list.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/pet_care.dart';
-import 'package:tradly_app/presentations/pages/product_detail/views/vegetables_list.dart';
+import 'package:tradly_app/presentations/pages/product_detail/views/product_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/wish_list.dart';
 import 'package:tradly_app/presentations/pages/profile/profile.dart';
 import 'package:tradly_app/presentations/pages/store/store.dart';
@@ -103,82 +96,13 @@ class TARouter {
         },
       ),
       GoRoute(
-        name: TAPaths.beverages.name,
-        path: TAPaths.beverages.path,
+        name: TAPaths.productList.name,
+        path: TAPaths.productList.path,
         builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return BeveragesList(
-            categoryId: categoryId,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.vegetables.name,
-        path: TAPaths.vegetables.path,
-        builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return VegetablesList(
-            categoryId: categoryId,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.breadBakely.name,
-        path: TAPaths.breadBakely.path,
-        builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return BreadBakeryList(
-            categoryId: categoryId,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.egg.name,
-        path: TAPaths.egg.path,
-        builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return EggList(
-            categoryId: categoryId,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.fruit.name,
-        path: TAPaths.fruit.path,
-        builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return FruitList(
-            categoryId: categoryId,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.homeCare.name,
-        path: TAPaths.homeCare.path,
-        builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return HomeCareList(
-            categoryId: categoryId,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.frozenVeg.name,
-        path: TAPaths.frozenVeg.path,
-        builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return FrozenVegList(
-            categoryId: categoryId,
-          );
-        },
-      ),
-      GoRoute(
-        name: TAPaths.petCare.name,
-        path: TAPaths.petCare.path,
-        builder: (context, state) {
-          final categoryId = state.extra is int ? state.extra as int : null;
-          return PetCareList(
-            categoryId: categoryId,
+          final extra = state.extra as Map<String, dynamic>?;
+          return ProductList(
+            title: extra?['title'] ?? '',
+            categoryId: extra?['categoryId'] ?? 0,
           );
         },
       ),
@@ -329,38 +253,9 @@ enum TAPaths {
     name: 'myCart',
     path: '/myCart',
   ),
-
-  beverages(
-    name: 'beverages',
-    path: '/beverages',
-  ),
-  vegetables(
-    name: 'vegetables',
-    path: '/vegetables',
-  ),
-  breadBakely(
-    name: 'breadBakely',
-    path: '/breadBakely',
-  ),
-  frozenVeg(
-    name: 'frozenVeg',
-    path: '/frozenVeg',
-  ),
-  egg(
-    name: 'egg',
-    path: '/egg',
-  ),
-  fruit(
-    name: 'fruit',
-    path: '/fruit',
-  ),
-  homeCare(
-    name: 'homeCare',
-    path: '/homeCare',
-  ),
-  petCare(
-    name: 'petCare',
-    path: '/petCare',
+  productList(
+    name: 'productList',
+    path: '/productList',
   );
 
   const TAPaths({
