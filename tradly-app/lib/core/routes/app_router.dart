@@ -5,8 +5,9 @@ import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/router_guard.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_in_screen.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_up_screen.dart';
+import 'package:tradly_app/presentations/layouts/scaffold.dart';
+import 'package:tradly_app/presentations/pages/auth/sign_in/sign_in_screen.dart';
+import 'package:tradly_app/presentations/pages/auth/sign_up/sign_up_screen.dart';
 import 'package:tradly_app/presentations/pages/browse/browse.dart';
 import 'package:tradly_app/presentations/pages/home/home_screen.dart';
 import 'package:tradly_app/presentations/pages/on_boarding/on_boarding_screen.dart';
@@ -183,7 +184,7 @@ class TARouter {
       ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: rootNavigatorKey,
-        builder: (context, state, navigationShell) => Scaffold(
+        builder: (context, state, navigationShell) => TAScaffold(
           body: navigationShell,
           bottomNavigationBar: TABottomNavigationBar(
             currentIndex: navigationShell.currentIndex,
@@ -375,37 +376,37 @@ enum TAPaths {
   String toString() => name;
 }
 
-List<LABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
-  final List<LABottomNavigationBarItem> navigationItems = [
-    LABottomNavigationBarItem(
+List<TABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
+  final List<TABottomNavigationBarItem> navigationItems = [
+    TABottomNavigationBarItem(
       icon: TAAssets.home(),
       activeIcon: TAAssets.home(
         color: context.colorScheme.primary,
       ),
       label: S.current.homeLabel,
     ),
-    LABottomNavigationBarItem(
+    TABottomNavigationBarItem(
       icon: TAAssets.search(),
       activeIcon: TAAssets.search(
         color: context.colorScheme.primary,
       ),
       label: S.current.homeBrowseLabel,
     ),
-    LABottomNavigationBarItem(
+    TABottomNavigationBarItem(
       icon: TAAssets.store(),
       activeIcon: TAAssets.store(
         color: context.colorScheme.primary,
       ),
       label: S.current.homeStoreLabel,
     ),
-    LABottomNavigationBarItem(
+    TABottomNavigationBarItem(
       icon: TAAssets.order(),
       activeIcon: TAAssets.order(
         color: context.colorScheme.primary,
       ),
       label: S.current.homeOrderHistoryLabel,
     ),
-    LABottomNavigationBarItem(
+    TABottomNavigationBarItem(
       icon: TAAssets.profile(),
       activeIcon: TAAssets.profile(
         color: context.colorScheme.primary,

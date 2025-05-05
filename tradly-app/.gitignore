@@ -14,7 +14,11 @@ migrate_working_dir/
 
 # Env
 ..env
+<<<<<<< HEAD
+*.env.g.dart
+=======
 *..env.g.dart
+>>>>>>> b98ed6c8e89660d93e38c0f9c1d64812db541e2d
 # IntelliJ related
 *.iml
 *.ipr
@@ -47,4 +51,12 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+<<<<<<< HEAD
 /supabase/functions/service-account.json
+
+# Ignore specific files
+lib/core/env/env.g.dart
+lib/core/env/env.dart
+=======
+/supabase/functions/service-account.json
+>>>>>>> b98ed6c8e89660d93e38c0f9c1d64812db541e2d

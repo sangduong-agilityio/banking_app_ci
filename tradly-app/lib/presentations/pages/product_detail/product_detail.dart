@@ -5,6 +5,7 @@ import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/data/repositories/product_repo.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
+import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_bloc.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_event.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_state.dart';
@@ -34,8 +35,7 @@ class ProductDetailPage extends StatelessWidget {
       child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
         builder: (context, state) {
           final product = state.product;
-          return Scaffold(
-            backgroundColor: context.colorScheme.inversePrimary,
+          return TAScaffold(
             appBar: TaAppBar.details(
               bottomType: TaAppBarBottomType.imageBackground,
               background: Container(
@@ -110,7 +110,7 @@ class ProductDetailPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TaHeadlineMediumText(
+                              TAHeadlineMediumText(
                                 text: product?.title ?? '',
                                 color: context.colorScheme.onSurface,
                                 fontWeight: FontWeight.w700,
@@ -118,18 +118,18 @@ class ProductDetailPage extends StatelessWidget {
                               SizedBox(height: 8),
                               Row(
                                 children: [
-                                  TaHeadlineMediumText(
+                                  TAHeadlineMediumText(
                                     text: product?.newPrice ?? '',
                                     color: context.colorScheme.primary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                   SizedBox(width: 8),
-                                  TaTitleLargeText(
+                                  TATitleLargeText(
                                     text: product?.price ?? '',
                                     color: context.colorScheme.onSurface,
                                   ),
                                   SizedBox(width: 8),
-                                  TaTitleLargeText(
+                                  TATitleLargeText(
                                     text: S.current.productDetailSaleOffTitle,
                                     color: context.colorScheme.onSurface,
                                   ),
@@ -156,7 +156,7 @@ class ProductDetailPage extends StatelessWidget {
                                     boxFit: BoxFit.cover,
                                   ),
                                   SizedBox(width: 10),
-                                  TaTitleLargeText(
+                                  TATitleLargeText(
                                     text: product?.brand ?? '',
                                     color: context.colorScheme.onSurface,
                                   ),
@@ -169,7 +169,7 @@ class ProductDetailPage extends StatelessWidget {
                                     backgroundColor:
                                         context.colorScheme.primary,
                                   ),
-                                  child: TaTitleMediumText(
+                                  child: TATitleMediumText(
                                     text: S.current.homeFollowButton,
                                   )),
                             ],
@@ -182,7 +182,7 @@ class ProductDetailPage extends StatelessWidget {
                           child: Column(
                             children: [
                               SizedBox(height: 30),
-                              TaTitleLargeText(
+                              TATitleLargeText(
                                 text: product?.description ?? '',
                                 color: context.colorScheme.outline,
                               ),
@@ -222,7 +222,7 @@ class ProductDetailPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TaHeadlineMediumText(
+                              TAHeadlineMediumText(
                                 text:
                                     S.current.productDetailDeliveryOptionsTitle,
                                 color: context.colorScheme.onSurface,
@@ -277,14 +277,14 @@ class ProductDetailPage extends StatelessWidget {
       children: [
         Expanded(
           flex: 2,
-          child: TaTitleLargeText(
+          child: TATitleLargeText(
             text: label,
             color: context.colorScheme.outline,
           ),
         ),
         Expanded(
           flex: 3,
-          child: TaTitleLargeText(
+          child: TATitleLargeText(
             text: value,
             color: context.colorScheme.onSurface,
           ),

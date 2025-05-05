@@ -48,7 +48,7 @@ class TACardProduct extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 6),
-                    TaTitleLargeText(
+                    TATitleLargeText(
                       text: product.title,
                       color: context.colorScheme.onSurface,
                     ),
@@ -63,13 +63,13 @@ class TACardProduct extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         Expanded(
-                          child: TaTitleLargeText(
+                          child: TATitleLargeText(
                             text: product.brand ?? '',
                             fontWeight: FontWeight.w500,
                             color: context.colorScheme.outline,
                           ),
                         ),
-                        TaLabelLargeText(
+                        TALabelLargeText(
                           text: product.newPrice != null
                               ? '\$${product.newPrice}'
                               : '',
@@ -77,7 +77,7 @@ class TACardProduct extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                         ),
                         const SizedBox(width: 6),
-                        TaTitleLargeText(
+                        TATitleLargeText(
                           text: product.price,
                           color: context.colorScheme.primary,
                           fontWeight: FontWeight.w600,
@@ -145,7 +145,7 @@ class TACardStoreFollow extends StatelessWidget {
               ],
             ),
             SizedBox(height: 35),
-            TaTitleLargeText(
+            TATitleLargeText(
               text: stores.name,
               color: context.colorScheme.onSurface,
             ),
@@ -155,7 +155,7 @@ class TACardStoreFollow extends StatelessWidget {
                   minimumSize: const Size(80, 25),
                   backgroundColor: context.colorScheme.primary,
                 ),
-                child: TaTitleMediumText(
+                child: TATitleMediumText(
                   text: S.current.homeFollowButton,
                 )),
           ],

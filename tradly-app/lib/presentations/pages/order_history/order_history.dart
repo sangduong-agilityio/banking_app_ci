@@ -4,6 +4,7 @@ import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
+import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/not_found.dart';
@@ -18,15 +19,14 @@ class OrderHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('en', null);
-    return Scaffold(
-      backgroundColor: context.colorScheme.inversePrimary,
+    return TAScaffold(
       appBar: TaAppBar(
         automaticallyImplyLeading: false,
         centerTitle: false,
         toolbarHeight: TaAppBarSize.small,
         title: Padding(
           padding: const EdgeInsets.only(left: 16),
-          child: TaDisplaySmallText(
+          child: TADisplaySmallText(
             text: S.current.orderHistoryTitle,
             fontWeight: FontWeight.w700,
           ),
@@ -56,7 +56,7 @@ class OrderHistoryScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      TaHeadlineLargeText(
+                      TAHeadlineLargeText(
                         text: S.current.orderTransactionsTitle,
                         fontWeight: FontWeight.w700,
                         color: context.colorScheme.inverseSurface,
@@ -69,7 +69,7 @@ class OrderHistoryScreen extends StatelessWidget {
                           color: context.colorScheme.tertiaryContainer,
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: TaTitleLargeText(
+                        child: TATitleLargeText(
                           text: dateTimeFormat(DateTime.now()),
                           fontWeight: FontWeight.w700,
                           color: context.colorScheme.primary,
@@ -101,13 +101,13 @@ class OrderHistoryScreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      TaTitleLargeText(
+                                      TATitleLargeText(
                                         text: product?.title ?? '',
                                         color:
                                             context.colorScheme.inverseSurface,
                                       ),
                                       SizedBox(height: 3),
-                                      TaHeadlineSmallText(
+                                      TAHeadlineSmallText(
                                         text: product?.price ?? '',
                                         fontWeight: FontWeight.w700,
                                         color: context.colorScheme.primary,

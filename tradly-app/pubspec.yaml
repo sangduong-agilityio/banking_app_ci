@@ -45,6 +45,15 @@ dependencies:
 
   flutter_local_notifications: ^19.1.0
 
+<<<<<<< HEAD
+  device_preview: ^1.2.0
+
+  freezed_annotation: ^2.4.4
+
+  image_picker: ^1.1.2
+
+=======
+>>>>>>> b98ed6c8e89660d93e38c0f9c1d64812db541e2d
 
 dev_dependencies:
   flutter_test:
@@ -54,19 +63,14 @@ dev_dependencies:
 
   build_runner: ^2.4.11
 
-  device_preview: ^1.2.0
-
   flutter_launcher_icons: ^0.14.3
 
   flutter_gen_runner: ^5.10.0
 
   melos: ^6.1.0
 
-  freezed_annotation: ^2.4.4
-
   envied_generator: ^1.1.1
 
-  image_picker: ^1.1.2
 
 
 flutter:

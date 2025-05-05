@@ -6,7 +6,7 @@ class NotificationService {
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
   final supabase = Supabase.instance.client;
 
-  final bool _initialized = false;
+  bool _initialized = false;
 
   bool get initialized => _initialized;
 
@@ -15,7 +15,8 @@ class NotificationService {
   Future<void> init() async {
     if (_initialized) return;
 
-    const initSettingAndroid = AndroidInitializationSettings('img_tradly');
+    const initSettingAndroid =
+        AndroidInitializationSettings('ic_launcher'); // Fix icon
 
     const initSettingIOS = DarwinInitializationSettings(
       requestAlertPermission: true,
@@ -29,6 +30,7 @@ class NotificationService {
     );
 
     await notificationsPlugin.initialize(initSettings);
+    _initialized = true; // Ensure _initialized is updated
   }
 
   // Notifications detail setup

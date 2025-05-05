@@ -6,6 +6,7 @@ import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/data/repositories/home_repo.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
+import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_event.dart';
 import 'package:tradly_app/presentations/pages/home/views/categories_list.dart';
@@ -19,11 +20,10 @@ import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({
-    super.key,
-    required this.productId,
-  });
+  const HomeScreen({super.key, required this.productId});
+
   final int? productId;
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -45,15 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocProvider(
       create: (context) => HomeBloc(
         repo: context.read<HomeRepository>(),
-      )..add(
-          HomeInitializeEvt(
-            productId: widget.productId ?? 0,
-          ),
-        ),
+      )..add(HomeInitializeEvt(productId: widget.productId ?? 0)),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Scaffold(
-          backgroundColor: context.colorScheme.inversePrimary,
+        child: TAScaffold(
           appBar: TaAppBar.home(
             automaticallyImplyLeading: false,
             searchForm: Padding(
@@ -86,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             title: Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: TaDisplaySmallText(
+              child: TADisplaySmallText(
                 text: S.current.homeGroceriesTitle,
                 fontWeight: FontWeight.w700,
               ),

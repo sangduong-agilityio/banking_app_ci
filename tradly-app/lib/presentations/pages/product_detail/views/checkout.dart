@@ -7,6 +7,7 @@ import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/core/service/notification_service.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
+import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
@@ -36,8 +37,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.colorScheme.inversePrimary,
+    return TAScaffold(
       appBar: TaAppBar.wishlist(
         title: S.current.checkoutTitle,
         onBackPressed: () => Navigator.pop(context),
@@ -50,7 +50,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               height: 52,
               color: context.colorScheme.onPrimary,
               child: Center(
-                child: TaTitleLargeText(
+                child: TATitleLargeText(
                   text: S.current.checkoutAddNewAddressTitle,
                   color: context.colorScheme.onSurface,
                 ),
@@ -77,31 +77,31 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TaTitleLargeText(
+                            TATitleLargeText(
                               text: widget.product?.title ?? '',
                               color: context.colorScheme.onSurface,
                             ),
                             SizedBox(height: 10),
                             Row(
                               children: [
-                                TaTitleLargeText(
+                                TATitleLargeText(
                                   text: widget.product?.newPrice ?? '',
                                   color: context.colorScheme.primary,
                                 ),
                                 const SizedBox(width: 5),
-                                TaTitleLargeText(
+                                TATitleLargeText(
                                   text: widget.product?.price ?? '',
                                   color: context.colorScheme.onSurface,
                                 ),
                                 const SizedBox(width: 5),
-                                TaTitleLargeText(
+                                TATitleLargeText(
                                   text: '50% off ',
                                   color: context.colorScheme.onSurface,
                                 ),
                               ],
                             ),
                             SizedBox(height: 10),
-                            TaTitleMediumText(
+                            TATitleMediumText(
                               text: "Qty : 1",
                               color: context.colorScheme.onSurface,
                             ),
@@ -114,7 +114,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Divider(color: Colors.grey[300]),
                   TextButton(
                     onPressed: () {},
-                    child: TaTitleLargeText(
+                    child: TATitleLargeText(
                       text: S.current.storeRemoveButton,
                       color: Colors.grey,
                     ),
@@ -134,7 +134,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TaHeadlineMediumText(
+                        TAHeadlineMediumText(
                           text: S.current.checkoutPriceDetailsTitle,
                           fontWeight: FontWeight.w600,
                           color: context.colorScheme.onSurface,
@@ -143,12 +143,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            TaTitleLargeText(
+                            TATitleLargeText(
                               text: S.current.checkoutPriceItemTitle('1'),
                               color: context.colorScheme.onSurface,
                               fontWeight: FontWeight.w500,
                             ),
-                            TaTitleLargeText(
+                            TATitleLargeText(
                               text: widget.product?.newPrice ?? '',
                               color: context.colorScheme.onSurface,
                               fontWeight: FontWeight.w500,
@@ -159,12 +159,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            TaTitleLargeText(
+                            TATitleLargeText(
                               text: S.current.checkoutDeliveryFreeTitle,
                               color: context.colorScheme.onSurface,
                               fontWeight: FontWeight.w500,
                             ),
-                            TaTitleLargeText(
+                            TATitleLargeText(
                               text: S.current.checkoutInforTitle,
                               color: context.colorScheme.onSurface,
                               fontWeight: FontWeight.w500,
@@ -181,12 +181,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TaHeadlineMediumText(
+                        TAHeadlineMediumText(
                           text: S.current.checkoutTotalAmountTitle,
                           fontWeight: FontWeight.w600,
                           color: context.colorScheme.onSurface,
                         ),
-                        TaTitleLargeText(
+                        TATitleLargeText(
                           text: widget.product?.newPrice ?? '',
                           color: context.colorScheme.onSurface,
                           fontWeight: FontWeight.w500,

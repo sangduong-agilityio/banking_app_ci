@@ -7,9 +7,6 @@
             "type": "dart",
             "flutterMode": "debug",
             "program": "tradly-app/lib/main.dart",
-            "args": [
-                "--enable-experiment=macros"
-            ]
         },
         {
             "name": "[TradlyApp][Dev] Start development with Device Preview",
@@ -17,9 +14,6 @@
             "type": "dart",
             "flutterMode": "debug",
             "program": "tradly/lib/main_device_preview.dart",
-            "args": [
-                "--enable-experiment=macros"
-            ]
         },
     ]
 }

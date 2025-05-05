@@ -6,9 +6,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
-import 'package:tradly_app/presentations/pages/auth/states/sign_in_bloc.dart';
-import 'package:tradly_app/presentations/pages/auth/states/sign_in_event.dart';
-import 'package:tradly_app/presentations/pages/auth/states/sign_in_state.dart';
+import 'package:tradly_app/presentations/layouts/scaffold.dart';
+import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_bloc.dart';
+import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_event.dart';
+import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_state.dart';
 import 'package:tradly_app/core/utils/enumeration.dart';
 import 'package:tradly_app/core/utils/validators.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
@@ -18,7 +19,6 @@ import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:tradly_app/presentations/widgets/snackbar.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -51,22 +51,23 @@ class _SignInScreenState extends State<SignInScreen> {
         child: BlocListener<SignInBloc, SignInState>(
           listener: (context, state) async {
             if (state.viewState == SubmissionStatus.loading) {
-              LALoadingIndicator.show(context);
+              TALoadingIndicator.show(context);
             } else if (state.viewState == SubmissionStatus.successful) {
-              LALoadingIndicator.hide(context);
+              TALoadingIndicator.hide(context);
               final prefs = await SharedPreferences.getInstance();
               await prefs.setString('session_token', state.sessionToken ?? '');
-              context.pushNamed(TAPaths.home.name);
+              if (context.mounted) {
+                await context.pushNamed(TAPaths.home.name);
+              }
             } else if (state.viewState == SubmissionStatus.failed) {
-              LALoadingIndicator.hide(context);
+              TALoadingIndicator.hide(context);
               TASnackBar.buildErrorSnackbar(
                 context,
                 state.errorMessage ?? '',
               );
             }
           },
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
+          child: TAScaffold(
             backgroundColor: context.colorScheme.primary,
             body: Container(
               padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -75,11 +76,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TaDisplaySmallText(
+                    TADisplaySmallText(
                       text: S.current.signInWelcomeTitle,
                     ),
                     const SizedBox(height: 66),
-                    TaHeadlineSmallText(
+                    TAHeadlineSmallText(
                       text: S.current.signInLoginPrompt,
                     ),
                     const SizedBox(height: 25),
@@ -130,6 +131,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         textColor: context.colorScheme.primary,
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             context
                                 .read<SignInBloc>()
                                 .add(SignInButtonPressedEvt());
@@ -140,7 +142,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(height: 20),
                     TextButton(
                       onPressed: () {},
-                      child: TaHeadlineMediumText(
+                      child: TAHeadlineMediumText(
                         text: S.current.signInForgotPassword,
                       ),
                     ),

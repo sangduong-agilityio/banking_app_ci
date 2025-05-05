@@ -5,6 +5,7 @@ import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/data/models/store_model.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
+import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
@@ -46,14 +47,14 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return TAScaffold(
       backgroundColor: context.colorScheme.inversePrimary,
       appBar: TaAppBar(
         toolbarHeight: TaAppBarSize.small,
         backgroundColor: context.colorScheme.primary,
         title: Padding(
           padding: const EdgeInsets.only(left: 16),
-          child: TaDisplaySmallText(
+          child: TADisplaySmallText(
             text: S.current.storeTitle,
             fontWeight: FontWeight.w700,
           ),
@@ -73,7 +74,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
               const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TaTitleLargeText(
+                child: TATitleLargeText(
                   textAlign: TextAlign.center,
                   text: S.current.storeDetailTitle,
                   color: context.colorScheme.onSurface,
@@ -160,54 +161,6 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
           },
         ),
       ),
-    );
-  }
-
-  Widget _taglineField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Text(
-            S.current.storeTaglineLabel,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Text(
-                  //   taglineController.text,
-                  //   style: const TextStyle(fontSize: 12),
-                  // ),
-                  const SizedBox(width: 4),
-                  InkWell(
-                    // onTap: () {
-                    //   _taglineController.clear();
-                    // },
-                    child: const Icon(
-                      Icons.close,
-                      size: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
