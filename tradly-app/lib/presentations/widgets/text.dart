@@ -53,7 +53,7 @@ class TaDisplayLargeText extends StatelessWidget {
         color: color,
         fontWeight: fontWeight,
         overflow: overflow,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.displayLarge?.fontSize ?? 30,
         ),
@@ -87,7 +87,7 @@ class TaDisplayMediumText extends StatelessWidget {
         color: color,
         overflow: overflow,
         fontWeight: fontWeight,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.displayMedium?.fontSize ?? 26,
         ),
@@ -121,7 +121,7 @@ class TaDisplaySmallText extends StatelessWidget {
         color: color,
         fontWeight: fontWeight,
         overflow: overflow,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.displaySmall?.fontSize ?? 24,
         ),
@@ -158,7 +158,7 @@ class TaHeadlineLargeText extends StatelessWidget {
         overflow: overflow,
         fontWeight: fontWeight,
         letterSpacing: letterSpacing,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.headlineLarge?.fontSize ?? 20,
         ),
@@ -192,7 +192,7 @@ class TaHeadlineMediumText extends StatelessWidget {
         color: color,
         fontWeight: fontWeight,
         overflow: overflow,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.headlineMedium?.fontSize ?? 18,
         ),
@@ -229,7 +229,7 @@ class TaHeadlineSmallText extends StatelessWidget {
         fontWeight: fontWeight,
         letterSpacing: letterSpacing,
         overflow: overflow,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.headlineSmall?.fontSize ?? 16,
         ),
@@ -269,7 +269,7 @@ class TaTitleLargeText extends StatelessWidget {
         fontWeight: fontWeight,
         height: height,
         letterSpacing: letterSpacing,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.titleLarge?.fontSize ?? 14,
         ),
@@ -309,7 +309,7 @@ class TaTitleMediumText extends StatelessWidget {
         fontWeight: fontWeight,
         letterSpacing: letterSpacing,
         height: height,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.titleMedium?.fontSize ?? 12,
         ),
@@ -349,7 +349,7 @@ class TaTitleSmallText extends StatelessWidget {
         overflow: overflow,
         fontWeight: fontWeight,
         letterSpacing: letterSpacing,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.titleSmall?.fontSize ?? 11,
         ),
@@ -391,7 +391,7 @@ class TaLabelLargeText extends StatelessWidget {
         overflow: overflow,
         letterSpacing: letterSpacing,
         height: height,
-        fontSize: TaResponsive.scale(
+        fontSize: TAResponsive.scale(
           context,
           defaultValue: context.textTheme.labelLarge?.fontSize ?? 10,
         ),

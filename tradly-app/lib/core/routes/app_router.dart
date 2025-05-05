@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/router_guard.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/layouts/bottom_navigation_bar.dart';
-import 'package:tradly_app/presentations/pages/auth/otp_verification_screen.dart';
-import 'package:tradly_app/presentations/pages/auth/send_otp_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_in_screen.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_up_screen.dart';
 import 'package:tradly_app/presentations/pages/browse/browse.dart';
 import 'package:tradly_app/presentations/pages/home/home_screen.dart';
 import 'package:tradly_app/presentations/pages/on_boarding/on_boarding_screen.dart';
-import 'package:tradly_app/presentations/pages/order_history/order_history_screen.dart';
+import 'package:tradly_app/presentations/pages/order_history/order_history.dart';
 import 'package:tradly_app/presentations/pages/product_detail/product_detail.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/beverages_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/bread_bakery_list.dart';
+import 'package:tradly_app/presentations/pages/product_detail/views/checkout.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/egg_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/frozen_veg_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/fruit_list.dart';
@@ -69,16 +69,6 @@ class TARouter {
         },
       ),
       GoRoute(
-        name: TAPaths.sendOTP.name,
-        path: TAPaths.sendOTP.path,
-        builder: (context, state) => const SendOtpScreen(),
-      ),
-      GoRoute(
-        name: TAPaths.otpVerification.name,
-        path: TAPaths.otpVerification.path,
-        builder: (context, state) => const OtpVerificationScreen(),
-      ),
-      GoRoute(
         name: TAPaths.addProduct.name,
         path: TAPaths.addProduct.path,
         builder: (context, state) => const AddProductDetailScreen(),
@@ -87,6 +77,11 @@ class TARouter {
         name: TAPaths.createStore.name,
         path: TAPaths.createStore.path,
         builder: (context, state) => const CreateStoreScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.checkout.name,
+        path: TAPaths.checkout.path,
+        builder: (context, state) => const CheckoutScreen(),
       ),
       GoRoute(
         name: TAPaths.editProduct.name,
@@ -238,7 +233,12 @@ class TARouter {
               GoRoute(
                 name: TAPaths.orderHistory.name,
                 path: TAPaths.orderHistory.path,
-                builder: (context, state) => const OrderHistoryScreen(),
+                builder: (context, state) {
+                  final product = state.extra is ProductModel
+                      ? state.extra as ProductModel
+                      : null;
+                  return OrderHistoryScreen(product: product);
+                },
               ),
             ],
           ),
@@ -255,32 +255,6 @@ class TARouter {
         ],
       ),
     ];
-  }
-
-  static void navigateToCategory(
-    BuildContext context,
-    String routeName, {
-    Map<String, String>? queryParams,
-    Object? extra,
-  }) {
-    context.pushNamed(
-      routeName,
-      queryParameters: queryParams ?? <String, dynamic>{},
-      extra: extra,
-    );
-  }
-
-  static void navigateToProductDetail(
-    BuildContext context,
-    String routeName, {
-    Map<String, String>? queryParams,
-    Object? extra,
-  }) {
-    context.pushNamed(
-      routeName,
-      queryParameters: queryParams ?? <String, dynamic>{},
-      extra: extra,
-    );
   }
 
   static void navigateTo(
@@ -310,25 +284,9 @@ enum TAPaths {
     name: 'signUp',
     path: '/signUp',
   ),
-  sendOTP(
-    name: 'sendOTP',
-    path: '/sendOTP',
-  ),
-  otpVerification(
-    name: 'otpVerification',
-    path: '/otpVerification',
-  ),
   home(
     name: 'home',
     path: '/home',
-  ),
-  productDetail(
-    name: 'productDetail',
-    path: '/productDetail',
-  ),
-  profile(
-    name: 'profile',
-    path: '/profile',
   ),
   store(
     name: 'store',
@@ -341,6 +299,14 @@ enum TAPaths {
   orderHistory(
     name: 'orderHistory',
     path: '/orderHistory',
+  ),
+  productDetail(
+    name: 'productDetail',
+    path: '/productDetail',
+  ),
+  profile(
+    name: 'profile',
+    path: '/profile',
   ),
   addProduct(
     name: 'addProduct',
@@ -358,6 +324,11 @@ enum TAPaths {
     name: 'wishlist',
     path: '/wishlist',
   ),
+  checkout(
+    name: 'myCart',
+    path: '/myCart',
+  ),
+
   beverages(
     name: 'beverages',
     path: '/beverages',
@@ -409,35 +380,35 @@ List<LABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
     LABottomNavigationBarItem(
       icon: TAAssets.home(),
       activeIcon: TAAssets.home(
-        color: const Color(0xFF33907C),
+        color: context.colorScheme.primary,
       ),
       label: S.current.homeLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.search(),
       activeIcon: TAAssets.search(
-        color: const Color(0xFF33907C),
+        color: context.colorScheme.primary,
       ),
       label: S.current.homeBrowseLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.store(),
       activeIcon: TAAssets.store(
-        color: const Color(0xFF33907C),
+        color: context.colorScheme.primary,
       ),
       label: S.current.homeStoreLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.order(),
       activeIcon: TAAssets.order(
-        color: const Color(0xFF33907C),
+        color: context.colorScheme.primary,
       ),
       label: S.current.homeOrderHistoryLabel,
     ),
     LABottomNavigationBarItem(
       icon: TAAssets.profile(),
       activeIcon: TAAssets.profile(
-        color: const Color(0xFF33907C),
+        color: context.colorScheme.primary,
       ),
       label: S.current.homeProfileLabel,
     ),

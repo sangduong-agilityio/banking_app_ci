@@ -65,7 +65,7 @@ class _TAElevatedButtonState extends State<TAElevatedButton> {
                     ? context.colorScheme.primary
                     : context.colorScheme.onPrimary),
             fontSize: widget.textSize ??
-                TaResponsive.scale(
+                TAResponsive.scale(
                   context,
                   defaultValue: widget.value ?? 18,
                 ),
@@ -142,7 +142,7 @@ class _TAOutlinedButtonState extends State<TAOutlinedButton> {
                     ? context.colorScheme.primary
                     : context.colorScheme.onPrimary),
             fontSize: widget.textSize ??
-                TaResponsive.scale(
+                TAResponsive.scale(
                   context,
                   defaultValue: widget.value ?? 18,
                 ),
