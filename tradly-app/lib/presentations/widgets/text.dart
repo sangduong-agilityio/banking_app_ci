@@ -18,12 +18,14 @@ class TAText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      maxLines: maxLines,
-      text,
-      textAlign: textAlign,
-      key: key,
-      style: style,
+    return Semantics(
+      child: Text(
+        maxLines: maxLines,
+        text,
+        textAlign: textAlign,
+        key: key,
+        style: style,
+      ),
     );
   }
 }
@@ -379,6 +381,7 @@ class TALabelLargeText extends StatelessWidget {
   final double? letterSpacing;
   final double? height;
   final int? maxLines;
+
   @override
   Widget build(BuildContext context) {
     return TAText(

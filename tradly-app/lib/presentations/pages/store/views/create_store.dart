@@ -54,9 +54,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
         backgroundColor: context.colorScheme.primary,
         title: Padding(
           padding: const EdgeInsets.only(left: 16),
-          child: TADisplaySmallText(
-            text: S.current.storeTitle,
-            fontWeight: FontWeight.w700,
+          child: Semantics(
+            child: TADisplaySmallText(
+              text: S.current.storeTitle,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),
@@ -74,10 +76,12 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
               const SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TATitleLargeText(
-                  textAlign: TextAlign.center,
-                  text: S.current.storeDetailTitle,
-                  color: context.colorScheme.onSurface,
+                child: Semantics(
+                  child: TATitleLargeText(
+                    textAlign: TextAlign.center,
+                    text: S.current.storeDetailTitle,
+                    color: context.colorScheme.onSurface,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -90,48 +94,66 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 24),
-                      TATextField(
-                        label: S.current.storeNameLabel,
-                        controller: storeNameController,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeNameLabel,
+                          controller: storeNameController,
+                        ),
                       ),
-                      TATextField(
-                        label: S.current.storeWebAddressLabel,
-                        controller: webAddressController,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeWebAddressLabel,
+                          controller: webAddressController,
+                        ),
                       ),
-                      TATextField(
-                        label: S.current.storeDescriptionLabel,
-                        controller: descriptionController,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeDescriptionLabel,
+                          controller: descriptionController,
+                        ),
                       ),
-                      TATextField(
-                        label: S.current.storeTypeLabel,
-                        controller: storeTypeController,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeTypeLabel,
+                          controller: storeTypeController,
+                        ),
                       ),
-                      TATextField(
-                        label: S.current.storeAddressLabel,
-                        controller: addressLine1Controller,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeAddressLabel,
+                          controller: addressLine1Controller,
+                        ),
                       ),
-                      TATextField(
-                        label: S.current.storeCityLabel,
-                        controller: cityController,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeCityLabel,
+                          controller: cityController,
+                        ),
                       ),
-                      TATextField(
-                        label: S.current.storeCountryLabel,
-                        controller: countryController,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeCountryLabel,
+                          controller: countryController,
+                        ),
                       ),
-                      TATextField(
-                        label: S.current.storeCourierNameLabel,
-                        controller: courierNameController,
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeCourierNameLabel,
+                          controller: courierNameController,
+                        ),
                       ),
                       const SizedBox(height: 20),
-                      TATextField(
-                        label: S.current.storeTaglineLabel,
-                        isChipInput: true,
-                        chips: _tagLineDetail,
-                        onChipsChanged: (chips) {
-                          setState(() {
-                            _tagLineDetail = chips;
-                          });
-                        },
+                      Semantics(
+                        child: TATextField(
+                          label: S.current.storeTaglineLabel,
+                          isChipInput: true,
+                          chips: _tagLineDetail,
+                          onChipsChanged: (chips) {
+                            setState(() {
+                              _tagLineDetail = chips;
+                            });
+                          },
+                        ),
                       ),
                     ],
                   ),
