@@ -98,59 +98,54 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   Positioned(
                     top: 110,
-                    child: InkWell(
-                      // Replaced GestureDetector with InkWell for better gesture handling
-                      onTap:
-                          () {}, // Added a default onTap to ensure InkWell works
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 32,
-                        margin: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.onPrimary,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _menuItem(
-                              title: S.current.profileEditTitle,
-                              onTap: () {},
-                            ),
-                            _divider(),
-                            _menuItem(
-                              title: S.current.profileLanguageCurrencyTitle,
-                              onTap: () {},
-                            ),
-                            _divider(),
-                            _menuItem(
-                              title: S.current.profileFeedbackTitle,
-                              onTap: () {},
-                            ),
-                            _divider(),
-                            _menuItem(
-                              title: S.current.profileReferFriendTitle,
-                              onTap: () {},
-                            ),
-                            _divider(),
-                            _menuItem(
-                              title: S.current.profileTermsAndConditionsTitle,
-                              onTap: () {},
-                            ),
-                            _divider(),
-                            _menuItem(
-                              title: S.current.profileLogoutTitle,
-                              textColor: context.colorScheme.primary,
-                              onTap: () async {
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                await prefs.remove('session_token');
-                                if (context.mounted) {
-                                  context.go(TAPaths.onboarding.path);
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width - 32,
+                      margin: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.onPrimary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _menuItem(
+                            title: S.current.profileEditTitle,
+                            onTap: () {},
+                          ),
+                          _divider(),
+                          _menuItem(
+                            title: S.current.profileLanguageCurrencyTitle,
+                            onTap: () {},
+                          ),
+                          _divider(),
+                          _menuItem(
+                            title: S.current.profileFeedbackTitle,
+                            onTap: () {},
+                          ),
+                          _divider(),
+                          _menuItem(
+                            title: S.current.profileReferFriendTitle,
+                            onTap: () {},
+                          ),
+                          _divider(),
+                          _menuItem(
+                            title: S.current.profileTermsAndConditionsTitle,
+                            onTap: () {},
+                          ),
+                          _divider(),
+                          _menuItem(
+                            title: S.current.profileLogoutTitle,
+                            textColor: context.colorScheme.primary,
+                            onTap: () async {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.remove('session_token');
+                              if (context.mounted) {
+                                context.go(TAPaths.onboarding.path);
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
