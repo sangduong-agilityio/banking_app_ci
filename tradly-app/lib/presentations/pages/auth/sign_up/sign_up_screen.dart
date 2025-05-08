@@ -70,8 +70,8 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
           },
           child: TAScaffold(
             backgroundColor: context.colorScheme.primary,
-            appBar: TaAppBar(
-              toolbarHeight: TaAppBarSize.medium,
+            appBar: TAAppBar(
+              toolbarHeight: TAAppBarSize.medium,
               backgroundColor: context.colorScheme.primary,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),

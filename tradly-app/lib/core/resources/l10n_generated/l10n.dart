@@ -690,6 +690,36 @@ class S {
     );
   }
 
+  /// `Sort by`
+  String get productDetailSortByButton {
+    return Intl.message(
+      'Sort by',
+      name: 'productDetailSortByButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Location`
+  String get productDetailLocationButton {
+    return Intl.message(
+      'Location',
+      name: 'productDetailLocationButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category`
+  String get productDetailCategoryButton {
+    return Intl.message(
+      'Category',
+      name: 'productDetailCategoryButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Frozen Veg`
   String get productDetailFrozenVegTitle {
     return Intl.message(

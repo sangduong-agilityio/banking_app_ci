@@ -30,32 +30,23 @@ class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     return TAScaffold(
-      appBar: TaAppBar(
-        toolbarHeight: TaAppBarSize.small,
-        bottomType: TaAppBarBottomType.none,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: TADisplaySmallText(
-            text: S.current.storeTitle,
-            fontWeight: FontWeight.w700,
-          ),
+      appBar: TAAppBar(
+        toolbarHeight: TAAppBarSize.small,
+        bottomType: TAAppBarBottomType.none,
+        title: TADisplaySmallText(
+          text: S.current.storeTitle,
+          fontWeight: FontWeight.w700,
         ),
         centerTitle: false,
         backgroundColor: context.colorScheme.primary,
-        trailing: Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.favorite),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: TAAssets.cart(),
-                onPressed: () {},
-              ),
-            ],
-          ),
+        trailing: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.favorite),
+              onPressed: () {},
+            ),
+            TAAssets.cart(),
+          ],
         ),
       ),
       body: BlocBuilder<StoreBloc, StoreState>(

@@ -92,6 +92,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Beverages"),
         "productDetailBreadBakeryTitle":
             MessageLookupByLibrary.simpleMessage("Bread & Bakery"),
+        "productDetailCategoryButton":
+            MessageLookupByLibrary.simpleMessage("Category"),
         "productDetailCategoryTitle":
             MessageLookupByLibrary.simpleMessage("CategoryTitle"),
         "productDetailConditionTitle":
@@ -110,6 +112,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Fruit"),
         "productDetailHomeCareTitle":
             MessageLookupByLibrary.simpleMessage("Home Care"),
+        "productDetailLocationButton":
+            MessageLookupByLibrary.simpleMessage("Location"),
         "productDetailLocationTitle":
             MessageLookupByLibrary.simpleMessage("Location"),
         "productDetailPetCareTitle":
@@ -118,6 +122,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Price Type"),
         "productDetailSaleOffTitle":
             MessageLookupByLibrary.simpleMessage("50% off"),
+        "productDetailSortByButton":
+            MessageLookupByLibrary.simpleMessage("Sort by"),
         "productDetailVegetablesTitle":
             MessageLookupByLibrary.simpleMessage("Vegetables"),
         "profileEditTitle":

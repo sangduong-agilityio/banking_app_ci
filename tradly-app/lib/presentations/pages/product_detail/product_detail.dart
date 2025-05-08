@@ -34,8 +34,8 @@ class ProductDetailPage extends StatelessWidget {
         builder: (context, state) {
           final product = state.product;
           return TAScaffold(
-            appBar: TaAppBar.details(
-              bottomType: TaAppBarBottomType.imageBackground,
+            appBar: TAAppBar.productDetail(
+              bottomType: TAAppBarBottomType.imageBackground,
               background: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -50,7 +50,7 @@ class ProductDetailPage extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.2),
+                    color: context.colorScheme.onPrimary.withOpacity(0.2),
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.share),
@@ -61,7 +61,7 @@ class ProductDetailPage extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.2),
+                    color: context.colorScheme.onPrimary.withOpacity(0.2),
                   ),
                   child: IconButton(
                     icon: Icon(

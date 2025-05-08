@@ -30,7 +30,7 @@ class TAScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = backgroundColor ?? context.colorScheme.surface;
+    final color = backgroundColor ?? context.colorScheme.onPrimary;
     final colorComputeLuminance = color.computeLuminance();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -38,7 +38,7 @@ class TAScaffold extends StatelessWidget {
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: brightness ??
             (colorComputeLuminance >= 0.5 ? Brightness.dark : Brightness.light),
-        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarColor: color,
       ),
       child: PopScope(
         canPop: canPop,

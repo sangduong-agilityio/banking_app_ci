@@ -49,8 +49,8 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   Widget build(BuildContext context) {
     return TAScaffold(
       backgroundColor: context.colorScheme.inversePrimary,
-      appBar: TaAppBar(
-        toolbarHeight: TaAppBarSize.small,
+      appBar: TAAppBar(
+        toolbarHeight: TAAppBarSize.small,
         backgroundColor: context.colorScheme.primary,
         title: Padding(
           padding: const EdgeInsets.only(left: 16),

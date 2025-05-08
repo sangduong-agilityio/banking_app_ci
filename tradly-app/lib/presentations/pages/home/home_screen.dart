@@ -39,42 +39,31 @@ class _HomeScreenState extends State<HomeScreen> {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: TAScaffold(
-          appBar: TaAppBar.home(
-            automaticallyImplyLeading: false,
+          appBar: TAAppBar.home(
             searchForm: Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: TASearchView(
                 placeholder: S.current.homeSearchProductPlaceholder,
               ),
             ),
-            backgroundColor: context.colorScheme.primary,
             centerTitle: false,
-            trailing: Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.favorite),
-                    onPressed: () {
-                      context.pushNamed(
-                        TAPaths.wishlist.name,
-                        extra: widget.productId,
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: TAAssets.cart(),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
+            trailing: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.favorite),
+                  onPressed: () {
+                    context.pushNamed(
+                      TAPaths.wishlist.name,
+                      extra: widget.productId,
+                    );
+                  },
+                ),
+                TAAssets.cart(),
+              ],
             ),
-            title: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: TADisplaySmallText(
-                text: S.current.homeGroceriesTitle,
-                fontWeight: FontWeight.w700,
-              ),
+            title: TADisplaySmallText(
+              text: S.current.homeGroceriesTitle,
+              fontWeight: FontWeight.w700,
             ),
           ),
           body: SingleChildScrollView(

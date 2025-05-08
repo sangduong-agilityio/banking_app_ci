@@ -28,37 +28,27 @@ class ProfileScreen extends StatelessWidget {
         repo: AuthRepositoryImplement(Supabase.instance.client),
       )..add(FetchProfileEvt()),
       child: TAScaffold(
-        appBar: TaAppBar(
+        appBar: TAAppBar(
           centerTitle: false,
-          toolbarHeight: TaAppBarSize.small,
-          title: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: TADisplaySmallText(
-              text: S.current.profileTitle,
-              fontWeight: FontWeight.w700,
-            ),
+          toolbarHeight: TAAppBarSize.small,
+          title: TADisplaySmallText(
+            text: S.current.profileTitle,
+            fontWeight: FontWeight.w700,
           ),
-          backgroundColor: context.colorScheme.primary,
-          trailing: Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.favorite),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: TAAssets.cart(),
-                  onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.remove('session_token');
-                    if (context.mounted) {
-                      context.go(TAPaths.onboarding.path);
-                    }
-                  },
-                ),
-              ],
-            ),
+          trailing: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.favorite),
+                onPressed: () async {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.remove('session_token');
+                  if (context.mounted) {
+                    context.go(TAPaths.onboarding.path);
+                  }
+                },
+              ),
+              TAAssets.cart(),
+            ],
           ),
         ),
         body: BlocBuilder<ProfileBloc, ProfileState>(
@@ -108,53 +98,59 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   Positioned(
                     top: 110,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 32,
-                      margin: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _menuItem(
-                            title: S.current.profileEditTitle,
-                            onTap: () {},
-                          ),
-                          _menuItem(
-                            title: S.current.profileLanguageCurrencyTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileFeedbackTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileReferFriendTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileTermsAndConditionsTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileLogoutTitle,
-                            textColor: context.colorScheme.primary,
-                            onTap: () async {
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              await prefs.remove('session_token');
-                              if (context.mounted) {
-                                context.go(TAPaths.onboarding.path);
-                              }
-                            },
-                          ),
-                        ],
+                    child: InkWell(
+                      // Replaced GestureDetector with InkWell for better gesture handling
+                      onTap:
+                          () {}, // Added a default onTap to ensure InkWell works
+                      child: Container(
+                        width: MediaQuery.of(context).size.width - 32,
+                        margin: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.onPrimary,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _menuItem(
+                              title: S.current.profileEditTitle,
+                              onTap: () {},
+                            ),
+                            _divider(),
+                            _menuItem(
+                              title: S.current.profileLanguageCurrencyTitle,
+                              onTap: () {},
+                            ),
+                            _divider(),
+                            _menuItem(
+                              title: S.current.profileFeedbackTitle,
+                              onTap: () {},
+                            ),
+                            _divider(),
+                            _menuItem(
+                              title: S.current.profileReferFriendTitle,
+                              onTap: () {},
+                            ),
+                            _divider(),
+                            _menuItem(
+                              title: S.current.profileTermsAndConditionsTitle,
+                              onTap: () {},
+                            ),
+                            _divider(),
+                            _menuItem(
+                              title: S.current.profileLogoutTitle,
+                              textColor: context.colorScheme.primary,
+                              onTap: () async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.remove('session_token');
+                                if (context.mounted) {
+                                  context.go(TAPaths.onboarding.path);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -175,10 +171,10 @@ class ProfileScreen extends StatelessWidget {
     required VoidCallback onTap,
     Color? textColor,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      child: InkWell(
+        onTap: onTap,
         child: TATitleLargeText(
           text: title,
           fontWeight: FontWeight.w500,

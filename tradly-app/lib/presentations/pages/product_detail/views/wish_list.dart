@@ -20,7 +20,7 @@ class WishListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TAScaffold(
-        appBar: TaAppBar.wishlist(
+        appBar: TAAppBar.checkout(
           title: 'Wishlist',
           onBackPressed: () => Navigator.pop(context),
           backgroundColor: context.colorScheme.primary,

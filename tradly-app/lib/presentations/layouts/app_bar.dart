@@ -1,49 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
+import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/utils/responsive.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
-class TaAppBarSize {
+class TAAppBarSize {
   static const double small = kToolbarHeight;
   static const double minimum = 72;
   static const double medium = 126;
   static const double large = 182;
 }
 
-enum TaAppBarType {
+enum TAAppBarType {
   home,
-  categoryDetail,
-  details,
-  wishlist,
-  custom,
+  productList,
+  productDetail,
+  checkout,
 }
 
-enum TaAppBarBottomType {
+enum TAAppBarBottomType {
   none,
-  filter,
+  options,
   search,
   imageBackground,
 }
 
-enum TaAppBarShape {
-  normal,
-  rounded,
-}
-
-class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TaAppBar({
-    this.appBarType = TaAppBarType.custom,
+class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const TAAppBar({
+    this.appBarType = TAAppBarType.home,
     this.automaticallyImplyLeading = true,
-    this.toolbarHeight = TaAppBarSize.medium,
+    this.toolbarHeight = TAAppBarSize.medium,
     this.title,
     this.leading,
     this.backgroundColor,
     this.subTitle,
     this.trailing,
-    this.bottomType = TaAppBarBottomType.none,
-    this.shapeType = TaAppBarShape.normal,
+    this.bottomType = TAAppBarBottomType.none,
     this.searchForm,
     this.filterOptions,
     this.background,
@@ -56,7 +50,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
   });
 
   /// Factory constructor for home screen app bar
-  factory TaAppBar.home({
+  factory TAAppBar.home({
     required Widget title,
     required Widget searchForm,
     List<Widget>? actions,
@@ -65,11 +59,11 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     bool? centerTitle,
     bool? automaticallyImplyLeading,
   }) {
-    return TaAppBar(
-      appBarType: TaAppBarType.home,
+    return TAAppBar(
+      appBarType: TAAppBarType.home,
       title: title,
       backgroundColor: backgroundColor,
-      bottomType: TaAppBarBottomType.search,
+      bottomType: TAAppBarBottomType.search,
       searchForm: searchForm,
       trailing: trailing,
       automaticallyImplyLeading: automaticallyImplyLeading ?? true,
@@ -77,17 +71,17 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  /// Factory constructor for category detail screen app bar
-  factory TaAppBar.categoryDetail({
+  /// Factory constructor for product list screen app bar
+  factory TAAppBar.productList({
     required String title,
     VoidCallback? onBackPressed,
     Color? backgroundColor,
-    TaAppBarBottomType bottomType = TaAppBarBottomType.filter,
+    TAAppBarBottomType bottomType = TAAppBarBottomType.options,
     Widget? filterOptions,
     VoidCallback? onPressed,
   }) {
-    return TaAppBar(
-      appBarType: TaAppBarType.categoryDetail,
+    return TAAppBar(
+      appBarType: TAAppBarType.productList,
       title: TADisplaySmallText(
         text: title,
         fontWeight: FontWeight.w700,
@@ -104,17 +98,17 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   /// Factory constructor for product details screen app bar
-  factory TaAppBar.details({
+  factory TAAppBar.productDetail({
     required Widget background,
     VoidCallback? onBackPressed,
     VoidCallback? onPressed,
     Color? backgroundColor,
     List<Widget>? actions,
-    TaAppBarBottomType bottomType = TaAppBarBottomType.imageBackground,
+    TAAppBarBottomType bottomType = TAAppBarBottomType.imageBackground,
   }) {
-    return TaAppBar(
-      appBarType: TaAppBarType.details,
-      toolbarHeight: TaAppBarSize.large,
+    return TAAppBar(
+      appBarType: TAAppBarType.productDetail,
+      toolbarHeight: TAAppBarSize.large,
       background: background,
       backgroundColor: Colors.teal,
       leading: Container(
@@ -138,15 +132,15 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  /// Factory constructor for wishlist screen app bar
-  factory TaAppBar.wishlist({
+  /// Factory constructor for checkout screen app bar
+  factory TAAppBar.checkout({
     required String title,
     VoidCallback? onBackPressed,
     Color? backgroundColor,
-    TaAppBarBottomType bottomType = TaAppBarBottomType.none,
+    TAAppBarBottomType bottomType = TAAppBarBottomType.none,
   }) {
-    return TaAppBar(
-      appBarType: TaAppBarType.wishlist,
+    return TAAppBar(
+      appBarType: TAAppBarType.checkout,
       title: TADisplaySmallText(
         text: title,
         fontWeight: FontWeight.w700,
@@ -157,11 +151,11 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: onBackPressed,
       ),
       bottomType: bottomType,
-      toolbarHeight: TaAppBarSize.medium,
+      toolbarHeight: TAAppBarSize.small,
     );
   }
 
-  final TaAppBarType appBarType;
+  final TAAppBarType appBarType;
   final Widget? leading;
   final Widget? title;
   final Widget? subTitle;
@@ -169,8 +163,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final Widget? trailing;
   final bool automaticallyImplyLeading;
-  final TaAppBarBottomType bottomType;
-  final TaAppBarShape shapeType;
+  final TAAppBarBottomType bottomType;
   final Widget? searchForm;
   final Widget? filterOptions;
   final Widget? background;
@@ -200,17 +193,24 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
             context,
             defaultValue: toolbarHeight,
           ),
-          backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
+          backgroundColor: backgroundColor ?? context.colorScheme.primary,
           leading: leading ??
               (automaticallyImplyLeading && Navigator.canPop(context)
                   ? IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: context.colorScheme.onPrimary,
+                      ),
                       onPressed:
                           onBackPressed ?? () => Navigator.of(context).pop(),
                     )
                   : null),
           actions: [
-            if (trailing != null) trailing!,
+            if (trailing != null)
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: trailing!,
+              ),
           ],
           title: subTitle != null
               ? Column(
@@ -221,15 +221,11 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
                     subTitle!,
                   ],
                 )
-              : title,
+              : Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: title,
+                ),
           bottom: _buildBottom(context),
-          shape: shapeType == TaAppBarShape.rounded
-              ? const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(12),
-                  ),
-                )
-              : null,
         ),
       ),
     );
@@ -237,7 +233,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   PreferredSizeWidget? _buildBottom(BuildContext context) {
     switch (bottomType) {
-      case TaAppBarBottomType.search:
+      case TAAppBarBottomType.search:
         return PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
@@ -246,7 +242,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         );
 
-      case TaAppBarBottomType.filter:
+      case TAAppBarBottomType.options:
         return PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Padding(
@@ -255,12 +251,13 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         );
 
-      case TaAppBarBottomType.imageBackground:
+      case TAAppBarBottomType.imageBackground:
         return PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Container(height: 120),
         );
-      case TaAppBarBottomType.none:
+
+      case TAAppBarBottomType.none:
         return PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Container(height: 20),
@@ -275,7 +272,7 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
         _buildFilterButton(
           context,
           icon: TAAssets.sortList(),
-          label: 'Sort by',
+          label: S.current.productDetailSortByButton,
           onPressed: () {},
         ),
         _buildFilterButton(
@@ -284,13 +281,13 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
             Icons.location_on,
             size: 16,
           ),
-          label: 'Location',
+          label: S.current.productDetailLocationButton,
           onPressed: () {},
         ),
         _buildFilterButton(
           context,
           icon: TAAssets.category(),
-          label: 'Category',
+          label: S.current.productDetailCategoryButton,
           onPressed: () {},
         ),
       ],
@@ -306,12 +303,8 @@ class TaAppBar extends StatelessWidget implements PreferredSizeWidget {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: icon,
-      label: Text(
-        label,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 14,
-        ),
+      label: TATitleLargeText(
+        text: label,
       ),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(

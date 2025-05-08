@@ -20,32 +20,21 @@ class OrderHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     initializeDateFormatting('en', null);
     return TAScaffold(
-      appBar: TaAppBar(
-        automaticallyImplyLeading: false,
+      appBar: TAAppBar(
         centerTitle: false,
-        toolbarHeight: TaAppBarSize.small,
-        title: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: TADisplaySmallText(
-            text: S.current.orderHistoryTitle,
-            fontWeight: FontWeight.w700,
-          ),
+        toolbarHeight: TAAppBarSize.small,
+        title: TADisplaySmallText(
+          text: S.current.orderHistoryTitle,
+          fontWeight: FontWeight.w700,
         ),
-        backgroundColor: context.colorScheme.primary,
-        trailing: Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.favorite),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: TAAssets.cart(),
-                onPressed: () {},
-              ),
-            ],
-          ),
+        trailing: Row(
+          children: [
+            IconButton(
+              icon: const Icon(Icons.favorite),
+              onPressed: () {},
+            ),
+            TAAssets.cart(),
+          ],
         ),
       ),
       body: product != null

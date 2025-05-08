@@ -66,8 +66,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   @override
   Widget build(BuildContext context) {
     return TAScaffold(
-      appBar: TaAppBar(
-        toolbarHeight: TaAppBarSize.small,
+      appBar: TAAppBar(
+        toolbarHeight: TAAppBarSize.small,
         backgroundColor: context.colorScheme.primary,
         title: Padding(
           padding: EdgeInsets.only(left: 16),

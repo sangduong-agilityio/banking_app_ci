@@ -38,7 +38,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return TAScaffold(
-      appBar: TaAppBar.wishlist(
+      appBar: TAAppBar.checkout(
         title: S.current.checkoutTitle,
         onBackPressed: () => Navigator.pop(context),
         backgroundColor: context.colorScheme.primary,

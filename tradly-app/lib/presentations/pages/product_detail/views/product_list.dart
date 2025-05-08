@@ -33,7 +33,7 @@ class ProductList extends StatelessWidget {
           ProductDetailInitializeEvt(categoryId: categoryId),
         ),
       child: TAScaffold(
-        appBar: TaAppBar.categoryDetail(
+        appBar: TAAppBar.productList(
           backgroundColor: context.colorScheme.primary,
           title: title,
           onBackPressed: () {
