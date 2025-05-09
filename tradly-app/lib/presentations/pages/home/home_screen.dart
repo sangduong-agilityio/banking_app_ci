@@ -5,7 +5,6 @@ import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/data/repositories/home_repo.dart';
-import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_event.dart';
@@ -36,102 +35,127 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => HomeBloc(
         repo: context.read<HomeRepository>(),
       )..add(HomeInitializeEvt(productId: widget.productId ?? 0)),
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: TAScaffold(
-          appBar: TAAppBar.home(
-            searchForm: Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: TASearchView(
-                placeholder: S.current.homeSearchProductPlaceholder,
-              ),
-            ),
-            centerTitle: false,
-            trailing: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.favorite),
-                  onPressed: () {
-                    context.pushNamed(
-                      TAPaths.wishlist.name,
-                      extra: widget.productId,
-                    );
-                  },
-                ),
-                TAAssets.cart(),
-              ],
-            ),
-            title: TADisplaySmallText(
-              text: S.current.homeGroceriesTitle,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                const ProductBannerList(),
-                CategoriesList(
-                  onCategoryTap: (category) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductList(
-                          title: category.category ?? '',
-                          categoryId: category.id ?? 0,
+      child: TAScaffold(
+        body: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                    expandedHeight: 180,
+                    flexibleSpace: FlexibleSpaceBar(
+                        background: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 40, 10, 0),
+                          child: Row(
+                            children: [
+                              TADisplaySmallText(
+                                text: S.current.homeGroceriesTitle,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              const Spacer(),
+                              IconButton(
+                                icon: Icon(Icons.favorite,
+                                    color: context.colorScheme.onPrimary),
+                                onPressed: () {
+                                  context.goNamed(
+                                    TAPaths.wishlist.name,
+                                    extra: widget.productId,
+                                  );
+                                },
+                              ),
+                              TAAssets.cart(),
+                              const SizedBox(width: 20),
+                            ],
+                          ),
                         ),
+                        GestureDetector(
+                          onTap: () {
+                            context.goNamed(TAPaths.browse.name);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 20),
+                            child: TASearchView(
+                              placeholder:
+                                  S.current.homeSearchProductPlaceholder,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ))),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      const ProductBannerList(),
+                      CategoriesList(
+                        onCategoryTap: (category) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductList(
+                                title: category.category ?? '',
+                                categoryId: category.id ?? 0,
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 28),
-                HomeSectionHeader(
-                  title: S.current.homeNewProductTitle,
-                  onTap: () {},
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: NewProductList(),
-                ),
-                const SizedBox(height: 16),
-                HomeSectionHeader(
-                  title: S.current.homePopularProductTitle,
-                  onTap: () {},
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: PopularProductList(),
-                ),
-                const SizedBox(height: 30),
-                Stack(
-                  alignment: Alignment.center,
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      height: 184,
-                      width: double.infinity,
-                      color: context.colorScheme.primary,
-                      child: Column(
+                      const SizedBox(height: 28),
+                      HomeSectionHeader(
+                        title: S.current.homeNewProductTitle,
+                        onTap: () {},
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: NewProductList(),
+                      ),
+                      const SizedBox(height: 16),
+                      HomeSectionHeader(
+                        title: S.current.homePopularProductTitle,
+                        onTap: () {},
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: PopularProductList(),
+                      ),
+                      const SizedBox(height: 30),
+                      Stack(
+                        alignment: Alignment.center,
+                        clipBehavior: Clip.none,
                         children: [
-                          HomeSectionHeader(
-                            title: S.current.homeStoreToFolowTitle,
-                            textColor: context.colorScheme.onPrimary,
-                            buttonColor: context.colorScheme.onPrimary,
-                            buttonText: S.current.homeViewAllButton,
-                            buttonTextColor: context.colorScheme.primary,
-                            onTap: () {},
+                          Container(
+                            height: 184,
+                            width: double.infinity,
+                            color: context.colorScheme.primary,
+                            child: Column(
+                              children: [
+                                HomeSectionHeader(
+                                  title: S.current.homeStoreToFolowTitle,
+                                  textColor: context.colorScheme.onPrimary,
+                                  buttonColor: context.colorScheme.onPrimary,
+                                  buttonText: S.current.homeViewAllButton,
+                                  buttonTextColor: context.colorScheme.primary,
+                                  onTap: () {},
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Positioned(
+                            top: 50,
+                            left: 15,
+                            right: 0,
+                            child: StoreFollowList(),
                           ),
                         ],
                       ),
-                    ),
-                    const Positioned(
-                      top: 50,
-                      left: 15,
-                      right: 0,
-                      child: StoreFollowList(),
-                    ),
-                  ],
+                      const SizedBox(height: 100),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 100),
               ],
             ),
           ),

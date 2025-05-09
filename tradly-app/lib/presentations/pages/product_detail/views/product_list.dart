@@ -23,9 +23,12 @@ class ProductList extends StatelessWidget {
   final String title;
   final int categoryId;
   final int? productId;
+  final bool isPortrait = true;
 
   @override
   Widget build(BuildContext context) {
+    final crossAxisCount = isPortrait ? 8 : 8;
+
     return BlocProvider(
       create: (context) => ProductDetailBloc(
         repo: context.read<ProductRepository>(),
@@ -49,9 +52,10 @@ class ProductList extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.all(20),
               child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 1,
+                  childAspectRatio:
+                      MediaQuery.of(context).size.width / (crossAxisCount * 60),
                 ),
                 itemCount: state.products?.length ?? 0,
                 itemBuilder: (context, index) {

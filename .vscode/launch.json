@@ -13,7 +13,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "program": "tradly/lib/main_device_preview.dart",
+            "program": "tradly-app/lib/main_device_preview.dart",
         },
     ]
 }
