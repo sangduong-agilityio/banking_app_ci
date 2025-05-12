@@ -12,10 +12,12 @@ import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/core/themes/app_theme.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
+import 'package:tradly_app/data/repositories/browse_repo.dart';
 import 'package:tradly_app/data/repositories/product_repo.dart';
 import 'package:tradly_app/data/repositories/store_repo.dart.dart';
 import 'package:tradly_app/firebase_options.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_bloc.dart';
+import 'package:tradly_app/presentations/pages/browse/states/browse_bloc.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_bloc.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
 
@@ -88,6 +90,15 @@ class _TradlyShopAppState extends State<TradlyShopApp>
         BlocProvider(
           create: (context) => StoreBloc(
             repo: StoreRepositoryImpl(
+              apiClient: TradlyApiClient(
+                baseUrl: Env.endPoint,
+              ),
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => BrowseBloc(
+            repo: BrowseRepositoryImpl(
               apiClient: TradlyApiClient(
                 baseUrl: Env.endPoint,
               ),

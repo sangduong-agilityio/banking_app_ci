@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/core/api/api_client.dart';
 import 'package:tradly_app/core/env/env.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
+import 'package:tradly_app/data/repositories/browse_repo.dart';
 import 'package:tradly_app/data/repositories/home_repo.dart';
 import 'package:tradly_app/data/repositories/product_repo.dart';
 import 'package:tradly_app/data/repositories/store_repo.dart.dart';
@@ -57,6 +58,13 @@ class TAProvider extends StatelessWidget {
         ),
         RepositoryProvider<StoreRepository>(
           create: (context) => StoreRepositoryImpl(
+            apiClient: TradlyApiClient(
+              baseUrl: Env.endPoint,
+            ),
+          ),
+        ),
+        RepositoryProvider<BrowseRepository>(
+          create: (context) => BrowseRepositoryImpl(
             apiClient: TradlyApiClient(
               baseUrl: Env.endPoint,
             ),

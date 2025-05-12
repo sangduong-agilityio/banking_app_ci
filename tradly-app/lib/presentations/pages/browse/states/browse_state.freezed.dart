@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'home_state.dart';
+part of 'browse_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$HomeStatus {
+mixin _$BrowseStatus {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -43,85 +43,86 @@ mixin _$HomeStatus {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeStatusInitial value) initial,
-    required TResult Function(HomeStatusLoading value) loading,
-    required TResult Function(HomeStatusSuccess value) success,
-    required TResult Function(HomeStatusFailure value) failure,
+    required TResult Function(BrowseStatusInitial value) initial,
+    required TResult Function(BrowseStatusLoading value) loading,
+    required TResult Function(BrowseStatusSuccess value) success,
+    required TResult Function(BrowseStatusFailure value) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomeStatusInitial value)? initial,
-    TResult? Function(HomeStatusLoading value)? loading,
-    TResult? Function(HomeStatusSuccess value)? success,
-    TResult? Function(HomeStatusFailure value)? failure,
+    TResult? Function(BrowseStatusInitial value)? initial,
+    TResult? Function(BrowseStatusLoading value)? loading,
+    TResult? Function(BrowseStatusSuccess value)? success,
+    TResult? Function(BrowseStatusFailure value)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeStatusInitial value)? initial,
-    TResult Function(HomeStatusLoading value)? loading,
-    TResult Function(HomeStatusSuccess value)? success,
-    TResult Function(HomeStatusFailure value)? failure,
+    TResult Function(BrowseStatusInitial value)? initial,
+    TResult Function(BrowseStatusLoading value)? loading,
+    TResult Function(BrowseStatusSuccess value)? success,
+    TResult Function(BrowseStatusFailure value)? failure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $HomeStatusCopyWith<$Res> {
-  factory $HomeStatusCopyWith(
-          HomeStatus value, $Res Function(HomeStatus) then) =
-      _$HomeStatusCopyWithImpl<$Res, HomeStatus>;
+abstract class $BrowseStatusCopyWith<$Res> {
+  factory $BrowseStatusCopyWith(
+          BrowseStatus value, $Res Function(BrowseStatus) then) =
+      _$BrowseStatusCopyWithImpl<$Res, BrowseStatus>;
 }
 
 /// @nodoc
-class _$HomeStatusCopyWithImpl<$Res, $Val extends HomeStatus>
-    implements $HomeStatusCopyWith<$Res> {
-  _$HomeStatusCopyWithImpl(this._value, this._then);
+class _$BrowseStatusCopyWithImpl<$Res, $Val extends BrowseStatus>
+    implements $BrowseStatusCopyWith<$Res> {
+  _$BrowseStatusCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HomeStatus
+  /// Create a copy of BrowseStatus
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$HomeStatusInitialImplCopyWith<$Res> {
-  factory _$$HomeStatusInitialImplCopyWith(_$HomeStatusInitialImpl value,
-          $Res Function(_$HomeStatusInitialImpl) then) =
-      __$$HomeStatusInitialImplCopyWithImpl<$Res>;
+abstract class _$$BrowseStatusInitialImplCopyWith<$Res> {
+  factory _$$BrowseStatusInitialImplCopyWith(_$BrowseStatusInitialImpl value,
+          $Res Function(_$BrowseStatusInitialImpl) then) =
+      __$$BrowseStatusInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$HomeStatusInitialImplCopyWithImpl<$Res>
-    extends _$HomeStatusCopyWithImpl<$Res, _$HomeStatusInitialImpl>
-    implements _$$HomeStatusInitialImplCopyWith<$Res> {
-  __$$HomeStatusInitialImplCopyWithImpl(_$HomeStatusInitialImpl _value,
-      $Res Function(_$HomeStatusInitialImpl) _then)
+class __$$BrowseStatusInitialImplCopyWithImpl<$Res>
+    extends _$BrowseStatusCopyWithImpl<$Res, _$BrowseStatusInitialImpl>
+    implements _$$BrowseStatusInitialImplCopyWith<$Res> {
+  __$$BrowseStatusInitialImplCopyWithImpl(_$BrowseStatusInitialImpl _value,
+      $Res Function(_$BrowseStatusInitialImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeStatus
+  /// Create a copy of BrowseStatus
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$HomeStatusInitialImpl implements HomeStatusInitial {
-  const _$HomeStatusInitialImpl();
+class _$BrowseStatusInitialImpl implements BrowseStatusInitial {
+  const _$BrowseStatusInitialImpl();
 
   @override
   String toString() {
-    return 'HomeStatus.initial()';
+    return 'BrowseStatus.initial()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeStatusInitialImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$BrowseStatusInitialImpl);
   }
 
   @override
@@ -167,10 +168,10 @@ class _$HomeStatusInitialImpl implements HomeStatusInitial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeStatusInitial value) initial,
-    required TResult Function(HomeStatusLoading value) loading,
-    required TResult Function(HomeStatusSuccess value) success,
-    required TResult Function(HomeStatusFailure value) failure,
+    required TResult Function(BrowseStatusInitial value) initial,
+    required TResult Function(BrowseStatusLoading value) loading,
+    required TResult Function(BrowseStatusSuccess value) success,
+    required TResult Function(BrowseStatusFailure value) failure,
   }) {
     return initial(this);
   }
@@ -178,10 +179,10 @@ class _$HomeStatusInitialImpl implements HomeStatusInitial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomeStatusInitial value)? initial,
-    TResult? Function(HomeStatusLoading value)? loading,
-    TResult? Function(HomeStatusSuccess value)? success,
-    TResult? Function(HomeStatusFailure value)? failure,
+    TResult? Function(BrowseStatusInitial value)? initial,
+    TResult? Function(BrowseStatusLoading value)? loading,
+    TResult? Function(BrowseStatusSuccess value)? success,
+    TResult? Function(BrowseStatusFailure value)? failure,
   }) {
     return initial?.call(this);
   }
@@ -189,10 +190,10 @@ class _$HomeStatusInitialImpl implements HomeStatusInitial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeStatusInitial value)? initial,
-    TResult Function(HomeStatusLoading value)? loading,
-    TResult Function(HomeStatusSuccess value)? success,
-    TResult Function(HomeStatusFailure value)? failure,
+    TResult Function(BrowseStatusInitial value)? initial,
+    TResult Function(BrowseStatusLoading value)? loading,
+    TResult Function(BrowseStatusSuccess value)? success,
+    TResult Function(BrowseStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -202,43 +203,44 @@ class _$HomeStatusInitialImpl implements HomeStatusInitial {
   }
 }
 
-abstract class HomeStatusInitial implements HomeStatus {
-  const factory HomeStatusInitial() = _$HomeStatusInitialImpl;
+abstract class BrowseStatusInitial implements BrowseStatus {
+  const factory BrowseStatusInitial() = _$BrowseStatusInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$HomeStatusLoadingImplCopyWith<$Res> {
-  factory _$$HomeStatusLoadingImplCopyWith(_$HomeStatusLoadingImpl value,
-          $Res Function(_$HomeStatusLoadingImpl) then) =
-      __$$HomeStatusLoadingImplCopyWithImpl<$Res>;
+abstract class _$$BrowseStatusLoadingImplCopyWith<$Res> {
+  factory _$$BrowseStatusLoadingImplCopyWith(_$BrowseStatusLoadingImpl value,
+          $Res Function(_$BrowseStatusLoadingImpl) then) =
+      __$$BrowseStatusLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$HomeStatusLoadingImplCopyWithImpl<$Res>
-    extends _$HomeStatusCopyWithImpl<$Res, _$HomeStatusLoadingImpl>
-    implements _$$HomeStatusLoadingImplCopyWith<$Res> {
-  __$$HomeStatusLoadingImplCopyWithImpl(_$HomeStatusLoadingImpl _value,
-      $Res Function(_$HomeStatusLoadingImpl) _then)
+class __$$BrowseStatusLoadingImplCopyWithImpl<$Res>
+    extends _$BrowseStatusCopyWithImpl<$Res, _$BrowseStatusLoadingImpl>
+    implements _$$BrowseStatusLoadingImplCopyWith<$Res> {
+  __$$BrowseStatusLoadingImplCopyWithImpl(_$BrowseStatusLoadingImpl _value,
+      $Res Function(_$BrowseStatusLoadingImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeStatus
+  /// Create a copy of BrowseStatus
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$HomeStatusLoadingImpl implements HomeStatusLoading {
-  const _$HomeStatusLoadingImpl();
+class _$BrowseStatusLoadingImpl implements BrowseStatusLoading {
+  const _$BrowseStatusLoadingImpl();
 
   @override
   String toString() {
-    return 'HomeStatus.loading()';
+    return 'BrowseStatus.loading()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeStatusLoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$BrowseStatusLoadingImpl);
   }
 
   @override
@@ -284,10 +286,10 @@ class _$HomeStatusLoadingImpl implements HomeStatusLoading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeStatusInitial value) initial,
-    required TResult Function(HomeStatusLoading value) loading,
-    required TResult Function(HomeStatusSuccess value) success,
-    required TResult Function(HomeStatusFailure value) failure,
+    required TResult Function(BrowseStatusInitial value) initial,
+    required TResult Function(BrowseStatusLoading value) loading,
+    required TResult Function(BrowseStatusSuccess value) success,
+    required TResult Function(BrowseStatusFailure value) failure,
   }) {
     return loading(this);
   }
@@ -295,10 +297,10 @@ class _$HomeStatusLoadingImpl implements HomeStatusLoading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomeStatusInitial value)? initial,
-    TResult? Function(HomeStatusLoading value)? loading,
-    TResult? Function(HomeStatusSuccess value)? success,
-    TResult? Function(HomeStatusFailure value)? failure,
+    TResult? Function(BrowseStatusInitial value)? initial,
+    TResult? Function(BrowseStatusLoading value)? loading,
+    TResult? Function(BrowseStatusSuccess value)? success,
+    TResult? Function(BrowseStatusFailure value)? failure,
   }) {
     return loading?.call(this);
   }
@@ -306,10 +308,10 @@ class _$HomeStatusLoadingImpl implements HomeStatusLoading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeStatusInitial value)? initial,
-    TResult Function(HomeStatusLoading value)? loading,
-    TResult Function(HomeStatusSuccess value)? success,
-    TResult Function(HomeStatusFailure value)? failure,
+    TResult Function(BrowseStatusInitial value)? initial,
+    TResult Function(BrowseStatusLoading value)? loading,
+    TResult Function(BrowseStatusSuccess value)? success,
+    TResult Function(BrowseStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -319,43 +321,44 @@ class _$HomeStatusLoadingImpl implements HomeStatusLoading {
   }
 }
 
-abstract class HomeStatusLoading implements HomeStatus {
-  const factory HomeStatusLoading() = _$HomeStatusLoadingImpl;
+abstract class BrowseStatusLoading implements BrowseStatus {
+  const factory BrowseStatusLoading() = _$BrowseStatusLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$HomeStatusSuccessImplCopyWith<$Res> {
-  factory _$$HomeStatusSuccessImplCopyWith(_$HomeStatusSuccessImpl value,
-          $Res Function(_$HomeStatusSuccessImpl) then) =
-      __$$HomeStatusSuccessImplCopyWithImpl<$Res>;
+abstract class _$$BrowseStatusSuccessImplCopyWith<$Res> {
+  factory _$$BrowseStatusSuccessImplCopyWith(_$BrowseStatusSuccessImpl value,
+          $Res Function(_$BrowseStatusSuccessImpl) then) =
+      __$$BrowseStatusSuccessImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$HomeStatusSuccessImplCopyWithImpl<$Res>
-    extends _$HomeStatusCopyWithImpl<$Res, _$HomeStatusSuccessImpl>
-    implements _$$HomeStatusSuccessImplCopyWith<$Res> {
-  __$$HomeStatusSuccessImplCopyWithImpl(_$HomeStatusSuccessImpl _value,
-      $Res Function(_$HomeStatusSuccessImpl) _then)
+class __$$BrowseStatusSuccessImplCopyWithImpl<$Res>
+    extends _$BrowseStatusCopyWithImpl<$Res, _$BrowseStatusSuccessImpl>
+    implements _$$BrowseStatusSuccessImplCopyWith<$Res> {
+  __$$BrowseStatusSuccessImplCopyWithImpl(_$BrowseStatusSuccessImpl _value,
+      $Res Function(_$BrowseStatusSuccessImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeStatus
+  /// Create a copy of BrowseStatus
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$HomeStatusSuccessImpl implements HomeStatusSuccess {
-  const _$HomeStatusSuccessImpl();
+class _$BrowseStatusSuccessImpl implements BrowseStatusSuccess {
+  const _$BrowseStatusSuccessImpl();
 
   @override
   String toString() {
-    return 'HomeStatus.success()';
+    return 'BrowseStatus.success()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeStatusSuccessImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$BrowseStatusSuccessImpl);
   }
 
   @override
@@ -401,10 +404,10 @@ class _$HomeStatusSuccessImpl implements HomeStatusSuccess {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeStatusInitial value) initial,
-    required TResult Function(HomeStatusLoading value) loading,
-    required TResult Function(HomeStatusSuccess value) success,
-    required TResult Function(HomeStatusFailure value) failure,
+    required TResult Function(BrowseStatusInitial value) initial,
+    required TResult Function(BrowseStatusLoading value) loading,
+    required TResult Function(BrowseStatusSuccess value) success,
+    required TResult Function(BrowseStatusFailure value) failure,
   }) {
     return success(this);
   }
@@ -412,10 +415,10 @@ class _$HomeStatusSuccessImpl implements HomeStatusSuccess {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomeStatusInitial value)? initial,
-    TResult? Function(HomeStatusLoading value)? loading,
-    TResult? Function(HomeStatusSuccess value)? success,
-    TResult? Function(HomeStatusFailure value)? failure,
+    TResult? Function(BrowseStatusInitial value)? initial,
+    TResult? Function(BrowseStatusLoading value)? loading,
+    TResult? Function(BrowseStatusSuccess value)? success,
+    TResult? Function(BrowseStatusFailure value)? failure,
   }) {
     return success?.call(this);
   }
@@ -423,10 +426,10 @@ class _$HomeStatusSuccessImpl implements HomeStatusSuccess {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeStatusInitial value)? initial,
-    TResult Function(HomeStatusLoading value)? loading,
-    TResult Function(HomeStatusSuccess value)? success,
-    TResult Function(HomeStatusFailure value)? failure,
+    TResult Function(BrowseStatusInitial value)? initial,
+    TResult Function(BrowseStatusLoading value)? loading,
+    TResult Function(BrowseStatusSuccess value)? success,
+    TResult Function(BrowseStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -436,43 +439,44 @@ class _$HomeStatusSuccessImpl implements HomeStatusSuccess {
   }
 }
 
-abstract class HomeStatusSuccess implements HomeStatus {
-  const factory HomeStatusSuccess() = _$HomeStatusSuccessImpl;
+abstract class BrowseStatusSuccess implements BrowseStatus {
+  const factory BrowseStatusSuccess() = _$BrowseStatusSuccessImpl;
 }
 
 /// @nodoc
-abstract class _$$HomeStatusFailureImplCopyWith<$Res> {
-  factory _$$HomeStatusFailureImplCopyWith(_$HomeStatusFailureImpl value,
-          $Res Function(_$HomeStatusFailureImpl) then) =
-      __$$HomeStatusFailureImplCopyWithImpl<$Res>;
+abstract class _$$BrowseStatusFailureImplCopyWith<$Res> {
+  factory _$$BrowseStatusFailureImplCopyWith(_$BrowseStatusFailureImpl value,
+          $Res Function(_$BrowseStatusFailureImpl) then) =
+      __$$BrowseStatusFailureImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$HomeStatusFailureImplCopyWithImpl<$Res>
-    extends _$HomeStatusCopyWithImpl<$Res, _$HomeStatusFailureImpl>
-    implements _$$HomeStatusFailureImplCopyWith<$Res> {
-  __$$HomeStatusFailureImplCopyWithImpl(_$HomeStatusFailureImpl _value,
-      $Res Function(_$HomeStatusFailureImpl) _then)
+class __$$BrowseStatusFailureImplCopyWithImpl<$Res>
+    extends _$BrowseStatusCopyWithImpl<$Res, _$BrowseStatusFailureImpl>
+    implements _$$BrowseStatusFailureImplCopyWith<$Res> {
+  __$$BrowseStatusFailureImplCopyWithImpl(_$BrowseStatusFailureImpl _value,
+      $Res Function(_$BrowseStatusFailureImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeStatus
+  /// Create a copy of BrowseStatus
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$HomeStatusFailureImpl implements HomeStatusFailure {
-  const _$HomeStatusFailureImpl();
+class _$BrowseStatusFailureImpl implements BrowseStatusFailure {
+  const _$BrowseStatusFailureImpl();
 
   @override
   String toString() {
-    return 'HomeStatus.failure()';
+    return 'BrowseStatus.failure()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$HomeStatusFailureImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$BrowseStatusFailureImpl);
   }
 
   @override
@@ -518,10 +522,10 @@ class _$HomeStatusFailureImpl implements HomeStatusFailure {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomeStatusInitial value) initial,
-    required TResult Function(HomeStatusLoading value) loading,
-    required TResult Function(HomeStatusSuccess value) success,
-    required TResult Function(HomeStatusFailure value) failure,
+    required TResult Function(BrowseStatusInitial value) initial,
+    required TResult Function(BrowseStatusLoading value) loading,
+    required TResult Function(BrowseStatusSuccess value) success,
+    required TResult Function(BrowseStatusFailure value) failure,
   }) {
     return failure(this);
   }
@@ -529,10 +533,10 @@ class _$HomeStatusFailureImpl implements HomeStatusFailure {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomeStatusInitial value)? initial,
-    TResult? Function(HomeStatusLoading value)? loading,
-    TResult? Function(HomeStatusSuccess value)? success,
-    TResult? Function(HomeStatusFailure value)? failure,
+    TResult? Function(BrowseStatusInitial value)? initial,
+    TResult? Function(BrowseStatusLoading value)? loading,
+    TResult? Function(BrowseStatusSuccess value)? success,
+    TResult? Function(BrowseStatusFailure value)? failure,
   }) {
     return failure?.call(this);
   }
@@ -540,10 +544,10 @@ class _$HomeStatusFailureImpl implements HomeStatusFailure {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomeStatusInitial value)? initial,
-    TResult Function(HomeStatusLoading value)? loading,
-    TResult Function(HomeStatusSuccess value)? success,
-    TResult Function(HomeStatusFailure value)? failure,
+    TResult Function(BrowseStatusInitial value)? initial,
+    TResult Function(BrowseStatusLoading value)? loading,
+    TResult Function(BrowseStatusSuccess value)? success,
+    TResult Function(BrowseStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -553,6 +557,6 @@ class _$HomeStatusFailureImpl implements HomeStatusFailure {
   }
 }
 
-abstract class HomeStatusFailure implements HomeStatus {
-  const factory HomeStatusFailure() = _$HomeStatusFailureImpl;
+abstract class BrowseStatusFailure implements BrowseStatus {
+  const factory BrowseStatusFailure() = _$BrowseStatusFailureImpl;
 }

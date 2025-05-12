@@ -19,9 +19,9 @@ class CategoriesList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.status is HomeStatusListLoading) {
+        if (state.status is HomeStatusLoading) {
           return const ShimmerCategoryGrid();
-        } else if (state.status is HomeStatusListSuccess) {
+        } else if (state.status is HomeStatusSuccess) {
           final categories = state.categories ?? [];
           return GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
@@ -61,7 +61,7 @@ class CategoriesList extends StatelessWidget {
             },
             itemCount: categories.length,
           );
-        } else if (state.status is HomeStatusListFailure) {
+        } else if (state.status is HomeStatusFailure) {
           return NotFoundScreen();
         }
         return const SizedBox.shrink();

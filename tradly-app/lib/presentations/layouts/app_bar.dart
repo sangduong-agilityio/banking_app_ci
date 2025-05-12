@@ -25,6 +25,7 @@ enum TAAppBarBottomType {
   options,
   search,
   imageBackground,
+  custom,
 }
 
 class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -255,6 +256,25 @@ class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
         return PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: Container(height: 120),
+        );
+
+      case TAAppBarBottomType.custom:
+        return PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                child: searchForm ?? const SizedBox.shrink(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                child: filterOptions ?? _buildDefaultFilterOptions(context),
+              ),
+            ],
+          ),
         );
 
       case TAAppBarBottomType.none:

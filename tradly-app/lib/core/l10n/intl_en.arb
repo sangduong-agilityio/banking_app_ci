@@ -184,5 +184,11 @@
   },
   "orderHistoryTitle":"Order History",
   "orderTransactionsTitle":"Transactions",
-  "orderHistoryDeliveredButton":"Delivered"
+  "orderHistoryDeliveredButton":"Delivered",
+    "@segmentBrowse": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Browse feature"
+  },
+  "browseTitle":"Browse"
+
 }

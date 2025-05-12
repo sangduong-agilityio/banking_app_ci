@@ -1379,6 +1379,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Browse`
+  String get browseTitle {
+    return Intl.message(
+      'Browse',
+      name: 'browseTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

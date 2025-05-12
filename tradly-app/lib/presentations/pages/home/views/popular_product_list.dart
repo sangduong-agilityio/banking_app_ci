@@ -15,7 +15,7 @@ class PopularProductList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
-        if (state.status is HomeStatusListLoading) {
+        if (state.status is HomeStatusLoading) {
           return ShimmerProductList();
         }
 

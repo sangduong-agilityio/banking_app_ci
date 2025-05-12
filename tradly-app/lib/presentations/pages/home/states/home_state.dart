@@ -58,8 +58,8 @@ final class HomeState extends Equatable {
 
 @freezed
 sealed class HomeStatus with _$HomeStatus {
-  const factory HomeStatus.initial() = HomeStatusListInitial;
-  const factory HomeStatus.loading() = HomeStatusListLoading;
-  const factory HomeStatus.success() = HomeStatusListSuccess;
-  const factory HomeStatus.failure() = HomeStatusListFailure;
+  const factory HomeStatus.initial() = HomeStatusInitial;
+  const factory HomeStatus.loading() = HomeStatusLoading;
+  const factory HomeStatus.success() = HomeStatusSuccess;
+  const factory HomeStatus.failure() = HomeStatusFailure;
 }

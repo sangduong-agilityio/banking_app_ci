@@ -17,14 +17,33 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
     HomeInitializeEvt event,
     Emitter<HomeState> emit,
   ) async {
-    await Future.wait<void>(
-      [
-        _fetchCategories(emit),
-        _fetchNewProductsHandler(event, emit),
-        _fetchPopularProductsHandler(event, emit),
-        _fetchStores(emit)
-      ],
+    emit(
+      state.copyWith(
+        status: const HomeStatus.loading(),
+      ),
     );
+    try {
+      await Future.wait<void>(
+        [
+          _fetchCategories(emit),
+          _fetchNewProductsHandler(event, emit),
+          _fetchPopularProductsHandler(event, emit),
+          _fetchStores(emit),
+        ],
+      );
+      emit(
+        state.copyWith(
+          status: const HomeStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
   }
 
   Future<void> _fetchCategories(

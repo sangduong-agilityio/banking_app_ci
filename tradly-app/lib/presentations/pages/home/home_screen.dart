@@ -72,17 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            context.goNamed(TAPaths.browse.name);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
-                            child: TASearchView(
-                              placeholder:
-                                  S.current.homeSearchProductPlaceholder,
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 20),
+                          child: TASearchView(
+                            placeholder: S.current.homeSearchProductPlaceholder,
                           ),
                         ),
                       ],
