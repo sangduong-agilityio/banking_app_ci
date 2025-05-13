@@ -5,32 +5,30 @@ import 'package:tradly_app/data/models/product_model.dart';
 part 'browse_state.freezed.dart';
 
 final class BrowseState extends Equatable {
+  final List<ProductModel>? products;
+  final BrowseStatus status;
+  final String? errorMessage;
+
   const BrowseState({
     this.products,
     this.status = const BrowseStatus.initial(),
     this.errorMessage,
   });
-  final BrowseStatus status;
-  final String? errorMessage;
-  final List<ProductModel>? products;
+
   BrowseState copyWith({
+    List<ProductModel>? products,
     BrowseStatus? status,
     String? errorMessage,
-    List<ProductModel>? products,
   }) {
     return BrowseState(
+      products: products ?? this.products,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
-      products: products ?? this.products,
     );
   }
 
   @override
-  List<Object> get props => [
-        status,
-        errorMessage ?? '',
-        products ?? [],
-      ];
+  List<Object?> get props => [products, status, errorMessage];
 }
 
 @freezed

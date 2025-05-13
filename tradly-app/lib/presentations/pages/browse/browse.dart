@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/data/repositories/browse_repo.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/layouts/scaffold.dart';
@@ -14,6 +14,7 @@ import 'package:tradly_app/presentations/widgets/card.dart';
 import 'package:tradly_app/presentations/widgets/not_found.dart';
 import 'package:tradly_app/presentations/widgets/shimmer.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
+import 'package:tradly_app/presentations/widgets/bottom_sheet.dart';
 
 class BrowseScreen extends StatefulWidget {
   const BrowseScreen({super.key});
@@ -28,7 +29,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
   @override
   Widget build(BuildContext context) {
     final crossAxisCount = isPortrait ? 8 : 8;
-
     return BlocProvider(
       create: (context) => BrowseBloc(repo: context.read<BrowseRepository>())
         ..add(const BrowseInitializeEvt()),
@@ -51,15 +51,48 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 TAAssets.cart(),
               ],
             ),
-            searchForm: TASearchView(
-              onChanged: (query) {
-                context.read<BrowseBloc>().add(
-                      BrowseSearchEvt(
-                        query: query,
-                      ),
-                    );
+            searchForm: BlocBuilder<BrowseBloc, BrowseState>(
+              buildWhen: (previous, current) =>
+                  previous.status != current.status,
+              builder: (context, state) {
+                return TASearchView(
+                  onChanged: (query) {
+                    context
+                        .read<BrowseBloc>()
+                        .add(BrowseSearchEvt(query: query));
+                  },
+                  placeholder: S.current.homeSearchProductPlaceholder,
+                );
               },
-              placeholder: S.current.homeSearchProductPlaceholder,
+            ),
+            filterOptions: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                BlocBuilder<BrowseBloc, BrowseState>(
+                  buildWhen: (previous, current) =>
+                      previous.status != current.status,
+                  builder: (context, state) {
+                    return _buildFilterButton(
+                      context,
+                      icon: TAAssets.sortList(),
+                      label: S.current.productDetailSortByButton,
+                      onPressed: () => showSortBottomSheet(context),
+                    );
+                  },
+                ),
+                _buildFilterButton(
+                  context,
+                  icon: const Icon(Icons.location_on, size: 16),
+                  label: S.current.productDetailLocationButton,
+                  onPressed: () {},
+                ),
+                _buildFilterButton(
+                  context,
+                  icon: TAAssets.category(),
+                  label: S.current.productDetailCategoryButton,
+                  onPressed: () {},
+                ),
+              ],
             ),
             bottomType: TAAppBarBottomType.custom,
           ),
@@ -68,6 +101,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
               if (state.status is BrowseStatusLoading) {
                 return ShimmerProductGrid();
               } else if (state.status is BrowseStatusSuccess) {
+                final products = state.products ?? [];
                 return Padding(
                   padding: const EdgeInsets.all(20),
                   child: GridView.builder(
@@ -76,17 +110,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
                       childAspectRatio: MediaQuery.of(context).size.width /
                           (crossAxisCount * 60),
                     ),
-                    itemCount: state.products?.length ?? 0,
+                    itemCount: products.length,
                     itemBuilder: (context, index) {
-                      final products = state.products?[index];
+                      final product = products[index];
                       return TACardProduct(
-                        product: ProductModel(
-                          id: products?.id,
-                          title: products?.title ?? '',
-                          imageUrl: products?.imageUrl ?? '',
-                          price: products?.price ?? '',
-                          brand: products?.brand ?? '',
-                        ),
+                        product: product,
                         onTapProduct: () {},
                       );
                     },
@@ -97,6 +125,52 @@ class _BrowseScreenState extends State<BrowseScreen> {
               }
               return const SizedBox.shrink();
             },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showSortBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16),
+        ),
+      ),
+      builder: (BuildContext modalContext) {
+        return TABottomSheet(
+          initialSortOrder: SortOrder.lowToHigh,
+          onApply: (SortOrder selectedSortOrder) {
+            context.read<BrowseBloc>().add(
+                  BrowseSortEvt(sort: selectedSortOrder),
+                );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildFilterButton(
+    BuildContext context, {
+    required Widget icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: onPressed,
+      icon: icon,
+      label: TATitleLargeText(
+        text: label,
+      ),
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+          side: BorderSide(
+            color: context.colorScheme.onPrimary,
+            width: 1,
           ),
         ),
       ),

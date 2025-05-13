@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+enum SortOrder { lowToHigh, highToLow }
+
 sealed class BrowseEvt extends Equatable {
   const BrowseEvt();
 
@@ -27,11 +29,11 @@ final class BrowseSearchEvt extends BrowseEvt {
 
 class BrowseSortEvt extends BrowseEvt {
   const BrowseSortEvt({
-    required this.sortBy,
+    required this.sort,
   });
 
-  final String sortBy;
+  final SortOrder sort;
 
   @override
-  List<Object> get props => [sortBy];
+  List<Object> get props => [sort];
 }

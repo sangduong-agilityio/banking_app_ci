@@ -189,6 +189,11 @@
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Browse feature"
   },
-  "browseTitle":"Browse"
+  "browseTitle":"Browse",
+  "browseSortbyTitle":"Sort by",
+  "browsePriceLowToHighTitle":"Price: Low to High",
+  "browsePriceHighToLowTitle":"Price: High to Low",
+  "browseCancelButton":"Cancel",
+  "browseApplyButton":"Apply"
 
 }

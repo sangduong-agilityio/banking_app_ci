@@ -1389,6 +1389,56 @@ class S {
       args: [],
     );
   }
+
+  /// `Sort by`
+  String get browseSortbyTitle {
+    return Intl.message(
+      'Sort by',
+      name: 'browseSortbyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price: Low to High`
+  String get browsePriceLowToHighTitle {
+    return Intl.message(
+      'Price: Low to High',
+      name: 'browsePriceLowToHighTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Price: High to Low`
+  String get browsePriceHighToLowTitle {
+    return Intl.message(
+      'Price: High to Low',
+      name: 'browsePriceHighToLowTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get browseCancelButton {
+    return Intl.message(
+      'Cancel',
+      name: 'browseCancelButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apply`
+  String get browseApplyButton {
+    return Intl.message(
+      'Apply',
+      name: 'browseApplyButton',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
