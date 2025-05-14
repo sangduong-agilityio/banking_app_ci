@@ -1,5 +1,13 @@
 {
   "@@locale": "en",
+  "@segmentTradlyApp": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Tradly App "
+  },
+  "tradlyAppTitle":"Tradly App",
+  "tradlyAppContent":"Notifications are disabled. Please enable notifications in your device settings to receive updates",
+  "tradlyCancelButton":"Cancel",
+  "tradlySettingButton":"Go to Settings",
    "@segmentOnBoarding": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in OnBoarding feature"
@@ -108,6 +116,9 @@
   "productDetailDeliveryOptionsTitle":"Delivery Options",
   "productDetailDeliveryTitle":"Delivery Details",
   "productDetailDeliveryDescription":"Home Delivery Available,\nCash On Delivery",
+  "productDetailDoubleTapHint":"Double tap to view product details",
+  "productDetailDiscountTitle":"50% off",
+  "productDetailQuantityTitle":"Qty : 1",
    "@segmentStore": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Store feature"

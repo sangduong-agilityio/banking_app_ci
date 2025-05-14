@@ -30,7 +30,7 @@ class NotificationService {
     );
 
     await notificationsPlugin.initialize(initSettings);
-    _initialized = true; // Ensure _initialized is updated
+    _initialized = true;
   }
 
   // Notifications detail setup
@@ -62,8 +62,6 @@ class NotificationService {
   Future<void> initializeFirebaseMessaging() async {
     supabase.auth.onAuthStateChange.listen((event) async {
       if (event.event == AuthChangeEvent.signedIn) {
-        await FirebaseMessaging.instance.requestPermission();
-
         await FirebaseMessaging.instance.getAPNSToken();
 
         final fcmToken = await FirebaseMessaging.instance.getToken();

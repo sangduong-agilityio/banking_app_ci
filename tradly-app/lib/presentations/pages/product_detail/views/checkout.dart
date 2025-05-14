@@ -1,5 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
@@ -31,8 +33,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   void initState() {
     super.initState();
-    notiService.init();
     notiService.initializeFirebaseMessaging();
+    notiService.init();
   }
 
   @override
@@ -95,14 +97,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                                 const SizedBox(width: 5),
                                 TATitleLargeText(
-                                  text: '50% off ',
+                                  text: S.current.productDetailDiscountTitle,
                                   color: context.colorScheme.onSurface,
                                 ),
                               ],
                             ),
                             SizedBox(height: 10),
                             TATitleMediumText(
-                              text: "Qty : 1",
+                              text: S.current.productDetailQuantityTitle,
                               color: context.colorScheme.onSurface,
                             ),
                           ],
@@ -208,19 +210,67 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           text: S.current.checkoutCheckoutButton,
           backgroundColor: context.colorScheme.primary,
           onPressed: () async {
-            final orderData = {
-              'title': widget.product?.title,
-              'price': widget.product?.price,
-              'newPrice': widget.product?.newPrice,
-              'imageUrl': widget.product?.imageUrl,
-            };
-            await supabase.from('orders').insert(orderData);
+            final notification =
+                await FirebaseMessaging.instance.requestPermission();
 
-            if (context.mounted) {
-              context.goNamed(
-                TAPaths.orderHistory.name,
-                extra: widget.product,
-              );
+            if (notification.authorizationStatus ==
+                AuthorizationStatus.authorized) {
+              final orderData = {
+                'title': widget.product?.title,
+                'price': widget.product?.price,
+                'newPrice': widget.product?.newPrice,
+                'imageUrl': widget.product?.imageUrl,
+              };
+              await supabase.from('orders').insert(orderData);
+
+              if (context.mounted) {
+                context.goNamed(
+                  TAPaths.orderHistory.name,
+                  extra: widget.product,
+                );
+              }
+            } else if (notification.authorizationStatus ==
+                    AuthorizationStatus.denied ||
+                notification.authorizationStatus ==
+                    AuthorizationStatus.provisional) {
+              if (context.mounted) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: TAHeadlineLargeText(
+                      text: S.current.tradlyAppTitle,
+                      fontWeight: FontWeight.w700,
+                      color: context.colorScheme.primary,
+                    ),
+                    content: TAHeadlineSmallText(
+                      color: context.colorScheme.outline,
+                      fontWeight: FontWeight.w400,
+                      text: S.current.tradlyAppContent,
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: TAHeadlineSmallText(
+                          text: S.current.tradlyCancelButton,
+                          fontWeight: FontWeight.w700,
+                          color: context.colorScheme.onSecondary,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          openAppSettings();
+                        },
+                        child: TAHeadlineSmallText(
+                          text: S.current.tradlySettingButton,
+                          fontWeight: FontWeight.w700,
+                          color: context.colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
             }
           },
         ),

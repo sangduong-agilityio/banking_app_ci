@@ -113,6 +113,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Delivery Options"),
         "productDetailDeliveryTitle":
             MessageLookupByLibrary.simpleMessage("Delivery Details"),
+        "productDetailDiscountTitle":
+            MessageLookupByLibrary.simpleMessage("50% off"),
+        "productDetailDoubleTapHint": MessageLookupByLibrary.simpleMessage(
+            "Double tap to view product details"),
         "productDetailEggTitle": MessageLookupByLibrary.simpleMessage("Egg"),
         "productDetailFrozenVegTitle":
             MessageLookupByLibrary.simpleMessage("Frozen Veg"),
@@ -128,6 +132,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pet Care"),
         "productDetailPriceTypeTitle":
             MessageLookupByLibrary.simpleMessage("Price Type"),
+        "productDetailQuantityTitle":
+            MessageLookupByLibrary.simpleMessage("Qty : 1"),
         "productDetailSaleOffTitle":
             MessageLookupByLibrary.simpleMessage("50% off"),
         "productDetailSortByButton":
@@ -242,6 +248,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "storeViewButton": MessageLookupByLibrary.simpleMessage("View Store"),
         "storeWebAddressLabel":
             MessageLookupByLibrary.simpleMessage("Store Web Address"),
+        "tradlyAppContent": MessageLookupByLibrary.simpleMessage(
+            "Notifications are disabled. Please enable notifications in your device settings to receive updates"),
+        "tradlyAppTitle": MessageLookupByLibrary.simpleMessage("Tradly App"),
+        "tradlyCancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "tradlySettingButton":
+            MessageLookupByLibrary.simpleMessage("Go to Settings"),
         "validatorConfirmPasswordRequired":
             MessageLookupByLibrary.simpleMessage(
                 "Confirm Password is required"),

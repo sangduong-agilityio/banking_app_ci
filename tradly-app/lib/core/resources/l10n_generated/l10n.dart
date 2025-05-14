@@ -50,6 +50,46 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Tradly App`
+  String get tradlyAppTitle {
+    return Intl.message(
+      'Tradly App',
+      name: 'tradlyAppTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notifications are disabled. Please enable notifications in your device settings to receive updates`
+  String get tradlyAppContent {
+    return Intl.message(
+      'Notifications are disabled. Please enable notifications in your device settings to receive updates',
+      name: 'tradlyAppContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get tradlyCancelButton {
+    return Intl.message(
+      'Cancel',
+      name: 'tradlyCancelButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go to Settings`
+  String get tradlySettingButton {
+    return Intl.message(
+      'Go to Settings',
+      name: 'tradlySettingButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Empowering Artisans, Farmers & Micro Business`
   String get onBoardingBusinessDescription {
     return Intl.message(
@@ -845,6 +885,36 @@ class S {
     return Intl.message(
       'Home Delivery Available,\nCash On Delivery',
       name: 'productDetailDeliveryDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Double tap to view product details`
+  String get productDetailDoubleTapHint {
+    return Intl.message(
+      'Double tap to view product details',
+      name: 'productDetailDoubleTapHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `50% off`
+  String get productDetailDiscountTitle {
+    return Intl.message(
+      '50% off',
+      name: 'productDetailDiscountTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Qty : 1`
+  String get productDetailQuantityTitle {
+    return Intl.message(
+      'Qty : 1',
+      name: 'productDetailQuantityTitle',
       desc: '',
       args: [],
     );

@@ -16,95 +16,125 @@ class TACardProduct extends StatelessWidget {
     this.onTapProduct,
     this.height,
     this.width,
+    this.label,
+    this.hint,
   });
 
   final ProductModel product;
   final void Function()? onTapProduct;
   final double? height;
   final double? width;
+  final String? label;
+  final String? hint;
 
   @override
   Widget build(BuildContext context) {
     final isLocalFile = product.imageUrl.startsWith('/http');
-    return GestureDetector(
-      onTap: onTapProduct,
-      child: SizedBox(
-        height: height ?? 200,
-        width: width ?? 160,
-        child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              isLocalFile
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      ),
-                      child: Image.file(
-                        File(product.imageUrl),
-                        width: width ?? double.infinity,
-                        height: height ?? 130,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : TAImageRectangle(
-                      product.imageUrl,
-                      isBorderTop: true,
-                      width: width ?? double.infinity,
-                      height: height ?? 130,
-                      boxFit: BoxFit.cover,
-                    ),
-              Padding(
-                padding: const EdgeInsets.only(left: 11, right: 11),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 6),
-                    TATitleLargeText(
-                      text: product.title,
-                      color: context.colorScheme.onSurface,
-                    ),
-                    const SizedBox(height: 6),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TAImageCircle(
-                          radius: 10,
-                          Assets.images.imgTradly.path,
+    return Semantics(
+      label: label,
+      hint: hint,
+      container: true,
+      child: GestureDetector(
+        onTap: onTapProduct,
+        child: SizedBox(
+          height: height ?? 200,
+          width: width ?? 160,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  label: 'Image of ${product.title}',
+                  child: isLocalFile
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          child: Image.file(
+                            File(product.imageUrl),
+                            width: width ?? double.infinity,
+                            height: height ?? 130,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : TAImageRectangle(
+                          product.imageUrl,
+                          isBorderTop: true,
+                          width: width ?? double.infinity,
+                          height: height ?? 130,
                           boxFit: BoxFit.cover,
                         ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: TATitleLargeText(
-                            text: product.brand ?? '',
-                            fontWeight: FontWeight.w500,
-                            color: context.colorScheme.outline,
-                          ),
-                        ),
-                        TALabelLargeText(
-                          text: product.newPrice != null
-                              ? '\$${product.newPrice}'
-                              : '',
-                          color: context.colorScheme.outline,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        const SizedBox(width: 6),
-                        TATitleLargeText(
-                          text: product.price,
-                          color: context.colorScheme.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                  ],
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 11, right: 11),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 6),
+                      Semantics(
+                        excludeSemantics: true,
+                        child: TATitleLargeText(
+                          text: product.title,
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Semantics(
+                            excludeSemantics: true,
+                            child: TAImageCircle(
+                              radius: 10,
+                              Assets.images.imgTradly.path,
+                              boxFit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Semantics(
+                              child: TATitleLargeText(
+                                text: product.brand ?? '',
+                                fontWeight: FontWeight.w500,
+                                color: context.colorScheme.outline,
+                              ),
+                            ),
+                          ),
+                          Semantics(
+                            excludeSemantics: true,
+                            label: product.newPrice != null
+                                ? 'Discount price: \$${product.newPrice}'
+                                : 'No discount available',
+                            child: TALabelLargeText(
+                              text: product.newPrice != null
+                                  ? '\$${product.newPrice}'
+                                  : '',
+                              color: context.colorScheme.outline,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Semantics(
+                            excludeSemantics: true,
+                            label: 'Original price: \$${product.price}',
+                            child: TATitleLargeText(
+                              text: product.price,
+                              color: context.colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
