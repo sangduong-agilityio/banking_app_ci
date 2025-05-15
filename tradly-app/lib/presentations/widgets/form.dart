@@ -10,7 +10,8 @@ class TAForm extends StatefulWidget {
     this.textInputAction,
   });
 
-  final List<TATextField> textFields;
+  final List<dynamic>
+      textFields; // Updated to allow dynamic types including Row
   final double spaceBetweenRow;
   final Function(bool value) isValidated;
   final TextInputAction? textInputAction;
@@ -27,24 +28,35 @@ class _TAFormState extends State<TAForm> {
     return Form(
       key: formStateKey,
       onChanged: () {
-        (widget.textFields.every((element) =>
-                (element.controller!.text.isNotEmpty ||
-                    element.controller == null)))
-            ? widget.isValidated(formStateKey.currentState!.validate())
-            : widget.isValidated(false);
+        final allFieldsValid = widget.textFields.every((element) {
+          if (element is Row) {
+            return (element.children.every((child) =>
+                child is TATextField &&
+                (child.controller?.text.isNotEmpty ?? true)));
+          }
+          return element.controller?.text.isNotEmpty ?? true;
+        });
+
+        widget.isValidated(
+            allFieldsValid && formStateKey.currentState!.validate());
       },
       child: Column(
         children: [
           for (final (index, input) in widget.textFields.indexed) ...[
             if (index != widget.textFields.length - 1) ...[
-              input.copyWith(
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => input.focusNode?.nextFocus(),
-              ),
+              if (input is Row)
+                input
+              else
+                input.copyWith(
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => input.focusNode?.nextFocus(),
+                ),
               SizedBox(
                 height: widget.spaceBetweenRow,
               ),
-            ] else
+            ] else if (input is Row)
+              input
+            else
               input.copyWith(
                 textInputAction: widget.textInputAction ?? TextInputAction.done,
                 onEditingComplete: () {

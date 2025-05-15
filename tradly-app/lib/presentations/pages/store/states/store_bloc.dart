@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tradly_app/data/models/product_model.dart';
@@ -12,18 +13,31 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
   StoreBloc({required StoreRepository repo})
       : _repo = repo,
         super(const StoreState()) {
-    on<CreateStoreEvt>(_onCreateStore);
+    on<CreateStoreButtonEvt>(_onCreateStore);
     on<AddProductEvt>(_onAddProduct);
-    on<EditProductEvt>(_onEditProduct);
+    on<EditProductButtonEvt>(_onEditProduct);
     on<DeleteProductEvt>(_onDeleteProduct);
     on<PickImageEvt>(_onPickImage);
     on<RemoveImageEvt>(_onRemoveImage);
+    on<EditFormValidateChangedEvt>(_onEditFormValidateChanged);
+    on<CreateStoreFormValidateChagedEvt>(_onCreateFormValidateChanged);
   }
 
   final StoreRepository _repo;
 
+  Future<void> _onCreateFormValidateChanged(
+    CreateStoreFormValidateChagedEvt event,
+    Emitter<StoreState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        isFormValid: event.isValidate,
+      ),
+    );
+  }
+
   Future<void> _onCreateStore(
-    CreateStoreEvt event,
+    CreateStoreButtonEvt event,
     Emitter<StoreState> emit,
   ) async {
     emit(
@@ -84,8 +98,19 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     }
   }
 
+  Future<void> _onEditFormValidateChanged(
+    EditFormValidateChangedEvt event,
+    Emitter<StoreState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        isFormValid: event.isValidate,
+      ),
+    );
+  }
+
   Future<void> _onEditProduct(
-    EditProductEvt event,
+    EditProductButtonEvt event,
     Emitter<StoreState> emit,
   ) async {
     emit(
@@ -95,9 +120,11 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     );
     try {
       await _repo.editProduct(event.product);
+
       final updatedProducts = state.products?.map((product) {
         return product.id == event.product.id ? event.product : product;
       }).toList();
+
       emit(
         state.copyWith(
           products: updatedProducts,
@@ -155,7 +182,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
   ) async {
     final updatedImages = List<File>.from(
       state.imageFiles ?? [],
-    )..removeAt(event.index);
+    )..removeAt(event.image);
     emit(
       state.copyWith(
         imageFiles: updatedImages,

@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -210,11 +209,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           text: S.current.checkoutCheckoutButton,
           backgroundColor: context.colorScheme.primary,
           onPressed: () async {
-            final notification =
-                await FirebaseMessaging.instance.requestPermission();
+            var status = await Permission.notification.status;
 
-            if (notification.authorizationStatus ==
-                AuthorizationStatus.authorized) {
+            if (status.isGranted) {
               final orderData = {
                 'title': widget.product?.title,
                 'price': widget.product?.price,
@@ -229,51 +226,76 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   extra: widget.product,
                 );
               }
-            } else if (notification.authorizationStatus ==
-                    AuthorizationStatus.denied ||
-                notification.authorizationStatus ==
-                    AuthorizationStatus.provisional) {
-              if (context.mounted) {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: TAHeadlineLargeText(
-                      text: S.current.tradlyAppTitle,
-                      fontWeight: FontWeight.w700,
-                      color: context.colorScheme.primary,
-                    ),
-                    content: TAHeadlineSmallText(
-                      color: context.colorScheme.outline,
-                      fontWeight: FontWeight.w400,
-                      text: S.current.tradlyAppContent,
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: TAHeadlineSmallText(
-                          text: S.current.tradlyCancelButton,
-                          fontWeight: FontWeight.w700,
-                          color: context.colorScheme.onSecondary,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          openAppSettings();
-                        },
-                        child: TAHeadlineSmallText(
-                          text: S.current.tradlySettingButton,
-                          fontWeight: FontWeight.w700,
-                          color: context.colorScheme.primary,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+            } else if (status.isDenied) {
+              PermissionStatus result = await Permission.notification.request();
+
+              if (result.isGranted) {
+                final orderData = {
+                  'title': widget.product?.title,
+                  'price': widget.product?.price,
+                  'newPrice': widget.product?.newPrice,
+                  'imageUrl': widget.product?.imageUrl,
+                };
+                await supabase.from('orders').insert(orderData);
+
+                if (context.mounted) {
+                  context.goNamed(
+                    TAPaths.orderHistory.name,
+                    extra: widget.product,
+                  );
+                }
+              } else {
+                return;
               }
+            } else if (status.isPermanentlyDenied) {
+              _showNotificationPermissionDialog(context);
             }
           },
         ),
+      ),
+    );
+  }
+
+  Future<void> _showNotificationPermissionDialog(
+    BuildContext context,
+  ) async {
+    if (!mounted) return;
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) => AlertDialog(
+        title: TAHeadlineLargeText(
+          text: S.current.tradlyAppTitle,
+          fontWeight: FontWeight.w700,
+          color: context.colorScheme.primary,
+        ),
+        content: TAHeadlineSmallText(
+          color: context.colorScheme.outline,
+          fontWeight: FontWeight.w400,
+          text: S.current.tradlyAppContent,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (mounted) Navigator.pop(context);
+            },
+            child: TAHeadlineSmallText(
+              text: S.current.tradlyCancelButton,
+              fontWeight: FontWeight.w700,
+              color: context.colorScheme.onSecondary,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              if (mounted) Navigator.pop(context);
+              openAppSettings();
+            },
+            child: TAHeadlineSmallText(
+              text: S.current.tradlySettingButton,
+              fontWeight: FontWeight.w700,
+              color: context.colorScheme.primary,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -16,7 +17,7 @@ class NotificationService {
     if (_initialized) return;
 
     const initSettingAndroid =
-        AndroidInitializationSettings('mipmap/ic_launcher');
+        AndroidInitializationSettings('@drawable/ic_launcher');
 
     const initSettingIOS = DarwinInitializationSettings(
       requestAlertPermission: true,
@@ -37,10 +38,15 @@ class NotificationService {
 
   NotificationDetails notificationsDetails() {
     return const NotificationDetails(
-      android: AndroidNotificationDetails('channel_id', 'channel_name',
-          channelDescription: 'channel_description',
-          importance: Importance.max,
-          priority: Priority.high),
+      android: AndroidNotificationDetails(
+        'channel_id',
+        'channel_name',
+        channelDescription: 'channel_description',
+        importance: Importance.max,
+        priority: Priority.high,
+        icon: '@drawable/ic_launcher',
+        color: Color(0xFF33907C),
+      ),
       iOS: DarwinNotificationDetails(
         presentAlert: true,
         presentBadge: true,

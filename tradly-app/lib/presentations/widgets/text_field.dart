@@ -13,7 +13,7 @@ class TATextField extends StatefulWidget {
     this.validatorStyle,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
-    this.scrollPadding = const EdgeInsets.all(20.0),
+    this.scrollPadding = const EdgeInsets.all(20),
     this.onTap,
     this.textInputAction = TextInputAction.next,
     this.focusNode,
@@ -201,55 +201,52 @@ class _TATextFieldState extends State<TATextField> {
               textScaler: MediaQuery.textScalerOf(context),
             ),
           ),
-          Semantics(
-            child: TextFormField(
-              cursorColor: context.colorScheme.onSurface,
-              controller: widget.controller,
-              initialValue: widget.initialValue,
-              maxLines: widget.maxLines,
-              maxLength: widget.maxLength,
-              keyboardType: widget.keyboardType,
-              obscureText: widget.isPassword ? _textInvisible : false,
-              obscuringCharacter: '*',
-              textInputAction: widget.textInputAction,
-              focusNode: widget.focusNode,
-              onFieldSubmitted: (value) {
-                if (widget.textInputAction == TextInputAction.next) {
-                  FocusScope.of(context).nextFocus();
-                }
-                if (widget.onFieldSubmitted != null) {
-                  widget.onFieldSubmitted!(value);
-                }
-              },
-              onChanged: widget.onChanged,
-              onTap: widget.onTap,
-              onEditingComplete: widget.onEditingComplete,
-              autofocus: widget.autoFocus,
-              scrollPadding: widget.scrollPadding,
-              style: widget.textStyle ??
-                  TextStyle(color: context.colorScheme.onSurface),
-              decoration: InputDecoration(
-                // prefixIconConstraints: BoxConstraints(
-                //   minWidth: 0,
-                // ),
-                contentPadding: const EdgeInsets.only(top: 10),
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xffdbdbde),
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: context.colorScheme.onSurface),
-                ),
-                hintText: widget.hint,
-                hintStyle:
-                    widget.hintStyle ?? TextStyle(color: Colors.grey[400]),
-                counterText: '',
-                suffixIcon: widget.suffixIcon,
+          TextFormField(
+            cursorColor: context.colorScheme.onSurface,
+            controller: widget.controller,
+            initialValue: widget.initialValue,
+            maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
+            keyboardType: widget.keyboardType,
+            obscureText: widget.isPassword ? _textInvisible : false,
+            obscuringCharacter: '*',
+            textInputAction: widget.textInputAction,
+            focusNode: widget.focusNode,
+            onFieldSubmitted: (value) {
+              if (widget.textInputAction == TextInputAction.next) {
+                FocusScope.of(context).nextFocus();
+              }
+              if (widget.onFieldSubmitted != null) {
+                widget.onFieldSubmitted!(value);
+              }
+            },
+            onChanged: widget.onChanged,
+            onTap: widget.onTap,
+            onEditingComplete: widget.onEditingComplete,
+            autofocus: widget.autoFocus,
+            scrollPadding: widget.scrollPadding,
+            style: widget.textStyle ??
+                TextStyle(color: context.colorScheme.onSurface),
+            decoration: InputDecoration(
+              // prefixIconConstraints: BoxConstraints(
+              //   minWidth: 0,
+              // ),
+              contentPadding: const EdgeInsets.only(top: 10),
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
               ),
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xffdbdbde),
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: context.colorScheme.onSurface),
+              ),
+              hintText: widget.hint,
+              hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),
+              counterText: '',
+              suffixIcon: widget.suffixIcon,
             ),
           ),
         ],
@@ -442,35 +439,33 @@ class _TATextFieldState extends State<TATextField> {
               ...widget.chips.map((chip) => _buildChip(context, chip)),
             ],
           ),
-          Semantics(
-            child: TextFormField(
-              cursorColor: context.colorScheme.onSurface,
-              initialValue: widget.initialValue,
-              controller: _chipController,
-              maxLines: widget.maxLines,
-              maxLength: widget.maxLength,
-              focusNode: _chipFocusNode,
-              style: widget.textStyle ??
-                  TextStyle(color: context.colorScheme.onSurface),
-              decoration: InputDecoration(
-                border: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                ),
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xffdbdbde),
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: context.colorScheme.onSurface),
-                ),
-                contentPadding: const EdgeInsets.only(top: 10),
+          TextFormField(
+            cursorColor: context.colorScheme.onSurface,
+            initialValue: widget.initialValue,
+            controller: _chipController,
+            maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
+            focusNode: widget.focusNode,
+            style: widget.textStyle ??
+                TextStyle(color: context.colorScheme.onSurface),
+            decoration: InputDecoration(
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
               ),
-              onFieldSubmitted: (value) {
-                _addChip(value);
-                _chipFocusNode.requestFocus();
-              },
+              enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xffdbdbde),
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: context.colorScheme.onSurface),
+              ),
+              contentPadding: const EdgeInsets.only(top: 10),
             ),
+            onFieldSubmitted: (value) {
+              _addChip(value);
+              _chipFocusNode.requestFocus();
+            },
           ),
         ],
       ),

@@ -5,6 +5,7 @@ import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
+import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/home/views/search_view.dart';
@@ -12,6 +13,7 @@ import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_state.dart';
 import 'package:tradly_app/presentations/pages/store/views/add_product.dart';
+import 'package:tradly_app/presentations/pages/store/views/edit_product.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
@@ -52,7 +54,8 @@ class _StoreScreenState extends State<StoreScreen> {
       body: BlocBuilder<StoreBloc, StoreState>(
         buildWhen: (previous, current) =>
             previous.products != current.products ||
-            previous.status != current.status,
+            previous.status != current.status ||
+            previous.stores != current.stores,
         builder: (context, state) {
           if (state.status is StoreStatusLoading) {
             return Center(
@@ -277,11 +280,19 @@ class _StoreScreenState extends State<StoreScreen> {
                                 ),
                                 child: TAIcons.edit()),
                             onTap: () {
-                              final product = products[index];
-                              TARouter.navigateTo(
+                              final product = state.products?[index];
+                              Navigator.push(
                                 context,
-                                TAPaths.editProduct.name,
-                                extra: product,
+                                MaterialPageRoute(
+                                  builder: (context) => EditProductScreen(
+                                    product: ProductModel(
+                                      id: product?.id,
+                                      title: product?.title ?? '',
+                                      price: product?.price ?? '',
+                                      imageUrl: product?.imageUrl ?? '',
+                                    ),
+                                  ),
+                                ),
                               );
                             },
                           ),

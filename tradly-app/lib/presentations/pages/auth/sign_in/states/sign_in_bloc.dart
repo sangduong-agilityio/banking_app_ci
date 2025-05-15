@@ -30,7 +30,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInButtonPressedEvt event,
     Emitter<SignInState> emit,
   ) async {
-    emit(state.copyWith(viewState: SubmissionStatus.loading));
+    emit(
+      state.copyWith(
+        viewState: SubmissionStatus.loading,
+      ),
+    );
     try {
       final response = await authRepository.signIn(
         email: state.email,

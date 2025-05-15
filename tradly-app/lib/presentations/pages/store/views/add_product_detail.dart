@@ -161,7 +161,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
           backgroundColor: context.colorScheme.primary,
           text: S.current.storeAddProductButton,
           onPressed: () {
-            if (_formKey.currentState!.validate()) {
+            if (_formKey.currentState?.validate() ?? false) {
               if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
                   true)) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -185,9 +185,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
                     : '',
               );
 
-              context.read<StoreBloc>().add(AddProductEvt(
-                    product: product,
-                  ));
+              context.read<StoreBloc>().add(AddProductEvt(product: product));
 
               Navigator.pop(context, product);
             }
@@ -210,7 +208,8 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
               child: _buildAddPhotoBox(),
             );
           } else {
-            return _buildPhotoBox(state.imageFiles![index - 1], index - 1);
+            return _buildPhotoBox(
+                File(state.imageFiles![index - 1].path), index - 1);
           }
         },
       ),
@@ -273,7 +272,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
             right: 4,
             child: GestureDetector(
               onTap: () {
-                context.read<StoreBloc>().add(RemoveImageEvt(index: index));
+                context.read<StoreBloc>().add(RemoveImageEvt(image: index));
               },
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),

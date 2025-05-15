@@ -13,6 +13,7 @@ class StoreState extends Equatable {
     this.hasProducts = false,
     this.products,
     this.stores,
+    this.isFormValid = false,
     this.imageFiles,
     this.status = const StoreStatus.initial(),
     this.errorMessage,
@@ -25,6 +26,7 @@ class StoreState extends Equatable {
   final List<File>? imageFiles;
   final StoreStatus status;
   final String? errorMessage;
+  final bool isFormValid;
 
   StoreState copyWith({
     bool? hasStore,
@@ -34,6 +36,7 @@ class StoreState extends Equatable {
     List<File>? imageFiles,
     StoreStatus? status,
     String? errorMessage,
+    bool? isFormValid,
   }) {
     return StoreState(
       hasStore: hasStore ?? this.hasStore,
@@ -43,6 +46,7 @@ class StoreState extends Equatable {
       imageFiles: imageFiles ?? this.imageFiles,
       status: status ?? this.status,
       errorMessage: errorMessage,
+      isFormValid: isFormValid ?? this.isFormValid,
     );
   }
 
@@ -55,6 +59,7 @@ class StoreState extends Equatable {
         imageFiles,
         status,
         errorMessage,
+        isFormValid
       ];
 }
 

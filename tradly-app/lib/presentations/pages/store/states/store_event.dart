@@ -16,8 +16,8 @@ class InitializeStoreEvt extends StoreEvt {
   List<Object?> get props => [];
 }
 
-class CreateStoreEvt extends StoreEvt {
-  const CreateStoreEvt({
+class CreateStoreButtonEvt extends StoreEvt {
+  const CreateStoreButtonEvt({
     required this.store,
   });
 
@@ -25,6 +25,17 @@ class CreateStoreEvt extends StoreEvt {
 
   @override
   List<Object?> get props => [store];
+}
+
+class CreateStoreFormValidateChagedEvt extends StoreEvt {
+  const CreateStoreFormValidateChagedEvt(
+      {required this.isValidate, this.store});
+
+  final bool isValidate;
+  final StoreModel? store;
+
+  @override
+  List<Object?> get props => [isValidate, store];
 }
 
 class AddProductEvt extends StoreEvt {
@@ -38,8 +49,8 @@ class AddProductEvt extends StoreEvt {
   List<Object?> get props => [product];
 }
 
-class EditProductEvt extends StoreEvt {
-  const EditProductEvt({
+class EditProductButtonEvt extends StoreEvt {
+  const EditProductButtonEvt({
     required this.product,
   });
 
@@ -47,6 +58,19 @@ class EditProductEvt extends StoreEvt {
 
   @override
   List<Object?> get props => [product];
+}
+
+class EditFormValidateChangedEvt extends StoreEvt {
+  const EditFormValidateChangedEvt({
+    required this.isValidate,
+    required this.product,
+  });
+
+  final bool isValidate;
+  final ProductModel product;
+
+  @override
+  List<Object?> get props => [isValidate, product];
 }
 
 class DeleteProductEvt extends StoreEvt {
@@ -58,17 +82,6 @@ class DeleteProductEvt extends StoreEvt {
 
   @override
   List<Object?> get props => [productId];
-}
-
-class DeleteStoreEvt extends StoreEvt {
-  const DeleteStoreEvt({
-    required this.storeId,
-  });
-
-  final String storeId;
-
-  @override
-  List<Object?> get props => [storeId];
 }
 
 class PickImageEvt extends StoreEvt {
@@ -84,10 +97,11 @@ class PickImageEvt extends StoreEvt {
 
 class RemoveImageEvt extends StoreEvt {
   const RemoveImageEvt({
-    required this.index,
+    required this.image,
   });
 
-  final int index;
+  final int image;
+
   @override
-  List<Object?> get props => [index];
+  List<Object?> get props => [image];
 }
