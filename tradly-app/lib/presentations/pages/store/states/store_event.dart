@@ -28,8 +28,10 @@ class CreateStoreButtonEvt extends StoreEvt {
 }
 
 class CreateStoreFormValidateChagedEvt extends StoreEvt {
-  const CreateStoreFormValidateChagedEvt(
-      {required this.isValidate, this.store});
+  const CreateStoreFormValidateChagedEvt({
+    required this.isValidate,
+    this.store,
+  });
 
   final bool isValidate;
   final StoreModel? store;
@@ -67,7 +69,7 @@ class EditFormValidateChangedEvt extends StoreEvt {
   });
 
   final bool isValidate;
-  final ProductModel product;
+  final ProductModel? product;
 
   @override
   List<Object?> get props => [isValidate, product];
@@ -75,13 +77,13 @@ class EditFormValidateChangedEvt extends StoreEvt {
 
 class DeleteProductEvt extends StoreEvt {
   const DeleteProductEvt({
-    required this.productId,
+    required this.id,
   });
 
-  final String productId;
+  final int id;
 
   @override
-  List<Object?> get props => [productId];
+  List<Object?> get props => [id];
 }
 
 class PickImageEvt extends StoreEvt {

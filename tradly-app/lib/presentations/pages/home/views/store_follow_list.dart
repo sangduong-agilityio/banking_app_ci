@@ -29,11 +29,11 @@ class StoreFollowList extends StatelessWidget {
               return TACardStoreFollow(
                 stores: StoreModel(
                   id: stores?.id ?? 0,
-                  name: stores?.name ?? '',
+                  storeName: stores?.storeName ?? '',
                   imageUrl: stores?.imageUrl ?? '',
-                  description: stores?.description ?? '',
+                  storeDescription: stores?.storeDescription ?? '',
                   address: stores?.address ?? '',
-                  webAddress: stores?.webAddress ?? '',
+                  storeWebAddress: stores?.storeWebAddress ?? '',
                   logoStore: stores?.logoStore ?? '',
                 ),
               );

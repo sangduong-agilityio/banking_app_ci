@@ -29,7 +29,7 @@ class TACardProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLocalFile = product.imageUrl.startsWith('/http');
+    final isGalleryImage = File(product.imageUrl).existsSync();
     return Semantics(
       label: label,
       hint: hint,
@@ -48,7 +48,7 @@ class TACardProduct extends StatelessWidget {
               children: [
                 Semantics(
                   label: 'Image of ${product.title}',
-                  child: isLocalFile
+                  child: isGalleryImage
                       ? ClipRRect(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),
@@ -192,7 +192,7 @@ class TACardStoreFollow extends StatelessWidget {
             ),
             SizedBox(height: 35),
             TATitleLargeText(
-              text: stores.name,
+              text: stores.storeName,
               color: context.colorScheme.onSurface,
             ),
             ElevatedButton(

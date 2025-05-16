@@ -15,7 +15,12 @@ import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 
 class AddProductDetailScreen extends StatefulWidget {
-  const AddProductDetailScreen({super.key});
+  const AddProductDetailScreen({
+    super.key,
+    this.product,
+  });
+
+  final ProductModel? product;
 
   @override
   State<AddProductDetailScreen> createState() => _AddProductDetailScreenState();
@@ -154,43 +159,49 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
           );
         },
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(20),
-        color: context.colorScheme.onPrimary,
-        child: TAElevatedButton(
-          backgroundColor: context.colorScheme.primary,
-          text: S.current.storeAddProductButton,
-          onPressed: () {
-            if (_formKey.currentState?.validate() ?? false) {
-              if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
-                  true)) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(S.current.storeMessageProduct),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-                return;
-              }
+      bottomNavigationBar: BlocBuilder<StoreBloc, StoreState>(
+        builder: (context, state) {
+          return Container(
+            padding: const EdgeInsets.all(20),
+            color: context.colorScheme.onPrimary,
+            child: TAElevatedButton(
+              backgroundColor: context.colorScheme.primary,
+              text: S.current.storeAddProductButton,
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
+                  if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
+                      true)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(S.current.storeMessageProduct),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                    return;
+                  }
 
-              final product = ProductModel(
-                title: _productNameController.text,
-                categoryType: _categoryProductController.text,
-                price: _priceController.text,
-                location: _locationController.text,
-                description: _productDescriptionController.text,
-                priceType: _priceTypeController.text,
-                imageUrl: context.read<StoreBloc>().state.imageFiles!.isNotEmpty
-                    ? context.read<StoreBloc>().state.imageFiles!.first.path
-                    : '',
-              );
+                  final product = ProductModel(
+                    title: _productNameController.text,
+                    categoryType: _categoryProductController.text,
+                    price: _priceController.text,
+                    newPrice: _offerPriceController.text,
+                    location: _locationController.text,
+                    description: _productDescriptionController.text,
+                    priceType: _priceTypeController.text,
+                    imageUrl:
+                        state.imageFiles?.map((e) => e.path).join(',') ?? '',
+                  );
 
-              context.read<StoreBloc>().add(AddProductEvt(product: product));
+                  context
+                      .read<StoreBloc>()
+                      .add(AddProductEvt(product: product));
 
-              Navigator.pop(context, product);
-            }
-          },
-        ),
+                  Navigator.pop(context, product);
+                }
+              },
+            ),
+          );
+        },
       ),
     );
   }

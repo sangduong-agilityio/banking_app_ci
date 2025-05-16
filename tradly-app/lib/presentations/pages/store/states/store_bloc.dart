@@ -47,21 +47,19 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     );
     try {
       await _repo.createStore(event.store);
+
       emit(
         state.copyWith(
           hasStore: true,
           stores: event.store,
           status: const StoreStatus.success(),
-          errorMessage: null,
         ),
       );
     } catch (e) {
-      emit(
-        state.copyWith(
-          status: const StoreStatus.failure(),
-          errorMessage: e.toString(),
-        ),
-      );
+      emit(state.copyWith(
+        status: const StoreStatus.failure(),
+        errorMessage: e.toString(),
+      ));
     }
   }
 
@@ -76,15 +74,15 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     );
     try {
       await _repo.addProduct(event.product);
-      final updatedProducts = List<ProductModel>.from(
-        state.products ?? [],
-      )..add(event.product);
+
+      final updatedProducts = List<ProductModel>.from(state.products ?? [])
+        ..add(event.product);
+
       emit(
         state.copyWith(
           products: updatedProducts,
           hasProducts: true,
           status: const StoreStatus.success(),
-          errorMessage: null,
           imageFiles: [],
         ),
       );
@@ -118,6 +116,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
         status: const StoreStatus.loading(),
       ),
     );
+
     try {
       await _repo.editProduct(event.product);
 
@@ -136,7 +135,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
       emit(
         state.copyWith(
           status: const StoreStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: 'Failed to edit product: $e',
         ),
       );
     }
@@ -152,13 +151,11 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
       ),
     );
     try {
-      await _repo.deleteProduct(event.productId);
-      final productIdInt = int.tryParse(event.productId);
-      final updatedProducts = state.products
-          ?.where((product) => productIdInt != null
-              ? product.id != productIdInt
-              : product.id.toString() != event.productId)
-          .toList();
+      await _repo.deleteProduct(event.id);
+
+      final updatedProducts =
+          state.products?.where((product) => product.id != event.id).toList();
+
       emit(
         state.copyWith(
           products: updatedProducts,

@@ -13,7 +13,6 @@ import 'package:tradly_app/presentations/pages/store/states/store_bloc.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_event.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_state.dart';
 import 'package:tradly_app/presentations/pages/store/views/add_product.dart';
-import 'package:tradly_app/presentations/pages/store/views/edit_product.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
@@ -64,6 +63,7 @@ class _StoreScreenState extends State<StoreScreen> {
               ),
             );
           }
+
           return state.hasStore
               ? SingleChildScrollView(
                   child: Column(
@@ -83,7 +83,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             ),
                             const SizedBox(height: 16),
                             TADisplaySmallText(
-                              text: state.stores?.name ?? '',
+                              text: state.stores?.storeName ?? '',
                               fontWeight: FontWeight.w700,
                               color: context.colorScheme.onSurface,
                             ),
@@ -279,31 +279,31 @@ class _StoreScreenState extends State<StoreScreen> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: TAIcons.edit()),
-                            onTap: () {
+                            onTap: () async {
                               final product = state.products?[index];
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EditProductScreen(
-                                    product: ProductModel(
-                                      id: product?.id,
-                                      title: product?.title ?? '',
-                                      price: product?.price ?? '',
-                                      imageUrl: product?.imageUrl ?? '',
-                                    ),
-                                  ),
-                                ),
-                              );
+
+                              if (product != null) {
+                                final updatedProduct = await context.pushNamed(
+                                    TAPaths.editProduct.name,
+                                    extra: product);
+
+                                if (updatedProduct != null &&
+                                    updatedProduct is ProductModel) {
+                                  context.read<StoreBloc>().add(
+                                        EditProductButtonEvt(
+                                          product: updatedProduct,
+                                        ),
+                                      );
+                                }
+                              }
                             },
                           ),
                           const SizedBox(width: 50),
                           GestureDetector(
                             onTap: () {
+                              final product = state.products?[index].id;
                               context.read<StoreBloc>().add(
-                                    DeleteProductEvt(
-                                      productId:
-                                          state.products![index].id.toString(),
-                                    ),
+                                    DeleteProductEvt(id: product ?? 0),
                                   );
                             },
                             child: Container(

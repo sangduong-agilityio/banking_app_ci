@@ -27,28 +27,28 @@ class CreateStoreScreen extends StatefulWidget {
 }
 
 class _CreateStoreScreenState extends State<CreateStoreScreen> {
-  final formKey = GlobalKey<FormState>();
-  final storeNameController = TextEditingController();
-  final webAddressController = TextEditingController();
-  final descriptionController = TextEditingController();
-  final storeTypeController = TextEditingController();
-  final addressLine1Controller = TextEditingController();
-  final cityController = TextEditingController();
-  final courierNameController = TextEditingController();
-  final countryController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _storeNameController = TextEditingController();
+  final _webAddressController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _storeTypeController = TextEditingController();
+  final _addressLine1Controller = TextEditingController();
+  final _cityController = TextEditingController();
+  final _courierNameController = TextEditingController();
+  final _countryController = TextEditingController();
 
   List<String> _tagLineDetail = ['Vegetables', 'Fruit'];
 
   @override
   void dispose() {
-    storeNameController.dispose();
-    webAddressController.dispose();
-    descriptionController.dispose();
-    storeTypeController.dispose();
-    addressLine1Controller.dispose();
-    cityController.dispose();
-    courierNameController.dispose();
-    countryController.dispose();
+    _storeNameController.dispose();
+    _webAddressController.dispose();
+    _descriptionController.dispose();
+    _storeTypeController.dispose();
+    _addressLine1Controller.dispose();
+    _cityController.dispose();
+    _courierNameController.dispose();
+    _countryController.dispose();
     super.dispose();
   }
 
@@ -97,7 +97,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 color: context.colorScheme.surface,
                 child: Form(
-                  key: formKey,
+                  key: _formKey,
                   child: BlocBuilder<StoreBloc, StoreState>(
                     builder: (context, state) {
                       return TAForm(
@@ -111,35 +111,35 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                           textFields: [
                             TATextField(
                               label: S.current.storeNameLabel,
-                              controller: storeNameController,
+                              controller: _storeNameController,
                             ),
                             TATextField(
                               label: S.current.storeWebAddressLabel,
-                              controller: webAddressController,
+                              controller: _webAddressController,
                             ),
                             TATextField(
                               label: S.current.storeDescriptionLabel,
-                              controller: descriptionController,
+                              controller: _descriptionController,
                             ),
                             TATextField(
                               label: S.current.storeTypeLabel,
-                              controller: storeTypeController,
+                              controller: _storeTypeController,
                             ),
                             TATextField(
                               label: S.current.storeAddressLabel,
-                              controller: addressLine1Controller,
+                              controller: _addressLine1Controller,
                             ),
                             TATextField(
                               label: S.current.storeCityLabel,
-                              controller: cityController,
+                              controller: _cityController,
                             ),
                             TATextField(
                               label: S.current.storeCountryLabel,
-                              controller: countryController,
+                              controller: _countryController,
                             ),
                             TATextField(
                               label: S.current.storeCourierNameLabel,
-                              controller: courierNameController,
+                              controller: _courierNameController,
                             ),
                             TATextField(
                               label: S.current.storeTaglineLabel,
@@ -166,22 +166,27 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
             padding: const EdgeInsets.all(20),
             color: context.colorScheme.onPrimary,
             child: TAElevatedButton(
-              text: S.current.storeCreateButton,
-              backgroundColor: context.colorScheme.primary,
-              onPressed: () {
-                if (formKey.currentState?.validate() ?? false) {
-                  final newStore = StoreModel(
-                    name: storeNameController.text,
-                    webAddress: webAddressController.text,
-                    description: descriptionController.text,
-                  );
-                  Navigator.pop(context, newStore);
-                  context.read<StoreBloc>().add(
-                        CreateStoreButtonEvt(store: newStore),
-                      );
-                }
-              },
-            ),
+                text: S.current.storeCreateButton,
+                backgroundColor: context.colorScheme.primary,
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    final store = StoreModel(
+                      storeName: _storeNameController.text,
+                      storeWebAddress: _webAddressController.text,
+                      storeDescription: _descriptionController.text,
+                      storeType: _storeTypeController.text,
+                      address: _addressLine1Controller.text,
+                      city: _cityController.text,
+                      country: _countryController.text,
+                      courieName: _courierNameController.text,
+                    );
+                    Navigator.pop(context, store);
+
+                    context
+                        .read<StoreBloc>()
+                        .add(CreateStoreButtonEvt(store: store));
+                  }
+                }),
           );
         },
       ),

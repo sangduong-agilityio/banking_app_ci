@@ -46,6 +46,7 @@ class ProductModel {
   final String? location;
   final String? categoryType;
   final int? categoryId;
+  final int? storeId;
   final List<ProductType>? productTypes;
 
   ProductModel({
@@ -62,6 +63,7 @@ class ProductModel {
     this.condition,
     this.location,
     this.categoryType,
+    this.storeId,
   });
 
   // Factory method to create a ProductModel from a JSON object
@@ -79,6 +81,7 @@ class ProductModel {
       location: json['location'],
       categoryType: json['categoryType'],
       categoryId: json['categoryId'],
+      storeId: json['storeId'],
       productTypes: (json['product_types'] as List<dynamic>?)
           ?.map((e) => ProductType.fromJson(e))
           .toList(),
@@ -100,6 +103,7 @@ class ProductModel {
       'location': location,
       'categoryType': categoryType,
       'categoryId': categoryId,
+      'storeId': storeId,
       'product_types': productTypes?.map((e) => e.toJson()).toList(),
     };
   }
@@ -117,6 +121,7 @@ class ProductModel {
     String? location,
     String? categoryType,
     int? categoryId,
+    int? storeId,
     List<ProductType>? productTypes,
   }) {
     return ProductModel(
@@ -132,6 +137,7 @@ class ProductModel {
       location: location ?? this.location,
       categoryType: categoryType ?? this.categoryType,
       categoryId: categoryId ?? this.categoryId,
+      storeId: storeId ?? this.storeId,
       productTypes: productTypes ?? this.productTypes,
     );
   }
