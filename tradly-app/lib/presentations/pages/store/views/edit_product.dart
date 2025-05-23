@@ -182,6 +182,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 text: S.current.storeEditProductButton,
                 backgroundColor: context.colorScheme.primary,
                 onPressed: () {
+                  final storeId = context.read<StoreBloc>().state.stores?.id;
+
                   if (_formKey.currentState?.validate() ?? false) {
                     final updatedProduct = ProductModel(
                       id: widget.product.id,
@@ -192,6 +194,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       priceType: _priceTypeController.text,
                       imageUrl:
                           state.imageFiles?.map((e) => e.path).join(',') ?? '',
+                      storeId: storeId,
                     );
                     Navigator.pop(context, updatedProduct);
                   }

@@ -303,7 +303,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             onTap: () {
                               final product = state.products?[index].id;
                               context.read<StoreBloc>().add(
-                                    DeleteProductEvt(id: product ?? 0),
+                                    DeleteProductEvt(productId: product ?? 0),
                                   );
                             },
                             child: Container(

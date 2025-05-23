@@ -77,13 +77,13 @@ class EditFormValidateChangedEvt extends StoreEvt {
 
 class DeleteProductEvt extends StoreEvt {
   const DeleteProductEvt({
-    required this.id,
+    required this.productId,
   });
 
-  final int id;
+  final int productId;
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [productId];
 }
 
 class PickImageEvt extends StoreEvt {

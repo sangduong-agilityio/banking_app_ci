@@ -32,20 +32,32 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Price: Low to High"),
         "browseSortbyTitle": MessageLookupByLibrary.simpleMessage("Sort by"),
         "browseTitle": MessageLookupByLibrary.simpleMessage("Browse"),
+        "checkoutAddAdressTitle":
+            MessageLookupByLibrary.simpleMessage("Add a new address"),
         "checkoutAddNewAddressTitle":
             MessageLookupByLibrary.simpleMessage("+ Add New Address"),
+        "checkoutAddressLabel":
+            MessageLookupByLibrary.simpleMessage("StreetAddress"),
         "checkoutCheckoutButton":
             MessageLookupByLibrary.simpleMessage("Checkout"),
+        "checkoutCityLabel": MessageLookupByLibrary.simpleMessage("City"),
         "checkoutDeliveryFreeTitle":
             MessageLookupByLibrary.simpleMessage("Delivery Free"),
         "checkoutInforTitle": MessageLookupByLibrary.simpleMessage("Info"),
+        "checkoutNameLabel": MessageLookupByLibrary.simpleMessage("Name"),
+        "checkoutPhoneLabel": MessageLookupByLibrary.simpleMessage("Phone"),
         "checkoutPriceDetailsTitle":
             MessageLookupByLibrary.simpleMessage("Price Details"),
         "checkoutPriceItemTitle": m0,
         "checkoutRemoveButton": MessageLookupByLibrary.simpleMessage("Remove"),
+        "checkoutSaveButton": MessageLookupByLibrary.simpleMessage("Save"),
+        "checkoutStateLabel": MessageLookupByLibrary.simpleMessage("State"),
         "checkoutTitle": MessageLookupByLibrary.simpleMessage("My Cart"),
         "checkoutTotalAmountTitle":
             MessageLookupByLibrary.simpleMessage("Total Amount"),
+        "checkoutUseCurrentLocationTitle":
+            MessageLookupByLibrary.simpleMessage("Use current location"),
+        "checkoutZipCodeLabel": MessageLookupByLibrary.simpleMessage("ZipCode"),
         "homeBannerDescription": MessageLookupByLibrary.simpleMessage(
             "READY TO DELIVER TO\nYOUR HOME"),
         "homeBannerTextButton":

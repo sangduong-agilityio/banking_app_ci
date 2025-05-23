@@ -47,13 +47,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              height: 52,
-              color: context.colorScheme.onPrimary,
-              child: Center(
-                child: TATitleLargeText(
-                  text: S.current.checkoutAddNewAddressTitle,
-                  color: context.colorScheme.onSurface,
+            GestureDetector(
+              onTap: () {
+                context.pushNamed(TAPaths.addAddress.name);
+              },
+              child: Container(
+                height: 52,
+                color: context.colorScheme.onPrimary,
+                child: Center(
+                  child: TATitleLargeText(
+                    text: S.current.checkoutAddNewAddressTitle,
+                    color: context.colorScheme.onSurface,
+                  ),
                 ),
               ),
             ),

@@ -23,7 +23,7 @@ class TAColors {
     onSurfaceVariant: TAPalette.grey[50],
     outline: TAPalette.grey[5],
     inverseSurface: TAPalette.genericBlack,
-    onInverseSurface: TAPalette.genericWhite,
+    onInverseSurface: TAPalette.primaryBlue,
     inversePrimary: TAPalette.green[500],
   );
 
@@ -47,7 +47,7 @@ class TAColors {
     onSurface: TAPalette.genericBlack,
     onSurfaceVariant: TAPalette.grey[900],
     outline: TAPalette.grey[5],
-    onInverseSurface: TAPalette.genericWhite,
+    onInverseSurface: TAPalette.primaryBlue,
     inversePrimary: TAPalette.greyMedium,
   );
 }

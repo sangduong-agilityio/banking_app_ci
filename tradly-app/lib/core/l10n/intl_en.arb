@@ -180,6 +180,15 @@
   "checkoutInforTitle":"Info",
   "checkoutDeliveryFreeTitle":"Delivery Free",
   "checkoutTotalAmountTitle":"Total Amount",
+  "checkoutAddAdressTitle":"Add a new address",
+  "checkoutUseCurrentLocationTitle":"Use current location",
+  "checkoutNameLabel":"Name",
+  "checkoutPhoneLabel":"Phone",
+  "checkoutAddressLabel":"StreetAddress",
+  "checkoutCityLabel":"City",
+  "checkoutStateLabel":"State",
+  "checkoutZipCodeLabel":"ZipCode",
+  "checkoutSaveButton":"Save",
   "checkoutPriceItemTitle": "Price ({itemCount} item)",
   "@checkoutPriceItemTitle": {
     "placeholders": {
@@ -206,5 +215,4 @@
   "browsePriceHighToLowTitle":"Price: High to Low",
   "browseCancelButton":"Cancel",
   "browseApplyButton":"Apply"
-
 }

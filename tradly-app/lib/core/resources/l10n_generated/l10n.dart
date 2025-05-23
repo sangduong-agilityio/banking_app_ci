@@ -1410,6 +1410,96 @@ class S {
     );
   }
 
+  /// `Add a new address`
+  String get checkoutAddAdressTitle {
+    return Intl.message(
+      'Add a new address',
+      name: 'checkoutAddAdressTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use current location`
+  String get checkoutUseCurrentLocationTitle {
+    return Intl.message(
+      'Use current location',
+      name: 'checkoutUseCurrentLocationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get checkoutNameLabel {
+    return Intl.message(
+      'Name',
+      name: 'checkoutNameLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone`
+  String get checkoutPhoneLabel {
+    return Intl.message(
+      'Phone',
+      name: 'checkoutPhoneLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `StreetAddress`
+  String get checkoutAddressLabel {
+    return Intl.message(
+      'StreetAddress',
+      name: 'checkoutAddressLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `City`
+  String get checkoutCityLabel {
+    return Intl.message(
+      'City',
+      name: 'checkoutCityLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `State`
+  String get checkoutStateLabel {
+    return Intl.message(
+      'State',
+      name: 'checkoutStateLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ZipCode`
+  String get checkoutZipCodeLabel {
+    return Intl.message(
+      'ZipCode',
+      name: 'checkoutZipCodeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get checkoutSaveButton {
+    return Intl.message(
+      'Save',
+      name: 'checkoutSaveButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Price ({itemCount} item)`
   String checkoutPriceItemTitle(String itemCount) {
     return Intl.message(

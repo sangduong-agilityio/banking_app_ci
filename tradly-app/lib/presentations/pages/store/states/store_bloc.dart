@@ -46,12 +46,12 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
       ),
     );
     try {
-      await _repo.createStore(event.store);
+      final insertedStore = await _repo.createStore(event.store);
 
       emit(
         state.copyWith(
           hasStore: true,
-          stores: event.store,
+          stores: insertedStore,
           status: const StoreStatus.success(),
         ),
       );
@@ -119,9 +119,11 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
 
     try {
       await _repo.editProduct(event.product);
-
       final updatedProducts = state.products?.map((product) {
-        return product.id == event.product.id ? event.product : product;
+        if (product.id == event.product.id) {
+          return event.product;
+        }
+        return product;
       }).toList();
 
       emit(
@@ -135,7 +137,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
       emit(
         state.copyWith(
           status: const StoreStatus.failure(),
-          errorMessage: 'Failed to edit product: $e',
+          errorMessage: e.toString(),
         ),
       );
     }
@@ -151,15 +153,16 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
       ),
     );
     try {
-      await _repo.deleteProduct(event.id);
+      await _repo.deleteProduct(event.productId);
 
-      final updatedProducts =
-          state.products?.where((product) => product.id != event.id).toList();
+      final updatedProducts = (state.products ?? [])
+          .where((product) => product.id != event.productId)
+          .toList();
 
       emit(
         state.copyWith(
           products: updatedProducts,
-          hasProducts: updatedProducts?.isNotEmpty ?? false,
+          hasProducts: updatedProducts.isNotEmpty,
           status: const StoreStatus.success(),
         ),
       );
@@ -221,7 +224,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     } catch (e) {
       emit(
         state.copyWith(
-          errorMessage: 'Failed to pick image: $e',
+          errorMessage: e.toString(),
         ),
       );
     }

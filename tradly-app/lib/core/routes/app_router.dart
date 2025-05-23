@@ -13,12 +13,12 @@ import 'package:tradly_app/presentations/pages/home/home_screen.dart';
 import 'package:tradly_app/presentations/pages/on_boarding/on_boarding_screen.dart';
 import 'package:tradly_app/presentations/pages/order_history/order_history.dart';
 import 'package:tradly_app/presentations/pages/product_detail/product_detail.dart';
+import 'package:tradly_app/presentations/pages/product_detail/views/add_address.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/checkout.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/product_list.dart';
 import 'package:tradly_app/presentations/pages/product_detail/views/wish_list.dart';
 import 'package:tradly_app/presentations/pages/profile/profile.dart';
 import 'package:tradly_app/presentations/pages/store/store.dart';
-import 'package:tradly_app/presentations/pages/store/views/add_product_detail.dart';
 import 'package:tradly_app/presentations/pages/store/views/create_store.dart';
 import 'package:tradly_app/presentations/pages/store/views/edit_product.dart';
 import 'package:tradly_app/presentations/widgets/assets.dart';
@@ -63,9 +63,9 @@ class TARouter {
         },
       ),
       GoRoute(
-        name: TAPaths.addProduct.name,
-        path: TAPaths.addProduct.path,
-        builder: (context, state) => const AddProductDetailScreen(),
+        name: TAPaths.addAddress.name,
+        path: TAPaths.addAddress.path,
+        builder: (context, state) => const AddAddressScreen(),
       ),
       GoRoute(
         name: TAPaths.createStore.name,
@@ -252,6 +252,10 @@ enum TAPaths {
   checkout(
     name: 'myCart',
     path: '/myCart',
+  ),
+  addAddress(
+    name: 'addAddress',
+    path: '/addAddress',
   ),
   productList(
     name: 'productList',

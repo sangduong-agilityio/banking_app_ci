@@ -98,6 +98,7 @@ class TAResponsive {
       switch (platform) {
         case TAResponsiveSizeType.mobile:
           name = MOBILE;
+          break;
         case TAResponsiveSizeType.tablet:
           name = TABLET;
       }

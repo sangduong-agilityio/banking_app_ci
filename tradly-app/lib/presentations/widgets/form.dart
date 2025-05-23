@@ -6,12 +6,11 @@ class TAForm extends StatefulWidget {
     super.key,
     required this.textFields,
     required this.isValidated,
-    this.spaceBetweenRow = 20,
+    this.spaceBetweenRow = 15,
     this.textInputAction,
   });
 
-  final List<dynamic>
-      textFields; // Updated to allow dynamic types including Row
+  final List<dynamic> textFields;
   final double spaceBetweenRow;
   final Function(bool value) isValidated;
   final TextInputAction? textInputAction;

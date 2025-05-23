@@ -165,41 +165,42 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
             padding: const EdgeInsets.all(20),
             color: context.colorScheme.onPrimary,
             child: TAElevatedButton(
-              backgroundColor: context.colorScheme.primary,
-              text: S.current.storeAddProductButton,
-              onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
-                      true)) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(S.current.storeMessageProduct),
-                        duration: Duration(seconds: 2),
-                      ),
+                backgroundColor: context.colorScheme.primary,
+                text: S.current.storeAddProductButton,
+                onPressed: () {
+                  final storeId = context.read<StoreBloc>().state.stores?.id;
+
+                  if (_formKey.currentState?.validate() ?? false) {
+                    if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
+                        true)) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(S.current.storeMessageProduct),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      return;
+                    }
+
+                    final product = ProductModel(
+                      title: _productNameController.text,
+                      categoryType: _categoryProductController.text,
+                      price: _priceController.text,
+                      newPrice: _offerPriceController.text,
+                      location: _locationController.text,
+                      description: _productDescriptionController.text,
+                      priceType: _priceTypeController.text,
+                      imageUrl:
+                          state.imageFiles?.map((e) => e.path).join(',') ?? '',
+                      storeId: storeId,
                     );
-                    return;
+
+                    context
+                        .read<StoreBloc>()
+                        .add(AddProductEvt(product: product));
+                    Navigator.pop(context, product);
                   }
-
-                  final product = ProductModel(
-                    title: _productNameController.text,
-                    categoryType: _categoryProductController.text,
-                    price: _priceController.text,
-                    newPrice: _offerPriceController.text,
-                    location: _locationController.text,
-                    description: _productDescriptionController.text,
-                    priceType: _priceTypeController.text,
-                    imageUrl:
-                        state.imageFiles?.map((e) => e.path).join(',') ?? '',
-                  );
-
-                  context
-                      .read<StoreBloc>()
-                      .add(AddProductEvt(product: product));
-
-                  Navigator.pop(context, product);
-                }
-              },
-            ),
+                }),
           );
         },
       ),

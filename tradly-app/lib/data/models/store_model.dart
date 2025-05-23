@@ -1,7 +1,7 @@
 import 'package:tradly_app/data/models/product_model.dart';
 
 class StoreModel {
-  final int? id;
+  int? id;
   final String storeName;
   final String? storeWebAddress;
   final String? storeDescription;
@@ -29,31 +29,29 @@ class StoreModel {
     this.courieName,
   });
 
-  // Factory method to create a StoreModel from a JSON object
-  factory StoreModel.fromJson(Map<String, dynamic> json) {
-    var productList = json['products'] as List? ?? [];
-    List<ProductModel> productModels =
-        productList.map((i) => ProductModel.fromJson(i)).toList();
+  factory StoreModel.fromMap(Map<String, dynamic> map) {
+    final productList = map['products'] as List<dynamic>?;
+
     return StoreModel(
-      id: json['id'],
-      storeName: json['storeName'],
-      imageUrl: json['imageUrl'],
-      logoStore: json['logoStore'],
-      storeDescription: json['storeDescription'],
-      address: json['address'],
-      storeWebAddress: json['storeWebAddress'],
-      storeType: json['storeType'],
-      city: json['city'],
-      country: json['country'],
-      courieName: json['courieName'],
-      products: productModels,
+      id: map['id'] as int?,
+      storeName: map['storeName'] ?? '',
+      imageUrl: map['imageUrl'],
+      logoStore: map['logoStore'],
+      storeDescription: map['storeDescription'],
+      address: map['address'],
+      storeWebAddress: map['storeWebAddress'],
+      storeType: map['storeType'],
+      city: map['city'],
+      country: map['country'],
+      courieName: map['courieName'],
+      products:
+          productList?.map((item) => ProductModel.fromJson(item)).toList(),
     );
   }
 
-  // Method to convert StoreModel to JSON
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'storeName': storeName,
       'storeWebAddress': storeWebAddress,
       'storeDescription': storeDescription,
@@ -64,7 +62,8 @@ class StoreModel {
       'logoStore': logoStore,
       'country': country,
       'courieName': courieName,
-      'products': products?.map((product) => product.toJson()).toList(),
+      if (products != null)
+        'products': products!.map((product) => product.toJson()).toList(),
     };
   }
 }

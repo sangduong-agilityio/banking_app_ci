@@ -117,18 +117,25 @@ class HomeRepositoryImpl implements HomeRepository {
 
   @override
   Future<List<StoreModel>> fetchStores() async {
-    String apiUrl = '${Env.endPoint}stores';
+    try {
+      final apiUrl = '${Env.endPoint}stores';
 
-    final response = await _apiClient.get(
-      apiUrl,
-      queryParams: {
-        'select': '*',
-      },
-    );
-    final jsonData = response.data;
+      final response = await _apiClient.get(
+        apiUrl,
+        queryParams: {
+          'select': '*',
+        },
+      );
 
-    final stores =
-        (jsonData as List).map((json) => StoreModel.fromJson(json)).toList();
-    return stores;
+      final data = response.data;
+
+      if (data is List) {
+        return data.map((json) => StoreModel.fromMap(json)).toList();
+      } else {
+        throw Exception('Invalid response format: expected a List');
+      }
+    } catch (e) {
+      return [];
+    }
   }
 }
