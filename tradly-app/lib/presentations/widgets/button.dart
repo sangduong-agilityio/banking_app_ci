@@ -53,7 +53,7 @@ class _TAElevatedButtonState extends State<TAElevatedButton> {
               ),
               backgroundColor: widget.backgroundColor ??
                   (widget.isDisabled
-                      ? context.colorScheme.onPrimary.withOpacity(0.5)
+                      ? context.colorScheme.onPrimary.withAlpha(150)
                       : context.colorScheme.onPrimary),
             ),
         onPressed: widget.isDisabled ? null : widget.onPressed,

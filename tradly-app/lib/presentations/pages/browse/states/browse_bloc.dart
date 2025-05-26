@@ -114,7 +114,6 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
         sortedProducts.sort(
             (a, b) => double.parse(b.price).compareTo(double.parse(a.price)));
       }
-
       emit(
         state.copyWith(
           products: sortedProducts,

@@ -141,7 +141,7 @@ class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white.withOpacity(0.2),
+          color: Colors.white.withAlpha(50),
         ),
         child: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -149,11 +149,8 @@ class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       bottomType: bottomType,
-      trailing: Padding(
-        padding: const EdgeInsets.only(right: 16),
-        child: Row(
-          children: (actions ?? []),
-        ),
+      trailing: Row(
+        children: (actions ?? []),
       ),
     );
   }

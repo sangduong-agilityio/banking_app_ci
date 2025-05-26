@@ -275,7 +275,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 decoration: BoxDecoration(
                                   color: context
                                       .colorScheme.onSecondaryContainer
-                                      .withOpacity(0.5),
+                                      .withAlpha(150),
                                   shape: BoxShape.circle,
                                 ),
                                 child: TAIcons.edit()),
@@ -311,7 +311,7 @@ class _StoreScreenState extends State<StoreScreen> {
                               height: 32,
                               decoration: BoxDecoration(
                                 color: context.colorScheme.onSecondaryContainer
-                                    .withOpacity(0.5),
+                                    .withAlpha(150),
                                 shape: BoxShape.circle,
                               ),
                               child: TAIcons.delete(),

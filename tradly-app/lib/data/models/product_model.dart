@@ -44,6 +44,10 @@ class ProductModel {
   final String? priceType;
   final String? condition;
   final String? location;
+  final String? street;
+  final String? city;
+  final String? state;
+  final String? zipCode;
   final String? categoryType;
   final int? categoryId;
   final int? storeId;
@@ -61,7 +65,11 @@ class ProductModel {
     this.productTypes,
     this.priceType,
     this.condition,
+    this.street,
+    this.city,
     this.location,
+    this.state,
+    this.zipCode,
     this.categoryType,
     this.storeId,
   });
@@ -79,6 +87,10 @@ class ProductModel {
       priceType: json['priceType'],
       condition: json['condition'],
       location: json['location'],
+      street: json['street'],
+      city: json['city'],
+      state: json['state'],
+      zipCode: json['zipCode'],
       categoryType: json['categoryType'],
       categoryId: json['categoryId'],
       storeId: json['storeId'],
@@ -101,6 +113,10 @@ class ProductModel {
       'priceType': priceType,
       'condition': condition,
       'location': location,
+      'street': street,
+      'city': city,
+      'state': state,
+      'zipCode': zipCode,
       'categoryType': categoryType,
       'categoryId': categoryId,
       'storeId': storeId,
@@ -119,6 +135,10 @@ class ProductModel {
     String? priceType,
     String? condition,
     String? location,
+    String? street,
+    String? city,
+    String? state,
+    String? zipCode,
     String? categoryType,
     int? categoryId,
     int? storeId,
@@ -133,8 +153,12 @@ class ProductModel {
       newPrice: newPrice ?? this.newPrice,
       description: description ?? this.description,
       priceType: priceType ?? this.priceType,
-      condition: condition ?? this.condition,
       location: location ?? this.location,
+      condition: condition ?? this.condition,
+      street: street ?? this.street,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      zipCode: zipCode ?? this.zipCode,
       categoryType: categoryType ?? this.categoryType,
       categoryId: categoryId ?? this.categoryId,
       storeId: storeId ?? this.storeId,

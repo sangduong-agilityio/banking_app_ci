@@ -31,6 +31,7 @@ class ProductDetailPage extends StatelessWidget {
           ProductDetailFetchEvt(productId: productId),
         ),
       child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+        buildWhen: (previous, current) => previous.product != current.product,
         builder: (context, state) {
           final product = state.product;
           return TAScaffold(
@@ -50,7 +51,7 @@ class ProductDetailPage extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: context.colorScheme.onPrimary.withOpacity(0.2),
+                    color: context.colorScheme.onPrimary.withAlpha(50),
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.share),
@@ -61,31 +62,18 @@ class ProductDetailPage extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: context.colorScheme.onPrimary.withOpacity(0.2),
+                    color: context.colorScheme.onPrimary.withAlpha(50),
                   ),
                   child: IconButton(
-                    icon: Icon(
-                      state.wishlist.contains(product?.id ?? 0)
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: state.wishlist.contains(product?.id ?? 0)
-                          ? Colors.red
-                          : null,
-                    ),
-                    onPressed: () {
-                      context.read<ProductDetailBloc>().add(
-                            ProductDetailToggleWishlistEvt(
-                              productId: product?.id ?? 0,
-                            ),
-                          );
-                    },
+                    icon: Icon(Icons.favorite),
+                    onPressed: () {},
                   ),
                 ),
                 SizedBox(width: 5),
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white.withOpacity(0.2),
+                    color: context.colorScheme.onPrimary.withAlpha(50),
                   ),
                   child: IconButton(
                     icon: const Icon(Icons.more_vert),

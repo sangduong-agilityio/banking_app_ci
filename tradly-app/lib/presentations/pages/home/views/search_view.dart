@@ -24,7 +24,7 @@ class TASearchView extends StatelessWidget {
       cursorColor: context.colorScheme.onSurface,
       onChanged: (value) {
         if (onChanged != null) {
-          onChanged!(value); // Ensure the callback is invoked
+          onChanged!(value);
         }
       },
       style: textStyle ?? TextStyle(color: context.colorScheme.onSurface),
@@ -32,7 +32,7 @@ class TASearchView extends StatelessWidget {
         hintText: placeholder,
         hintStyle: hintStyle ??
             TextStyle(
-              color: context.colorScheme.outline.withOpacity(0.5),
+              color: context.colorScheme.outline.withAlpha(150),
               fontSize: 14,
             ),
         prefixIcon: Icon(

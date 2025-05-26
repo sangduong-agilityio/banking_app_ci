@@ -43,26 +43,26 @@ mixin _$ProductDetailStatus {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ProductDetailStatusListInitial value) initial,
-    required TResult Function(ProductDetailStatusListLoading value) loading,
-    required TResult Function(ProductDetailStatusListSuccess value) success,
-    required TResult Function(ProductDetailStatusListFailure value) failure,
+    required TResult Function(ProductDetailStatusInitial value) initial,
+    required TResult Function(ProductDetailStatusLoading value) loading,
+    required TResult Function(ProductDetailStatusSuccess value) success,
+    required TResult Function(ProductDetailStatusFailure value) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProductDetailStatusListInitial value)? initial,
-    TResult? Function(ProductDetailStatusListLoading value)? loading,
-    TResult? Function(ProductDetailStatusListSuccess value)? success,
-    TResult? Function(ProductDetailStatusListFailure value)? failure,
+    TResult? Function(ProductDetailStatusInitial value)? initial,
+    TResult? Function(ProductDetailStatusLoading value)? loading,
+    TResult? Function(ProductDetailStatusSuccess value)? success,
+    TResult? Function(ProductDetailStatusFailure value)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProductDetailStatusListInitial value)? initial,
-    TResult Function(ProductDetailStatusListLoading value)? loading,
-    TResult Function(ProductDetailStatusListSuccess value)? success,
-    TResult Function(ProductDetailStatusListFailure value)? failure,
+    TResult Function(ProductDetailStatusInitial value)? initial,
+    TResult Function(ProductDetailStatusLoading value)? loading,
+    TResult Function(ProductDetailStatusSuccess value)? success,
+    TResult Function(ProductDetailStatusFailure value)? failure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,7 +114,7 @@ class __$$ProductDetailStatusListInitialImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProductDetailStatusListInitialImpl
-    implements ProductDetailStatusListInitial {
+    implements ProductDetailStatusInitial {
   const _$ProductDetailStatusListInitialImpl();
 
   @override
@@ -172,10 +172,10 @@ class _$ProductDetailStatusListInitialImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ProductDetailStatusListInitial value) initial,
-    required TResult Function(ProductDetailStatusListLoading value) loading,
-    required TResult Function(ProductDetailStatusListSuccess value) success,
-    required TResult Function(ProductDetailStatusListFailure value) failure,
+    required TResult Function(ProductDetailStatusInitial value) initial,
+    required TResult Function(ProductDetailStatusLoading value) loading,
+    required TResult Function(ProductDetailStatusSuccess value) success,
+    required TResult Function(ProductDetailStatusFailure value) failure,
   }) {
     return initial(this);
   }
@@ -183,10 +183,10 @@ class _$ProductDetailStatusListInitialImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProductDetailStatusListInitial value)? initial,
-    TResult? Function(ProductDetailStatusListLoading value)? loading,
-    TResult? Function(ProductDetailStatusListSuccess value)? success,
-    TResult? Function(ProductDetailStatusListFailure value)? failure,
+    TResult? Function(ProductDetailStatusInitial value)? initial,
+    TResult? Function(ProductDetailStatusLoading value)? loading,
+    TResult? Function(ProductDetailStatusSuccess value)? success,
+    TResult? Function(ProductDetailStatusFailure value)? failure,
   }) {
     return initial?.call(this);
   }
@@ -194,10 +194,10 @@ class _$ProductDetailStatusListInitialImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProductDetailStatusListInitial value)? initial,
-    TResult Function(ProductDetailStatusListLoading value)? loading,
-    TResult Function(ProductDetailStatusListSuccess value)? success,
-    TResult Function(ProductDetailStatusListFailure value)? failure,
+    TResult Function(ProductDetailStatusInitial value)? initial,
+    TResult Function(ProductDetailStatusLoading value)? loading,
+    TResult Function(ProductDetailStatusSuccess value)? success,
+    TResult Function(ProductDetailStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -207,8 +207,8 @@ class _$ProductDetailStatusListInitialImpl
   }
 }
 
-abstract class ProductDetailStatusListInitial implements ProductDetailStatus {
-  const factory ProductDetailStatusListInitial() =
+abstract class ProductDetailStatusInitial implements ProductDetailStatus {
+  const factory ProductDetailStatusInitial() =
       _$ProductDetailStatusListInitialImpl;
 }
 
@@ -237,7 +237,7 @@ class __$$ProductDetailStatusListLoadingImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProductDetailStatusListLoadingImpl
-    implements ProductDetailStatusListLoading {
+    implements ProductDetailStatusLoading {
   const _$ProductDetailStatusListLoadingImpl();
 
   @override
@@ -295,10 +295,10 @@ class _$ProductDetailStatusListLoadingImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ProductDetailStatusListInitial value) initial,
-    required TResult Function(ProductDetailStatusListLoading value) loading,
-    required TResult Function(ProductDetailStatusListSuccess value) success,
-    required TResult Function(ProductDetailStatusListFailure value) failure,
+    required TResult Function(ProductDetailStatusInitial value) initial,
+    required TResult Function(ProductDetailStatusLoading value) loading,
+    required TResult Function(ProductDetailStatusSuccess value) success,
+    required TResult Function(ProductDetailStatusFailure value) failure,
   }) {
     return loading(this);
   }
@@ -306,10 +306,10 @@ class _$ProductDetailStatusListLoadingImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProductDetailStatusListInitial value)? initial,
-    TResult? Function(ProductDetailStatusListLoading value)? loading,
-    TResult? Function(ProductDetailStatusListSuccess value)? success,
-    TResult? Function(ProductDetailStatusListFailure value)? failure,
+    TResult? Function(ProductDetailStatusInitial value)? initial,
+    TResult? Function(ProductDetailStatusLoading value)? loading,
+    TResult? Function(ProductDetailStatusSuccess value)? success,
+    TResult? Function(ProductDetailStatusFailure value)? failure,
   }) {
     return loading?.call(this);
   }
@@ -317,10 +317,10 @@ class _$ProductDetailStatusListLoadingImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProductDetailStatusListInitial value)? initial,
-    TResult Function(ProductDetailStatusListLoading value)? loading,
-    TResult Function(ProductDetailStatusListSuccess value)? success,
-    TResult Function(ProductDetailStatusListFailure value)? failure,
+    TResult Function(ProductDetailStatusInitial value)? initial,
+    TResult Function(ProductDetailStatusLoading value)? loading,
+    TResult Function(ProductDetailStatusSuccess value)? success,
+    TResult Function(ProductDetailStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -330,8 +330,8 @@ class _$ProductDetailStatusListLoadingImpl
   }
 }
 
-abstract class ProductDetailStatusListLoading implements ProductDetailStatus {
-  const factory ProductDetailStatusListLoading() =
+abstract class ProductDetailStatusLoading implements ProductDetailStatus {
+  const factory ProductDetailStatusLoading() =
       _$ProductDetailStatusListLoadingImpl;
 }
 
@@ -360,7 +360,7 @@ class __$$ProductDetailStatusListSuccessImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProductDetailStatusListSuccessImpl
-    implements ProductDetailStatusListSuccess {
+    implements ProductDetailStatusSuccess {
   const _$ProductDetailStatusListSuccessImpl();
 
   @override
@@ -418,10 +418,10 @@ class _$ProductDetailStatusListSuccessImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ProductDetailStatusListInitial value) initial,
-    required TResult Function(ProductDetailStatusListLoading value) loading,
-    required TResult Function(ProductDetailStatusListSuccess value) success,
-    required TResult Function(ProductDetailStatusListFailure value) failure,
+    required TResult Function(ProductDetailStatusInitial value) initial,
+    required TResult Function(ProductDetailStatusLoading value) loading,
+    required TResult Function(ProductDetailStatusSuccess value) success,
+    required TResult Function(ProductDetailStatusFailure value) failure,
   }) {
     return success(this);
   }
@@ -429,10 +429,10 @@ class _$ProductDetailStatusListSuccessImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProductDetailStatusListInitial value)? initial,
-    TResult? Function(ProductDetailStatusListLoading value)? loading,
-    TResult? Function(ProductDetailStatusListSuccess value)? success,
-    TResult? Function(ProductDetailStatusListFailure value)? failure,
+    TResult? Function(ProductDetailStatusInitial value)? initial,
+    TResult? Function(ProductDetailStatusLoading value)? loading,
+    TResult? Function(ProductDetailStatusSuccess value)? success,
+    TResult? Function(ProductDetailStatusFailure value)? failure,
   }) {
     return success?.call(this);
   }
@@ -440,10 +440,10 @@ class _$ProductDetailStatusListSuccessImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProductDetailStatusListInitial value)? initial,
-    TResult Function(ProductDetailStatusListLoading value)? loading,
-    TResult Function(ProductDetailStatusListSuccess value)? success,
-    TResult Function(ProductDetailStatusListFailure value)? failure,
+    TResult Function(ProductDetailStatusInitial value)? initial,
+    TResult Function(ProductDetailStatusLoading value)? loading,
+    TResult Function(ProductDetailStatusSuccess value)? success,
+    TResult Function(ProductDetailStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -453,8 +453,8 @@ class _$ProductDetailStatusListSuccessImpl
   }
 }
 
-abstract class ProductDetailStatusListSuccess implements ProductDetailStatus {
-  const factory ProductDetailStatusListSuccess() =
+abstract class ProductDetailStatusSuccess implements ProductDetailStatus {
+  const factory ProductDetailStatusSuccess() =
       _$ProductDetailStatusListSuccessImpl;
 }
 
@@ -483,7 +483,7 @@ class __$$ProductDetailStatusListFailureImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ProductDetailStatusListFailureImpl
-    implements ProductDetailStatusListFailure {
+    implements ProductDetailStatusFailure {
   const _$ProductDetailStatusListFailureImpl();
 
   @override
@@ -541,10 +541,10 @@ class _$ProductDetailStatusListFailureImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ProductDetailStatusListInitial value) initial,
-    required TResult Function(ProductDetailStatusListLoading value) loading,
-    required TResult Function(ProductDetailStatusListSuccess value) success,
-    required TResult Function(ProductDetailStatusListFailure value) failure,
+    required TResult Function(ProductDetailStatusInitial value) initial,
+    required TResult Function(ProductDetailStatusLoading value) loading,
+    required TResult Function(ProductDetailStatusSuccess value) success,
+    required TResult Function(ProductDetailStatusFailure value) failure,
   }) {
     return failure(this);
   }
@@ -552,10 +552,10 @@ class _$ProductDetailStatusListFailureImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(ProductDetailStatusListInitial value)? initial,
-    TResult? Function(ProductDetailStatusListLoading value)? loading,
-    TResult? Function(ProductDetailStatusListSuccess value)? success,
-    TResult? Function(ProductDetailStatusListFailure value)? failure,
+    TResult? Function(ProductDetailStatusInitial value)? initial,
+    TResult? Function(ProductDetailStatusLoading value)? loading,
+    TResult? Function(ProductDetailStatusSuccess value)? success,
+    TResult? Function(ProductDetailStatusFailure value)? failure,
   }) {
     return failure?.call(this);
   }
@@ -563,10 +563,10 @@ class _$ProductDetailStatusListFailureImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ProductDetailStatusListInitial value)? initial,
-    TResult Function(ProductDetailStatusListLoading value)? loading,
-    TResult Function(ProductDetailStatusListSuccess value)? success,
-    TResult Function(ProductDetailStatusListFailure value)? failure,
+    TResult Function(ProductDetailStatusInitial value)? initial,
+    TResult Function(ProductDetailStatusLoading value)? loading,
+    TResult Function(ProductDetailStatusSuccess value)? success,
+    TResult Function(ProductDetailStatusFailure value)? failure,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -576,7 +576,7 @@ class _$ProductDetailStatusListFailureImpl
   }
 }
 
-abstract class ProductDetailStatusListFailure implements ProductDetailStatus {
-  const factory ProductDetailStatusListFailure() =
+abstract class ProductDetailStatusFailure implements ProductDetailStatus {
+  const factory ProductDetailStatusFailure() =
       _$ProductDetailStatusListFailureImpl;
 }

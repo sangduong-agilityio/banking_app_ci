@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/core/routes/app_router.dart';
 import 'package:tradly_app/data/repositories/home_repo.dart';
 import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
@@ -60,12 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               IconButton(
                                 icon: Icon(Icons.favorite,
                                     color: context.colorScheme.onPrimary),
-                                onPressed: () {
-                                  context.goNamed(
-                                    TAPaths.wishlist.name,
-                                    extra: widget.productId,
-                                  );
-                                },
+                                onPressed: () {},
                               ),
                               TAAssets.cart(),
                               const SizedBox(width: 20),

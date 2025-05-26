@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -182,12 +186,7 @@ class S {
 
   /// `Login`
   String get signInLoginButton {
-    return Intl.message(
-      'Login',
-      name: 'signInLoginButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Login', name: 'signInLoginButton', desc: '', args: []);
   }
 
   /// `Forgot your password?`
@@ -212,12 +211,7 @@ class S {
 
   /// `Sign up`
   String get signUpButton {
-    return Intl.message(
-      'Sign up',
-      name: 'signUpButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sign up', name: 'signUpButton', desc: '', args: []);
   }
 
   /// `Welcome to tradly`
@@ -312,12 +306,7 @@ class S {
 
   /// `Sign in`
   String get signInButton {
-    return Intl.message(
-      'Sign in',
-      name: 'signInButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sign in', name: 'signInButton', desc: '', args: []);
   }
 
   /// `Verify your phone number`
@@ -352,12 +341,7 @@ class S {
 
   /// `Next`
   String get sendOtpNextButton {
-    return Intl.message(
-      'Next',
-      name: 'sendOtpNextButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Next', name: 'sendOtpNextButton', desc: '', args: []);
   }
 
   /// `Phone Number`
@@ -582,12 +566,7 @@ class S {
 
   /// `Follow`
   String get homeFollowButton {
-    return Intl.message(
-      'Follow',
-      name: 'homeFollowButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Follow', name: 'homeFollowButton', desc: '', args: []);
   }
 
   /// `New Product `
@@ -632,32 +611,17 @@ class S {
 
   /// `Home`
   String get homeLabel {
-    return Intl.message(
-      'Home',
-      name: 'homeLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Home', name: 'homeLabel', desc: '', args: []);
   }
 
   /// `Browse`
   String get homeBrowseLabel {
-    return Intl.message(
-      'Browse',
-      name: 'homeBrowseLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Browse', name: 'homeBrowseLabel', desc: '', args: []);
   }
 
   /// `Store`
   String get homeStoreLabel {
-    return Intl.message(
-      'Store',
-      name: 'homeStoreLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Store', name: 'homeStoreLabel', desc: '', args: []);
   }
 
   /// `Order History`
@@ -682,12 +646,7 @@ class S {
 
   /// `Tradly`
   String get homeTradlyTitle {
-    return Intl.message(
-      'Tradly',
-      name: 'homeTradlyTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tradly', name: 'homeTradlyTitle', desc: '', args: []);
   }
 
   /// `Beverages`
@@ -920,14 +879,59 @@ class S {
     );
   }
 
-  /// `My Store`
-  String get storeTitle {
+  /// `Tradly App`
+  String get productDetailLocationServiceTitle {
     return Intl.message(
-      'My Store',
-      name: 'storeTitle',
+      'Tradly App',
+      name: 'productDetailLocationServiceTitle',
       desc: '',
       args: [],
     );
+  }
+
+  /// `Turn on Location Services to allow Tradly App to determine your location.`
+  String get productDetailLocationServiceContent {
+    return Intl.message(
+      'Turn on Location Services to allow Tradly App to determine your location.',
+      name: 'productDetailLocationServiceContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go to Settings`
+  String get productDetailLocationGoToSettingsButton {
+    return Intl.message(
+      'Go to Settings',
+      name: 'productDetailLocationGoToSettingsButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get productDetailLocationCancelButton {
+    return Intl.message(
+      'Cancel',
+      name: 'productDetailLocationCancelButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change`
+  String get productDetailLocationChangeButton {
+    return Intl.message(
+      'Change',
+      name: 'productDetailLocationChangeButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `My Store`
+  String get storeTitle {
+    return Intl.message('My Store', name: 'storeTitle', desc: '', args: []);
   }
 
   /// `Edit Product`
@@ -1102,12 +1106,7 @@ class S {
 
   /// `City`
   String get storeCityLabel {
-    return Intl.message(
-      'City',
-      name: 'storeCityLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('City', name: 'storeCityLabel', desc: '', args: []);
   }
 
   /// `Country`
@@ -1162,12 +1161,7 @@ class S {
 
   /// `Price`
   String get storePriceLabel {
-    return Intl.message(
-      'Price',
-      name: 'storePriceLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Price', name: 'storePriceLabel', desc: '', args: []);
   }
 
   /// `Offer Price`
@@ -1262,12 +1256,7 @@ class S {
 
   /// `Profile`
   String get profileTitle {
-    return Intl.message(
-      'Profile',
-      name: 'profileTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile', name: 'profileTitle', desc: '', args: []);
   }
 
   /// `Edit Profile`
@@ -1332,12 +1321,7 @@ class S {
 
   /// `My Cart`
   String get checkoutTitle {
-    return Intl.message(
-      'My Cart',
-      name: 'checkoutTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('My Cart', name: 'checkoutTitle', desc: '', args: []);
   }
 
   /// `+ Add New Address`
@@ -1382,12 +1366,7 @@ class S {
 
   /// `Info`
   String get checkoutInforTitle {
-    return Intl.message(
-      'Info',
-      name: 'checkoutInforTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Info', name: 'checkoutInforTitle', desc: '', args: []);
   }
 
   /// `Delivery Free`
@@ -1432,12 +1411,7 @@ class S {
 
   /// `Name`
   String get checkoutNameLabel {
-    return Intl.message(
-      'Name',
-      name: 'checkoutNameLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Name', name: 'checkoutNameLabel', desc: '', args: []);
   }
 
   /// `Phone`
@@ -1462,12 +1436,7 @@ class S {
 
   /// `City`
   String get checkoutCityLabel {
-    return Intl.message(
-      'City',
-      name: 'checkoutCityLabel',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('City', name: 'checkoutCityLabel', desc: '', args: []);
   }
 
   /// `State`
@@ -1492,12 +1461,7 @@ class S {
 
   /// `Save`
   String get checkoutSaveButton {
-    return Intl.message(
-      'Save',
-      name: 'checkoutSaveButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Save', name: 'checkoutSaveButton', desc: '', args: []);
   }
 
   /// `Price ({itemCount} item)`
@@ -1542,12 +1506,7 @@ class S {
 
   /// `Browse`
   String get browseTitle {
-    return Intl.message(
-      'Browse',
-      name: 'browseTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Browse', name: 'browseTitle', desc: '', args: []);
   }
 
   /// `Sort by`
@@ -1592,12 +1551,7 @@ class S {
 
   /// `Apply`
   String get browseApplyButton {
-    return Intl.message(
-      'Apply',
-      name: 'browseApplyButton',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Apply', name: 'browseApplyButton', desc: '', args: []);
   }
 }
 
@@ -1605,9 +1559,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   const AppLocalizationDelegate();
 
   List<Locale> get supportedLocales {
-    return const <Locale>[
-      Locale.fromSubtags(languageCode: 'en'),
-    ];
+    return const <Locale>[Locale.fromSubtags(languageCode: 'en')];
   }
 
   @override

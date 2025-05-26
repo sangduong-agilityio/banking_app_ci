@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:tradly_app/data/models/product_model.dart';
 
 sealed class ProductDetailEvt extends Equatable {
   const ProductDetailEvt();
@@ -29,24 +30,47 @@ final class ProductDetailFetchEvt extends ProductDetailEvt {
   List<Object> get props => [productId];
 }
 
-final class ProductDetailSortEvt extends ProductDetailEvt {
-  const ProductDetailSortEvt({
-    required this.sortType,
-  });
-
-  final String sortType;
+final class ProductDetailGetCurrentLocationEvt extends ProductDetailEvt {
+  const ProductDetailGetCurrentLocationEvt();
 
   @override
-  List<Object> get props => [sortType];
+  List<Object> get props => [];
 }
 
-final class ProductDetailToggleWishlistEvt extends ProductDetailEvt {
-  const ProductDetailToggleWishlistEvt({
-    required this.productId,
+final class ProductDetailAddAddressEvt extends ProductDetailEvt {
+  const ProductDetailAddAddressEvt({
+    required this.address,
   });
 
-  final int productId;
+  final ProductModel address;
 
   @override
-  List<Object> get props => [productId];
+  List<Object> get props => [address];
+}
+
+final class ProductDetailFormValidateChangedEvt extends ProductDetailEvt {
+  const ProductDetailFormValidateChangedEvt({
+    required this.isValidate,
+    this.product,
+  });
+
+  final bool isValidate;
+  final ProductModel? product;
+
+  @override
+  List<Object> get props => [
+        isValidate,
+        if (product != null) product!,
+      ];
+}
+
+final class ProductDetailCheckoutEvt extends ProductDetailEvt {
+  const ProductDetailCheckoutEvt({
+    required this.product,
+  });
+
+  final ProductModel product;
+
+  @override
+  List<Object> get props => [product];
 }

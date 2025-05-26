@@ -290,8 +290,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: context.colorScheme.onSecondaryContainer
-                        .withOpacity(0.5),
+                    color:
+                        context.colorScheme.onSecondaryContainer.withAlpha(150),
                     shape: BoxShape.circle),
                 child: TAIcons.close(),
               ),

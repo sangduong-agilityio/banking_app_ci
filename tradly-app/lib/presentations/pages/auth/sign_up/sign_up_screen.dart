@@ -212,7 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
                         textColor: context.colorScheme.primary,
                         backgroundColor: state.isFormValid
                             ? context.colorScheme.onPrimary
-                            : context.colorScheme.onPrimary.withOpacity(0.5),
+                            : context.colorScheme.onPrimary.withAlpha(100),
                         onPressed: () {
                           if (_formKey.currentState?.validate() ?? false) {
                             context

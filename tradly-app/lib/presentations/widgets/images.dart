@@ -92,7 +92,7 @@ class _TAImage extends StatelessWidget {
                 width: width,
                 height: height,
                 decoration: BoxDecoration(
-                  color: color, // Include color in the decoration
+                  color: color,
                   borderRadius: isBorderTop
                       ? BorderRadius.only(
                           topLeft: Radius.circular(borderRadius ?? 10),

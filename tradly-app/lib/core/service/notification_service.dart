@@ -11,8 +11,6 @@ class NotificationService {
 
   bool get initialized => _initialized;
 
-  // Initialize the [FlutterLocalNotificationsPlugin] package.
-
   Future<void> init() async {
     if (_initialized) return;
 
@@ -34,8 +32,6 @@ class NotificationService {
     _initialized = true;
   }
 
-  // Notifications detail setup
-
   NotificationDetails notificationsDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
@@ -54,8 +50,6 @@ class NotificationService {
       ),
     );
   }
-
-  // Show notification
 
   Future<void> showNotification({
     int id = 0,

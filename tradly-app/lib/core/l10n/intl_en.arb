@@ -119,6 +119,11 @@
   "productDetailDoubleTapHint":"Double tap to view product details",
   "productDetailDiscountTitle":"50% off",
   "productDetailQuantityTitle":"Qty : 1",
+  "productDetailLocationServiceTitle":"Tradly App",
+  "productDetailLocationServiceContent":"Turn on Location Services to allow Tradly App to determine your location.",
+  "productDetailLocationGoToSettingsButton":"Go to Settings",
+  "productDetailLocationCancelButton":"Cancel",
+  "productDetailLocationChangeButton":"Change",
    "@segmentStore": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Store feature"

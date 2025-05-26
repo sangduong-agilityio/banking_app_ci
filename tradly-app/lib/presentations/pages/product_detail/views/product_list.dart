@@ -46,7 +46,7 @@ class ProductList extends StatelessWidget {
         ),
         body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
           builder: (context, state) {
-            if (state.status is ProductDetailStatusListLoading) {
+            if (state.status is ProductDetailStatusLoading) {
               return ShimmerProductGrid();
             }
             return Padding(

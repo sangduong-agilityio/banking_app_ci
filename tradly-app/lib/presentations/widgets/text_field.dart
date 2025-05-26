@@ -219,15 +219,13 @@ class _TATextFieldState extends State<TATextField> {
             },
             onChanged: widget.onChanged,
             onTap: widget.onTap,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             onEditingComplete: widget.onEditingComplete,
             autofocus: widget.autoFocus,
             scrollPadding: widget.scrollPadding,
             style: widget.textStyle ??
                 TextStyle(color: context.colorScheme.onSurface),
             decoration: InputDecoration(
-              // prefixIconConstraints: BoxConstraints(
-              //   minWidth: 0,
-              // ),
               contentPadding: const EdgeInsets.only(top: 10),
               border: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
@@ -240,11 +238,20 @@ class _TATextFieldState extends State<TATextField> {
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.onSurface),
               ),
-              hintText: widget.hint,
-              hintStyle: widget.hintStyle ?? TextStyle(color: Colors.grey[400]),
-              counterText: '',
-              suffixIcon: widget.suffixIcon,
+              errorStyle: widget.validatorStyle ??
+                  TextStyle(
+                    color: context.colorScheme.error,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
+            validator: widget.validator ??
+                (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter ${widget.label}';
+                  }
+                  return null;
+                },
           ),
         ],
       ),
@@ -339,50 +346,6 @@ class _TATextFieldState extends State<TATextField> {
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
-              prefixIcon: widget.dropdownItems != null
-                  ? DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        items: widget.dropdownItems
-                            ?.map((item) => DropdownMenuItem<String>(
-                                  value: item.value,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 15),
-                                    child: item.child,
-                                  ),
-                                ))
-                            .toList(),
-                        onChanged: widget.onDropdownChanged,
-                        menuWidth: 100,
-                        value: widget.dropdownItems?.first.value,
-                        dropdownColor: Colors.transparent.withOpacity(0),
-                        iconSize: 30,
-                        alignment: AlignmentDirectional.centerEnd,
-                        style: TextStyle(
-                          color: context.colorScheme.onPrimary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        iconEnabledColor: context.colorScheme.onPrimary,
-                        iconDisabledColor: context.colorScheme.onSurface,
-                        selectedItemBuilder: (BuildContext context) {
-                          return widget.dropdownItems
-                                  ?.map((item) => Center(
-                                        child: Text(
-                                          item.value ?? '',
-                                          style: TextStyle(
-                                            color:
-                                                context.colorScheme.onPrimary,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                      ))
-                                  .toList() ??
-                              [];
-                        },
-                      ),
-                    )
-                  : null,
               suffixIcon: widget.isPassword
                   ? IconButton(
                       focusNode: FocusNode(skipTraversal: true),

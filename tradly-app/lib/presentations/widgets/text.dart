@@ -250,6 +250,7 @@ class TATitleLargeText extends StatelessWidget {
     this.overflow,
     this.letterSpacing,
     this.height,
+    this.maxLines,
   });
 
   final String text;
@@ -259,12 +260,14 @@ class TATitleLargeText extends StatelessWidget {
   final TextOverflow? overflow;
   final double? letterSpacing;
   final double? height;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
     return TAText(
       text: text,
       textAlign: textAlign,
+      maxLines: maxLines,
       style: context.textTheme.titleLarge?.copyWith(
         color: color,
         overflow: overflow,

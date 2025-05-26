@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/data/repositories/product_repo.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_event.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_state.dart';
+import 'package:tradly_app/core/utils/permission_helper.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
   ProductDetailBloc({
@@ -11,8 +12,10 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
         super(const ProductDetailState()) {
     on<ProductDetailInitializeEvt>(_onInitialize);
     on<ProductDetailFetchEvt>(_onFetchProductDetail);
-    on<ProductDetailSortEvt>(_onSortProducts);
-    on<ProductDetailToggleWishlistEvt>(_onToggleWishlist);
+    on<ProductDetailFormValidateChangedEvt>(_onFormValidateChanged);
+    on<ProductDetailGetCurrentLocationEvt>(_onGetCurrentLocation);
+    on<ProductDetailAddAddressEvt>(_onAddAddress);
+    on<ProductDetailCheckoutEvt>(_onCheckout);
   }
 
   final ProductRepository _repo;
@@ -72,33 +75,108 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
     }
   }
 
-  Future<void> _onSortProducts(
-    ProductDetailSortEvt event,
+  Future<void> _onGetCurrentLocation(
+    ProductDetailGetCurrentLocationEvt event,
     Emitter<ProductDetailState> emit,
   ) async {
-    final products = List<ProductModel>.from(state.products ?? []);
-    if (event.sortType == 'Price: lowest to highest') {
-      products.sort((a, b) =>
-          ((a.newPrice as num?) ?? 0).compareTo((b.newPrice as num?) ?? 0));
-    } else if (event.sortType == 'Price: highest to lowest') {
-      products.sort(
-          (a, b) => ((b.newPrice as num?) ?? 0).compareTo((a.newPrice as num)));
-    } else if (event.sortType == 'Sort by alphabet') {
-      products.sort((a, b) => a.title.compareTo(b.title));
+    emit(
+      state.copyWith(
+        status: const ProductDetailStatus.loading(),
+      ),
+    );
+
+    try {
+      final position = await PermissionHelper.getCurrentLocation();
+      final address = await PermissionHelper.getAddressFromPosition(position);
+      emit(
+        state.copyWith(
+          hasAddress: true,
+          product: address,
+          status: const ProductDetailStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const ProductDetailStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
-    emit(state.copyWith(products: products));
   }
 
-  Future<void> _onToggleWishlist(
-    ProductDetailToggleWishlistEvt event,
+  Future<void> _onAddAddress(
+    ProductDetailAddAddressEvt event,
     Emitter<ProductDetailState> emit,
   ) async {
-    final wishlist = Set<int>.from(state.wishlist);
-    if (wishlist.contains(event.productId)) {
-      wishlist.remove(event.productId);
-    } else {
-      wishlist.add(event.productId);
+    emit(
+      state.copyWith(
+        status: const ProductDetailStatus.loading(),
+      ),
+    );
+
+    try {
+      emit(
+        state.copyWith(
+          product: event.address,
+          status: const ProductDetailStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const ProductDetailStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
-    emit(state.copyWith(wishlist: wishlist));
+  }
+
+  Future<void> _onFormValidateChanged(
+    ProductDetailFormValidateChangedEvt event,
+    Emitter<ProductDetailState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        isFormValid: event.isValidate,
+      ),
+    );
+  }
+
+  Future<void> _onCheckout(
+    ProductDetailCheckoutEvt event,
+    Emitter<ProductDetailState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: const ProductDetailStatus.loading(),
+      ),
+    );
+
+    try {
+      final supabase = Supabase.instance.client;
+      final orderData = {
+        'title': event.product.title,
+        'price': event.product.price,
+        'newPrice': event.product.newPrice,
+        'imageUrl': event.product.imageUrl,
+        'address':
+            '${event.product.street}, ${event.product.city}, ${event.product.state}, ${event.product.zipCode}',
+      };
+      await supabase.from('orders').insert(orderData);
+
+      emit(
+        state.copyWith(
+          status: const ProductDetailStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const ProductDetailStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
   }
 }
