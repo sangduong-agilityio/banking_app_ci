@@ -1,14 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
-import 'package:tradly_app/core/utils/enumeration.dart';
 import 'sign_in_event.dart';
 import 'sign_in_state.dart';
 
-class SignInBloc extends Bloc<SignInEvent, SignInState> {
+class SignInBloc extends Bloc<SignInEvt, SignInState> {
   final AuthRepository authRepository;
 
-  SignInBloc({required this.authRepository})
-      : super(const SignInState(viewState: SubmissionStatus.initial)) {
+  SignInBloc({required this.authRepository}) : super(const SignInState()) {
     on<SignInFormValidateChangedEvt>(_onFormValidateChanged);
     on<SignInButtonPressedEvt>(_onLoginPressed);
   }
@@ -32,7 +30,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   ) async {
     emit(
       state.copyWith(
-        viewState: SubmissionStatus.loading,
+        status: const SignInStatus.loading(),
       ),
     );
     try {
@@ -42,18 +40,20 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       );
       emit(
         state.copyWith(
-          viewState: response.user != null
-              ? SubmissionStatus.successful
-              : SubmissionStatus.failed,
+          status: response.user != null
+              ? SignInStatus.success()
+              : SignInStatus.failure(),
           errorMessage: response.user != null ? '' : '',
           sessionToken: response.session?.accessToken,
         ),
       );
     } catch (e) {
-      emit(state.copyWith(
-        viewState: SubmissionStatus.failed,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: SignInStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

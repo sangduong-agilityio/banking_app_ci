@@ -10,7 +10,6 @@ import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_bloc.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_event.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_state.dart';
-import 'package:tradly_app/core/utils/enumeration.dart';
 import 'package:tradly_app/core/utils/validators.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/form.dart';
@@ -50,16 +49,16 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         child: BlocListener<SignInBloc, SignInState>(
           listener: (context, state) async {
-            if (state.viewState == SubmissionStatus.loading) {
+            if (state.status is SignInStatusLoading) {
               TALoadingIndicator.show(context);
-            } else if (state.viewState == SubmissionStatus.successful) {
+            } else if (state.status == const SignInStatusSuccess()) {
               TALoadingIndicator.hide(context);
               final prefs = await SharedPreferences.getInstance();
               await prefs.setString('session_token', state.sessionToken ?? '');
               if (context.mounted) {
                 await context.pushNamed(TAPaths.home.name);
               }
-            } else if (state.viewState == SubmissionStatus.failed) {
+            } else if (state.status == const SignInStatusFailure()) {
               TALoadingIndicator.hide(context);
               TASnackBar.buildErrorSnackbar(
                 context,
@@ -86,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(height: 25),
                     BlocBuilder<SignInBloc, SignInState>(
                       buildWhen: (previous, current) =>
-                          previous.viewState != current.viewState,
+                          previous.status != current.status,
                       builder: (context, state) => TAForm(
                         isValidated: (valid) => context.read<SignInBloc>().add(
                               SignInFormValidateChangedEvt(

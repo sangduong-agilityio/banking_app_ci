@@ -8,7 +8,6 @@ import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_up/states/sign_up_bloc.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_up/states/sign_up_event.dart';
 import 'package:tradly_app/presentations/pages/auth/sign_up/states/sign_up_state.dart';
-import 'package:tradly_app/core/utils/enumeration.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/form.dart';
 import 'package:tradly_app/presentations/widgets/indicator.dart';
@@ -55,12 +54,12 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
         ),
         child: BlocListener<SignUpBloc, SignUpState>(
           listener: (context, state) {
-            if (state.viewState == SubmissionStatus.loading) {
+            if (state.status is SignUpStatusLoading) {
               TALoadingIndicator.show(context);
-            } else if (state.viewState == SubmissionStatus.successful) {
+            } else if (state.status is SignUpStatusSuccess) {
               TALoadingIndicator.hide(context);
               context.pop();
-            } else if (state.viewState == SubmissionStatus.failed) {
+            } else if (state.status is SignUpStatusFailure) {
               TALoadingIndicator.hide(context);
               TASnackBar.buildErrorSnackbar(
                 context,

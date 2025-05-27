@@ -1,14 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/data/repositories/auth_repo.dart';
-import 'package:tradly_app/core/utils/enumeration.dart';
 import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
-class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
+class SignUpBloc extends Bloc<SignUpEvt, SignUpState> {
   final AuthRepository authRepository;
 
-  SignUpBloc({required this.authRepository})
-      : super(const SignUpState(viewState: SubmissionStatus.initial)) {
+  SignUpBloc({required this.authRepository}) : super(const SignUpState()) {
     on<SignUpFormValidateChangedEvt>(_onFormValidateChanged);
     on<SignUpButtonPressedEvt>(_onSignUpPressed);
   }
@@ -32,7 +30,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpButtonPressedEvt event,
     Emitter<SignUpState> emit,
   ) async {
-    emit(state.copyWith(viewState: SubmissionStatus.loading));
+    emit(
+      state.copyWith(
+        status: const SignUpStatus.loading(),
+      ),
+    );
     try {
       final response = await authRepository.signUp(
         emailOrPhoneNumber: state.emailOrPhoneNumber,
@@ -41,15 +43,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       );
       emit(
         state.copyWith(
-          viewState: response.user != null
-              ? SubmissionStatus.successful
-              : SubmissionStatus.failed,
+          status: response.user != null
+              ? SignUpStatus.success()
+              : SignUpStatus.failure(),
           errorMessage: response.user != null ? '' : 'Sign-up failed',
         ),
       );
     } catch (e) {
       emit(state.copyWith(
-        viewState: SubmissionStatus.failed,
+        status: SignUpStatus.failure(),
         errorMessage: e.toString(),
       ));
     }

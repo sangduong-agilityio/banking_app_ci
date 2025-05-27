@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-abstract class SignUpEvent extends Equatable {
-  const SignUpEvent();
+sealed class SignUpEvt extends Equatable {
+  const SignUpEvt();
 
   @override
   List<Object?> get props => [];
 }
 
-class SignUpFormValidateChangedEvt extends SignUpEvent {
+class SignUpFormValidateChangedEvt extends SignUpEvt {
   const SignUpFormValidateChangedEvt({
     required this.isValidate,
     this.username,
@@ -32,7 +32,7 @@ class SignUpFormValidateChangedEvt extends SignUpEvent {
       ];
 }
 
-class SignUpButtonPressedEvt extends SignUpEvent {
+class SignUpButtonPressedEvt extends SignUpEvt {
   const SignUpButtonPressedEvt();
 
   @override

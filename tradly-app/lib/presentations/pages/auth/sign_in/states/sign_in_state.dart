@@ -1,9 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:tradly_app/core/utils/enumeration.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'sign_in_state.freezed.dart';
 
 class SignInState extends Equatable {
   const SignInState({
-    required this.viewState,
+    this.status = const SignInStatus.initial(),
     this.email = '',
     this.password = '',
     this.isFormValid = false,
@@ -11,7 +13,7 @@ class SignInState extends Equatable {
     this.sessionToken,
   });
 
-  final SubmissionStatus viewState;
+  final SignInStatus status;
   final String email;
   final String password;
   final bool isFormValid;
@@ -19,7 +21,7 @@ class SignInState extends Equatable {
   final String? sessionToken;
 
   SignInState copyWith({
-    SubmissionStatus? viewState,
+    SignInStatus? status,
     String? errorMessage,
     bool? isFormValid,
     String? email,
@@ -27,7 +29,7 @@ class SignInState extends Equatable {
     String? sessionToken,
   }) {
     return SignInState(
-      viewState: viewState ?? this.viewState,
+      status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       isFormValid: isFormValid ?? this.isFormValid,
       email: email ?? this.email,
@@ -38,11 +40,19 @@ class SignInState extends Equatable {
 
   @override
   List<Object?> get props => [
-        viewState,
+        status,
         errorMessage,
         isFormValid,
         email,
         password,
         sessionToken,
       ];
+}
+
+@freezed
+sealed class SignInStatus with _$SignInStatus {
+  const factory SignInStatus.initial() = SignInStatusInitial;
+  const factory SignInStatus.loading() = SignInStatusLoading;
+  const factory SignInStatus.success() = SignInStatusSuccess;
+  const factory SignInStatus.failure() = SignInStatusFailure;
 }
