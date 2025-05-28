@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tradly_app/data/models/store_model.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_state.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
+import 'package:tradly_app/presentations/widgets/not_found.dart';
+import 'package:tradly_app/presentations/widgets/shimmer.dart';
 
 class StoreFollowList extends StatelessWidget {
   const StoreFollowList({super.key});
@@ -11,36 +12,31 @@ class StoreFollowList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
-      builder: (context, state) {
-        if (state.status is HomeStatusLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        return SizedBox(
-          height: 200,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: state.stores?.length ?? 0,
-            itemBuilder: (context, index) {
-              final stores = state.stores?[index];
-              return TACardStoreFollow(
-                stores: StoreModel(
-                  id: stores?.id ?? 0,
-                  storeName: stores?.storeName ?? '',
-                  imageUrl: stores?.imageUrl ?? '',
-                  storeDescription: stores?.storeDescription ?? '',
-                  address: stores?.address ?? '',
-                  storeWebAddress: stores?.storeWebAddress ?? '',
-                  logoStore: stores?.logoStore ?? '',
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
+        buildWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.stores != current.stores,
+        builder: (context, state) {
+          if (state.status is HomeStatusLoading) {
+            return const ShimmerStoreFollowList();
+          } else if (state.status is HomeStatusSuccess) {
+            final stores = state.stores ?? [];
+            return SizedBox(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: stores.length,
+                itemBuilder: (context, index) {
+                  return TACardStoreFollow(
+                    stores: stores[index],
+                  );
+                },
+              ),
+            );
+          } else if (state.status is HomeStatusFailure) {
+            return NotFoundScreen();
+          }
+          return const SizedBox.shrink();
+        });
   }
 }

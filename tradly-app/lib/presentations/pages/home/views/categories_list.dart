@@ -18,6 +18,9 @@ class CategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.status != current.status ||
+          previous.categories != current.categories,
       builder: (context, state) {
         if (state.status is HomeStatusLoading) {
           return const ShimmerCategoryGrid();

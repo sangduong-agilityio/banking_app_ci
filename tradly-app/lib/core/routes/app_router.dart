@@ -80,7 +80,10 @@ class TARouter {
       GoRoute(
         name: TAPaths.checkout.name,
         path: TAPaths.checkout.path,
-        builder: (context, state) => const CheckoutScreen(),
+        builder: (context, state) {
+          final product = state.extra as ProductModel;
+          return CheckoutScreen(product: product);
+        },
       ),
       GoRoute(
         name: TAPaths.editProduct.name,

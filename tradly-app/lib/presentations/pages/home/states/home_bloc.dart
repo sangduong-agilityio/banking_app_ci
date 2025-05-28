@@ -25,10 +25,10 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
     try {
       await Future.wait<void>(
         [
-          _fetchCategories(emit),
-          _fetchNewProductsHandler(event, emit),
-          _fetchPopularProductsHandler(event, emit),
-          _fetchStores(emit),
+          _onFetchCategories(emit),
+          _onFetchNewProducts(emit),
+          _onFetchPopularProducts(emit),
+          _onFetchStores(emit),
         ],
       );
       emit(
@@ -46,7 +46,7 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
     }
   }
 
-  Future<void> _fetchCategories(
+  Future<void> _onFetchCategories(
     Emitter<HomeState> emit,
   ) async {
     emit(
@@ -63,32 +63,6 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(
-        status: const HomeStatus.failure(),
-        errorMessage: e.toString(),
-      ));
-    }
-  }
-
-  Future<void> _fetchNewProductsHandler(
-    HomeInitializeEvt event,
-    Emitter<HomeState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        status: const HomeStatus.loading(),
-      ),
-    );
-    try {
-      final productIds = [1, 2, 3, 4];
-      final products = await _repo.fetchNewProducts(productIds);
-      emit(
-        state.copyWith(
-          newProducts: products,
-          status: const HomeStatus.success(),
-        ),
-      );
-    } catch (e) {
       emit(
         state.copyWith(
           status: const HomeStatus.failure(),
@@ -98,35 +72,7 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
     }
   }
 
-  Future<void> _fetchPopularProductsHandler(
-    HomeInitializeEvt event,
-    Emitter<HomeState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        status: const HomeStatus.loading(),
-      ),
-    );
-    try {
-      final productIds = [5, 4, 8];
-      final products = await _repo.fetchPopularProducts(productIds);
-      emit(
-        state.copyWith(
-          popularProducts: products,
-          status: const HomeStatus.success(),
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: const HomeStatus.failure(),
-          errorMessage: e.toString(),
-        ),
-      );
-    }
-  }
-
-  Future<void> _fetchStores(
+  Future<void> _onFetchStores(
     Emitter<HomeState> emit,
   ) async {
     emit(
@@ -139,6 +85,58 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
       emit(
         state.copyWith(
           stores: stores,
+          status: const HomeStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onFetchNewProducts(
+    Emitter<HomeState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: const HomeStatus.loading(),
+      ),
+    );
+    try {
+      final newProducts = await _repo.fetchNewProducts();
+      emit(
+        state.copyWith(
+          newProducts: newProducts,
+          status: const HomeStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onFetchPopularProducts(
+    Emitter<HomeState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: const HomeStatus.loading(),
+      ),
+    );
+    try {
+      final popularProducts = await _repo.fetchPopularProducts();
+      emit(
+        state.copyWith(
+          popularProducts: popularProducts,
           status: const HomeStatus.success(),
         ),
       );

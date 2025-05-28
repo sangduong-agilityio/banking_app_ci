@@ -6,12 +6,12 @@ enum ProductTag {
 class ProductType {
   final int id;
   final int productId;
-  final String type;
+  final String tag;
 
   ProductType({
     required this.id,
     required this.productId,
-    required this.type,
+    required this.tag,
   });
 
   // Factory method to create a ProductType from a JSON object
@@ -19,7 +19,7 @@ class ProductType {
     return ProductType(
       id: json['id'],
       productId: json['productId'],
-      type: json['type'],
+      tag: json['tag'],
     );
   }
 
@@ -28,7 +28,7 @@ class ProductType {
     return {
       'id': id,
       'productId': productId,
-      'type': type,
+      'tag': tag,
     };
   }
 }
@@ -51,7 +51,7 @@ class ProductModel {
   final String? categoryType;
   final int? categoryId;
   final int? storeId;
-  final List<ProductType>? productTypes;
+  final List<ProductType>? productType;
 
   ProductModel({
     this.id,
@@ -62,7 +62,6 @@ class ProductModel {
     this.newPrice,
     this.categoryId,
     this.description,
-    this.productTypes,
     this.priceType,
     this.condition,
     this.street,
@@ -72,6 +71,7 @@ class ProductModel {
     this.zipCode,
     this.categoryType,
     this.storeId,
+    this.productType,
   });
 
   // Factory method to create a ProductModel from a JSON object
@@ -94,7 +94,7 @@ class ProductModel {
       categoryType: json['categoryType'],
       categoryId: json['categoryId'],
       storeId: json['storeId'],
-      productTypes: (json['product_types'] as List<dynamic>?)
+      productType: (json['productType'] as List<dynamic>?)
           ?.map((e) => ProductType.fromJson(e))
           .toList(),
     );
@@ -120,7 +120,7 @@ class ProductModel {
       'categoryType': categoryType,
       'categoryId': categoryId,
       'storeId': storeId,
-      'product_types': productTypes?.map((e) => e.toJson()).toList(),
+      'productType': productType?.map((e) => e.toJson()).toList(),
     };
   }
 
@@ -142,7 +142,7 @@ class ProductModel {
     String? categoryType,
     int? categoryId,
     int? storeId,
-    List<ProductType>? productTypes,
+    List<ProductType>? productType,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -162,7 +162,7 @@ class ProductModel {
       categoryType: categoryType ?? this.categoryType,
       categoryId: categoryId ?? this.categoryId,
       storeId: storeId ?? this.storeId,
-      productTypes: productTypes ?? this.productTypes,
+      productType: productType ?? this.productType,
     );
   }
 }

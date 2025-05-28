@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/core/routes/app_router.dart';
-import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/data/repositories/product_repo.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/layouts/scaffold.dart';
@@ -11,6 +10,7 @@ import 'package:tradly_app/presentations/pages/product_detail/states/product_det
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_event.dart';
 import 'package:tradly_app/presentations/pages/product_detail/states/product_detail_state.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
+import 'package:tradly_app/presentations/widgets/not_found.dart';
 import 'package:tradly_app/presentations/widgets/shimmer.dart';
 
 class ProductList extends StatelessWidget {
@@ -33,9 +33,7 @@ class ProductList extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProductDetailBloc(
         repo: context.read<ProductRepository>(),
-      )..add(
-          ProductDetailInitializeEvt(categoryId: categoryId),
-        ),
+      )..add(ProductDetailInitializeEvt(categoryId: categoryId)),
       child: TAScaffold(
         appBar: TAAppBar.productList(
           backgroundColor: context.colorScheme.primary,
@@ -45,46 +43,45 @@ class ProductList extends StatelessWidget {
           },
         ),
         body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
-          builder: (context, state) {
-            if (state.status is ProductDetailStatusLoading) {
-              return ShimmerProductGrid();
-            }
-            return Padding(
-              padding: const EdgeInsets.all(20),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio:
-                      MediaQuery.of(context).size.width / (crossAxisCount * 60),
-                ),
-                itemCount: state.products?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return Semantics(
-                    hint: S.current.productDetailDoubleTapHint,
-                    child: TACardProduct(
-                      onTapProduct: () {
-                        TARouter.navigateTo(
-                          context,
-                          TAPaths.productDetail.name,
-                          extra: state.products?[index].id,
-                        );
-                      },
-                      product: ProductModel(
-                        id: state.products?[index].id,
-                        title: state.products?[index].title ?? '',
-                        imageUrl: state.products?[index].imageUrl ?? '',
-                        price: state.products?[index].price.toString() ?? '0',
-                        brand: state.products?[index].brand ?? '',
-                        newPrice:
-                            state.products?[index].newPrice.toString() ?? '0',
-                      ),
+            buildWhen: (previous, current) =>
+                previous.status != current.status ||
+                previous.products != current.products,
+            builder: (context, state) {
+              if (state.status is ProductDetailStatusLoading) {
+                return ShimmerProductGrid();
+              } else if (state.status is ProductDetailStatusSuccess) {
+                final products = state.products ?? [];
+                return Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: MediaQuery.of(context).size.width /
+                          (crossAxisCount * 60),
                     ),
-                  );
-                },
-              ),
-            );
-          },
-        ),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      return Semantics(
+                        hint: S.current.productDetailDoubleTapHint,
+                        child: TACardProduct(
+                          onTapProduct: () {
+                            TARouter.navigateTo(
+                              context,
+                              TAPaths.productDetail.name,
+                              extra: state.products?[index].id,
+                            );
+                          },
+                          product: products[index],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else if (state.status is ProductDetailStatusFailure) {
+                return NotFoundScreen();
+              }
+              return const SizedBox.shrink();
+            }),
       ),
     );
   }
