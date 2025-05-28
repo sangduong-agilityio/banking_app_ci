@@ -1319,6 +1319,36 @@ class S {
     );
   }
 
+  /// `Are you sure want to logout?`
+  String get profileLogoutContent {
+    return Intl.message(
+      'Are you sure want to logout?',
+      name: 'profileLogoutContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get profileLogoutCancelButton {
+    return Intl.message(
+      'Cancel',
+      name: 'profileLogoutCancelButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get profileLogoutButton {
+    return Intl.message(
+      'Logout',
+      name: 'profileLogoutButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `My Cart`
   String get checkoutTitle {
     return Intl.message('My Cart', name: 'checkoutTitle', desc: '', args: []);

@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-05-27 14:03:45</td>
+            <td class="headerValue">2025-05-28 16:14:46</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -75,7 +75,7 @@
 <span id="L13"><span class="lineNum">      13</span>              : // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes</span>
 <span id="L14"><span class="lineNum">      14</span>              : </span>
 <span id="L15"><span class="lineNum">      15</span>              : class S {</span>
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">           6 :   S();</span></span>
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">           9 :   S();</span></span>
 <span id="L17"><span class="lineNum">      17</span>              : </span>
 <span id="L18"><span class="lineNum">      18</span>              :   static S? _current;</span>
 <span id="L19"><span class="lineNum">      19</span>              : </span>
@@ -89,14 +89,14 @@
 <span id="L27"><span class="lineNum">      27</span>              : </span>
 <span id="L28"><span class="lineNum">      28</span>              :   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();</span>
 <span id="L29"><span class="lineNum">      29</span>              : </span>
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           6 :   static Future&lt;S&gt; load(Locale locale) {</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           6 :     final name = (locale.countryCode?.isEmpty ?? false)</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           9 :   static Future&lt;S&gt; load(Locale locale) {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           9 :     final name = (locale.countryCode?.isEmpty ?? false)</span></span>
 <span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0 :         ? locale.languageCode</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           6 :         : locale.toString();</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           6 :     final localeName = Intl.canonicalizedLocale(name);</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">          18 :     return initializeMessages(localeName).then((_) {</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           6 :       Intl.defaultLocale = localeName;</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           6 :       final instance = S();</span></span>
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           9 :         : locale.toString();</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           9 :     final localeName = Intl.canonicalizedLocale(name);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">          27 :     return initializeMessages(localeName).then((_) {</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           9 :       Intl.defaultLocale = localeName;</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           9 :       final instance = S();</span></span>
 <span id="L38"><span class="lineNum">      38</span>              :       S._current = instance;</span>
 <span id="L39"><span class="lineNum">      39</span>              : </span>
 <span id="L40"><span class="lineNum">      40</span>              :       return instance;</span>
@@ -1626,8 +1626,8 @@
 <span id="L1564"><span class="lineNum">    1564</span>              : </span>
 <span id="L1565"><span class="lineNum">    1565</span> <span class="tlaUNC">           0 :   @override</span></span>
 <span id="L1566"><span class="lineNum">    1566</span> <span class="tlaUNC">           0 :   bool isSupported(Locale locale) =&gt; _isSupported(locale);</span></span>
-<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">           6 :   @override</span></span>
-<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           6 :   Future&lt;S&gt; load(Locale locale) =&gt; S.load(locale);</span></span>
+<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">           9 :   @override</span></span>
+<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           9 :   Future&lt;S&gt; load(Locale locale) =&gt; S.load(locale);</span></span>
 <span id="L1569"><span class="lineNum">    1569</span> <span class="tlaUNC">           0 :   @override</span></span>
 <span id="L1570"><span class="lineNum">    1570</span>              :   bool shouldReload(AppLocalizationDelegate old) =&gt; false;</span>
 <span id="L1571"><span class="lineNum">    1571</span>              : </span>

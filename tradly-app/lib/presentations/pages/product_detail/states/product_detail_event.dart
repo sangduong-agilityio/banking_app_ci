@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 
-sealed class ProductDetailEvt extends Equatable {
+class ProductDetailEvt extends Equatable {
   const ProductDetailEvt();
 
   @override
@@ -39,13 +39,13 @@ final class ProductDetailGetCurrentLocationEvt extends ProductDetailEvt {
 
 final class ProductDetailAddAddressEvt extends ProductDetailEvt {
   const ProductDetailAddAddressEvt({
-    required this.address,
+    this.product,
   });
 
-  final ProductModel address;
+  final ProductModel? product;
 
   @override
-  List<Object> get props => [address];
+  List<Object> get props => [];
 }
 
 final class ProductDetailFormValidateChangedEvt extends ProductDetailEvt {

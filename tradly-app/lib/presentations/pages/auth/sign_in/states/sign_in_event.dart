@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-abstract class SignInEvt extends Equatable {
+sealed class SignInEvt extends Equatable {
   const SignInEvt();
 
   @override

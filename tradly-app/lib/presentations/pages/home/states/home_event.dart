@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-sealed class HomeEvt extends Equatable {
+class HomeEvt extends Equatable {
   const HomeEvt();
 
   @override

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-abstract class ProfileEvt extends Equatable {
+class ProfileEvt extends Equatable {
   const ProfileEvt();
 
   @override

@@ -173,6 +173,9 @@
   "profileReferFriendTitle":"Refer a Friend",
   "profileTermsAndConditionsTitle":"Terms & Conditions",
   "profileLogoutTitle":"Logout",
+  "profileLogoutContent":"Are you sure want to logout?",
+  "profileLogoutCancelButton":"Cancel",
+  "profileLogoutButton":"Logout",
   "@segmentCheckout": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Checkout feature"
