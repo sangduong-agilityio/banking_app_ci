@@ -209,6 +209,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "profileLanguageCurrencyTitle": MessageLookupByLibrary.simpleMessage(
       "Language & Currency",
     ),
+    "profileLogoutButton": MessageLookupByLibrary.simpleMessage("Logout"),
+    "profileLogoutCancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "profileLogoutContent": MessageLookupByLibrary.simpleMessage(
+      "Are you sure want to logout?",
+    ),
     "profileLogoutTitle": MessageLookupByLibrary.simpleMessage("Logout"),
     "profileReferFriendTitle": MessageLookupByLibrary.simpleMessage(
       "Refer a Friend",

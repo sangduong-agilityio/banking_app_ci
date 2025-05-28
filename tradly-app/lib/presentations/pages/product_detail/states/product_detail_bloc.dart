@@ -118,7 +118,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
     try {
       emit(
         state.copyWith(
-          product: event.address,
+          product: event.product,
           status: const ProductDetailStatus.success(),
         ),
       );
@@ -139,6 +139,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
     emit(
       state.copyWith(
         isFormValid: event.isValidate,
+        product: event.product,
       ),
     );
   }
@@ -167,6 +168,7 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
 
       emit(
         state.copyWith(
+          product: event.product,
           status: const ProductDetailStatus.success(),
         ),
       );

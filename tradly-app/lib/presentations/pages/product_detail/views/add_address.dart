@@ -9,8 +9,6 @@ import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/dialog.dart';
 import 'package:tradly_app/presentations/widgets/form.dart';
-import 'package:tradly_app/presentations/widgets/indicator.dart';
-import 'package:tradly_app/presentations/widgets/snackbar.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,157 +66,144 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProductDetailBloc, ProductDetailState>(
-      listener: (context, state) {
-        if (state.status is ProductDetailStatusLoading) {
-          TALoadingIndicator.show(context);
-        } else if (state.status is ProductDetailStatusSuccess) {
-          final address = state.product;
-          if (address != null) {
-            _addressController.text = address.street ?? '';
-            _cityController.text = address.city ?? '';
-            _stateController.text = address.state ?? '';
-            _zipCodeController.text = address.zipCode ?? '';
-          }
-          TALoadingIndicator.hide(context);
-        } else if (state.status is ProductDetailStatusFailure) {
-          TALoadingIndicator.hide(context);
-          TASnackBar.buildErrorSnackbar(
-            context,
-            state.errorMessage ?? '',
-          );
-        }
-      },
-      child: Stack(
-        children: [
-          TAScaffold(
-            backgroundColor: context.colorScheme.onPrimary,
-            appBar: TAAppBar.checkout(
-              title: S.current.checkoutAddAdressTitle,
-              onBackPressed: () => Navigator.pop(context),
-              backgroundColor: context.colorScheme.primary,
-            ),
-            body: GestureDetector(
-              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: _onGetCurrentLocation,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.onPrimary,
-                          boxShadow: [
-                            BoxShadow(
-                              color: context.colorScheme.onPrimaryContainer
-                                  .withAlpha(50),
-                              blurRadius: 15,
-                              offset: Offset(0, 15),
-                            ),
-                          ],
-                        ),
-                        height: 65,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TAAssets.currentLocation(),
-                            const SizedBox(width: 8),
-                            TAHeadlineSmallText(
-                              fontWeight: FontWeight.w500,
-                              text: S.current.checkoutUseCurrentLocationTitle,
-                              color: context.colorScheme.onInverseSurface,
-                            ),
-                          ],
-                        ),
+    return TAScaffold(
+      backgroundColor: context.colorScheme.onPrimary,
+      appBar: TAAppBar.checkout(
+        title: S.current.checkoutAddAdressTitle,
+        onBackPressed: () => Navigator.pop(context),
+        backgroundColor: context.colorScheme.primary,
+      ),
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+          buildWhen: (previous, current) =>
+              previous.product != current.product ||
+              previous.isFormValid != current.isFormValid,
+          builder: (context, state) {
+            final address = state.product;
+            if (address != null) {
+              _addressController.text = address.street ?? '';
+              _cityController.text = address.city ?? '';
+              _stateController.text = address.state ?? '';
+              _zipCodeController.text = address.zipCode ?? '';
+            }
+
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: _onGetCurrentLocation,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.onPrimary,
+                        boxShadow: [
+                          BoxShadow(
+                            color: context.colorScheme.onPrimaryContainer
+                                .withAlpha(50),
+                            blurRadius: 15,
+                            offset: Offset(0, 15),
+                          ),
+                        ],
+                      ),
+                      height: 65,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TAAssets.currentLocation(),
+                          const SizedBox(width: 8),
+                          TAHeadlineSmallText(
+                            fontWeight: FontWeight.w500,
+                            text: S.current.checkoutUseCurrentLocationTitle,
+                            color: context.colorScheme.onInverseSurface,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    Container(
-                      padding: const EdgeInsets.all(27),
-                      color: context.colorScheme.onPrimary,
-                      child: Form(
-                        key: _formKey,
-                        child:
-                            BlocBuilder<ProductDetailBloc, ProductDetailState>(
-                          buildWhen: (previous, current) =>
-                              previous.isFormValid != current.isFormValid,
-                          builder: (context, state) {
-                            return TAForm(
-                              isValidated: (isValid) =>
-                                  context.read<ProductDetailBloc>().add(
-                                        ProductDetailFormValidateChangedEvt(
-                                          isValidate: isValid,
-                                        ),
-                                      ),
-                              textFields: [
-                                TATextField(
-                                  controller: _nameController,
-                                  label: S.current.checkoutNameLabel,
-                                ),
-                                TATextField(
-                                  controller: _phoneController,
-                                  label: S.current.checkoutPhoneLabel,
-                                ),
-                                TATextField(
-                                  controller: _addressController,
-                                  label: S.current.checkoutAddressLabel,
-                                ),
-                                TATextField(
-                                  controller: _cityController,
-                                  label: S.current.checkoutCityLabel,
-                                ),
-                                TATextField(
-                                  controller: _stateController,
-                                  label: S.current.checkoutStateLabel,
-                                ),
-                                TATextField(
-                                  controller: _zipCodeController,
-                                  label: S.current.checkoutZipCodeLabel,
-                                )
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            bottomNavigationBar:
-                BlocBuilder<ProductDetailBloc, ProductDetailState>(
-              builder: (context, state) {
-                return Container(
-                  padding: const EdgeInsets.all(20),
-                  color: context.colorScheme.onPrimary,
-                  child: TAElevatedButton(
-                    isDisabled: !state.isFormValid,
-                    text: S.current.checkoutSaveButton,
-                    backgroundColor: context.colorScheme.primary,
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        final address = ProductModel(
-                          price: '',
-                          imageUrl: '',
-                          title: _nameController.text,
-                          street: _addressController.text,
-                          city: _cityController.text,
-                          state: _stateController.text,
-                          zipCode: _zipCodeController.text,
-                        );
-
-                        context.read<ProductDetailBloc>().add(
-                              ProductDetailAddAddressEvt(address: address),
-                            );
-                        Navigator.pop(context, address);
-                      }
-                    },
                   ),
-                );
+                  const SizedBox(height: 30),
+                  Container(
+                    padding: const EdgeInsets.all(27),
+                    color: context.colorScheme.onPrimary,
+                    child: Form(
+                      key: _formKey,
+                      child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+                        buildWhen: (previous, current) =>
+                            previous.isFormValid != current.isFormValid,
+                        builder: (context, state) {
+                          return TAForm(
+                            isValidated: (isValid) =>
+                                context.read<ProductDetailBloc>().add(
+                                      ProductDetailFormValidateChangedEvt(
+                                        isValidate: isValid,
+                                      ),
+                                    ),
+                            textFields: [
+                              TATextField(
+                                controller: _nameController,
+                                label: S.current.checkoutNameLabel,
+                              ),
+                              TATextField(
+                                controller: _phoneController,
+                                label: S.current.checkoutPhoneLabel,
+                              ),
+                              TATextField(
+                                controller: _addressController,
+                                label: S.current.checkoutAddressLabel,
+                              ),
+                              TATextField(
+                                controller: _cityController,
+                                label: S.current.checkoutCityLabel,
+                              ),
+                              TATextField(
+                                controller: _stateController,
+                                label: S.current.checkoutStateLabel,
+                              ),
+                              TATextField(
+                                controller: _zipCodeController,
+                                label: S.current.checkoutZipCodeLabel,
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+      bottomNavigationBar: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+        builder: (context, state) {
+          return Container(
+            padding: const EdgeInsets.all(20),
+            color: context.colorScheme.onPrimary,
+            child: TAElevatedButton(
+              isDisabled: !state.isFormValid,
+              text: S.current.checkoutSaveButton,
+              backgroundColor: context.colorScheme.primary,
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
+                  final product = ProductModel(
+                    price: '',
+                    imageUrl: '',
+                    title: _nameController.text,
+                    street: _addressController.text,
+                    city: _cityController.text,
+                    state: _stateController.text,
+                    zipCode: _zipCodeController.text,
+                  );
+
+                  context.read<ProductDetailBloc>().add(
+                        ProductDetailAddAddressEvt(product: product),
+                      );
+                  Navigator.pop(context, product);
+                }
               },
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

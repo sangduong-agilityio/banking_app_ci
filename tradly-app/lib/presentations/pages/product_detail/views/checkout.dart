@@ -19,9 +19,12 @@ import 'package:tradly_app/presentations/widgets/images.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  const CheckoutScreen({super.key, this.product});
+  const CheckoutScreen({
+    super.key,
+    required this.product,
+  });
 
-  final ProductModel? product;
+  final ProductModel product;
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
@@ -43,7 +46,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (status.isGranted || status.isLimited) {
       if (!mounted) return;
       context.read<ProductDetailBloc>().add(
-            ProductDetailCheckoutEvt(product: widget.product!),
+            ProductDetailCheckoutEvt(product: widget.product),
           );
       context.goNamed(
         TAPaths.orderHistory.name,
@@ -53,9 +56,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       final result = await Permission.notification.request();
       if (result.isGranted || result.isLimited) {
         if (!mounted) return;
-        context.read<ProductDetailBloc>().add(
-              ProductDetailCheckoutEvt(product: widget.product!),
-            );
+        context
+            .read<ProductDetailBloc>()
+            .add(ProductDetailCheckoutEvt(product: widget.product));
         context.goNamed(
           TAPaths.orderHistory.name,
           extra: widget.product,
@@ -163,7 +166,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             child: Row(
                               children: [
                                 TAImageRectangle(
-                                  widget.product?.imageUrl ?? '',
+                                  widget.product.imageUrl,
                                   borderRadius: 5,
                                   width: 100,
                                   height: 100,
@@ -174,19 +177,19 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     TATitleLargeText(
-                                      text: widget.product?.title ?? '',
+                                      text: widget.product.title,
                                       color: context.colorScheme.onSurface,
                                     ),
                                     SizedBox(height: 10),
                                     Row(
                                       children: [
                                         TATitleLargeText(
-                                          text: widget.product?.newPrice ?? '',
+                                          text: widget.product.newPrice ?? '',
                                           color: context.colorScheme.primary,
                                         ),
                                         const SizedBox(width: 5),
                                         TATitleLargeText(
-                                          text: widget.product?.price ?? '',
+                                          text: widget.product.price,
                                           color: context.colorScheme.onSurface,
                                         ),
                                         const SizedBox(width: 5),
@@ -249,7 +252,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                       fontWeight: FontWeight.w500,
                                     ),
                                     TATitleLargeText(
-                                      text: widget.product?.newPrice ?? '',
+                                      text: widget.product.newPrice ?? '',
                                       color: context.colorScheme.onSurface,
                                       fontWeight: FontWeight.w500,
                                     )
@@ -288,7 +291,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                   color: context.colorScheme.onSurface,
                                 ),
                                 TATitleLargeText(
-                                  text: widget.product?.newPrice ?? '',
+                                  text: widget.product.newPrice ?? '',
                                   color: context.colorScheme.onSurface,
                                   fontWeight: FontWeight.w500,
                                 )

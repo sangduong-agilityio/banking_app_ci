@@ -39,147 +39,161 @@ class ProfileScreen extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.favorite),
-                onPressed: () async {
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.remove('session_token');
-                  if (context.mounted) {
-                    context.go(TAPaths.onboarding.path);
-                  }
-                },
+                onPressed: () {},
               ),
               TAAssets.cart(),
             ],
           ),
         ),
-        body: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            if (state.status is ProfileStatusLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state.status is ProfileStatusSuccess) {
-              final user = state.user;
-              return Stack(
-                alignment: Alignment.center,
-                clipBehavior: Clip.none,
+        body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+          if (state.status is ProfileStatusLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.status is ProfileStatusSuccess) {
+            final user = state.user;
+            return SingleChildScrollView(
+              child: Column(
                 children: [
                   Container(
                     height: 251,
+                    width: double.infinity,
                     color: context.colorScheme.primary,
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TAImageCircle(
-                          radius: 32,
-                          Assets.images.imgTradly.path,
-                          boxFit: BoxFit.cover,
-                        ),
-                        const SizedBox(width: 16),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TATitleLargeText(
-                              text: user?.userName ?? '',
-                              color: context.colorScheme.onPrimary,
-                            ),
-                            const SizedBox(height: 4),
-                            TATitleLargeText(
-                              text: user?.email ?? '',
-                              color: context.colorScheme.onPrimary,
-                            ),
-                            const SizedBox(height: 2),
-                            TATitleLargeText(
-                              text: user?.phoneNumber ?? '',
-                              color: context.colorScheme.onPrimary,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: 110,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width - 32,
-                      margin: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.onPrimary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 80),
+                    child: SafeArea(
+                      bottom: false,
+                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _menuItem(
-                            title: S.current.profileEditTitle,
-                            onTap: () {},
+                          TAImageCircle(
+                            radius: 32,
+                            Assets.images.imgTradly.path,
+                            boxFit: BoxFit.cover,
                           ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileLanguageCurrencyTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileFeedbackTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileReferFriendTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileTermsAndConditionsTitle,
-                            onTap: () {},
-                          ),
-                          _divider(),
-                          _menuItem(
-                            title: S.current.profileLogoutTitle,
-                            textColor: context.colorScheme.primary,
-                            onTap: () async {
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              await prefs.remove('session_token');
-                              if (context.mounted) {
-                                context.go(TAPaths.onboarding.path);
-                              }
-                            },
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TATitleLargeText(
+                                  text: user?.userName ?? '',
+                                  color: context.colorScheme.onPrimary,
+                                ),
+                                const SizedBox(height: 4),
+                                TATitleLargeText(
+                                  text: user?.email ?? '',
+                                  color: context.colorScheme.onPrimary,
+                                ),
+                                const SizedBox(height: 2),
+                                TATitleLargeText(
+                                  text: user?.phoneNumber ?? '',
+                                  color: context.colorScheme.onPrimary,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ),
+                  Transform.translate(
+                    offset: const Offset(0, -150),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        children: [
+                          _buildMenuItem(
+                            context: context,
+                            title: S.current.profileEditTitle,
+                            onTap: () {},
+                          ),
+                          _buildDivider(),
+                          _buildMenuItem(
+                            context: context,
+                            title: S.current.profileLanguageCurrencyTitle,
+                            onTap: () {},
+                          ),
+                          _buildDivider(),
+                          _buildMenuItem(
+                            context: context,
+                            title: S.current.profileFeedbackTitle,
+                            onTap: () {},
+                          ),
+                          _buildDivider(),
+                          _buildMenuItem(
+                            context: context,
+                            title: S.current.profileReferFriendTitle,
+                            onTap: () {},
+                          ),
+                          _buildDivider(),
+                          _buildMenuItem(
+                            context: context,
+                            title: S.current.profileTermsAndConditionsTitle,
+                            onTap: () {},
+                          ),
+                          _buildDivider(),
+                          _buildMenuItem(
+                              context: context,
+                              title: S.current.profileLogoutTitle,
+                              textColor: context.colorScheme.primary,
+                              onTap: () async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.remove('session_token');
+                                if (context.mounted) {
+                                  context.go(TAPaths.onboarding.path);
+                                }
+                              }),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 32),
                 ],
-              );
-            } else if (state.status is ProfileStatusFailure) {
-              return NotFoundScreen();
-            }
-            return const SizedBox.shrink();
-          },
-        ),
+              ),
+            );
+          } else if (state.status is ProfileStatusFailure) {
+            return NotFoundScreen();
+          }
+          return const SizedBox.shrink();
+        }),
       ),
     );
   }
 
-  Widget _menuItem({
+  Widget _buildMenuItem({
+    required BuildContext context,
     required String title,
     required VoidCallback onTap,
     Color? textColor,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        child: TATitleLargeText(
-          text: title,
-          fontWeight: FontWeight.w500,
-          color: textColor ?? Colors.black87,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 16),
+          child: Row(
+            children: [
+              const SizedBox(width: 12),
+              Expanded(
+                child: TATitleLargeText(
+                  text: title,
+                  fontWeight: FontWeight.w500,
+                  color: textColor ?? context.colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _divider() {
+  Widget _buildDivider() {
     return const Divider(
       height: 1,
       thickness: 1,

@@ -27,11 +27,11 @@ class ProductDetailPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProductDetailBloc(
         repo: context.read<ProductRepository>(),
-      )..add(
-          ProductDetailFetchEvt(productId: productId),
-        ),
+      )..add(ProductDetailFetchEvt(productId: productId)),
       child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
-        buildWhen: (previous, current) => previous.product != current.product,
+        buildWhen: (previous, current) =>
+            previous.product != current.product ||
+            previous.status != current.status,
         builder: (context, state) {
           final product = state.product;
           return TAScaffold(
