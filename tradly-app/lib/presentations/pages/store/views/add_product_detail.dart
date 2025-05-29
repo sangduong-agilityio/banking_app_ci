@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/presentations/layouts/app_bar.dart';
 import 'package:tradly_app/presentations/layouts/scaffold.dart';
 import 'package:tradly_app/presentations/pages/store/states/store_state.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
+import 'package:tradly_app/presentations/widgets/form.dart';
 import 'package:tradly_app/presentations/widgets/icons.dart';
+import 'package:tradly_app/presentations/widgets/snackbar.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +35,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
   final _categoryProductController = TextEditingController();
   final _priceController = TextEditingController();
   final _offerPriceController = TextEditingController();
-  final _locationController = TextEditingController();
+  final _locationDescriptionController = TextEditingController();
   final _productDescriptionController = TextEditingController();
   final _additionalDetailsController = TextEditingController();
   final _priceTypeController = TextEditingController();
@@ -47,7 +50,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
     _categoryProductController.dispose();
     _priceController.dispose();
     _offerPriceController.dispose();
-    _locationController.dispose();
+    _locationDescriptionController.dispose();
     _productDescriptionController.dispose();
     _additionalDetailsController.dispose();
     _priceTypeController.dispose();
@@ -56,138 +59,163 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return TAScaffold(
-      appBar: TAAppBar(
-        toolbarHeight: TAAppBarSize.small,
-        backgroundColor: context.colorScheme.primary,
-        title: Padding(
-          padding: EdgeInsets.only(left: 16),
-          child: TADisplaySmallText(
-            text: S.current.storeAddProductButton,
-            fontWeight: FontWeight.w700,
+    return LoaderOverlay(
+      child: TAScaffold(
+        appBar: TAAppBar(
+          toolbarHeight: TAAppBarSize.small,
+          backgroundColor: context.colorScheme.primary,
+          title: Padding(
+            padding: EdgeInsets.only(left: 16),
+            child: TADisplaySmallText(
+              text: S.current.storeAddProductButton,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
-      ),
-      body: BlocBuilder<StoreBloc, StoreState>(
-        buildWhen: (previous, current) =>
-            previous.imageFiles != current.imageFiles,
-        builder: (context, state) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 21),
-                  child: _buildPhotoUploadSection(state),
-                ),
-                const SizedBox(height: 14),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: TATitleLargeText(
-                    text: S.current.storeMaxPhotoProductTitle,
-                    color: context.colorScheme.outline,
-                  ),
-                ),
-                const SizedBox(height: 27),
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  color: context.colorScheme.onPrimary,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TATextField(
-                          label: S.current.storeProductNameLabel,
-                          controller: _productNameController,
-                        ),
-                        TATextField(
-                          label: S.current.storeCategoryProductLabel,
-                          controller: _categoryProductController,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: TATextField(
-                                prefixIcon: TAIcons.attachMoney(),
-                                label: S.current.storePriceLabel,
-                                controller: _priceController,
-                                keyboardType: TextInputType.number,
-                              ),
+        body: BlocListener<StoreBloc, StoreState>(
+          listener: (context, state) {
+            state.status.maybeWhen(
+              orElse: () {
+                context.loaderOverlay.hide();
+              },
+              success: () {
+                context.loaderOverlay.hide();
+                if (state.isProductAdded) {
+                  Navigator.pop(context);
+                }
+              },
+              loading: () {
+                context.loaderOverlay.show();
+              },
+              failure: () {
+                context.loaderOverlay.hide();
+                TASnackBar.buildErrorSnackbar(
+                  context,
+                  state.errorMessage ?? '',
+                );
+              },
+            );
+          },
+          child: BlocBuilder<StoreBloc, StoreState>(
+            buildWhen: (previous, current) => previous != current,
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 21),
+                      child: _buildPhotoUploadSection(state),
+                    ),
+                    const SizedBox(height: 14),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TATitleLargeText(
+                        text: S.current.storeMaxPhotoProductTitle,
+                        color: context.colorScheme.outline,
+                      ),
+                    ),
+                    const SizedBox(height: 27),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      color: context.colorScheme.onPrimary,
+                      child: Form(
+                        key: _formKey,
+                        child: TAForm(
+                          isValidated: (isValidate) =>
+                              context.read<StoreBloc>().add(
+                                    AddProductFormValidateChangedEvt(
+                                      isValidate: isValidate,
+                                      products: state.products,
+                                    ),
+                                  ),
+                          spaceBetweenRow: 20,
+                          textFields: [
+                            TATextField(
+                              label: S.current.storeProductNameLabel,
+                              controller: _productNameController,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: TATextField(
-                                prefixIcon: TAIcons.attachMoney(),
-                                label: S.current.storeOfferPriceLabel,
-                                controller: _offerPriceController,
-                                keyboardType: TextInputType.number,
-                              ),
+                            TATextField(
+                              label: S.current.storeCategoryProductLabel,
+                              controller: _categoryProductController,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: TATextField(
+                                    prefixIcon: TAIcons.attachMoney(),
+                                    label: S.current.storePriceLabel,
+                                    controller: _priceController,
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: TATextField(
+                                    prefixIcon: TAIcons.attachMoney(),
+                                    label: S.current.storeOfferPriceLabel,
+                                    controller: _offerPriceController,
+                                    keyboardType: TextInputType.number,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            TATextField(
+                              label: S.current.storeLocationDetailsLabel,
+                              controller: _locationDescriptionController,
+                              suffixIcon: TAIcons.map(),
+                            ),
+                            TATextField(
+                              label: S.current.storeProductDescriptionLabel,
+                              controller: _productDescriptionController,
+                            ),
+                            TATextField(
+                              label: S.current.storePriceTypeLabel,
+                              controller: _priceTypeController,
+                            ),
+                            TATextField(
+                              label: S.current.storeAddDeataisLabel,
+                              isChipInput: true,
+                              chips: _additionalDetails,
+                              onChipsChanged: (chips) {
+                                setState(() {
+                                  _additionalDetails = chips;
+                                });
+                              },
                             ),
                           ],
                         ),
-                        TATextField(
-                          label: S.current.storeLocationDetailsLabel,
-                          controller: _locationController,
-                          suffixIcon: TAIcons.map(),
-                        ),
-                        TATextField(
-                          label: S.current.storeProductDescriptionLabel,
-                          controller: _productDescriptionController,
-                        ),
-                        TATextField(
-                          label: S.current.storePriceTypeLabel,
-                          controller: _priceTypeController,
-                        ),
-                        TATextField(
-                          label: S.current.storeAddDeataisLabel,
-                          isChipInput: true,
-                          chips: _additionalDetails,
-                          onChipsChanged: (chips) {
-                            setState(() {
-                              _additionalDetails = chips;
-                            });
-                          },
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      ),
-      bottomNavigationBar: BlocBuilder<StoreBloc, StoreState>(
-        builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            color: context.colorScheme.onPrimary,
-            child: TAElevatedButton(
+              );
+            },
+          ),
+        ),
+        bottomNavigationBar: BlocBuilder<StoreBloc, StoreState>(
+          builder: (context, state) {
+            final isFormValid = !state.isFormValid;
+            final hasImages = state.imageFiles?.isNotEmpty ?? false;
+
+            return Container(
+              padding: const EdgeInsets.all(20),
+              color: context.colorScheme.onPrimary,
+              child: TAElevatedButton(
+                isDisabled: !(isFormValid && hasImages),
                 backgroundColor: context.colorScheme.primary,
                 text: S.current.storeAddProductButton,
                 onPressed: () {
-                  final storeId = context.read<StoreBloc>().state.stores?.id;
-
-                  if (_formKey.currentState?.validate() ?? false) {
-                    if ((context.read<StoreBloc>().state.imageFiles?.isEmpty ??
-                        true)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(S.current.storeMessageProduct),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                      return;
-                    }
-
+                  if (isFormValid && hasImages) {
+                    final storeId = context.read<StoreBloc>().state.stores?.id;
                     final product = ProductModel(
                       title: _productNameController.text,
                       categoryType: _categoryProductController.text,
                       price: _priceController.text,
                       newPrice: _offerPriceController.text,
-                      location: _locationController.text,
+                      location: _locationDescriptionController.text,
                       description: _productDescriptionController.text,
                       priceType: _priceTypeController.text,
                       imageUrl:
@@ -197,12 +225,13 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
 
                     context
                         .read<StoreBloc>()
-                        .add(AddProductEvt(product: product));
-                    Navigator.pop(context, product);
+                        .add(AddProductButtonEvt(product: product));
                   }
-                }),
-          );
-        },
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

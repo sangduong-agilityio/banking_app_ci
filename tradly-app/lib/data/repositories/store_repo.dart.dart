@@ -6,9 +6,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 abstract class StoreRepository {
   Future<bool> hasStore();
   Future<StoreModel> createStore(StoreModel store);
-  Future<void> addProduct(ProductModel product);
+  Future<ProductModel> addProduct(ProductModel product);
   Future<void> editProduct(ProductModel product);
-  Future<void> deleteProduct(int productId);
+  Future<void> deleteProduct(int product);
 }
 
 class StoreRepositoryImpl implements StoreRepository {
@@ -48,23 +48,29 @@ class StoreRepositoryImpl implements StoreRepository {
   }
 
   @override
-  Future<void> addProduct(ProductModel product) async {
+  Future<ProductModel> addProduct(ProductModel product) async {
     final supabase = Supabase.instance.client;
     try {
-      await supabase.from('products').insert({
-        'title': product.title,
-        'imageUrl': product.imageUrl,
-        'price': product.price,
-        'brand': product.brand,
-        'newPrice': product.newPrice,
-        'description': product.description,
-        'priceType': product.priceType,
-        'condition': product.condition,
-        'location': product.location,
-        'storeId': product.storeId,
-      });
+      final response = await supabase
+          .from('products')
+          .insert({
+            'title': product.title,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'brand': product.brand,
+            'newPrice': product.newPrice,
+            'description': product.description,
+            'priceType': product.priceType,
+            'condition': product.condition,
+            'location': product.location,
+            'storeId': product.storeId,
+          })
+          .select()
+          .single();
+
+      return ProductModel.fromJson(response);
     } catch (e) {
-      print('Failed to insert product: $e');
+      throw Exception('Failed to add product');
     }
   }
 

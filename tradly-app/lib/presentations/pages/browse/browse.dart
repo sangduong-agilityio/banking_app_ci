@@ -82,7 +82,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 ),
                 _buildFilterButton(
                   context,
-                  icon: const Icon(Icons.location_on, size: 16),
+                  icon: const Icon(
+                    Icons.location_on,
+                    size: 16,
+                  ),
                   label: S.current.productDetailLocationButton,
                   onPressed: () {},
                 ),

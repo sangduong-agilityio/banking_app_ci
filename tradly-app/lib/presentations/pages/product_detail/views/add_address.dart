@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tradly_app/core/extensions/context_extensions.dart';
 import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/data/models/product_model.dart';
@@ -9,6 +10,7 @@ import 'package:tradly_app/presentations/widgets/assets.dart';
 import 'package:tradly_app/presentations/widgets/button.dart';
 import 'package:tradly_app/presentations/widgets/dialog.dart';
 import 'package:tradly_app/presentations/widgets/form.dart';
+import 'package:tradly_app/presentations/widgets/snackbar.dart';
 import 'package:tradly_app/presentations/widgets/text.dart';
 import 'package:tradly_app/presentations/widgets/text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,29 +68,45 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return TAScaffold(
-      backgroundColor: context.colorScheme.onPrimary,
-      appBar: TAAppBar.checkout(
-        title: S.current.checkoutAddAdressTitle,
-        onBackPressed: () => Navigator.pop(context),
-        backgroundColor: context.colorScheme.primary,
-      ),
-      body: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
-          buildWhen: (previous, current) =>
-              previous.product != current.product ||
-              previous.isFormValid != current.isFormValid,
-          builder: (context, state) {
-            final address = state.product;
-            if (address != null) {
-              _addressController.text = address.street ?? '';
-              _cityController.text = address.city ?? '';
-              _stateController.text = address.state ?? '';
-              _zipCodeController.text = address.zipCode ?? '';
-            }
-
-            return SingleChildScrollView(
+    return LoaderOverlay(
+      child: TAScaffold(
+        backgroundColor: context.colorScheme.onPrimary,
+        appBar: TAAppBar.checkout(
+          title: S.current.checkoutAddAdressTitle,
+          onBackPressed: () => Navigator.pop(context),
+          backgroundColor: context.colorScheme.primary,
+        ),
+        body: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+          child: BlocListener<ProductDetailBloc, ProductDetailState>(
+            listener: (context, state) {
+              state.status.maybeWhen(
+                orElse: () {
+                  context.loaderOverlay.hide();
+                },
+                success: () {
+                  final address = state.product;
+                  if (address != null) {
+                    _addressController.text = address.street ?? '';
+                    _cityController.text = address.city ?? '';
+                    _stateController.text = address.state ?? '';
+                    _zipCodeController.text = address.zipCode ?? '';
+                  }
+                  context.loaderOverlay.hide();
+                },
+                loading: () {
+                  context.loaderOverlay.show();
+                },
+                failure: () {
+                  context.loaderOverlay.hide();
+                  TASnackBar.buildErrorSnackbar(
+                    context,
+                    state.errorMessage ?? '',
+                  );
+                },
+              );
+            },
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   GestureDetector(
@@ -170,40 +188,40 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   )
                 ],
               ),
+            ),
+          ),
+        ),
+        bottomNavigationBar: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+          builder: (context, state) {
+            return Container(
+              padding: const EdgeInsets.all(20),
+              color: context.colorScheme.onPrimary,
+              child: TAElevatedButton(
+                isDisabled: !state.isFormValid,
+                text: S.current.checkoutSaveButton,
+                backgroundColor: context.colorScheme.primary,
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    final product = ProductModel(
+                      price: '',
+                      imageUrl: '',
+                      title: _nameController.text,
+                      street: _addressController.text,
+                      city: _cityController.text,
+                      state: _stateController.text,
+                      zipCode: _zipCodeController.text,
+                    );
+
+                    context.read<ProductDetailBloc>().add(
+                          ProductDetailAddAddressEvt(product: product),
+                        );
+                    Navigator.pop(context, product);
+                  }
+                },
+              ),
             );
           },
         ),
-      ),
-      bottomNavigationBar: BlocBuilder<ProductDetailBloc, ProductDetailState>(
-        builder: (context, state) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            color: context.colorScheme.onPrimary,
-            child: TAElevatedButton(
-              isDisabled: !state.isFormValid,
-              text: S.current.checkoutSaveButton,
-              backgroundColor: context.colorScheme.primary,
-              onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  final product = ProductModel(
-                    price: '',
-                    imageUrl: '',
-                    title: _nameController.text,
-                    street: _addressController.text,
-                    city: _cityController.text,
-                    state: _stateController.text,
-                    zipCode: _zipCodeController.text,
-                  );
-
-                  context.read<ProductDetailBloc>().add(
-                        ProductDetailAddAddressEvt(product: product),
-                      );
-                  Navigator.pop(context, product);
-                }
-              },
-            ),
-          );
-        },
       ),
     );
   }

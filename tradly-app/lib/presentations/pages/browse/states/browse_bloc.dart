@@ -34,10 +34,12 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(
-        status: const BrowseStatus.failure(),
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: const BrowseStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -109,10 +111,16 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
 
       if (event.sort == SortOrder.lowToHigh) {
         sortedProducts.sort(
-            (a, b) => double.parse(a.price).compareTo(double.parse(b.price)));
+          (a, b) => double.parse(a.price).compareTo(
+            double.parse(b.price),
+          ),
+        );
       } else if (event.sort == SortOrder.highToLow) {
         sortedProducts.sort(
-            (a, b) => double.parse(b.price).compareTo(double.parse(a.price)));
+          (a, b) => double.parse(b.price).compareTo(
+            double.parse(a.price),
+          ),
+        );
       }
       emit(
         state.copyWith(

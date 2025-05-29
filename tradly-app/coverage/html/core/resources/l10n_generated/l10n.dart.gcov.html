@@ -31,17 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">2.3&nbsp;%</td>
-            <td class="headerCovTableEntry">487</td>
+            <td class="headerCovTableEntryLo">2.2&nbsp;%</td>
+            <td class="headerCovTableEntry">496</td>
             <td class="headerCovTableEntry">11</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-<<<<<<< HEAD
-            <td class="headerValue">2025-05-27 16:55:46</td>
-=======
-            <td class="headerValue">2025-05-28 16:14:46</td>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+            <td class="headerValue">2025-05-29 16:17:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -79,11 +75,7 @@
 <span id="L13"><span class="lineNum">      13</span>              : // ignore_for_file: avoid_redundant_argument_values, avoid_escaping_inner_quotes</span>
 <span id="L14"><span class="lineNum">      14</span>              : </span>
 <span id="L15"><span class="lineNum">      15</span>              : class S {</span>
-<<<<<<< HEAD
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">           3 :   S();</span></span>
-=======
-<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">           9 :   S();</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+<span id="L16"><span class="lineNum">      16</span> <span class="tlaGNC">          21 :   S();</span></span>
 <span id="L17"><span class="lineNum">      17</span>              : </span>
 <span id="L18"><span class="lineNum">      18</span>              :   static S? _current;</span>
 <span id="L19"><span class="lineNum">      19</span>              : </span>
@@ -97,25 +89,14 @@
 <span id="L27"><span class="lineNum">      27</span>              : </span>
 <span id="L28"><span class="lineNum">      28</span>              :   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();</span>
 <span id="L29"><span class="lineNum">      29</span>              : </span>
-<<<<<<< HEAD
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           3 :   static Future&lt;S&gt; load(Locale locale) {</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           3 :     final name = (locale.countryCode?.isEmpty ?? false)</span></span>
+<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">          21 :   static Future&lt;S&gt; load(Locale locale) {</span></span>
+<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">          21 :     final name = (locale.countryCode?.isEmpty ?? false)</span></span>
 <span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0 :         ? locale.languageCode</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           3 :         : locale.toString();</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           3 :     final localeName = Intl.canonicalizedLocale(name);</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">           9 :     return initializeMessages(localeName).then((_) {</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           3 :       Intl.defaultLocale = localeName;</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           3 :       final instance = S();</span></span>
-=======
-<span id="L30"><span class="lineNum">      30</span> <span class="tlaGNC">           9 :   static Future&lt;S&gt; load(Locale locale) {</span></span>
-<span id="L31"><span class="lineNum">      31</span> <span class="tlaGNC">           9 :     final name = (locale.countryCode?.isEmpty ?? false)</span></span>
-<span id="L32"><span class="lineNum">      32</span> <span class="tlaUNC">           0 :         ? locale.languageCode</span></span>
-<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">           9 :         : locale.toString();</span></span>
-<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">           9 :     final localeName = Intl.canonicalizedLocale(name);</span></span>
-<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">          27 :     return initializeMessages(localeName).then((_) {</span></span>
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           9 :       Intl.defaultLocale = localeName;</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           9 :       final instance = S();</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+<span id="L33"><span class="lineNum">      33</span> <span class="tlaGNC">          21 :         : locale.toString();</span></span>
+<span id="L34"><span class="lineNum">      34</span> <span class="tlaGNC">          21 :     final localeName = Intl.canonicalizedLocale(name);</span></span>
+<span id="L35"><span class="lineNum">      35</span> <span class="tlaGNC">          63 :     return initializeMessages(localeName).then((_) {</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          21 :       Intl.defaultLocale = localeName;</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          21 :       final instance = S();</span></span>
 <span id="L38"><span class="lineNum">      38</span>              :       S._current = instance;</span>
 <span id="L39"><span class="lineNum">      39</span>              : </span>
 <span id="L40"><span class="lineNum">      40</span>              :       return instance;</span>
@@ -1400,270 +1381,295 @@
 <span id="L1319"><span class="lineNum">    1319</span>              :     );</span>
 <span id="L1320"><span class="lineNum">    1320</span>              :   }</span>
 <span id="L1321"><span class="lineNum">    1321</span>              : </span>
-<span id="L1322"><span class="lineNum">    1322</span>              :   /// `My Cart`</span>
-<span id="L1323"><span class="lineNum">    1323</span> <span class="tlaUNC">           0 :   String get checkoutTitle {</span></span>
-<span id="L1324"><span class="lineNum">    1324</span> <span class="tlaUNC">           0 :     return Intl.message('My Cart', name: 'checkoutTitle', desc: '', args: []);</span></span>
-<span id="L1325"><span class="lineNum">    1325</span>              :   }</span>
-<span id="L1326"><span class="lineNum">    1326</span>              : </span>
-<span id="L1327"><span class="lineNum">    1327</span>              :   /// `+ Add New Address`</span>
-<span id="L1328"><span class="lineNum">    1328</span> <span class="tlaUNC">           0 :   String get checkoutAddNewAddressTitle {</span></span>
-<span id="L1329"><span class="lineNum">    1329</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1330"><span class="lineNum">    1330</span>              :       '+ Add New Address',</span>
-<span id="L1331"><span class="lineNum">    1331</span>              :       name: 'checkoutAddNewAddressTitle',</span>
-<span id="L1332"><span class="lineNum">    1332</span>              :       desc: '',</span>
-<span id="L1333"><span class="lineNum">    1333</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1334"><span class="lineNum">    1334</span>              :     );</span>
-<span id="L1335"><span class="lineNum">    1335</span>              :   }</span>
-<span id="L1336"><span class="lineNum">    1336</span>              : </span>
-<span id="L1337"><span class="lineNum">    1337</span>              :   /// `Remove`</span>
-<span id="L1338"><span class="lineNum">    1338</span> <span class="tlaUNC">           0 :   String get checkoutRemoveButton {</span></span>
-<span id="L1339"><span class="lineNum">    1339</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1340"><span class="lineNum">    1340</span>              :       'Remove',</span>
-<span id="L1341"><span class="lineNum">    1341</span>              :       name: 'checkoutRemoveButton',</span>
-<span id="L1342"><span class="lineNum">    1342</span>              :       desc: '',</span>
-<span id="L1343"><span class="lineNum">    1343</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1344"><span class="lineNum">    1344</span>              :     );</span>
-<span id="L1345"><span class="lineNum">    1345</span>              :   }</span>
-<span id="L1346"><span class="lineNum">    1346</span>              : </span>
-<span id="L1347"><span class="lineNum">    1347</span>              :   /// `Checkout`</span>
-<span id="L1348"><span class="lineNum">    1348</span> <span class="tlaUNC">           0 :   String get checkoutCheckoutButton {</span></span>
-<span id="L1349"><span class="lineNum">    1349</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1350"><span class="lineNum">    1350</span>              :       'Checkout',</span>
-<span id="L1351"><span class="lineNum">    1351</span>              :       name: 'checkoutCheckoutButton',</span>
-<span id="L1352"><span class="lineNum">    1352</span>              :       desc: '',</span>
-<span id="L1353"><span class="lineNum">    1353</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1354"><span class="lineNum">    1354</span>              :     );</span>
+<span id="L1322"><span class="lineNum">    1322</span>              :   /// `Are you sure want to logout?`</span>
+<span id="L1323"><span class="lineNum">    1323</span> <span class="tlaUNC">           0 :   String get profileLogoutContent {</span></span>
+<span id="L1324"><span class="lineNum">    1324</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1325"><span class="lineNum">    1325</span>              :       'Are you sure want to logout?',</span>
+<span id="L1326"><span class="lineNum">    1326</span>              :       name: 'profileLogoutContent',</span>
+<span id="L1327"><span class="lineNum">    1327</span>              :       desc: '',</span>
+<span id="L1328"><span class="lineNum">    1328</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1329"><span class="lineNum">    1329</span>              :     );</span>
+<span id="L1330"><span class="lineNum">    1330</span>              :   }</span>
+<span id="L1331"><span class="lineNum">    1331</span>              : </span>
+<span id="L1332"><span class="lineNum">    1332</span>              :   /// `Cancel`</span>
+<span id="L1333"><span class="lineNum">    1333</span> <span class="tlaUNC">           0 :   String get profileLogoutCancelButton {</span></span>
+<span id="L1334"><span class="lineNum">    1334</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1335"><span class="lineNum">    1335</span>              :       'Cancel',</span>
+<span id="L1336"><span class="lineNum">    1336</span>              :       name: 'profileLogoutCancelButton',</span>
+<span id="L1337"><span class="lineNum">    1337</span>              :       desc: '',</span>
+<span id="L1338"><span class="lineNum">    1338</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1339"><span class="lineNum">    1339</span>              :     );</span>
+<span id="L1340"><span class="lineNum">    1340</span>              :   }</span>
+<span id="L1341"><span class="lineNum">    1341</span>              : </span>
+<span id="L1342"><span class="lineNum">    1342</span>              :   /// `Logout`</span>
+<span id="L1343"><span class="lineNum">    1343</span> <span class="tlaUNC">           0 :   String get profileLogoutButton {</span></span>
+<span id="L1344"><span class="lineNum">    1344</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1345"><span class="lineNum">    1345</span>              :       'Logout',</span>
+<span id="L1346"><span class="lineNum">    1346</span>              :       name: 'profileLogoutButton',</span>
+<span id="L1347"><span class="lineNum">    1347</span>              :       desc: '',</span>
+<span id="L1348"><span class="lineNum">    1348</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1349"><span class="lineNum">    1349</span>              :     );</span>
+<span id="L1350"><span class="lineNum">    1350</span>              :   }</span>
+<span id="L1351"><span class="lineNum">    1351</span>              : </span>
+<span id="L1352"><span class="lineNum">    1352</span>              :   /// `My Cart`</span>
+<span id="L1353"><span class="lineNum">    1353</span> <span class="tlaUNC">           0 :   String get checkoutTitle {</span></span>
+<span id="L1354"><span class="lineNum">    1354</span> <span class="tlaUNC">           0 :     return Intl.message('My Cart', name: 'checkoutTitle', desc: '', args: []);</span></span>
 <span id="L1355"><span class="lineNum">    1355</span>              :   }</span>
 <span id="L1356"><span class="lineNum">    1356</span>              : </span>
-<span id="L1357"><span class="lineNum">    1357</span>              :   /// `Price Details`</span>
-<span id="L1358"><span class="lineNum">    1358</span> <span class="tlaUNC">           0 :   String get checkoutPriceDetailsTitle {</span></span>
+<span id="L1357"><span class="lineNum">    1357</span>              :   /// `+ Add New Address`</span>
+<span id="L1358"><span class="lineNum">    1358</span> <span class="tlaUNC">           0 :   String get checkoutAddNewAddressTitle {</span></span>
 <span id="L1359"><span class="lineNum">    1359</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1360"><span class="lineNum">    1360</span>              :       'Price Details',</span>
-<span id="L1361"><span class="lineNum">    1361</span>              :       name: 'checkoutPriceDetailsTitle',</span>
+<span id="L1360"><span class="lineNum">    1360</span>              :       '+ Add New Address',</span>
+<span id="L1361"><span class="lineNum">    1361</span>              :       name: 'checkoutAddNewAddressTitle',</span>
 <span id="L1362"><span class="lineNum">    1362</span>              :       desc: '',</span>
 <span id="L1363"><span class="lineNum">    1363</span> <span class="tlaUNC">           0 :       args: [],</span></span>
 <span id="L1364"><span class="lineNum">    1364</span>              :     );</span>
 <span id="L1365"><span class="lineNum">    1365</span>              :   }</span>
 <span id="L1366"><span class="lineNum">    1366</span>              : </span>
-<span id="L1367"><span class="lineNum">    1367</span>              :   /// `Info`</span>
-<span id="L1368"><span class="lineNum">    1368</span> <span class="tlaUNC">           0 :   String get checkoutInforTitle {</span></span>
-<span id="L1369"><span class="lineNum">    1369</span> <span class="tlaUNC">           0 :     return Intl.message('Info', name: 'checkoutInforTitle', desc: '', args: []);</span></span>
-<span id="L1370"><span class="lineNum">    1370</span>              :   }</span>
-<span id="L1371"><span class="lineNum">    1371</span>              : </span>
-<span id="L1372"><span class="lineNum">    1372</span>              :   /// `Delivery Free`</span>
-<span id="L1373"><span class="lineNum">    1373</span> <span class="tlaUNC">           0 :   String get checkoutDeliveryFreeTitle {</span></span>
-<span id="L1374"><span class="lineNum">    1374</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1375"><span class="lineNum">    1375</span>              :       'Delivery Free',</span>
-<span id="L1376"><span class="lineNum">    1376</span>              :       name: 'checkoutDeliveryFreeTitle',</span>
-<span id="L1377"><span class="lineNum">    1377</span>              :       desc: '',</span>
-<span id="L1378"><span class="lineNum">    1378</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1379"><span class="lineNum">    1379</span>              :     );</span>
-<span id="L1380"><span class="lineNum">    1380</span>              :   }</span>
-<span id="L1381"><span class="lineNum">    1381</span>              : </span>
-<span id="L1382"><span class="lineNum">    1382</span>              :   /// `Total Amount`</span>
-<span id="L1383"><span class="lineNum">    1383</span> <span class="tlaUNC">           0 :   String get checkoutTotalAmountTitle {</span></span>
-<span id="L1384"><span class="lineNum">    1384</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1385"><span class="lineNum">    1385</span>              :       'Total Amount',</span>
-<span id="L1386"><span class="lineNum">    1386</span>              :       name: 'checkoutTotalAmountTitle',</span>
-<span id="L1387"><span class="lineNum">    1387</span>              :       desc: '',</span>
-<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1389"><span class="lineNum">    1389</span>              :     );</span>
-<span id="L1390"><span class="lineNum">    1390</span>              :   }</span>
-<span id="L1391"><span class="lineNum">    1391</span>              : </span>
-<span id="L1392"><span class="lineNum">    1392</span>              :   /// `Add a new address`</span>
-<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaUNC">           0 :   String get checkoutAddAdressTitle {</span></span>
-<span id="L1394"><span class="lineNum">    1394</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1395"><span class="lineNum">    1395</span>              :       'Add a new address',</span>
-<span id="L1396"><span class="lineNum">    1396</span>              :       name: 'checkoutAddAdressTitle',</span>
-<span id="L1397"><span class="lineNum">    1397</span>              :       desc: '',</span>
-<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1399"><span class="lineNum">    1399</span>              :     );</span>
+<span id="L1367"><span class="lineNum">    1367</span>              :   /// `Remove`</span>
+<span id="L1368"><span class="lineNum">    1368</span> <span class="tlaUNC">           0 :   String get checkoutRemoveButton {</span></span>
+<span id="L1369"><span class="lineNum">    1369</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1370"><span class="lineNum">    1370</span>              :       'Remove',</span>
+<span id="L1371"><span class="lineNum">    1371</span>              :       name: 'checkoutRemoveButton',</span>
+<span id="L1372"><span class="lineNum">    1372</span>              :       desc: '',</span>
+<span id="L1373"><span class="lineNum">    1373</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1374"><span class="lineNum">    1374</span>              :     );</span>
+<span id="L1375"><span class="lineNum">    1375</span>              :   }</span>
+<span id="L1376"><span class="lineNum">    1376</span>              : </span>
+<span id="L1377"><span class="lineNum">    1377</span>              :   /// `Checkout`</span>
+<span id="L1378"><span class="lineNum">    1378</span> <span class="tlaUNC">           0 :   String get checkoutCheckoutButton {</span></span>
+<span id="L1379"><span class="lineNum">    1379</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1380"><span class="lineNum">    1380</span>              :       'Checkout',</span>
+<span id="L1381"><span class="lineNum">    1381</span>              :       name: 'checkoutCheckoutButton',</span>
+<span id="L1382"><span class="lineNum">    1382</span>              :       desc: '',</span>
+<span id="L1383"><span class="lineNum">    1383</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1384"><span class="lineNum">    1384</span>              :     );</span>
+<span id="L1385"><span class="lineNum">    1385</span>              :   }</span>
+<span id="L1386"><span class="lineNum">    1386</span>              : </span>
+<span id="L1387"><span class="lineNum">    1387</span>              :   /// `Price Details`</span>
+<span id="L1388"><span class="lineNum">    1388</span> <span class="tlaUNC">           0 :   String get checkoutPriceDetailsTitle {</span></span>
+<span id="L1389"><span class="lineNum">    1389</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1390"><span class="lineNum">    1390</span>              :       'Price Details',</span>
+<span id="L1391"><span class="lineNum">    1391</span>              :       name: 'checkoutPriceDetailsTitle',</span>
+<span id="L1392"><span class="lineNum">    1392</span>              :       desc: '',</span>
+<span id="L1393"><span class="lineNum">    1393</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1394"><span class="lineNum">    1394</span>              :     );</span>
+<span id="L1395"><span class="lineNum">    1395</span>              :   }</span>
+<span id="L1396"><span class="lineNum">    1396</span>              : </span>
+<span id="L1397"><span class="lineNum">    1397</span>              :   /// `Info`</span>
+<span id="L1398"><span class="lineNum">    1398</span> <span class="tlaUNC">           0 :   String get checkoutInforTitle {</span></span>
+<span id="L1399"><span class="lineNum">    1399</span> <span class="tlaUNC">           0 :     return Intl.message('Info', name: 'checkoutInforTitle', desc: '', args: []);</span></span>
 <span id="L1400"><span class="lineNum">    1400</span>              :   }</span>
 <span id="L1401"><span class="lineNum">    1401</span>              : </span>
-<span id="L1402"><span class="lineNum">    1402</span>              :   /// `Use current location`</span>
-<span id="L1403"><span class="lineNum">    1403</span> <span class="tlaUNC">           0 :   String get checkoutUseCurrentLocationTitle {</span></span>
+<span id="L1402"><span class="lineNum">    1402</span>              :   /// `Delivery Free`</span>
+<span id="L1403"><span class="lineNum">    1403</span> <span class="tlaUNC">           0 :   String get checkoutDeliveryFreeTitle {</span></span>
 <span id="L1404"><span class="lineNum">    1404</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1405"><span class="lineNum">    1405</span>              :       'Use current location',</span>
-<span id="L1406"><span class="lineNum">    1406</span>              :       name: 'checkoutUseCurrentLocationTitle',</span>
+<span id="L1405"><span class="lineNum">    1405</span>              :       'Delivery Free',</span>
+<span id="L1406"><span class="lineNum">    1406</span>              :       name: 'checkoutDeliveryFreeTitle',</span>
 <span id="L1407"><span class="lineNum">    1407</span>              :       desc: '',</span>
 <span id="L1408"><span class="lineNum">    1408</span> <span class="tlaUNC">           0 :       args: [],</span></span>
 <span id="L1409"><span class="lineNum">    1409</span>              :     );</span>
 <span id="L1410"><span class="lineNum">    1410</span>              :   }</span>
 <span id="L1411"><span class="lineNum">    1411</span>              : </span>
-<span id="L1412"><span class="lineNum">    1412</span>              :   /// `Name`</span>
-<span id="L1413"><span class="lineNum">    1413</span> <span class="tlaUNC">           0 :   String get checkoutNameLabel {</span></span>
-<span id="L1414"><span class="lineNum">    1414</span> <span class="tlaUNC">           0 :     return Intl.message('Name', name: 'checkoutNameLabel', desc: '', args: []);</span></span>
-<span id="L1415"><span class="lineNum">    1415</span>              :   }</span>
-<span id="L1416"><span class="lineNum">    1416</span>              : </span>
-<span id="L1417"><span class="lineNum">    1417</span>              :   /// `Phone`</span>
-<span id="L1418"><span class="lineNum">    1418</span> <span class="tlaUNC">           0 :   String get checkoutPhoneLabel {</span></span>
-<span id="L1419"><span class="lineNum">    1419</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1420"><span class="lineNum">    1420</span>              :       'Phone',</span>
-<span id="L1421"><span class="lineNum">    1421</span>              :       name: 'checkoutPhoneLabel',</span>
-<span id="L1422"><span class="lineNum">    1422</span>              :       desc: '',</span>
-<span id="L1423"><span class="lineNum">    1423</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1424"><span class="lineNum">    1424</span>              :     );</span>
-<span id="L1425"><span class="lineNum">    1425</span>              :   }</span>
-<span id="L1426"><span class="lineNum">    1426</span>              : </span>
-<span id="L1427"><span class="lineNum">    1427</span>              :   /// `StreetAddress`</span>
-<span id="L1428"><span class="lineNum">    1428</span> <span class="tlaUNC">           0 :   String get checkoutAddressLabel {</span></span>
-<span id="L1429"><span class="lineNum">    1429</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1430"><span class="lineNum">    1430</span>              :       'StreetAddress',</span>
-<span id="L1431"><span class="lineNum">    1431</span>              :       name: 'checkoutAddressLabel',</span>
-<span id="L1432"><span class="lineNum">    1432</span>              :       desc: '',</span>
-<span id="L1433"><span class="lineNum">    1433</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1434"><span class="lineNum">    1434</span>              :     );</span>
-<span id="L1435"><span class="lineNum">    1435</span>              :   }</span>
-<span id="L1436"><span class="lineNum">    1436</span>              : </span>
-<span id="L1437"><span class="lineNum">    1437</span>              :   /// `City`</span>
-<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaUNC">           0 :   String get checkoutCityLabel {</span></span>
-<span id="L1439"><span class="lineNum">    1439</span> <span class="tlaUNC">           0 :     return Intl.message('City', name: 'checkoutCityLabel', desc: '', args: []);</span></span>
+<span id="L1412"><span class="lineNum">    1412</span>              :   /// `Total Amount`</span>
+<span id="L1413"><span class="lineNum">    1413</span> <span class="tlaUNC">           0 :   String get checkoutTotalAmountTitle {</span></span>
+<span id="L1414"><span class="lineNum">    1414</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1415"><span class="lineNum">    1415</span>              :       'Total Amount',</span>
+<span id="L1416"><span class="lineNum">    1416</span>              :       name: 'checkoutTotalAmountTitle',</span>
+<span id="L1417"><span class="lineNum">    1417</span>              :       desc: '',</span>
+<span id="L1418"><span class="lineNum">    1418</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1419"><span class="lineNum">    1419</span>              :     );</span>
+<span id="L1420"><span class="lineNum">    1420</span>              :   }</span>
+<span id="L1421"><span class="lineNum">    1421</span>              : </span>
+<span id="L1422"><span class="lineNum">    1422</span>              :   /// `Add a new address`</span>
+<span id="L1423"><span class="lineNum">    1423</span> <span class="tlaUNC">           0 :   String get checkoutAddAdressTitle {</span></span>
+<span id="L1424"><span class="lineNum">    1424</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1425"><span class="lineNum">    1425</span>              :       'Add a new address',</span>
+<span id="L1426"><span class="lineNum">    1426</span>              :       name: 'checkoutAddAdressTitle',</span>
+<span id="L1427"><span class="lineNum">    1427</span>              :       desc: '',</span>
+<span id="L1428"><span class="lineNum">    1428</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1429"><span class="lineNum">    1429</span>              :     );</span>
+<span id="L1430"><span class="lineNum">    1430</span>              :   }</span>
+<span id="L1431"><span class="lineNum">    1431</span>              : </span>
+<span id="L1432"><span class="lineNum">    1432</span>              :   /// `Use current location`</span>
+<span id="L1433"><span class="lineNum">    1433</span> <span class="tlaUNC">           0 :   String get checkoutUseCurrentLocationTitle {</span></span>
+<span id="L1434"><span class="lineNum">    1434</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1435"><span class="lineNum">    1435</span>              :       'Use current location',</span>
+<span id="L1436"><span class="lineNum">    1436</span>              :       name: 'checkoutUseCurrentLocationTitle',</span>
+<span id="L1437"><span class="lineNum">    1437</span>              :       desc: '',</span>
+<span id="L1438"><span class="lineNum">    1438</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1439"><span class="lineNum">    1439</span>              :     );</span>
 <span id="L1440"><span class="lineNum">    1440</span>              :   }</span>
 <span id="L1441"><span class="lineNum">    1441</span>              : </span>
-<span id="L1442"><span class="lineNum">    1442</span>              :   /// `State`</span>
-<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaUNC">           0 :   String get checkoutStateLabel {</span></span>
-<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1445"><span class="lineNum">    1445</span>              :       'State',</span>
-<span id="L1446"><span class="lineNum">    1446</span>              :       name: 'checkoutStateLabel',</span>
-<span id="L1447"><span class="lineNum">    1447</span>              :       desc: '',</span>
-<span id="L1448"><span class="lineNum">    1448</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1449"><span class="lineNum">    1449</span>              :     );</span>
-<span id="L1450"><span class="lineNum">    1450</span>              :   }</span>
-<span id="L1451"><span class="lineNum">    1451</span>              : </span>
-<span id="L1452"><span class="lineNum">    1452</span>              :   /// `ZipCode`</span>
-<span id="L1453"><span class="lineNum">    1453</span> <span class="tlaUNC">           0 :   String get checkoutZipCodeLabel {</span></span>
-<span id="L1454"><span class="lineNum">    1454</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1455"><span class="lineNum">    1455</span>              :       'ZipCode',</span>
-<span id="L1456"><span class="lineNum">    1456</span>              :       name: 'checkoutZipCodeLabel',</span>
-<span id="L1457"><span class="lineNum">    1457</span>              :       desc: '',</span>
-<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1459"><span class="lineNum">    1459</span>              :     );</span>
-<span id="L1460"><span class="lineNum">    1460</span>              :   }</span>
-<span id="L1461"><span class="lineNum">    1461</span>              : </span>
-<span id="L1462"><span class="lineNum">    1462</span>              :   /// `Save`</span>
-<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaUNC">           0 :   String get checkoutSaveButton {</span></span>
-<span id="L1464"><span class="lineNum">    1464</span> <span class="tlaUNC">           0 :     return Intl.message('Save', name: 'checkoutSaveButton', desc: '', args: []);</span></span>
+<span id="L1442"><span class="lineNum">    1442</span>              :   /// `Name`</span>
+<span id="L1443"><span class="lineNum">    1443</span> <span class="tlaUNC">           0 :   String get checkoutNameLabel {</span></span>
+<span id="L1444"><span class="lineNum">    1444</span> <span class="tlaUNC">           0 :     return Intl.message('Name', name: 'checkoutNameLabel', desc: '', args: []);</span></span>
+<span id="L1445"><span class="lineNum">    1445</span>              :   }</span>
+<span id="L1446"><span class="lineNum">    1446</span>              : </span>
+<span id="L1447"><span class="lineNum">    1447</span>              :   /// `Phone`</span>
+<span id="L1448"><span class="lineNum">    1448</span> <span class="tlaUNC">           0 :   String get checkoutPhoneLabel {</span></span>
+<span id="L1449"><span class="lineNum">    1449</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1450"><span class="lineNum">    1450</span>              :       'Phone',</span>
+<span id="L1451"><span class="lineNum">    1451</span>              :       name: 'checkoutPhoneLabel',</span>
+<span id="L1452"><span class="lineNum">    1452</span>              :       desc: '',</span>
+<span id="L1453"><span class="lineNum">    1453</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1454"><span class="lineNum">    1454</span>              :     );</span>
+<span id="L1455"><span class="lineNum">    1455</span>              :   }</span>
+<span id="L1456"><span class="lineNum">    1456</span>              : </span>
+<span id="L1457"><span class="lineNum">    1457</span>              :   /// `StreetAddress`</span>
+<span id="L1458"><span class="lineNum">    1458</span> <span class="tlaUNC">           0 :   String get checkoutAddressLabel {</span></span>
+<span id="L1459"><span class="lineNum">    1459</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1460"><span class="lineNum">    1460</span>              :       'StreetAddress',</span>
+<span id="L1461"><span class="lineNum">    1461</span>              :       name: 'checkoutAddressLabel',</span>
+<span id="L1462"><span class="lineNum">    1462</span>              :       desc: '',</span>
+<span id="L1463"><span class="lineNum">    1463</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1464"><span class="lineNum">    1464</span>              :     );</span>
 <span id="L1465"><span class="lineNum">    1465</span>              :   }</span>
 <span id="L1466"><span class="lineNum">    1466</span>              : </span>
-<span id="L1467"><span class="lineNum">    1467</span>              :   /// `Price ({itemCount} item)`</span>
-<span id="L1468"><span class="lineNum">    1468</span> <span class="tlaUNC">           0 :   String checkoutPriceItemTitle(String itemCount) {</span></span>
-<span id="L1469"><span class="lineNum">    1469</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1470"><span class="lineNum">    1470</span> <span class="tlaUNC">           0 :       'Price ($itemCount item)',</span></span>
-<span id="L1471"><span class="lineNum">    1471</span>              :       name: 'checkoutPriceItemTitle',</span>
-<span id="L1472"><span class="lineNum">    1472</span>              :       desc: '',</span>
-<span id="L1473"><span class="lineNum">    1473</span> <span class="tlaUNC">           0 :       args: [itemCount],</span></span>
-<span id="L1474"><span class="lineNum">    1474</span>              :     );</span>
-<span id="L1475"><span class="lineNum">    1475</span>              :   }</span>
-<span id="L1476"><span class="lineNum">    1476</span>              : </span>
-<span id="L1477"><span class="lineNum">    1477</span>              :   /// `Order History`</span>
-<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaUNC">           0 :   String get orderHistoryTitle {</span></span>
-<span id="L1479"><span class="lineNum">    1479</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1480"><span class="lineNum">    1480</span>              :       'Order History',</span>
-<span id="L1481"><span class="lineNum">    1481</span>              :       name: 'orderHistoryTitle',</span>
-<span id="L1482"><span class="lineNum">    1482</span>              :       desc: '',</span>
-<span id="L1483"><span class="lineNum">    1483</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1484"><span class="lineNum">    1484</span>              :     );</span>
-<span id="L1485"><span class="lineNum">    1485</span>              :   }</span>
-<span id="L1486"><span class="lineNum">    1486</span>              : </span>
-<span id="L1487"><span class="lineNum">    1487</span>              :   /// `Transactions`</span>
-<span id="L1488"><span class="lineNum">    1488</span> <span class="tlaUNC">           0 :   String get orderTransactionsTitle {</span></span>
-<span id="L1489"><span class="lineNum">    1489</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1490"><span class="lineNum">    1490</span>              :       'Transactions',</span>
-<span id="L1491"><span class="lineNum">    1491</span>              :       name: 'orderTransactionsTitle',</span>
-<span id="L1492"><span class="lineNum">    1492</span>              :       desc: '',</span>
-<span id="L1493"><span class="lineNum">    1493</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1494"><span class="lineNum">    1494</span>              :     );</span>
+<span id="L1467"><span class="lineNum">    1467</span>              :   /// `City`</span>
+<span id="L1468"><span class="lineNum">    1468</span> <span class="tlaUNC">           0 :   String get checkoutCityLabel {</span></span>
+<span id="L1469"><span class="lineNum">    1469</span> <span class="tlaUNC">           0 :     return Intl.message('City', name: 'checkoutCityLabel', desc: '', args: []);</span></span>
+<span id="L1470"><span class="lineNum">    1470</span>              :   }</span>
+<span id="L1471"><span class="lineNum">    1471</span>              : </span>
+<span id="L1472"><span class="lineNum">    1472</span>              :   /// `State`</span>
+<span id="L1473"><span class="lineNum">    1473</span> <span class="tlaUNC">           0 :   String get checkoutStateLabel {</span></span>
+<span id="L1474"><span class="lineNum">    1474</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1475"><span class="lineNum">    1475</span>              :       'State',</span>
+<span id="L1476"><span class="lineNum">    1476</span>              :       name: 'checkoutStateLabel',</span>
+<span id="L1477"><span class="lineNum">    1477</span>              :       desc: '',</span>
+<span id="L1478"><span class="lineNum">    1478</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1479"><span class="lineNum">    1479</span>              :     );</span>
+<span id="L1480"><span class="lineNum">    1480</span>              :   }</span>
+<span id="L1481"><span class="lineNum">    1481</span>              : </span>
+<span id="L1482"><span class="lineNum">    1482</span>              :   /// `ZipCode`</span>
+<span id="L1483"><span class="lineNum">    1483</span> <span class="tlaUNC">           0 :   String get checkoutZipCodeLabel {</span></span>
+<span id="L1484"><span class="lineNum">    1484</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1485"><span class="lineNum">    1485</span>              :       'ZipCode',</span>
+<span id="L1486"><span class="lineNum">    1486</span>              :       name: 'checkoutZipCodeLabel',</span>
+<span id="L1487"><span class="lineNum">    1487</span>              :       desc: '',</span>
+<span id="L1488"><span class="lineNum">    1488</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1489"><span class="lineNum">    1489</span>              :     );</span>
+<span id="L1490"><span class="lineNum">    1490</span>              :   }</span>
+<span id="L1491"><span class="lineNum">    1491</span>              : </span>
+<span id="L1492"><span class="lineNum">    1492</span>              :   /// `Save`</span>
+<span id="L1493"><span class="lineNum">    1493</span> <span class="tlaUNC">           0 :   String get checkoutSaveButton {</span></span>
+<span id="L1494"><span class="lineNum">    1494</span> <span class="tlaUNC">           0 :     return Intl.message('Save', name: 'checkoutSaveButton', desc: '', args: []);</span></span>
 <span id="L1495"><span class="lineNum">    1495</span>              :   }</span>
 <span id="L1496"><span class="lineNum">    1496</span>              : </span>
-<span id="L1497"><span class="lineNum">    1497</span>              :   /// `Delivered`</span>
-<span id="L1498"><span class="lineNum">    1498</span> <span class="tlaUNC">           0 :   String get orderHistoryDeliveredButton {</span></span>
+<span id="L1497"><span class="lineNum">    1497</span>              :   /// `Price ({itemCount} item)`</span>
+<span id="L1498"><span class="lineNum">    1498</span> <span class="tlaUNC">           0 :   String checkoutPriceItemTitle(String itemCount) {</span></span>
 <span id="L1499"><span class="lineNum">    1499</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1500"><span class="lineNum">    1500</span>              :       'Delivered',</span>
-<span id="L1501"><span class="lineNum">    1501</span>              :       name: 'orderHistoryDeliveredButton',</span>
+<span id="L1500"><span class="lineNum">    1500</span> <span class="tlaUNC">           0 :       'Price ($itemCount item)',</span></span>
+<span id="L1501"><span class="lineNum">    1501</span>              :       name: 'checkoutPriceItemTitle',</span>
 <span id="L1502"><span class="lineNum">    1502</span>              :       desc: '',</span>
-<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1503"><span class="lineNum">    1503</span> <span class="tlaUNC">           0 :       args: [itemCount],</span></span>
 <span id="L1504"><span class="lineNum">    1504</span>              :     );</span>
 <span id="L1505"><span class="lineNum">    1505</span>              :   }</span>
 <span id="L1506"><span class="lineNum">    1506</span>              : </span>
-<span id="L1507"><span class="lineNum">    1507</span>              :   /// `Browse`</span>
-<span id="L1508"><span class="lineNum">    1508</span> <span class="tlaUNC">           0 :   String get browseTitle {</span></span>
-<span id="L1509"><span class="lineNum">    1509</span> <span class="tlaUNC">           0 :     return Intl.message('Browse', name: 'browseTitle', desc: '', args: []);</span></span>
-<span id="L1510"><span class="lineNum">    1510</span>              :   }</span>
-<span id="L1511"><span class="lineNum">    1511</span>              : </span>
-<span id="L1512"><span class="lineNum">    1512</span>              :   /// `Sort by`</span>
-<span id="L1513"><span class="lineNum">    1513</span> <span class="tlaUNC">           0 :   String get browseSortbyTitle {</span></span>
-<span id="L1514"><span class="lineNum">    1514</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1515"><span class="lineNum">    1515</span>              :       'Sort by',</span>
-<span id="L1516"><span class="lineNum">    1516</span>              :       name: 'browseSortbyTitle',</span>
-<span id="L1517"><span class="lineNum">    1517</span>              :       desc: '',</span>
-<span id="L1518"><span class="lineNum">    1518</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1519"><span class="lineNum">    1519</span>              :     );</span>
-<span id="L1520"><span class="lineNum">    1520</span>              :   }</span>
-<span id="L1521"><span class="lineNum">    1521</span>              : </span>
-<span id="L1522"><span class="lineNum">    1522</span>              :   /// `Price: Low to High`</span>
-<span id="L1523"><span class="lineNum">    1523</span> <span class="tlaUNC">           0 :   String get browsePriceLowToHighTitle {</span></span>
-<span id="L1524"><span class="lineNum">    1524</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1525"><span class="lineNum">    1525</span>              :       'Price: Low to High',</span>
-<span id="L1526"><span class="lineNum">    1526</span>              :       name: 'browsePriceLowToHighTitle',</span>
-<span id="L1527"><span class="lineNum">    1527</span>              :       desc: '',</span>
-<span id="L1528"><span class="lineNum">    1528</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1529"><span class="lineNum">    1529</span>              :     );</span>
-<span id="L1530"><span class="lineNum">    1530</span>              :   }</span>
-<span id="L1531"><span class="lineNum">    1531</span>              : </span>
-<span id="L1532"><span class="lineNum">    1532</span>              :   /// `Price: High to Low`</span>
-<span id="L1533"><span class="lineNum">    1533</span> <span class="tlaUNC">           0 :   String get browsePriceHighToLowTitle {</span></span>
-<span id="L1534"><span class="lineNum">    1534</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1535"><span class="lineNum">    1535</span>              :       'Price: High to Low',</span>
-<span id="L1536"><span class="lineNum">    1536</span>              :       name: 'browsePriceHighToLowTitle',</span>
-<span id="L1537"><span class="lineNum">    1537</span>              :       desc: '',</span>
-<span id="L1538"><span class="lineNum">    1538</span> <span class="tlaUNC">           0 :       args: [],</span></span>
-<span id="L1539"><span class="lineNum">    1539</span>              :     );</span>
+<span id="L1507"><span class="lineNum">    1507</span>              :   /// `Order History`</span>
+<span id="L1508"><span class="lineNum">    1508</span> <span class="tlaUNC">           0 :   String get orderHistoryTitle {</span></span>
+<span id="L1509"><span class="lineNum">    1509</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1510"><span class="lineNum">    1510</span>              :       'Order History',</span>
+<span id="L1511"><span class="lineNum">    1511</span>              :       name: 'orderHistoryTitle',</span>
+<span id="L1512"><span class="lineNum">    1512</span>              :       desc: '',</span>
+<span id="L1513"><span class="lineNum">    1513</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1514"><span class="lineNum">    1514</span>              :     );</span>
+<span id="L1515"><span class="lineNum">    1515</span>              :   }</span>
+<span id="L1516"><span class="lineNum">    1516</span>              : </span>
+<span id="L1517"><span class="lineNum">    1517</span>              :   /// `Transactions`</span>
+<span id="L1518"><span class="lineNum">    1518</span> <span class="tlaUNC">           0 :   String get orderTransactionsTitle {</span></span>
+<span id="L1519"><span class="lineNum">    1519</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1520"><span class="lineNum">    1520</span>              :       'Transactions',</span>
+<span id="L1521"><span class="lineNum">    1521</span>              :       name: 'orderTransactionsTitle',</span>
+<span id="L1522"><span class="lineNum">    1522</span>              :       desc: '',</span>
+<span id="L1523"><span class="lineNum">    1523</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1524"><span class="lineNum">    1524</span>              :     );</span>
+<span id="L1525"><span class="lineNum">    1525</span>              :   }</span>
+<span id="L1526"><span class="lineNum">    1526</span>              : </span>
+<span id="L1527"><span class="lineNum">    1527</span>              :   /// `Delivered`</span>
+<span id="L1528"><span class="lineNum">    1528</span> <span class="tlaUNC">           0 :   String get orderHistoryDeliveredButton {</span></span>
+<span id="L1529"><span class="lineNum">    1529</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1530"><span class="lineNum">    1530</span>              :       'Delivered',</span>
+<span id="L1531"><span class="lineNum">    1531</span>              :       name: 'orderHistoryDeliveredButton',</span>
+<span id="L1532"><span class="lineNum">    1532</span>              :       desc: '',</span>
+<span id="L1533"><span class="lineNum">    1533</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1534"><span class="lineNum">    1534</span>              :     );</span>
+<span id="L1535"><span class="lineNum">    1535</span>              :   }</span>
+<span id="L1536"><span class="lineNum">    1536</span>              : </span>
+<span id="L1537"><span class="lineNum">    1537</span>              :   /// `Browse`</span>
+<span id="L1538"><span class="lineNum">    1538</span> <span class="tlaUNC">           0 :   String get browseTitle {</span></span>
+<span id="L1539"><span class="lineNum">    1539</span> <span class="tlaUNC">           0 :     return Intl.message('Browse', name: 'browseTitle', desc: '', args: []);</span></span>
 <span id="L1540"><span class="lineNum">    1540</span>              :   }</span>
 <span id="L1541"><span class="lineNum">    1541</span>              : </span>
-<span id="L1542"><span class="lineNum">    1542</span>              :   /// `Cancel`</span>
-<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaUNC">           0 :   String get browseCancelButton {</span></span>
+<span id="L1542"><span class="lineNum">    1542</span>              :   /// `Sort by`</span>
+<span id="L1543"><span class="lineNum">    1543</span> <span class="tlaUNC">           0 :   String get browseSortbyTitle {</span></span>
 <span id="L1544"><span class="lineNum">    1544</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
-<span id="L1545"><span class="lineNum">    1545</span>              :       'Cancel',</span>
-<span id="L1546"><span class="lineNum">    1546</span>              :       name: 'browseCancelButton',</span>
+<span id="L1545"><span class="lineNum">    1545</span>              :       'Sort by',</span>
+<span id="L1546"><span class="lineNum">    1546</span>              :       name: 'browseSortbyTitle',</span>
 <span id="L1547"><span class="lineNum">    1547</span>              :       desc: '',</span>
 <span id="L1548"><span class="lineNum">    1548</span> <span class="tlaUNC">           0 :       args: [],</span></span>
 <span id="L1549"><span class="lineNum">    1549</span>              :     );</span>
 <span id="L1550"><span class="lineNum">    1550</span>              :   }</span>
 <span id="L1551"><span class="lineNum">    1551</span>              : </span>
-<span id="L1552"><span class="lineNum">    1552</span>              :   /// `Apply`</span>
-<span id="L1553"><span class="lineNum">    1553</span> <span class="tlaUNC">           0 :   String get browseApplyButton {</span></span>
-<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaUNC">           0 :     return Intl.message('Apply', name: 'browseApplyButton', desc: '', args: []);</span></span>
-<span id="L1555"><span class="lineNum">    1555</span>              :   }</span>
-<span id="L1556"><span class="lineNum">    1556</span>              : }</span>
-<span id="L1557"><span class="lineNum">    1557</span>              : </span>
-<span id="L1558"><span class="lineNum">    1558</span>              : class AppLocalizationDelegate extends LocalizationsDelegate&lt;S&gt; {</span>
-<span id="L1559"><span class="lineNum">    1559</span> <span class="tlaGNC">           1 :   const AppLocalizationDelegate();</span></span>
-<span id="L1560"><span class="lineNum">    1560</span>              : </span>
-<span id="L1561"><span class="lineNum">    1561</span> <span class="tlaUNC">           0 :   List&lt;Locale&gt; get supportedLocales {</span></span>
-<span id="L1562"><span class="lineNum">    1562</span>              :     return const &lt;Locale&gt;[Locale.fromSubtags(languageCode: 'en')];</span>
-<span id="L1563"><span class="lineNum">    1563</span>              :   }</span>
-<span id="L1564"><span class="lineNum">    1564</span>              : </span>
-<span id="L1565"><span class="lineNum">    1565</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L1566"><span class="lineNum">    1566</span> <span class="tlaUNC">           0 :   bool isSupported(Locale locale) =&gt; _isSupported(locale);</span></span>
-<<<<<<< HEAD
-<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">           3 :   @override</span></span>
-<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           3 :   Future&lt;S&gt; load(Locale locale) =&gt; S.load(locale);</span></span>
-=======
-<span id="L1567"><span class="lineNum">    1567</span> <span class="tlaGNC">           9 :   @override</span></span>
-<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaGNC">           9 :   Future&lt;S&gt; load(Locale locale) =&gt; S.load(locale);</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
-<span id="L1569"><span class="lineNum">    1569</span> <span class="tlaUNC">           0 :   @override</span></span>
-<span id="L1570"><span class="lineNum">    1570</span>              :   bool shouldReload(AppLocalizationDelegate old) =&gt; false;</span>
+<span id="L1552"><span class="lineNum">    1552</span>              :   /// `Price: Low to High`</span>
+<span id="L1553"><span class="lineNum">    1553</span> <span class="tlaUNC">           0 :   String get browsePriceLowToHighTitle {</span></span>
+<span id="L1554"><span class="lineNum">    1554</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1555"><span class="lineNum">    1555</span>              :       'Price: Low to High',</span>
+<span id="L1556"><span class="lineNum">    1556</span>              :       name: 'browsePriceLowToHighTitle',</span>
+<span id="L1557"><span class="lineNum">    1557</span>              :       desc: '',</span>
+<span id="L1558"><span class="lineNum">    1558</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1559"><span class="lineNum">    1559</span>              :     );</span>
+<span id="L1560"><span class="lineNum">    1560</span>              :   }</span>
+<span id="L1561"><span class="lineNum">    1561</span>              : </span>
+<span id="L1562"><span class="lineNum">    1562</span>              :   /// `Price: High to Low`</span>
+<span id="L1563"><span class="lineNum">    1563</span> <span class="tlaUNC">           0 :   String get browsePriceHighToLowTitle {</span></span>
+<span id="L1564"><span class="lineNum">    1564</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1565"><span class="lineNum">    1565</span>              :       'Price: High to Low',</span>
+<span id="L1566"><span class="lineNum">    1566</span>              :       name: 'browsePriceHighToLowTitle',</span>
+<span id="L1567"><span class="lineNum">    1567</span>              :       desc: '',</span>
+<span id="L1568"><span class="lineNum">    1568</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1569"><span class="lineNum">    1569</span>              :     );</span>
+<span id="L1570"><span class="lineNum">    1570</span>              :   }</span>
 <span id="L1571"><span class="lineNum">    1571</span>              : </span>
-<span id="L1572"><span class="lineNum">    1572</span> <span class="tlaUNC">           0 :   bool _isSupported(Locale locale) {</span></span>
-<span id="L1573"><span class="lineNum">    1573</span> <span class="tlaUNC">           0 :     for (var supportedLocale in supportedLocales) {</span></span>
-<span id="L1574"><span class="lineNum">    1574</span> <span class="tlaUNC">           0 :       if (supportedLocale.languageCode == locale.languageCode) {</span></span>
-<span id="L1575"><span class="lineNum">    1575</span>              :         return true;</span>
-<span id="L1576"><span class="lineNum">    1576</span>              :       }</span>
-<span id="L1577"><span class="lineNum">    1577</span>              :     }</span>
-<span id="L1578"><span class="lineNum">    1578</span>              :     return false;</span>
-<span id="L1579"><span class="lineNum">    1579</span>              :   }</span>
-<span id="L1580"><span class="lineNum">    1580</span>              : }</span>
+<span id="L1572"><span class="lineNum">    1572</span>              :   /// `Cancel`</span>
+<span id="L1573"><span class="lineNum">    1573</span> <span class="tlaUNC">           0 :   String get browseCancelButton {</span></span>
+<span id="L1574"><span class="lineNum">    1574</span> <span class="tlaUNC">           0 :     return Intl.message(</span></span>
+<span id="L1575"><span class="lineNum">    1575</span>              :       'Cancel',</span>
+<span id="L1576"><span class="lineNum">    1576</span>              :       name: 'browseCancelButton',</span>
+<span id="L1577"><span class="lineNum">    1577</span>              :       desc: '',</span>
+<span id="L1578"><span class="lineNum">    1578</span> <span class="tlaUNC">           0 :       args: [],</span></span>
+<span id="L1579"><span class="lineNum">    1579</span>              :     );</span>
+<span id="L1580"><span class="lineNum">    1580</span>              :   }</span>
+<span id="L1581"><span class="lineNum">    1581</span>              : </span>
+<span id="L1582"><span class="lineNum">    1582</span>              :   /// `Apply`</span>
+<span id="L1583"><span class="lineNum">    1583</span> <span class="tlaUNC">           0 :   String get browseApplyButton {</span></span>
+<span id="L1584"><span class="lineNum">    1584</span> <span class="tlaUNC">           0 :     return Intl.message('Apply', name: 'browseApplyButton', desc: '', args: []);</span></span>
+<span id="L1585"><span class="lineNum">    1585</span>              :   }</span>
+<span id="L1586"><span class="lineNum">    1586</span>              : }</span>
+<span id="L1587"><span class="lineNum">    1587</span>              : </span>
+<span id="L1588"><span class="lineNum">    1588</span>              : class AppLocalizationDelegate extends LocalizationsDelegate&lt;S&gt; {</span>
+<span id="L1589"><span class="lineNum">    1589</span> <span class="tlaGNC">           1 :   const AppLocalizationDelegate();</span></span>
+<span id="L1590"><span class="lineNum">    1590</span>              : </span>
+<span id="L1591"><span class="lineNum">    1591</span> <span class="tlaUNC">           0 :   List&lt;Locale&gt; get supportedLocales {</span></span>
+<span id="L1592"><span class="lineNum">    1592</span>              :     return const &lt;Locale&gt;[Locale.fromSubtags(languageCode: 'en')];</span>
+<span id="L1593"><span class="lineNum">    1593</span>              :   }</span>
+<span id="L1594"><span class="lineNum">    1594</span>              : </span>
+<span id="L1595"><span class="lineNum">    1595</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L1596"><span class="lineNum">    1596</span> <span class="tlaUNC">           0 :   bool isSupported(Locale locale) =&gt; _isSupported(locale);</span></span>
+<span id="L1597"><span class="lineNum">    1597</span> <span class="tlaGNC">          21 :   @override</span></span>
+<span id="L1598"><span class="lineNum">    1598</span> <span class="tlaGNC">          21 :   Future&lt;S&gt; load(Locale locale) =&gt; S.load(locale);</span></span>
+<span id="L1599"><span class="lineNum">    1599</span> <span class="tlaUNC">           0 :   @override</span></span>
+<span id="L1600"><span class="lineNum">    1600</span>              :   bool shouldReload(AppLocalizationDelegate old) =&gt; false;</span>
+<span id="L1601"><span class="lineNum">    1601</span>              : </span>
+<span id="L1602"><span class="lineNum">    1602</span> <span class="tlaUNC">           0 :   bool _isSupported(Locale locale) {</span></span>
+<span id="L1603"><span class="lineNum">    1603</span> <span class="tlaUNC">           0 :     for (var supportedLocale in supportedLocales) {</span></span>
+<span id="L1604"><span class="lineNum">    1604</span> <span class="tlaUNC">           0 :       if (supportedLocale.languageCode == locale.languageCode) {</span></span>
+<span id="L1605"><span class="lineNum">    1605</span>              :         return true;</span>
+<span id="L1606"><span class="lineNum">    1606</span>              :       }</span>
+<span id="L1607"><span class="lineNum">    1607</span>              :     }</span>
+<span id="L1608"><span class="lineNum">    1608</span>              :     return false;</span>
+<span id="L1609"><span class="lineNum">    1609</span>              :   }</span>
+<span id="L1610"><span class="lineNum">    1610</span>              : }</span>
         </pre>
               </td>
             </tr>

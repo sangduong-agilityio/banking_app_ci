@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 enum SortOrder { lowToHigh, highToLow }
 
-sealed class BrowseEvt extends Equatable {
+class BrowseEvt extends Equatable {
   const BrowseEvt();
 
   @override

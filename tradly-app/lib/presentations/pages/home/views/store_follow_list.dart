@@ -4,7 +4,6 @@ import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
 import 'package:tradly_app/presentations/pages/home/states/home_state.dart';
 import 'package:tradly_app/presentations/widgets/card.dart';
 import 'package:tradly_app/presentations/widgets/not_found.dart';
-import 'package:tradly_app/presentations/widgets/shimmer.dart';
 
 class StoreFollowList extends StatelessWidget {
   const StoreFollowList({super.key});
@@ -17,7 +16,7 @@ class StoreFollowList extends StatelessWidget {
             previous.stores != current.stores,
         builder: (context, state) {
           if (state.status is HomeStatusLoading) {
-            return const ShimmerStoreFollowList();
+            return const CircularProgressIndicator();
           } else if (state.status is HomeStatusSuccess) {
             final stores = state.stores ?? [];
             return SizedBox(

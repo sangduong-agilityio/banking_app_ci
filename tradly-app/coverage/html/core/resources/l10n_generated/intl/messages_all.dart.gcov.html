@@ -37,11 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-<<<<<<< HEAD
-            <td class="headerValue">2025-05-27 16:55:46</td>
-=======
-            <td class="headerValue">2025-05-28 16:14:46</td>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+            <td class="headerValue">2025-05-29 16:17:10</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -85,92 +81,52 @@
 <span id="L19"><span class="lineNum">      19</span>              : import 'messages_en.dart' as messages_en;</span>
 <span id="L20"><span class="lineNum">      20</span>              : </span>
 <span id="L21"><span class="lineNum">      21</span>              : typedef Future&lt;dynamic&gt; LibraryLoader();</span>
-<<<<<<< HEAD
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">           9 : Map&lt;String, LibraryLoader&gt; _deferredLibraries = {</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">           6 :   'en': () =&gt; new SynchronousFuture(null),</span></span>
+<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">          63 : Map&lt;String, LibraryLoader&gt; _deferredLibraries = {</span></span>
+<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">          42 :   'en': () =&gt; new SynchronousFuture(null),</span></span>
 <span id="L24"><span class="lineNum">      24</span>              : };</span>
 <span id="L25"><span class="lineNum">      25</span>              : </span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           3 : MessageLookupByLibrary? _findExact(String localeName) {</span></span>
+<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">          21 : MessageLookupByLibrary? _findExact(String localeName) {</span></span>
 <span id="L27"><span class="lineNum">      27</span>              :   switch (localeName) {</span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           3 :     case 'en':</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           3 :       return messages_en.messages;</span></span>
-=======
-<span id="L22"><span class="lineNum">      22</span> <span class="tlaGNC">          27 : Map&lt;String, LibraryLoader&gt; _deferredLibraries = {</span></span>
-<span id="L23"><span class="lineNum">      23</span> <span class="tlaGNC">          18 :   'en': () =&gt; new SynchronousFuture(null),</span></span>
-<span id="L24"><span class="lineNum">      24</span>              : };</span>
-<span id="L25"><span class="lineNum">      25</span>              : </span>
-<span id="L26"><span class="lineNum">      26</span> <span class="tlaGNC">           9 : MessageLookupByLibrary? _findExact(String localeName) {</span></span>
-<span id="L27"><span class="lineNum">      27</span>              :   switch (localeName) {</span>
-<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">           9 :     case 'en':</span></span>
-<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">           9 :       return messages_en.messages;</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+<span id="L28"><span class="lineNum">      28</span> <span class="tlaGNC">          21 :     case 'en':</span></span>
+<span id="L29"><span class="lineNum">      29</span> <span class="tlaGNC">          21 :       return messages_en.messages;</span></span>
 <span id="L30"><span class="lineNum">      30</span>              :     default:</span>
 <span id="L31"><span class="lineNum">      31</span>              :       return null;</span>
 <span id="L32"><span class="lineNum">      32</span>              :   }</span>
 <span id="L33"><span class="lineNum">      33</span>              : }</span>
 <span id="L34"><span class="lineNum">      34</span>              : </span>
 <span id="L35"><span class="lineNum">      35</span>              : /// User programs should call this before using [localeName] for messages.</span>
-<<<<<<< HEAD
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           3 : Future&lt;bool&gt; initializeMessages(String localeName) {</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           3 :   var availableLocale = Intl.verifiedLocale(</span></span>
+<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">          21 : Future&lt;bool&gt; initializeMessages(String localeName) {</span></span>
+<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">          21 :   var availableLocale = Intl.verifiedLocale(</span></span>
 <span id="L38"><span class="lineNum">      38</span>              :     localeName,</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           9 :     (locale) =&gt; _deferredLibraries[locale] != null,</span></span>
-=======
-<span id="L36"><span class="lineNum">      36</span> <span class="tlaGNC">           9 : Future&lt;bool&gt; initializeMessages(String localeName) {</span></span>
-<span id="L37"><span class="lineNum">      37</span> <span class="tlaGNC">           9 :   var availableLocale = Intl.verifiedLocale(</span></span>
-<span id="L38"><span class="lineNum">      38</span>              :     localeName,</span>
-<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          27 :     (locale) =&gt; _deferredLibraries[locale] != null,</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+<span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">          63 :     (locale) =&gt; _deferredLibraries[locale] != null,</span></span>
 <span id="L40"><span class="lineNum">      40</span> <span class="tlaUNC">           0 :     onFailure: (_) =&gt; null,</span></span>
 <span id="L41"><span class="lineNum">      41</span>              :   );</span>
 <span id="L42"><span class="lineNum">      42</span>              :   if (availableLocale == null) {</span>
 <span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC">           0 :     return new SynchronousFuture(false);</span></span>
 <span id="L44"><span class="lineNum">      44</span>              :   }</span>
-<<<<<<< HEAD
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           6 :   var lib = _deferredLibraries[availableLocale];</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           3 :   lib == null ? new SynchronousFuture(false) : lib();</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">           9 :   initializeInternalMessageLookup(() =&gt; new CompositeMessageLookup());</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">           6 :   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           3 :   return new SynchronousFuture(true);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          42 :   var lib = _deferredLibraries[availableLocale];</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">          21 :   lib == null ? new SynchronousFuture(false) : lib();</span></span>
+<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          63 :   initializeInternalMessageLookup(() =&gt; new CompositeMessageLookup());</span></span>
+<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          42 :   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">          21 :   return new SynchronousFuture(true);</span></span>
 <span id="L50"><span class="lineNum">      50</span>              : }</span>
 <span id="L51"><span class="lineNum">      51</span>              : </span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">           3 : bool _messagesExistFor(String locale) {</span></span>
+<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">          21 : bool _messagesExistFor(String locale) {</span></span>
 <span id="L53"><span class="lineNum">      53</span>              :   try {</span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           3 :     return _findExact(locale) != null;</span></span>
-=======
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">          18 :   var lib = _deferredLibraries[availableLocale];</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           9 :   lib == null ? new SynchronousFuture(false) : lib();</span></span>
-<span id="L47"><span class="lineNum">      47</span> <span class="tlaGNC">          27 :   initializeInternalMessageLookup(() =&gt; new CompositeMessageLookup());</span></span>
-<span id="L48"><span class="lineNum">      48</span> <span class="tlaGNC">          18 :   messageLookup.addLocale(availableLocale, _findGeneratedMessagesFor);</span></span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           9 :   return new SynchronousFuture(true);</span></span>
-<span id="L50"><span class="lineNum">      50</span>              : }</span>
-<span id="L51"><span class="lineNum">      51</span>              : </span>
-<span id="L52"><span class="lineNum">      52</span> <span class="tlaGNC">           9 : bool _messagesExistFor(String locale) {</span></span>
-<span id="L53"><span class="lineNum">      53</span>              :   try {</span>
-<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">           9 :     return _findExact(locale) != null;</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+<span id="L54"><span class="lineNum">      54</span> <span class="tlaGNC">          21 :     return _findExact(locale) != null;</span></span>
 <span id="L55"><span class="lineNum">      55</span>              :   } catch (e) {</span>
 <span id="L56"><span class="lineNum">      56</span>              :     return false;</span>
 <span id="L57"><span class="lineNum">      57</span>              :   }</span>
 <span id="L58"><span class="lineNum">      58</span>              : }</span>
 <span id="L59"><span class="lineNum">      59</span>              : </span>
-<<<<<<< HEAD
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           3 : MessageLookupByLibrary? _findGeneratedMessagesFor(String locale) {</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">           3 :   var actualLocale = Intl.verifiedLocale(</span></span>
-=======
-<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">           9 : MessageLookupByLibrary? _findGeneratedMessagesFor(String locale) {</span></span>
-<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">           9 :   var actualLocale = Intl.verifiedLocale(</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+<span id="L60"><span class="lineNum">      60</span> <span class="tlaGNC">          21 : MessageLookupByLibrary? _findGeneratedMessagesFor(String locale) {</span></span>
+<span id="L61"><span class="lineNum">      61</span> <span class="tlaGNC">          21 :   var actualLocale = Intl.verifiedLocale(</span></span>
 <span id="L62"><span class="lineNum">      62</span>              :     locale,</span>
 <span id="L63"><span class="lineNum">      63</span>              :     _messagesExistFor,</span>
 <span id="L64"><span class="lineNum">      64</span> <span class="tlaUNC">           0 :     onFailure: (_) =&gt; null,</span></span>
 <span id="L65"><span class="lineNum">      65</span>              :   );</span>
 <span id="L66"><span class="lineNum">      66</span>              :   if (actualLocale == null) return null;</span>
-<<<<<<< HEAD
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           3 :   return _findExact(actualLocale);</span></span>
-=======
-<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">           9 :   return _findExact(actualLocale);</span></span>
->>>>>>> 67c3dadfe5b3ab88c45307f23079c9e4d6bbdbec
+<span id="L67"><span class="lineNum">      67</span> <span class="tlaGNC">          21 :   return _findExact(actualLocale);</span></span>
 <span id="L68"><span class="lineNum">      68</span>              : }</span>
         </pre>
               </td>

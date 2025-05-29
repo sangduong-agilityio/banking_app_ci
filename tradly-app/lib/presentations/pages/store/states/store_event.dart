@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:tradly_app/data/models/product_model.dart';
 import 'package:tradly_app/data/models/store_model.dart';
 
-sealed class StoreEvt extends Equatable {
+class StoreEvt extends Equatable {
   const StoreEvt();
 
   @override
@@ -27,8 +27,8 @@ class CreateStoreButtonEvt extends StoreEvt {
   List<Object?> get props => [store];
 }
 
-class CreateStoreFormValidateChagedEvt extends StoreEvt {
-  const CreateStoreFormValidateChagedEvt({
+class CreateStoreFormValidateChangedEvt extends StoreEvt {
+  const CreateStoreFormValidateChangedEvt({
     required this.isValidate,
     this.store,
   });
@@ -40,8 +40,8 @@ class CreateStoreFormValidateChagedEvt extends StoreEvt {
   List<Object?> get props => [isValidate, store];
 }
 
-class AddProductEvt extends StoreEvt {
-  const AddProductEvt({
+class AddProductButtonEvt extends StoreEvt {
+  const AddProductButtonEvt({
     required this.product,
   });
 
@@ -49,6 +49,19 @@ class AddProductEvt extends StoreEvt {
 
   @override
   List<Object?> get props => [product];
+}
+
+class AddProductFormValidateChangedEvt extends StoreEvt {
+  const AddProductFormValidateChangedEvt({
+    required this.isValidate,
+    this.products,
+  });
+
+  final bool isValidate;
+  final List<ProductModel>? products;
+
+  @override
+  List<Object?> get props => [products, isValidate];
 }
 
 class EditProductButtonEvt extends StoreEvt {
@@ -106,4 +119,15 @@ class RemoveImageEvt extends StoreEvt {
 
   @override
   List<Object?> get props => [image];
+}
+
+class InitializeEditProductEvt extends StoreEvt {
+  const InitializeEditProductEvt({
+    required this.product,
+  });
+
+  final ProductModel product;
+
+  @override
+  List<Object?> get props => [product];
 }

@@ -56,14 +56,6 @@ class _StoreScreenState extends State<StoreScreen> {
             previous.status != current.status ||
             previous.stores != current.stores,
         builder: (context, state) {
-          if (state.status is StoreStatusLoading) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: context.colorScheme.primary,
-              ),
-            );
-          }
-
           return state.hasStore
               ? SingleChildScrollView(
                   child: Column(
@@ -301,9 +293,10 @@ class _StoreScreenState extends State<StoreScreen> {
                           const SizedBox(width: 50),
                           GestureDetector(
                             onTap: () {
-                              final product = state.products?[index].id;
+                              final productId = state.products?[index].id;
+
                               context.read<StoreBloc>().add(
-                                    DeleteProductEvt(productId: product ?? 0),
+                                    DeleteProductEvt(productId: productId ?? 0),
                                   );
                             },
                             child: Container(
