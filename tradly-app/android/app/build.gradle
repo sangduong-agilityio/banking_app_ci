@@ -34,6 +34,11 @@ android {
         versionName = flutter.versionName
         multiDexEnabled true 
     }
+    externalNativeBuild {
+    cmake {
+        version "4.0.2"
+    }
+}
 
     buildTypes {
         release {

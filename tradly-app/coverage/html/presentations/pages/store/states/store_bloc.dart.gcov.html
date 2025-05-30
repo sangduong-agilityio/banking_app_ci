@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryMed">82.0&nbsp;%</td>
+            <td class="headerCovTableEntryMed">88.0&nbsp;%</td>
             <td class="headerCovTableEntry">100</td>
-            <td class="headerCovTableEntry">82</td>
+            <td class="headerCovTableEntry">88</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-05-29 16:17:10</td>
+            <td class="headerValue">2025-05-30 08:59:17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -255,15 +255,15 @@
 <span id="L193"><span class="lineNum">     193</span>              :     }</span>
 <span id="L194"><span class="lineNum">     194</span>              :   }</span>
 <span id="L195"><span class="lineNum">     195</span>              : </span>
-<span id="L196"><span class="lineNum">     196</span> <span class="tlaUNC">           0 :   Future&lt;void&gt; _onRemoveImage(</span></span>
+<span id="L196"><span class="lineNum">     196</span> <span class="tlaGNC">           1 :   Future&lt;void&gt; _onRemoveImage(</span></span>
 <span id="L197"><span class="lineNum">     197</span>              :     RemoveImageEvt event,</span>
 <span id="L198"><span class="lineNum">     198</span>              :     Emitter&lt;StoreState&gt; emit,</span>
 <span id="L199"><span class="lineNum">     199</span>              :   ) async {</span>
-<span id="L200"><span class="lineNum">     200</span> <span class="tlaUNC">           0 :     final updatedImages = List&lt;File&gt;.from(</span></span>
-<span id="L201"><span class="lineNum">     201</span> <span class="tlaUNC">           0 :       state.imageFiles ?? [],</span></span>
-<span id="L202"><span class="lineNum">     202</span> <span class="tlaUNC">           0 :     )..removeAt(event.image);</span></span>
-<span id="L203"><span class="lineNum">     203</span> <span class="tlaUNC">           0 :     emit(</span></span>
-<span id="L204"><span class="lineNum">     204</span> <span class="tlaUNC">           0 :       state.copyWith(</span></span>
+<span id="L200"><span class="lineNum">     200</span> <span class="tlaGNC">           1 :     final updatedImages = List&lt;File&gt;.from(</span></span>
+<span id="L201"><span class="lineNum">     201</span> <span class="tlaGNC">           2 :       state.imageFiles ?? [],</span></span>
+<span id="L202"><span class="lineNum">     202</span> <span class="tlaGNC">           2 :     )..removeAt(event.image);</span></span>
+<span id="L203"><span class="lineNum">     203</span> <span class="tlaGNC">           1 :     emit(</span></span>
+<span id="L204"><span class="lineNum">     204</span> <span class="tlaGNC">           2 :       state.copyWith(</span></span>
 <span id="L205"><span class="lineNum">     205</span>              :         imageFiles: updatedImages,</span>
 <span id="L206"><span class="lineNum">     206</span>              :         errorMessage: null,</span>
 <span id="L207"><span class="lineNum">     207</span>              :       ),</span>
