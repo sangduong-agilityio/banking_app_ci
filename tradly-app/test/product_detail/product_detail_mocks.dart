@@ -1,6 +1,6 @@
 import 'package:mocktail/mocktail.dart';
-import 'package:tradly_app/data/models/product_model.dart';
-import 'package:tradly_app/data/repositories/product_repo.dart';
+import 'package:tradly_app/features/home/models/product_model.dart';
+import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
 
 class ProductDetailRepositoryMocks extends Mock implements ProductRepository {}
 

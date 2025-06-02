@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/data/repositories/auth_repo.dart';
-import 'package:tradly_app/presentations/pages/profile/states/profile_bloc.dart';
-import 'package:tradly_app/presentations/pages/profile/states/profile_event.dart';
-import 'package:tradly_app/presentations/pages/profile/states/profile_state.dart';
+import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
+import 'package:tradly_app/features/profile/states/profile_bloc.dart';
+import 'package:tradly_app/features/profile/states/profile_event.dart';
+import 'package:tradly_app/features/profile/states/profile_state.dart';
 
 import '../../helper/utils.dart';
 import '../profile_mocks.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tradly_app/core/env/env.dart';
+import 'package:tradly_app/env/env.dart';
 import 'package:tradly_app/main.dart';
 
 void main() async {

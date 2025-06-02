@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/presentations/pages/profile/states/profile_event.dart';
+import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/features/profile/states/profile_event.dart';
 
 import '../../helper/utils.dart';
 

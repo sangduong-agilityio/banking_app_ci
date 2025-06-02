@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tradly_app/core/api/api_client.dart';
-import 'package:tradly_app/core/env/env.dart';
-import 'package:tradly_app/data/repositories/auth_repo.dart';
-import 'package:tradly_app/data/repositories/browse_repo.dart';
-import 'package:tradly_app/data/repositories/home_repo.dart';
-import 'package:tradly_app/data/repositories/product_repo.dart';
-import 'package:tradly_app/data/repositories/store_repo.dart.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_bloc.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_up/states/sign_up_bloc.dart';
+import 'package:tradly_app/api/api_client.dart';
+import 'package:tradly_app/env/env.dart';
+import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
+import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
+import 'package:tradly_app/features/home/repositories/home_repo.dart';
+import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
+import 'package:tradly_app/features/store/repositories/store_repo.dart.dart';
+import 'package:tradly_app/features/auth/states/sign_in_bloc.dart';
+import 'package:tradly_app/features/auth/states/sign_up_bloc.dart';
 
 class TAProvider extends StatelessWidget {
   const TAProvider({

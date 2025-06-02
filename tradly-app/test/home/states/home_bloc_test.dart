@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/presentations/pages/home/states/home_bloc.dart';
-import 'package:tradly_app/presentations/pages/home/states/home_event.dart';
-import 'package:tradly_app/presentations/pages/home/states/home_state.dart';
+import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/features/home/states/home_bloc.dart';
+import 'package:tradly_app/features/home/states/home_event.dart';
+import 'package:tradly_app/features/home/states/home_state.dart';
 
 import '../../helper/utils.dart';
 import '../home_mocks.dart';

@@ -1,7 +1,7 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tradly_app/data/models/user_model.dart';
-import 'package:tradly_app/data/repositories/auth_repo.dart';
+import 'package:tradly_app/features/auth/models/user_model.dart';
+import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
 
 class AuthRepositoryMock extends Mock implements AuthRepository {}
 

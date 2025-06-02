@@ -1,10 +1,10 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:tradly_app/data/repositories/auth_repo.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_bloc.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_in/states/sign_in_event.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_up/states/sign_up_bloc.dart';
-import 'package:tradly_app/presentations/pages/auth/sign_up/states/sign_up_event.dart';
+import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
+import 'package:tradly_app/features/auth/states/sign_in_bloc.dart';
+import 'package:tradly_app/features/auth/states/sign_in_event.dart';
+import 'package:tradly_app/features/auth/states/sign_up_bloc.dart';
+import 'package:tradly_app/features/auth/states/sign_up_event.dart';
 
 class AuthRepositoryMock extends Mock implements AuthRepository {}
 
