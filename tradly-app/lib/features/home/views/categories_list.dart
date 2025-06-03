@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/features/home/models/category_model.dart';
 import 'package:tradly_app/features/home/states/home_bloc.dart';
 import 'package:tradly_app/features/home/states/home_state.dart';
+import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/widgets/not_found.dart';
 import 'package:tradly_app/widgets/shimmer.dart';
 import 'package:tradly_app/widgets/text.dart';
@@ -17,6 +18,11 @@ class CategoriesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final crossAxisCount = TAResponsive.orientationSizeOf(
+      context,
+      portrait: 4,
+      landscape: 4,
+    );
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (previous, current) =>
           previous.status != current.status ||
@@ -30,9 +36,12 @@ class CategoriesList extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: MediaQuery.of(context).size.width > 600 ? 6 : 4,
-              childAspectRatio:
-                  MediaQuery.of(context).size.width > 600 ? 0.8 : 1,
+              crossAxisCount: crossAxisCount.toInt(),
+              childAspectRatio: TAResponsive.orientationSizeOf(
+                context,
+                portrait: TAResponsive.isTablet(context) ? 1.3 : 1,
+                landscape: 2,
+              ),
               mainAxisSpacing: 2,
               crossAxisSpacing: 2,
             ),

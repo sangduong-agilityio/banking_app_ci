@@ -45,16 +45,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final status = await Permission.notification.status;
     if (status.isGranted || status.isLimited) {
       if (!mounted) return;
-      context.read<ProductDetailBloc>().add(
-            ProductDetailCheckoutEvt(product: widget.product),
-          );
+      context
+          .read<ProductDetailBloc>()
+          .add(ProductDetailCheckoutEvt(product: widget.product));
       context.goNamed(
         TAPaths.orderHistory.name,
         extra: widget.product,
       );
     } else if (status.isDenied) {
       final result = await Permission.notification.request();
-      if (result.isGranted || result.isLimited) {
+      if (result.isGranted) {
         if (!mounted) return;
         context
             .read<ProductDetailBloc>()

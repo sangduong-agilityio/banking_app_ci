@@ -80,10 +80,12 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(
-        status: const BrowseStatus.failure(),
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: const BrowseStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 

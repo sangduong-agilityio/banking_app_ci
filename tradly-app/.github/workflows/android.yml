@@ -2,7 +2,7 @@ name: Flutter Android CI/CD
 
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
     branches:
@@ -16,29 +16,50 @@ jobs:
       - name: Flutter Android CI/CD
         run: echo "Starting Flutter Android CI/CD pipeline"
       - uses: actions/checkout@v4
-      
+
+      # Sets up java 17
       - name: Set JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'zulu'
+          distribution: "zulu"
+          java-version: "17"
 
+      # Installs flutter and related dependency on this machine
       - name: Install Flutter Version
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-          flutter-version: '3.24.2'
+          channel: "stable"
 
+      # Setup Android SDK
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      # Fetches proj dependencies from pub
       - name: Install dependencies
         run: flutter pub get
 
-    
-      - name: Build APK
-        run: flutter build apk --debug --build-name=1.0.0 --build-number=1
+      # Verifies if the dart code is formatted well
+      - name: Verify formatting
+        run: dart format --output=none .
 
-      - name: Upload APK 
+      # Runs unit test
+      - name: Run tests
+        run: flutter test
+
+      # Clean build directory
+      - name: Clean build directory
+        run: flutter clean
+
+      # Create android apk
+      - name: Build apk
+        run: flutter build apk --debug
+
+      # Create android app bundle
+      - name: Build app bundle
+        run: flutter build appbundle
+      # Uploads the apk as an artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-debug-apk
+          name: apk
           path: build/app/outputs/apk/debug/app-debug.apk
-      

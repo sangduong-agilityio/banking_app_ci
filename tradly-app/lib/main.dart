@@ -120,26 +120,10 @@ class _TradlyShopAppState extends State<TradlyShopApp>
             const Locale('en', ''),
           ],
           builder: (context, child) => ResponsiveBreakpoints.builder(
-            child: MediaQuery(
-              data: MediaQuery.of(context)
-                  .copyWith(textScaler: TextScaler.noScaling),
-              child: child!,
-            ),
+            child: child!,
             breakpoints: [
-              /// Mobile sizes (Pixel 4a, Galaxy S20, iPhones, most Android
-              /// devices)
-              const Breakpoint(
-                start: 0,
-                end: 800,
-                name: MOBILE,
-              ),
-
-              /// Tablets (iPad, Galaxy Tab)
-              const Breakpoint(
-                start: 769,
-                end: 1024,
-                name: TABLET,
-              ),
+              const Breakpoint(start: 0, end: 800, name: MOBILE),
+              const Breakpoint(start: 769, end: 1024, name: TABLET),
             ],
           ),
           routeInformationProvider: TARouter.router.routeInformationProvider,

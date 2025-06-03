@@ -61,7 +61,9 @@ class _SignInScreenState extends State<SignInScreen> {
                   if (context.mounted) {
                     await context.pushNamed(TAPaths.home.name);
                   }
-                  context.loaderOverlay.hide();
+                  if (context.mounted) {
+                    context.loaderOverlay.hide();
+                  }
                 },
                 loading: () {
                   context.loaderOverlay.show();

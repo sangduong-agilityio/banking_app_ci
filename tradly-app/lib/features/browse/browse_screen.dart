@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
+import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/browse/states/browse_bloc.dart';
@@ -24,11 +25,13 @@ class BrowseScreen extends StatefulWidget {
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
-  final bool isPortrait = true;
-
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = isPortrait ? 8 : 8;
+    final crossAxisCount = TAResponsive.orientationSizeOf(
+      context,
+      portrait: 2,
+      landscape: 4,
+    );
     return BlocProvider(
       create: (context) => BrowseBloc(repo: context.read<BrowseRepository>())
         ..add(const BrowseInitializeEvt()),
@@ -107,20 +110,27 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 final products = state.products ?? [];
                 return Padding(
                   padding: const EdgeInsets.all(20),
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          (crossAxisCount * 60),
+                  child: SingleChildScrollView(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount.toInt(),
+                        childAspectRatio: TAResponsive.orientationSizeOf(
+                          context,
+                          portrait: TAResponsive.isTablet(context) ? 1.4 : 0.8,
+                          landscape: 1.2,
+                        ),
+                      ),
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        final product = products[index];
+                        return TACardProduct(
+                          product: product,
+                          onTapProduct: () {},
+                        );
+                      },
                     ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      final product = products[index];
-                      return TACardProduct(
-                        product: product,
-                        onTapProduct: () {},
-                      );
-                    },
                   ),
                 );
               } else if (state.status is BrowseStatusFailure) {

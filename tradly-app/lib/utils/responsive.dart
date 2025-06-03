@@ -51,40 +51,16 @@ class TAResponsive {
     double? tablet = TAResponsiveConfig.defaultTabletScaleFactor,
     double? desktop,
   }) {
-    final conditionalValues = <Condition<double>>[];
-
-    if (mobile != null && mobile > 0) {
-      conditionalValues.add(
-        Condition.equals(
-          name: MOBILE,
-          value: defaultValue * mobile,
-        ),
-      );
+    if (ResponsiveBreakpoints.of(context).isTablet && tablet != null) {
+      return defaultValue * tablet;
     }
-
-    if (desktop != null && desktop > 0) {
-      conditionalValues.add(
-        Condition.equals(
-          name: DESKTOP,
-          value: defaultValue * desktop,
-        ),
-      );
+    if (ResponsiveBreakpoints.of(context).isMobile && mobile != null) {
+      return defaultValue * mobile;
     }
-
-    if (tablet != null && tablet > 0) {
-      conditionalValues.add(
-        Condition.equals(
-          name: TABLET,
-          value: defaultValue * tablet,
-        ),
-      );
+    if (ResponsiveBreakpoints.of(context).isDesktop && desktop != null) {
+      return defaultValue * desktop;
     }
-
-    return ResponsiveValue(
-      context,
-      defaultValue: defaultValue,
-      conditionalValues: conditionalValues,
-    ).value;
+    return defaultValue;
   }
 
   static Widget visibility(
@@ -118,11 +94,16 @@ class TAResponsive {
     Widget? landscape,
     Widget? portrait,
   }) {
-    if (MediaQuery.of(context).orientation == Orientation.portrait) {
+    if (ResponsiveBreakpoints.of(context).orientation == Orientation.portrait) {
       return portrait ?? const SizedBox.shrink();
     } else {
       return landscape ?? const SizedBox.shrink();
     }
+  }
+
+  static bool isTablet(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return screenWidth >= 600 && screenWidth <= 1024;
   }
 
   static double orientationSizeOf(
@@ -130,16 +111,20 @@ class TAResponsive {
     double? landscape,
     double? portrait,
   }) {
-    if (MediaQuery.of(context).orientation == Orientation.portrait) {
-      return portrait ?? 0;
+    if (isTablet(context)) {
+      return portrait ?? landscape ?? 1.3;
+    } else if (ResponsiveBreakpoints.of(context).orientation ==
+        Orientation.portrait) {
+      return portrait ?? 0.8;
     } else {
-      return landscape ?? 0;
+      return landscape ?? 1.2;
     }
   }
 
   static bool isPortraitMode(
     BuildContext context,
   ) {
-    return MediaQuery.of(context).orientation == Orientation.portrait;
+    return ResponsiveBreakpoints.of(context).orientation ==
+        Orientation.portrait;
   }
 }

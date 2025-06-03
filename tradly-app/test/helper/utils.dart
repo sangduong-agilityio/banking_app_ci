@@ -219,8 +219,8 @@ class TAUTScenario<T, R> {
   }
 }
 
-class WzUTStep {
-  const WzUTStep({
+class TAUTStep {
+  const TAUTStep({
     required this.act,
     required this.expect,
     this.when,

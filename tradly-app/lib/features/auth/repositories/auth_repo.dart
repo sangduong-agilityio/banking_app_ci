@@ -14,31 +14,15 @@ abstract class AuthRepository {
 
   Future<String?> getSessionToken();
 
-  Future<void> logout();
-
   Future<User?> getCurrentUser();
+
+  Future<void> logout();
 }
 
 class AuthRepositoryImplement implements AuthRepository {
   final SupabaseClient _client;
 
   AuthRepositoryImplement(this._client);
-
-  @override
-  Future<AuthResponse> signIn({
-    required String email,
-    required String password,
-  }) async {
-    final response = await _client.auth.signInWithPassword(
-      email: email,
-      password: password,
-    );
-    if (response.session != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('session_token', response.session!.accessToken);
-    }
-    return response;
-  }
 
   @override
   Future<AuthResponse> signUp({
@@ -63,6 +47,22 @@ class AuthRepositoryImplement implements AuthRepository {
       });
     }
 
+    return response;
+  }
+
+  @override
+  Future<AuthResponse> signIn({
+    required String email,
+    required String password,
+  }) async {
+    final response = await _client.auth.signInWithPassword(
+      email: email,
+      password: password,
+    );
+    if (response.session != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('session_token', response.session!.accessToken);
+    }
     return response;
   }
 

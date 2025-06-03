@@ -4,6 +4,7 @@ import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
+import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
@@ -28,7 +29,11 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = isPortrait ? 8 : 8;
+    final crossAxisCount = TAResponsive.orientationSizeOf(
+      context,
+      portrait: 2,
+      landscape: 4,
+    );
 
     return BlocProvider(
       create: (context) => ProductDetailBloc(
@@ -55,9 +60,12 @@ class ProductList extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: MediaQuery.of(context).size.width /
-                          (crossAxisCount * 60),
+                      crossAxisCount: crossAxisCount.toInt(),
+                      childAspectRatio: TAResponsive.orientationSizeOf(
+                        context,
+                        portrait: TAResponsive.isTablet(context) ? 1.4 : 0.8,
+                        landscape: 1.2,
+                      ),
                     ),
                     itemCount: products.length,
                     itemBuilder: (context, index) {

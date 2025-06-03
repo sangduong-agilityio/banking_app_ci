@@ -13,12 +13,7 @@
 migrate_working_dir/
 
 # Env
-..env
-<<<<<<< HEAD
-*.env.g.dart
-=======
 *..env.g.dart
->>>>>>> b98ed6c8e89660d93e38c0f9c1d64812db541e2d
 # IntelliJ related
 *.iml
 *.ipr
@@ -28,7 +23,7 @@ migrate_working_dir/
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.
-#.vscode/
+.vscode/settings.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -51,12 +46,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-<<<<<<< HEAD
-/supabase/functions/service-account.json
+coverage
+.gradle
 
-# Ignore specific files
-lib/core/env/env.g.dart
-lib/core/env/env.dart
-=======
-/supabase/functions/service-account.json
->>>>>>> b98ed6c8e89660d93e38c0f9c1d64812db541e2d
+..env**
+
+*..freezed.dart
+*..g.dart
+*..gen.dart
+lib/resources/assets_generated
+
+supabase/functions/service-account.json
