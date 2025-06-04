@@ -250,12 +250,6 @@ class TAAssets {
     BoxFit? boxfit,
     Color? color,
   }) cart = _TACartImage.new;
-
-  static Widget Function({
-    double? width,
-    double? height,
-    BoxFit? boxfit,
-  }) shopping = _TAShoppingImage.new;
 }
 
 class _TAOnboardingBusinessImage extends StatelessWidget {
@@ -280,33 +274,6 @@ class _TAOnboardingBusinessImage extends StatelessWidget {
       height: TAResponsive.scale(
         context,
         defaultValue: height ?? 243,
-      ),
-    );
-  }
-}
-
-class _TAShoppingImage extends StatelessWidget {
-  const _TAShoppingImage({
-    this.width,
-    this.height,
-    this.boxfit,
-  });
-  final double? height;
-  final double? width;
-  final BoxFit? boxfit;
-
-  @override
-  Widget build(BuildContext context) {
-    return TAAssetImage(
-      boxFit: boxfit,
-      path: Assets.images.payment.path,
-      width: TAResponsive.scale(
-        context,
-        defaultValue: width ?? 305,
-      ),
-      height: TAResponsive.scale(
-        context,
-        defaultValue: height ?? 165,
       ),
     );
   }

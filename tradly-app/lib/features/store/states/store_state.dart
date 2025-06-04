@@ -17,7 +17,6 @@ class StoreState extends Equatable {
     this.imageFiles,
     this.status = const StoreStatus.initial(),
     this.errorMessage,
-    this.isProductAdded = false,
     this.productToEdit,
   });
 
@@ -29,7 +28,6 @@ class StoreState extends Equatable {
   final StoreStatus status;
   final String? errorMessage;
   final bool isFormValid;
-  final bool isProductAdded;
   final ProductModel? productToEdit;
 
   StoreState copyWith({
@@ -41,7 +39,6 @@ class StoreState extends Equatable {
     StoreStatus? status,
     String? errorMessage,
     bool? isFormValid,
-    bool? isProductAdded,
     ProductModel? productToEdit,
   }) {
     return StoreState(
@@ -53,7 +50,6 @@ class StoreState extends Equatable {
       status: status ?? this.status,
       errorMessage: errorMessage,
       isFormValid: isFormValid ?? this.isFormValid,
-      isProductAdded: isProductAdded ?? this.isProductAdded,
       productToEdit: productToEdit ?? this.productToEdit,
     );
   }
@@ -68,7 +64,6 @@ class StoreState extends Equatable {
         status,
         errorMessage,
         isFormValid,
-        isProductAdded,
         productToEdit,
       ];
 }

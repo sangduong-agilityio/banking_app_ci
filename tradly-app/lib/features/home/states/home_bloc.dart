@@ -25,6 +25,7 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
     try {
       await Future.wait<void>(
         [
+          _onFetchBanners(emit),
           _onFetchCategories(emit),
           _onFetchNewProducts(emit),
           _onFetchPopularProducts(emit),
@@ -33,6 +34,32 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
       );
       emit(
         state.copyWith(
+          status: const HomeStatus.success(),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const HomeStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onFetchBanners(
+    Emitter<HomeState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: const HomeStatus.loading(),
+      ),
+    );
+    try {
+      final banners = await _repo.fetchBanners();
+      emit(
+        state.copyWith(
+          banners: banners,
           status: const HomeStatus.success(),
         ),
       );

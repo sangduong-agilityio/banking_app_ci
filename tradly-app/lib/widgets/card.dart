@@ -30,6 +30,9 @@ class TACardProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isGalleryImage = File(product.imageUrl).existsSync();
+    final isValidImage =
+        isGalleryImage && File(product.imageUrl).lengthSync() > 0;
+
     return Semantics(
       label: label,
       hint: hint,
@@ -48,7 +51,7 @@ class TACardProduct extends StatelessWidget {
               children: [
                 Semantics(
                   label: 'Image of ${product.title}',
-                  child: isGalleryImage
+                  child: isValidImage
                       ? ClipRRect(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(10),

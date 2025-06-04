@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tradly_app/features/home/models/banner_model.dart';
 import 'package:tradly_app/features/home/models/category_model.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
@@ -8,6 +9,7 @@ part 'home_state.freezed.dart';
 
 final class HomeState extends Equatable {
   const HomeState({
+    this.banners,
     this.categories,
     this.stores,
     this.newProducts,
@@ -17,6 +19,7 @@ final class HomeState extends Equatable {
   });
   final HomeStatus status;
   final String? errorMessage;
+  final List<BannerModel>? banners;
   final List<CategoryModel>? categories;
   final List<ProductModel>? newProducts;
   final List<ProductModel>? popularProducts;
@@ -25,6 +28,7 @@ final class HomeState extends Equatable {
   HomeState copyWith({
     HomeStatus? status,
     String? errorMessage,
+    List<BannerModel>? banners,
     List<CategoryModel>? categories,
     List<ProductModel>? products,
     List<ProductModel>? newProducts,
@@ -34,6 +38,7 @@ final class HomeState extends Equatable {
     return HomeState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      banners: banners ?? this.banners,
       categories: categories ?? this.categories,
       newProducts: newProducts ?? this.newProducts,
       popularProducts: popularProducts ?? this.popularProducts,
@@ -45,6 +50,7 @@ final class HomeState extends Equatable {
   List<Object?> get props => [
         status,
         errorMessage,
+        banners,
         categories,
         newProducts,
         popularProducts,

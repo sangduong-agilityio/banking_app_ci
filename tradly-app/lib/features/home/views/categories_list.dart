@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/home/models/category_model.dart';
 import 'package:tradly_app/features/home/states/home_bloc.dart';
 import 'package:tradly_app/features/home/states/home_state.dart';
@@ -51,6 +52,7 @@ class CategoriesList extends StatelessWidget {
                 onTap: () => onCategoryTap(category),
                 child: Container(
                   decoration: BoxDecoration(
+                    color: context.colorScheme.primary,
                     image: DecorationImage(
                       image: NetworkImage(
                         category.imageUrl ?? '',

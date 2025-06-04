@@ -80,9 +80,6 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
               },
               success: () {
                 context.loaderOverlay.hide();
-                if (state.isProductAdded) {
-                  Navigator.pop(context);
-                }
               },
               loading: () {
                 context.loaderOverlay.show();
@@ -222,7 +219,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
                           state.imageFiles?.map((e) => e.path).join(',') ?? '',
                       storeId: storeId,
                     );
-
+                    Navigator.pop(context);
                     context
                         .read<StoreBloc>()
                         .add(AddProductButtonEvt(product: product));

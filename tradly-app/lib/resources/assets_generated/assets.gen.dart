@@ -116,17 +116,6 @@ class $AssetsImagesGen {
   AssetGenImage get imgTradly =>
       const AssetGenImage('assets/images/img_tradly.png');
 
-  /// File path: assets/images/payment.png
-  AssetGenImage get payment => const AssetGenImage('assets/images/payment.png');
-
-  /// File path: assets/images/shopping.png
-  AssetGenImage get shopping =>
-      const AssetGenImage('assets/images/shopping.png');
-
-  /// File path: assets/images/vegetable.png
-  AssetGenImage get vegetable =>
-      const AssetGenImage('assets/images/vegetable.png');
-
   /// List of all assets
   List<AssetGenImage> get values => [
     icLauncher,
@@ -135,9 +124,6 @@ class $AssetsImagesGen {
     imgOnboardingSocial,
     imgOnboardingSupport,
     imgTradly,
-    payment,
-    shopping,
-    vegetable,
   ];
 }
 

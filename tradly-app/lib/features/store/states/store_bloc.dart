@@ -86,7 +86,6 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
           hasProducts: true,
           status: const StoreStatus.success(),
           imageFiles: [],
-          isProductAdded: true,
         ),
       );
     } catch (e) {
@@ -147,7 +146,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
           products: updatedProducts,
           status: const StoreStatus.success(),
           imageFiles: [],
-          productToEdit: null,
+          // productToEdit: null,
         ),
       );
     } catch (e) {
@@ -234,9 +233,10 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
         final fileSize = await file.length();
         const maxFileSize = 5 * 1024 * 1024;
 
-        if (fileSize > maxFileSize) {
+        if (fileSize > maxFileSize || !file.existsSync()) {
           emit(state.copyWith(
-            errorMessage: 'Image size should be less than 5MB',
+            errorMessage:
+                'Invalid image. Ensure it exists and is less than 5MB.',
           ));
           return;
         }

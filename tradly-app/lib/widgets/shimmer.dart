@@ -110,13 +110,27 @@ class ShimmerHeroBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: TAShimmerLoading(
-        width: MediaQuery.of(context).size.width - 32,
-        height: 120,
-        context: context,
-        borderRadius: BorderRadius.circular(12),
+    return SizedBox(
+      height: 200,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 16,
+              top: 16,
+              bottom: 16,
+            ),
+            child: TAShimmerLoading(
+              width: 300,
+              height: 165,
+              context: context,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          );
+        },
       ),
     );
   }

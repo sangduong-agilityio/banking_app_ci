@@ -1,10 +1,12 @@
 import 'package:tradly_app/api/api_client.dart';
 import 'package:tradly_app/env/env.dart';
+import 'package:tradly_app/features/home/models/banner_model.dart';
 import 'package:tradly_app/features/home/models/category_model.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
 
 abstract class HomeRepository {
+  Future<List<BannerModel>> fetchBanners();
   Future<List<CategoryModel>> fetchCategories();
   Future<List<StoreModel>> fetchStores();
   Future<List<ProductModel>> fetchNewProducts();
@@ -17,6 +19,23 @@ class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl({
     required TradlyApiClient apiClient,
   }) : _apiClient = apiClient;
+
+  @override
+  Future<List<BannerModel>> fetchBanners() async {
+    String apiUrl = '${Env.endPoint}banners';
+
+    final response = await _apiClient.get(
+      apiUrl,
+      queryParams: {
+        'select': '*',
+      },
+    );
+    final jsonData = response.data;
+
+    final banners =
+        (jsonData as List).map((json) => BannerModel.fromJson(json)).toList();
+    return banners;
+  }
 
   @override
   Future<List<CategoryModel>> fetchCategories() async {
