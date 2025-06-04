@@ -281,34 +281,39 @@ class _StoreScreenState extends State<StoreScreen> {
 
                                 if (updatedProduct != null &&
                                     updatedProduct is ProductModel) {
-                                  context.read<StoreBloc>().add(
-                                        EditProductButtonEvt(
-                                          product: updatedProduct,
-                                        ),
-                                      );
+                                  if (context.mounted) {
+                                    context.read<StoreBloc>().add(
+                                          EditProductButtonEvt(
+                                            product: updatedProduct,
+                                          ),
+                                        );
+                                  }
                                 }
                               }
                             },
                           ),
                           const SizedBox(width: 50),
-                          GestureDetector(
-                            onTap: () {
-                              final productId = state.products?[index].id;
-
-                              context.read<StoreBloc>().add(
-                                    DeleteProductEvt(productId: productId ?? 0),
-                                  );
+                          BlocBuilder<StoreBloc, StoreState>(
+                            builder: (context, state) {
+                              return GestureDetector(
+                                onTap: () {
+                                  context.read<StoreBloc>().add(
+                                      DeleteProductEvt(
+                                          productId: products[index].id ?? 0));
+                                },
+                                child: Container(
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: context
+                                        .colorScheme.onSecondaryContainer
+                                        .withAlpha(150),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: TAIcons.delete(),
+                                ),
+                              );
                             },
-                            child: Container(
-                              width: 32,
-                              height: 32,
-                              decoration: BoxDecoration(
-                                color: context.colorScheme.onSecondaryContainer
-                                    .withAlpha(150),
-                                shape: BoxShape.circle,
-                              ),
-                              child: TAIcons.delete(),
-                            ),
                           ),
                         ],
                       ),

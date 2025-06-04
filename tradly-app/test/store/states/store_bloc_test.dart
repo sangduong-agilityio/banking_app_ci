@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/features/store/repositories/store_repo.dart.dart';
+import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/features/store/states/store_bloc.dart';
 import 'package:tradly_app/features/store/states/store_event.dart';
 import 'package:tradly_app/features/store/states/store_state.dart';

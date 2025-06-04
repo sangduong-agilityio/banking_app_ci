@@ -7,7 +7,7 @@ import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
 import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
 import 'package:tradly_app/features/home/repositories/home_repo.dart';
 import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
-import 'package:tradly_app/features/store/repositories/store_repo.dart.dart';
+import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/features/auth/states/sign_in_bloc.dart';
 import 'package:tradly_app/features/auth/states/sign_up_bloc.dart';
 

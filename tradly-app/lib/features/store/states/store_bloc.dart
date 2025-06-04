@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
-import 'package:tradly_app/features/store/repositories/store_repo.dart.dart';
+import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'store_event.dart';
 import 'store_state.dart';
 

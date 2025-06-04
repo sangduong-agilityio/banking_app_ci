@@ -13,7 +13,7 @@
 migrate_working_dir/
 
 # Env
-*..env.g.dart
+*.env.g.dart
 # IntelliJ related
 *.iml
 *.ipr
@@ -49,11 +49,11 @@ app.*.map.json
 coverage
 .gradle
 
-..env**
+.env**
 
-*..freezed.dart
-*..g.dart
-*..gen.dart
+*.freezed.dart
+*.g.dart
+*.gen.dart
 lib/resources/assets_generated
 
 supabase/functions/service-account.json

@@ -37,15 +37,11 @@ class ProductDetailPage extends StatelessWidget {
           return TAScaffold(
             appBar: TAAppBar.productDetail(
               bottomType: TAAppBarBottomType.imageBackground,
-              background: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      product?.imageUrl ?? '',
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              background: Image.network(
+                product?.imageUrl ?? '',
+                width: double.infinity,
+                height: 230,
+                fit: BoxFit.cover,
               ),
               actions: [
                 Container(
