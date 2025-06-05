@@ -118,7 +118,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                         crossAxisCount: crossAxisCount.toInt(),
                         childAspectRatio: TAResponsive.orientationSizeOf(
                           context,
-                          portrait: TAResponsive.isTablet(context) ? 1.4 : 0.8,
+                          portrait: TAResponsive.isTablet(context) ? 1.4 : 0.85,
                           landscape: 1.2,
                         ),
                       ),

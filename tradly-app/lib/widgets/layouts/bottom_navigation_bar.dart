@@ -9,7 +9,6 @@ class TABottomNavigationBar extends StatefulWidget {
     this.backgroundColor,
     this.selectedItemColor = const Color(0xFF33907C),
     this.unselectedItemColor = Colors.grey,
-    this.margin = const EdgeInsets.all(2),
     this.currentIndex = 0,
     this.onTap,
   });
@@ -18,7 +17,6 @@ class TABottomNavigationBar extends StatefulWidget {
   final Color? backgroundColor;
   final Color selectedItemColor;
   final Color unselectedItemColor;
-  final EdgeInsets margin;
   final int currentIndex;
   final Function(int)? onTap;
 
@@ -59,7 +57,6 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
       width: double.infinity,
       color: widget.backgroundColor ?? context.colorScheme.onPrimary,
       child: SafeArea(
-        minimum: widget.margin,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: widget.items.asMap().entries.map((entry) {

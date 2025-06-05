@@ -10,7 +10,10 @@ import 'package:tradly_app/features/home/views/new_product_list.dart';
 import 'package:tradly_app/features/home/views/popular_product_list.dart';
 import 'package:tradly_app/features/home/views/product_banner_list.dart';
 import 'package:tradly_app/features/home/views/search_view.dart';
+import 'package:tradly_app/features/home/views/see_all_new_product.dart';
+import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/store_follow_list.dart';
+import 'package:tradly_app/features/home/views/view_all_store.dart';
 import 'package:tradly_app/features/product_detail/views/product_list.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/widgets/assets.dart';
@@ -94,7 +97,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 28),
                       HomeSectionHeader(
                         title: S.current.homeNewProductTitle,
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SeeAllNewProductScreen(
+                                title: S.current.homeNewProductTitle,
+                                productId: widget.productId ?? 0,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 20),
@@ -103,7 +116,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 16),
                       HomeSectionHeader(
                         title: S.current.homePopularProductTitle,
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SeeAllPopularProductScreen(
+                                title: S.current.homePopularProductTitle,
+                                productId: widget.productId ?? 0,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       const Padding(
                         padding: EdgeInsets.only(left: 20),
@@ -126,7 +149,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   buttonColor: context.colorScheme.onPrimary,
                                   buttonText: S.current.homeViewAllButton,
                                   buttonTextColor: context.colorScheme.primary,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ViewAllStoreScreen(
+                                          title: S.current.homeStoreLabel,
+                                          productId: widget.productId ?? 0,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),

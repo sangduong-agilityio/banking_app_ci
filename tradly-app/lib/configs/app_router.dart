@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/home/views/see_all_new_product.dart';
+import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
+import 'package:tradly_app/features/home/views/view_all_store.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/router_guard.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
@@ -101,6 +104,39 @@ class TARouter {
           return ProductList(
             title: extra?['title'] ?? '',
             categoryId: extra?['categoryId'] ?? 0,
+          );
+        },
+      ),
+      GoRoute(
+        name: TAPaths.seeAllNewProduct.name,
+        path: TAPaths.seeAllNewProduct.path,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return SeeAllNewProductScreen(
+            title: extra?['title'] ?? '',
+            productId: extra?['productId'] ?? 0,
+          );
+        },
+      ),
+      GoRoute(
+        name: TAPaths.seeAllPopularProduct.name,
+        path: TAPaths.seeAllPopularProduct.path,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return SeeAllPopularProductScreen(
+            title: extra?['title'] ?? '',
+            productId: extra?['productId'] ?? 0,
+          );
+        },
+      ),
+      GoRoute(
+        name: TAPaths.viewAllStore.name,
+        path: TAPaths.viewAllStore.path,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return ViewAllStoreScreen(
+            title: extra?['title'] ?? '',
+            productId: extra?['productId'] ?? 0,
           );
         },
       ),
@@ -250,6 +286,18 @@ enum TAPaths {
   addAddress(
     name: 'addAddress',
     path: '/addAddress',
+  ),
+  seeAllNewProduct(
+    name: 'seeAllNewProduct',
+    path: '/seeAllNewProduct',
+  ),
+  seeAllPopularProduct(
+    name: 'seeAllPopularProduct',
+    path: '/seeAllPopularProduct',
+  ),
+  viewAllStore(
+    name: 'viewAllStore',
+    path: '/viewAllStore',
   ),
   productList(
     name: 'productList',

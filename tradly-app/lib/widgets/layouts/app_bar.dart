@@ -270,11 +270,7 @@ class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 child: searchForm ?? const SizedBox.shrink(),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                child: filterOptions ?? _filterOptions(context),
-              ),
+              filterOptions ?? _filterOptions(context),
             ],
           ),
         );
@@ -288,33 +284,35 @@ class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _filterOptions(BuildContext context) {
-    return filterOptions ??
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _filterButton(
-              context,
-              icon: TAAssets.sortList(),
-              label: S.current.productDetailSortByButton,
-              onPressed: onSortPressed ?? () {},
-            ),
-            _filterButton(
-              context,
-              icon: Icon(
-                Icons.location_on,
-                size: 16,
+    return Expanded(
+      child: filterOptions ??
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _filterButton(
+                context,
+                icon: TAAssets.sortList(),
+                label: S.current.productDetailSortByButton,
+                onPressed: onSortPressed ?? () {},
               ),
-              label: S.current.productDetailLocationButton,
-              onPressed: onLocationPressed ?? () {},
-            ),
-            _filterButton(
-              context,
-              icon: TAAssets.category(),
-              label: S.current.productDetailCategoryButton,
-              onPressed: () {},
-            ),
-          ],
-        );
+              _filterButton(
+                context,
+                icon: Icon(
+                  Icons.location_on,
+                  size: 16,
+                ),
+                label: S.current.productDetailLocationButton,
+                onPressed: onLocationPressed ?? () {},
+              ),
+              _filterButton(
+                context,
+                icon: TAAssets.category(),
+                label: S.current.productDetailCategoryButton,
+                onPressed: () {},
+              ),
+            ],
+          ),
+    );
   }
 
   Widget _filterButton(
@@ -330,6 +328,7 @@ class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
         text: label,
       ),
       style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
           side: BorderSide(
