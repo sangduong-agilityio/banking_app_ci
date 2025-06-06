@@ -3,16 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tradly_app/features/profile/states/profile_state.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
-import 'package:tradly_app/features/profile/states/profile_bloc.dart';
+import 'package:tradly_app/features/profile/states/profile_cubit.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
-import 'package:tradly_app/features/profile/states/profile_event.dart';
-import 'package:tradly_app/features/profile/states/profile_state.dart';
 import 'package:tradly_app/widgets/assets.dart';
 import 'package:tradly_app/widgets/images.dart';
 import 'package:tradly_app/widgets/not_found.dart';
@@ -24,9 +23,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfileBloc(
+      create: (context) => ProfileCubit(
         repo: AuthRepositoryImplement(Supabase.instance.client),
-      )..add(FetchProfileEvt()),
+      )..fetchProfile(),
       child: TAScaffold(
         appBar: TAAppBar(
           centerTitle: false,
@@ -45,7 +44,8 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+        body:
+            BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
           if (state.status is ProfileStatusLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.status is ProfileStatusSuccess) {

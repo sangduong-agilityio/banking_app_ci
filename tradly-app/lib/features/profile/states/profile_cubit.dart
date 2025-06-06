@@ -1,22 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/features/auth/models/user_model.dart';
 import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
-import 'package:tradly_app/features/profile/states/profile_event.dart';
 import 'package:tradly_app/features/profile/states/profile_state.dart';
 
-class ProfileBloc extends Bloc<ProfileEvt, ProfileState> {
-  ProfileBloc({required AuthRepository repo})
+class ProfileCubit extends Cubit<ProfileState> {
+  ProfileCubit({required AuthRepository repo})
       : _repo = repo,
-        super(const ProfileState()) {
-    on<FetchProfileEvt>(_onFetchProfile);
-  }
+        super(const ProfileState());
 
   final AuthRepository _repo;
 
-  Future<void> _onFetchProfile(
-    FetchProfileEvt event,
-    Emitter<ProfileState> emit,
-  ) async {
+  Future<void> fetchProfile() async {
     emit(
       state.copyWith(
         status: const ProfileStatus.loading(),

@@ -142,19 +142,45 @@ class TARouter {
       ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: rootNavigatorKey,
-        builder: (context, state, navigationShell) => TAScaffold(
-          body: navigationShell,
-          bottomNavigationBar: TABottomNavigationBar(
-            currentIndex: navigationShell.currentIndex,
-            onTap: (index) {
-              navigationShell.goBranch(
-                index,
-                initialLocation: index == navigationShell.currentIndex,
-              );
-            },
-            items: bottomNavigationBarItems(context),
-          ),
-        ),
+        builder: (context, state, navigationShell) {
+          final isLandscape =
+              MediaQuery.of(context).orientation == Orientation.landscape;
+
+          return isLandscape
+              ? Row(
+                  children: [
+                    TABottomNavigationBar(
+                      currentIndex: navigationShell.currentIndex,
+                      onTap: (index) {
+                        navigationShell.goBranch(
+                          index,
+                          initialLocation:
+                              index == navigationShell.currentIndex,
+                        );
+                      },
+                      items: bottomNavigationBarItems(context),
+                    ),
+                    Expanded(
+                      child: TAScaffold(
+                        body: navigationShell,
+                      ),
+                    ),
+                  ],
+                )
+              : TAScaffold(
+                  body: navigationShell,
+                  bottomNavigationBar: TABottomNavigationBar(
+                    currentIndex: navigationShell.currentIndex,
+                    onTap: (index) {
+                      navigationShell.goBranch(
+                        index,
+                        initialLocation: index == navigationShell.currentIndex,
+                      );
+                    },
+                    items: bottomNavigationBarItems(context),
+                  ),
+                );
+        },
         branches: [
           StatefulShellBranch(
             navigatorKey: GlobalKey<NavigatorState>(),

@@ -52,50 +52,100 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 90,
-      width: double.infinity,
-      color: widget.backgroundColor ?? context.colorScheme.onPrimary,
-      child: SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: widget.items.asMap().entries.map((entry) {
-            final index = entry.key;
-            final item = entry.value;
-            final isSelected = index == _selectedIndex;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
 
-            return Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  _onItemTapped(index);
-                  HapticFeedback.lightImpact();
-                },
-                behavior: HitTestBehavior.opaque,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 8),
-                    isSelected ? item.activeIcon : item.icon,
-                    const SizedBox(height: 4),
-                    Text(
-                      item.label,
-                      style: TextStyle(
-                        color: isSelected
-                            ? widget.selectedItemColor
-                            : widget.unselectedItemColor,
-                        fontSize: 12,
-                        fontWeight:
-                            isSelected ? FontWeight.w500 : FontWeight.normal,
+    return isLandscape
+        ? Container(
+            width: 120,
+            height: double.infinity,
+            color: widget.backgroundColor ?? context.colorScheme.onPrimary,
+            child: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: widget.items.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  final isSelected = index == _selectedIndex;
+
+                  return GestureDetector(
+                    onTap: () {
+                      _onItemTapped(index);
+                      HapticFeedback.lightImpact();
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 8),
+                        isSelected ? item.activeIcon : item.icon,
+                        const SizedBox(height: 4),
+                        Text(
+                          item.label,
+                          style: TextStyle(
+                            decoration: TextDecoration.none,
+                            color: isSelected
+                                ? widget.selectedItemColor
+                                : widget.unselectedItemColor,
+                            fontSize: 13,
+                            fontWeight: isSelected
+                                ? FontWeight.w500
+                                : FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          )
+        : Container(
+            height: 90,
+            width: double.infinity,
+            color: widget.backgroundColor ?? context.colorScheme.onPrimary,
+            child: SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: widget.items.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final item = entry.value;
+                  final isSelected = index == _selectedIndex;
+
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        _onItemTapped(index);
+                        HapticFeedback.lightImpact();
+                      },
+                      behavior: HitTestBehavior.opaque,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 8),
+                          isSelected ? item.activeIcon : item.icon,
+                          const SizedBox(height: 4),
+                          Text(
+                            textAlign: TextAlign.center,
+                            item.label,
+                            style: TextStyle(
+                              color: isSelected
+                                  ? widget.selectedItemColor
+                                  : widget.unselectedItemColor,
+                              fontSize: 12,
+                              fontWeight: isSelected
+                                  ? FontWeight.w500
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  );
+                }).toList(),
               ),
-            );
-          }).toList(),
-        ),
-      ),
-    );
+            ),
+          );
   }
 }
 
