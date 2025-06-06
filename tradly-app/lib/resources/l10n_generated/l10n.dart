@@ -649,6 +649,66 @@ class S {
     return Intl.message('Tradly', name: 'homeTradlyTitle', desc: '', args: []);
   }
 
+  /// `Spotlight Search`
+  String get homeSearchSpotlightLabel {
+    return Intl.message(
+      'Spotlight Search',
+      name: 'homeSearchSpotlightLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Go to the home screen`
+  String get homeSubTitle {
+    return Intl.message(
+      'Go to the home screen',
+      name: 'homeSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View your profile`
+  String get homeProfileSubTitle {
+    return Intl.message(
+      'View your profile',
+      name: 'homeProfileSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Explore products`
+  String get homeBrowseSubTitle {
+    return Intl.message(
+      'Explore products',
+      name: 'homeBrowseSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View your store`
+  String get homeStoreSubTitle {
+    return Intl.message(
+      'View your store',
+      name: 'homeStoreSubTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View your order history`
+  String get homeOrderHistorySubTitle {
+    return Intl.message(
+      'View your order history',
+      name: 'homeOrderHistorySubTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Beverages`
   String get productDetailBeveragesTitle {
     return Intl.message(

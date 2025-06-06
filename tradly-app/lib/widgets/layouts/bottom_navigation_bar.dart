@@ -20,11 +20,15 @@ class TABottomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final Function(int)? onTap;
 
+  static TABottomNavigationBarState? of(BuildContext context) {
+    return context.findAncestorStateOfType<TABottomNavigationBarState>();
+  }
+
   @override
-  State<TABottomNavigationBar> createState() => _TABottomNavigationBarState();
+  State<TABottomNavigationBar> createState() => TABottomNavigationBarState();
 }
 
-class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
+class TABottomNavigationBarState extends State<TABottomNavigationBar> {
   late int _selectedIndex;
 
   @override
@@ -42,12 +46,16 @@ class _TABottomNavigationBarState extends State<TABottomNavigationBar> {
   }
 
   void _onItemTapped(int index) {
-    if (_selectedIndex != index) {
-      setState(() {
-        _selectedIndex = index;
-      });
-      widget.onTap?.call(index);
-    }
+    setState(() {
+      _selectedIndex = index;
+    });
+    widget.onTap?.call(index);
+  }
+
+  void updateIndex(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override

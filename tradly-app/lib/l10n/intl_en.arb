@@ -92,6 +92,12 @@
   "homeOrderHistoryLabel":"Order History",
   "homeProfileLabel":"Profile",
   "homeTradlyTitle":"Tradly",
+  "homeSearchSpotlightLabel":"Spotlight Search",
+  "homeSubTitle":"Go to the home screen",
+  "homeProfileSubTitle":"View your profile",
+  "homeBrowseSubTitle":"Explore products",
+  "homeStoreSubTitle":"View your store",
+  "homeOrderHistorySubTitle":"View your order history",
    "@segmentProductDetail": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Product Detail feature"

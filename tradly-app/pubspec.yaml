@@ -117,6 +117,8 @@ dev_dependencies:
   # Fake data generator for tests
   faker: ^2.2.0
 
+  flutter_typeahead: ^5.2.0
+
 flutter:
   uses-material-design: true
   generate: true

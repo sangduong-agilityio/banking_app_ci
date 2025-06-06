@@ -154,8 +154,7 @@ class TARouter {
                       onTap: (index) {
                         navigationShell.goBranch(
                           index,
-                          initialLocation:
-                              index == navigationShell.currentIndex,
+                          initialLocation: true,
                         );
                       },
                       items: bottomNavigationBarItems(context),
@@ -174,7 +173,7 @@ class TARouter {
                     onTap: (index) {
                       navigationShell.goBranch(
                         index,
-                        initialLocation: index == navigationShell.currentIndex,
+                        initialLocation: true,
                       );
                     },
                     items: bottomNavigationBarItems(context),

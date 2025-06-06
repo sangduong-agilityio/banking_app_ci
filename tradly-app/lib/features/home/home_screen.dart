@@ -45,9 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
             child: CustomScrollView(
               slivers: [
                 SliverAppBar(
-                    expandedHeight: 180,
-                    flexibleSpace: FlexibleSpaceBar(
-                        background: Column(
+                  expandedHeight: 180,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Column(
                       children: [
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 40, 10, 0),
@@ -68,15 +68,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 20),
-                          child: TASearchView(
-                            placeholder: S.current.homeSearchProductPlaceholder,
+                        Transform.translate(
+                          offset: const Offset(0, 10),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 20),
+                            child: SearchSpotlight(),
                           ),
                         ),
                       ],
-                    ))),
+                    ),
+                  ),
+                ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [

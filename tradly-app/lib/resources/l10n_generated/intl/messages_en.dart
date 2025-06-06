@@ -73,6 +73,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "START SHOPPING",
     ),
     "homeBrowseLabel": MessageLookupByLibrary.simpleMessage("Browse"),
+    "homeBrowseSubTitle": MessageLookupByLibrary.simpleMessage(
+      "Explore products",
+    ),
     "homeFollowButton": MessageLookupByLibrary.simpleMessage("Follow"),
     "homeGroceriesTitle": MessageLookupByLibrary.simpleMessage("Groceries"),
     "homeLabel": MessageLookupByLibrary.simpleMessage("Home"),
@@ -80,17 +83,32 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeOrderHistoryLabel": MessageLookupByLibrary.simpleMessage(
       "Order History",
     ),
+    "homeOrderHistorySubTitle": MessageLookupByLibrary.simpleMessage(
+      "View your order history",
+    ),
     "homePopularProductTitle": MessageLookupByLibrary.simpleMessage(
       "Popular Product",
     ),
     "homeProfileLabel": MessageLookupByLibrary.simpleMessage("Profile"),
+    "homeProfileSubTitle": MessageLookupByLibrary.simpleMessage(
+      "View your profile",
+    ),
     "homeSearchProductPlaceholder": MessageLookupByLibrary.simpleMessage(
       "Search Product",
     ),
+    "homeSearchSpotlightLabel": MessageLookupByLibrary.simpleMessage(
+      "Spotlight Search",
+    ),
     "homeSeeAllButton": MessageLookupByLibrary.simpleMessage("See All"),
     "homeStoreLabel": MessageLookupByLibrary.simpleMessage("Store"),
+    "homeStoreSubTitle": MessageLookupByLibrary.simpleMessage(
+      "View your store",
+    ),
     "homeStoreToFolowTitle": MessageLookupByLibrary.simpleMessage(
       "Store to follow",
+    ),
+    "homeSubTitle": MessageLookupByLibrary.simpleMessage(
+      "Go to the home screen",
     ),
     "homeTradlyTitle": MessageLookupByLibrary.simpleMessage("Tradly"),
     "homeViewAllButton": MessageLookupByLibrary.simpleMessage("View All"),
