@@ -183,19 +183,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     SizedBox(height: 10),
                                     Row(
                                       children: [
-                                        TATitleLargeText(
-                                          text: widget.product.newPrice ?? '',
+                                        TAHeadlineMediumText(
+                                          text: '\$${widget.product.newPrice}',
                                           color: context.colorScheme.primary,
+                                          fontWeight: FontWeight.w700,
                                         ),
-                                        const SizedBox(width: 5),
+                                        SizedBox(width: 8),
                                         TATitleLargeText(
-                                          text: widget.product.price,
+                                          text: '\$${widget.product.price}',
+                                          decoration: TextDecoration.combine([
+                                            TextDecoration.lineThrough,
+                                          ]),
                                           color: context.colorScheme.onSurface,
                                         ),
-                                        const SizedBox(width: 5),
+                                        SizedBox(width: 8),
                                         TATitleLargeText(
                                           text: S.current
-                                              .productDetailDiscountTitle,
+                                              .productDetailSaleOffTitle,
                                           color: context.colorScheme.onSurface,
                                         ),
                                       ],

@@ -102,22 +102,22 @@ class TAResponsive {
   }
 
   static bool isTablet(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final double screenWidth = MediaQuery.of(context).size.width;
     return screenWidth >= 600 && screenWidth <= 1024;
   }
 
-  static double orientationSizeOf(
+  static int orientationSizeOf(
     BuildContext context, {
-    double? landscape,
-    double? portrait,
+    int? landscape,
+    int? portrait,
   }) {
     if (isTablet(context)) {
-      return portrait ?? landscape ?? 1.3;
+      return portrait ?? landscape ?? 1;
     } else if (ResponsiveBreakpoints.of(context).orientation ==
         Orientation.portrait) {
-      return portrait ?? 0.8;
+      return portrait ?? 0;
     } else {
-      return landscape ?? 1.2;
+      return landscape ?? 0;
     }
   }
 

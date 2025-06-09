@@ -49,28 +49,30 @@ class TACardProduct extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Semantics(
-                  label: 'Image of ${product.title}',
-                  child: isValidImage
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
-                          child: Image.file(
-                            File(product.imageUrl),
+                Expanded(
+                  child: Semantics(
+                    label: 'Image of ${product.title}',
+                    child: isValidImage
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            child: Image.file(
+                              File(product.imageUrl),
+                              width: width ?? double.infinity,
+                              height: height ?? 130,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : TAImageRectangle(
+                            product.imageUrl,
+                            isBorderTop: true,
                             width: width ?? double.infinity,
                             height: height ?? 130,
-                            fit: BoxFit.cover,
+                            boxFit: BoxFit.cover,
                           ),
-                        )
-                      : TAImageRectangle(
-                          product.imageUrl,
-                          isBorderTop: true,
-                          width: width ?? double.infinity,
-                          height: height ?? 130,
-                          boxFit: BoxFit.cover,
-                        ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 11, right: 11),
@@ -110,22 +112,25 @@ class TACardProduct extends StatelessWidget {
                           Semantics(
                             excludeSemantics: true,
                             label: product.newPrice != null
-                                ? 'Discount price: \$${product.newPrice}'
+                                ? 'Discount price: \$${product.price}'
                                 : 'No discount available',
                             child: TALabelLargeText(
+                              decoration: TextDecoration.combine([
+                                TextDecoration.lineThrough,
+                              ]),
                               text: product.newPrice != null
                                   ? '\$${product.newPrice}'
                                   : '',
-                              color: context.colorScheme.outline,
+                              color: context.colorScheme.onSurface,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(width: 6),
                           Semantics(
                             excludeSemantics: true,
-                            label: 'Original price: \$${product.price}',
+                            label: 'Original price: \$${product.newPrice}',
                             child: TATitleLargeText(
-                              text: product.price,
+                              text: '\$${product.price}',
                               color: context.colorScheme.primary,
                               fontWeight: FontWeight.w600,
                             ),

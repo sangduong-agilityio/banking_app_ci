@@ -40,8 +40,11 @@ class ProductDetailPage extends StatelessWidget {
               background: Image.network(
                 product?.imageUrl ?? '',
                 width: double.infinity,
-                height: 230,
+                height: 240,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.error);
+                },
               ),
               actions: [
                 Container(
@@ -101,13 +104,16 @@ class ProductDetailPage extends StatelessWidget {
                               Row(
                                 children: [
                                   TAHeadlineMediumText(
-                                    text: product?.newPrice ?? '',
+                                    text: '\$${product?.newPrice}',
                                     color: context.colorScheme.primary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                   SizedBox(width: 8),
                                   TATitleLargeText(
-                                    text: product?.price ?? '',
+                                    text: '\$${product?.price}',
+                                    decoration: TextDecoration.combine([
+                                      TextDecoration.lineThrough,
+                                    ]),
                                     color: context.colorScheme.onSurface,
                                   ),
                                   SizedBox(width: 8),

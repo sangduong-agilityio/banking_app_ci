@@ -284,35 +284,33 @@ class TAAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _filterOptions(BuildContext context) {
-    return Expanded(
-      child: filterOptions ??
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _filterButton(
-                context,
-                icon: TAAssets.sortList(),
-                label: S.current.productDetailSortByButton,
-                onPressed: onSortPressed ?? () {},
+    return filterOptions ??
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _filterButton(
+              context,
+              icon: TAAssets.sortList(),
+              label: S.current.productDetailSortByButton,
+              onPressed: onSortPressed ?? () {},
+            ),
+            _filterButton(
+              context,
+              icon: Icon(
+                Icons.location_on,
+                size: 16,
               ),
-              _filterButton(
-                context,
-                icon: Icon(
-                  Icons.location_on,
-                  size: 16,
-                ),
-                label: S.current.productDetailLocationButton,
-                onPressed: onLocationPressed ?? () {},
-              ),
-              _filterButton(
-                context,
-                icon: TAAssets.category(),
-                label: S.current.productDetailCategoryButton,
-                onPressed: () {},
-              ),
-            ],
-          ),
-    );
+              label: S.current.productDetailLocationButton,
+              onPressed: onLocationPressed ?? () {},
+            ),
+            _filterButton(
+              context,
+              icon: TAAssets.category(),
+              label: S.current.productDetailCategoryButton,
+              onPressed: () {},
+            ),
+          ],
+        );
   }
 
   Widget _filterButton(

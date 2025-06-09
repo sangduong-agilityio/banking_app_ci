@@ -19,11 +19,6 @@ class CategoriesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = TAResponsive.orientationSizeOf(
-      context,
-      portrait: 4,
-      landscape: 4,
-    );
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (previous, current) =>
           previous.status != current.status ||
@@ -37,12 +32,12 @@ class CategoriesList extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount.toInt(),
-              childAspectRatio: TAResponsive.orientationSizeOf(
+              crossAxisCount: TAResponsive.orientationSizeOf(
                 context,
-                portrait: TAResponsive.isTablet(context) ? 1.3 : 1,
-                landscape: 2,
+                portrait: 4,
+                landscape: 8,
               ),
+              childAspectRatio: TAResponsive.isTablet(context) ? 2 : 1,
               mainAxisSpacing: 2,
               crossAxisSpacing: 2,
             ),

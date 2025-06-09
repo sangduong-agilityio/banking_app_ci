@@ -251,6 +251,7 @@ class TATitleLargeText extends StatelessWidget {
     this.letterSpacing,
     this.height,
     this.maxLines,
+    this.decoration,
   });
 
   final String text;
@@ -261,6 +262,7 @@ class TATitleLargeText extends StatelessWidget {
   final double? letterSpacing;
   final double? height;
   final int? maxLines;
+  final TextDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -270,6 +272,7 @@ class TATitleLargeText extends StatelessWidget {
       maxLines: maxLines,
       style: context.textTheme.titleLarge?.copyWith(
         color: color,
+        decoration: decoration,
         overflow: overflow,
         fontWeight: fontWeight,
         height: height,
@@ -374,6 +377,7 @@ class TALabelLargeText extends StatelessWidget {
     this.letterSpacing,
     this.height,
     this.maxLines,
+    this.decoration,
   });
 
   final String text;
@@ -384,6 +388,7 @@ class TALabelLargeText extends StatelessWidget {
   final double? letterSpacing;
   final double? height;
   final int? maxLines;
+  final TextDecoration? decoration;
 
   @override
   Widget build(BuildContext context) {
@@ -391,6 +396,7 @@ class TALabelLargeText extends StatelessWidget {
       text: text,
       textAlign: textAlign,
       style: context.textTheme.labelLarge?.copyWith(
+        decoration: decoration,
         color: color,
         leadingDistribution: TextLeadingDistribution.even,
         fontWeight: fontWeight ?? FontWeight.bold,

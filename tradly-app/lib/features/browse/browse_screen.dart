@@ -68,37 +68,40 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 );
               },
             ),
-            filterOptions: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                BlocBuilder<BrowseBloc, BrowseState>(
-                  buildWhen: (previous, current) =>
-                      previous.status != current.status,
-                  builder: (context, state) {
-                    return _buildFilterButton(
-                      context,
-                      icon: TAAssets.sortList(),
-                      label: S.current.productDetailSortByButton,
-                      onPressed: () => showSortBottomSheet(context),
-                    );
-                  },
-                ),
-                _buildFilterButton(
-                  context,
-                  icon: const Icon(
-                    Icons.location_on,
-                    size: 16,
+            filterOptions: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  BlocBuilder<BrowseBloc, BrowseState>(
+                    buildWhen: (previous, current) =>
+                        previous.status != current.status,
+                    builder: (context, state) {
+                      return _buildFilterButton(
+                        context,
+                        icon: TAAssets.sortList(),
+                        label: S.current.productDetailSortByButton,
+                        onPressed: () => showSortBottomSheet(context),
+                      );
+                    },
                   ),
-                  label: S.current.productDetailLocationButton,
-                  onPressed: () {},
-                ),
-                _buildFilterButton(
-                  context,
-                  icon: TAAssets.category(),
-                  label: S.current.productDetailCategoryButton,
-                  onPressed: () {},
-                ),
-              ],
+                  _buildFilterButton(
+                    context,
+                    icon: const Icon(
+                      Icons.location_on,
+                      size: 16,
+                    ),
+                    label: S.current.productDetailLocationButton,
+                    onPressed: () {},
+                  ),
+                  _buildFilterButton(
+                    context,
+                    icon: TAAssets.category(),
+                    label: S.current.productDetailCategoryButton,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
             bottomType: TAAppBarBottomType.custom,
           ),
@@ -116,11 +119,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: crossAxisCount.toInt(),
-                        childAspectRatio: TAResponsive.orientationSizeOf(
-                          context,
-                          portrait: TAResponsive.isTablet(context) ? 1.4 : 0.85,
-                          landscape: 1.2,
-                        ),
                       ),
                       itemCount: products.length,
                       itemBuilder: (context, index) {

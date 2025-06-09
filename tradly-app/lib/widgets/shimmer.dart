@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/utils/responsive.dart';
 
 class TAShimmerLoading extends StatefulWidget {
   final double width;
@@ -198,16 +199,19 @@ class ShimmerProductCard extends StatelessWidget {
       width: 160,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
+        color: context.colorScheme.onPrimary,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TAShimmerLoading(
-            width: 160,
-            height: 120,
-            context: context,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+          Expanded(
+            child: TAShimmerLoading(
+              width: 160,
+              height: 120,
+              context: context,
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(left: 8, top: 8, right: 10),
@@ -264,9 +268,12 @@ class ShimmerProductGrid extends StatelessWidget {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.9,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: TAResponsive.orientationSizeOf(
+          context,
+          portrait: 2,
+          landscape: 4,
+        ),
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
@@ -281,12 +288,14 @@ class ShimmerProductGrid extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TAShimmerLoading(
-                width: double.infinity,
-                height: 120,
-                context: context,
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
+              Expanded(
+                child: TAShimmerLoading(
+                  width: double.infinity,
+                  height: 120,
+                  context: context,
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(12)),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8),

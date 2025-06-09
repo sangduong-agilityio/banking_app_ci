@@ -24,11 +24,6 @@ class ViewAllStoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = TAResponsive.orientationSizeOf(
-      context,
-      portrait: 2,
-      landscape: 4,
-    );
     return BlocProvider(
       create: (context) => HomeBloc(
         repo: context.read<HomeRepository>(),
@@ -56,11 +51,10 @@ class ViewAllStoreScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount.toInt(),
-                    childAspectRatio: TAResponsive.orientationSizeOf(
+                    crossAxisCount: TAResponsive.orientationSizeOf(
                       context,
-                      portrait: TAResponsive.isTablet(context) ? 1.4 : 0.85,
-                      landscape: 1.2,
+                      portrait: 2,
+                      landscape: 4,
                     ),
                   ),
                   itemCount: stores.length,

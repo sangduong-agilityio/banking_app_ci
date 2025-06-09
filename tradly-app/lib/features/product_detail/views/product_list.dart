@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
-import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
 import 'package:tradly_app/utils/responsive.dart';
@@ -25,16 +24,9 @@ class ProductList extends StatelessWidget {
   final String title;
   final int categoryId;
   final int? productId;
-  final bool isPortrait = true;
 
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = TAResponsive.orientationSizeOf(
-      context,
-      portrait: 2,
-      landscape: 4,
-    );
-
     return BlocProvider(
       create: (context) => ProductDetailBloc(
         repo: context.read<ProductRepository>(),
@@ -56,34 +48,25 @@ class ProductList extends StatelessWidget {
                 return ShimmerProductGrid();
               } else if (state.status is ProductDetailStatusSuccess) {
                 final products = state.products ?? [];
-                return Padding(
+                return GridView.builder(
                   padding: const EdgeInsets.all(20),
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount.toInt(),
-                      childAspectRatio: TAResponsive.orientationSizeOf(
-                        context,
-                        portrait: TAResponsive.isTablet(context) ? 1.4 : 0.85,
-                        landscape: 1.2,
-                      ),
-                    ),
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      return Semantics(
-                        hint: S.current.productDetailDoubleTapHint,
-                        child: TACardProduct(
-                          onTapProduct: () {
-                            TARouter.navigateTo(
-                              context,
-                              TAPaths.productDetail.name,
-                              extra: state.products?[index].id,
-                            );
-                          },
-                          product: products[index],
-                        ),
-                      );
-                    },
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: TAResponsive.orientationSizeOf(context,
+                        portrait: 2, landscape: 4),
                   ),
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    return TACardProduct(
+                      onTapProduct: () {
+                        TARouter.navigateTo(
+                          context,
+                          TAPaths.productDetail.name,
+                          extra: state.products?[index].id,
+                        );
+                      },
+                      product: products[index],
+                    );
+                  },
                 );
               } else if (state.status is ProductDetailStatusFailure) {
                 return NotFoundScreen();
