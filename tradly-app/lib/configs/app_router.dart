@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/auth/view/send_otp_screen.dart';
 import 'package:tradly_app/features/home/views/see_all_new_product.dart';
 import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
@@ -54,6 +55,11 @@ class TARouter {
         name: TAPaths.signUp.name,
         path: TAPaths.signUp.path,
         builder: (context, state) => const SignUpScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.sendOtp.name,
+        path: TAPaths.sendOtp.path,
+        builder: (context, state) => const SendOtpScreen(),
       ),
       GoRoute(
         name: TAPaths.productDetail.name,
@@ -267,6 +273,10 @@ enum TAPaths {
   signUp(
     name: 'signUp',
     path: '/signUp',
+  ),
+  sendOtp(
+    name: 'sendOtp',
+    path: '/sendOtp',
   ),
   home(
     name: 'home',

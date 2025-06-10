@@ -128,7 +128,7 @@ class TACardProduct extends StatelessWidget {
                           const SizedBox(width: 6),
                           Semantics(
                             excludeSemantics: true,
-                            label: 'Original price: \$${product.newPrice}',
+                            label: 'Original price: \$${product.price}',
                             child: TATitleLargeText(
                               text: '\$${product.price}',
                               color: context.colorScheme.primary,
@@ -173,46 +173,47 @@ class TACardStoreFollow extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              clipBehavior: Clip.none,
-              children: [
-                TAImageRectangle(
-                  stores.imageUrl ?? '',
-                  isBorderTop: true,
-                  width: width ?? double.infinity,
-                  height: height ?? 75,
-                  boxFit: BoxFit.cover,
-                ),
-                Positioned(
-                  top: 40,
-                  left: 40,
-                  child: TAImageCircle(
-                    radius: 32,
-                    stores.logoStore ?? '',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  TAImageRectangle(
+                    stores.imageUrl ?? '',
+                    isBorderTop: true,
+                    width: width ?? double.infinity,
+                    height: height ?? 75,
                     boxFit: BoxFit.cover,
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 35),
-            TATitleLargeText(
-              text: stores.storeName,
-              color: context.colorScheme.onSurface,
-            ),
-            ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(80, 25),
-                  backgroundColor: context.colorScheme.primary,
-                ),
-                child: TATitleMediumText(
-                  text: S.current.homeFollowButton,
-                )),
-          ],
+                  Positioned(
+                    top: 40,
+                    left: 40,
+                    child: TAImageCircle(
+                      radius: 32,
+                      stores.logoStore ?? '',
+                      boxFit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 35),
+              TATitleLargeText(
+                text: stores.storeName,
+                color: context.colorScheme.onSurface,
+              ),
+              ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(80, 25),
+                    backgroundColor: context.colorScheme.primary,
+                  ),
+                  child: TATitleMediumText(
+                    text: S.current.homeFollowButton,
+                  )),
+            ],
+          ),
         ),
       ),
     );

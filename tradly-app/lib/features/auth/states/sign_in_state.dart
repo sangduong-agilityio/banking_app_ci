@@ -8,6 +8,7 @@ class SignInState extends Equatable {
     this.status = const SignInStatus.initial(),
     this.email = '',
     this.password = '',
+    this.phoneNumber = '',
     this.isFormValid = false,
     this.errorMessage,
     this.sessionToken,
@@ -16,6 +17,7 @@ class SignInState extends Equatable {
   final SignInStatus status;
   final String email;
   final String password;
+  final String? phoneNumber;
   final bool isFormValid;
   final String? errorMessage;
   final String? sessionToken;
@@ -26,6 +28,7 @@ class SignInState extends Equatable {
     bool? isFormValid,
     String? email,
     String? password,
+    String? phoneNumber,
     String? sessionToken,
   }) {
     return SignInState(
@@ -34,6 +37,7 @@ class SignInState extends Equatable {
       isFormValid: isFormValid ?? this.isFormValid,
       email: email ?? this.email,
       password: password ?? this.password,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       sessionToken: sessionToken ?? this.sessionToken,
     );
   }
@@ -45,6 +49,7 @@ class SignInState extends Equatable {
         isFormValid,
         email,
         password,
+        phoneNumber,
         sessionToken,
       ];
 }

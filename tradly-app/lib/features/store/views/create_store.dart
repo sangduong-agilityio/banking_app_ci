@@ -198,7 +198,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
               padding: const EdgeInsets.all(20),
               color: context.colorScheme.onPrimary,
               child: TAElevatedButton(
-                // isDisabled: !state.isFormValid,
+                isDisabled: !state.isFormValid,
                 text: S.current.storeCreateButton,
                 backgroundColor: context.colorScheme.primary,
                 onPressed: () {

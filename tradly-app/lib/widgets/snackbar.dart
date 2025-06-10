@@ -34,7 +34,7 @@ class TASnackBar {
       content: Text(
         message,
         style: context.textTheme.bodyLarge?.copyWith(
-          color: context.colorScheme.onSecondary,
+          color: context.colorScheme.onPrimary,
         ),
       ),
     );

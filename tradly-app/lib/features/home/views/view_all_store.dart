@@ -49,20 +49,24 @@ class ViewAllStoreScreen extends StatelessWidget {
               final stores = state.stores ?? [];
               return Padding(
                 padding: const EdgeInsets.all(20),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: TAResponsive.orientationSizeOf(
-                      context,
-                      portrait: 2,
-                      landscape: 4,
+                child: SingleChildScrollView(
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: TAResponsive.orientationSizeOf(
+                        context,
+                        portrait: 2,
+                        landscape: 4,
+                      ),
                     ),
+                    itemCount: stores.length,
+                    itemBuilder: (context, index) {
+                      return TACardStoreFollow(
+                        stores: stores[index],
+                      );
+                    },
                   ),
-                  itemCount: stores.length,
-                  itemBuilder: (context, index) {
-                    return TACardStoreFollow(
-                      stores: stores[index],
-                    );
-                  },
                 ),
               );
             } else if (state.status is HomeStatusFailure) {

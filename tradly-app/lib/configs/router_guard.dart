@@ -21,7 +21,8 @@ class RouterGuard {
     if (!isLoggedIn &&
         state.uri.toString() != TAPaths.onboarding.path &&
         state.uri.toString() != TAPaths.signIn.path &&
-        state.uri.toString() != TAPaths.signUp.path) {
+        state.uri.toString() != TAPaths.signUp.path &&
+        state.uri.toString() != TAPaths.sendOtp.path) {
       return TAPaths.onboarding.path;
     }
 
