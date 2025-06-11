@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/auth/view/otp_verification_screen.dart';
 import 'package:tradly_app/features/auth/view/send_otp_screen.dart';
 import 'package:tradly_app/features/home/views/see_all_new_product.dart';
 import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
@@ -59,7 +60,12 @@ class TARouter {
       GoRoute(
         name: TAPaths.sendOtp.name,
         path: TAPaths.sendOtp.path,
-        builder: (context, state) => const SendOtpScreen(),
+        builder: (context, state) => SendOtpScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.otpVerification.name,
+        path: TAPaths.otpVerification.path,
+        builder: (context, state) => OtpVerificationScreen(),
       ),
       GoRoute(
         name: TAPaths.productDetail.name,
@@ -277,6 +283,10 @@ enum TAPaths {
   sendOtp(
     name: 'sendOtp',
     path: '/sendOtp',
+  ),
+  otpVerification(
+    name: 'otpVerification',
+    path: '/otpVerification',
   ),
   home(
     name: 'home',

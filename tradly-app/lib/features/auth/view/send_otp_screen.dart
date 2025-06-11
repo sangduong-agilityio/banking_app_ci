@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
 import 'package:tradly_app/features/auth/states/sign_in_bloc.dart';
@@ -52,6 +54,7 @@ class _SendOtpScreenState extends State<SendOtpScreen> {
                   context.loaderOverlay.hide();
                 },
                 success: () async {
+                  await context.pushNamed(TAPaths.otpVerification.name);
                   context.loaderOverlay.hide();
                 },
                 loading: () {
