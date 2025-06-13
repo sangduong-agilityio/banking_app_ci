@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
-import 'package:tradly_app/features/auth/view/otp_verification_screen.dart';
-import 'package:tradly_app/features/auth/view/send_otp_screen.dart';
 import 'package:tradly_app/features/home/views/see_all_new_product.dart';
 import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
+import 'package:tradly_app/features/wish_list/wish_list_screen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/router_guard.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
@@ -58,16 +57,6 @@ class TARouter {
         builder: (context, state) => const SignUpScreen(),
       ),
       GoRoute(
-        name: TAPaths.sendOtp.name,
-        path: TAPaths.sendOtp.path,
-        builder: (context, state) => SendOtpScreen(),
-      ),
-      GoRoute(
-        name: TAPaths.otpVerification.name,
-        path: TAPaths.otpVerification.path,
-        builder: (context, state) => OtpVerificationScreen(),
-      ),
-      GoRoute(
         name: TAPaths.productDetail.name,
         path: TAPaths.productDetail.path,
         builder: (context, state) {
@@ -98,6 +87,13 @@ class TARouter {
         builder: (context, state) {
           final product = state.extra as ProductModel;
           return CheckoutScreen(product: product);
+        },
+      ),
+      GoRoute(
+        name: TAPaths.wishList.name,
+        path: TAPaths.wishList.path,
+        builder: (context, state) {
+          return WishListScreen();
         },
       ),
       GoRoute(
@@ -280,14 +276,7 @@ enum TAPaths {
     name: 'signUp',
     path: '/signUp',
   ),
-  sendOtp(
-    name: 'sendOtp',
-    path: '/sendOtp',
-  ),
-  otpVerification(
-    name: 'otpVerification',
-    path: '/otpVerification',
-  ),
+
   home(
     name: 'home',
     path: '/home',
@@ -299,6 +288,10 @@ enum TAPaths {
   browse(
     name: 'browse',
     path: '/browse',
+  ),
+  wishList(
+    name: 'wishList',
+    path: '/wishList',
   ),
   orderHistory(
     name: 'orderHistory',

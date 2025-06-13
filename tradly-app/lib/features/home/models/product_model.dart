@@ -52,6 +52,7 @@ class ProductModel {
   final int? categoryId;
   final int? storeId;
   final List<ProductType>? productType;
+  final bool isWishListed; // New property
 
   ProductModel({
     this.id,
@@ -72,6 +73,7 @@ class ProductModel {
     this.categoryType,
     this.storeId,
     this.productType,
+    this.isWishListed = false, // Default value
   });
 
   // Factory method to create a ProductModel from a JSON object
@@ -97,6 +99,7 @@ class ProductModel {
       productType: (json['productType'] as List<dynamic>?)
           ?.map((e) => ProductType.fromJson(e))
           .toList(),
+      isWishListed: json['isWishListed'] ?? false, // Parse from JSON
     );
   }
 
@@ -121,6 +124,7 @@ class ProductModel {
       'categoryId': categoryId,
       'storeId': storeId,
       'productType': productType?.map((e) => e.toJson()).toList(),
+      'isWishListed': isWishListed, // Include in JSON
     };
   }
 
@@ -143,6 +147,7 @@ class ProductModel {
     int? categoryId,
     int? storeId,
     List<ProductType>? productType,
+    bool? isWishListed,
   }) {
     return ProductModel(
       id: id ?? this.id,
@@ -163,6 +168,7 @@ class ProductModel {
       categoryId: categoryId ?? this.categoryId,
       storeId: storeId ?? this.storeId,
       productType: productType ?? this.productType,
+      isWishListed: isWishListed ?? this.isWishListed,
     );
   }
 }

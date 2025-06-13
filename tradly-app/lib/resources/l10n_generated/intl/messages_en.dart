@@ -402,5 +402,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "validatorPhoneWrongFormat": MessageLookupByLibrary.simpleMessage(
       "Email is invalid format",
     ),
+    "wishLisTitle": MessageLookupByLibrary.simpleMessage("Wish List"),
   };
 }

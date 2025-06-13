@@ -1643,6 +1643,11 @@ class S {
   String get browseApplyButton {
     return Intl.message('Apply', name: 'browseApplyButton', desc: '', args: []);
   }
+
+  /// `Wish List`
+  String get wishLisTitle {
+    return Intl.message('Wish List', name: 'wishLisTitle', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

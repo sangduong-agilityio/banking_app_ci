@@ -80,6 +80,7 @@ Before you continue, ensure you meet the following requirements:
 - [x] Order History Screen + State Management(BLoC) + API
 - [x] Checkout Screen + State Management(BLoC) + Supabase
 - [x] Profile Screen + State Management(BLoC)
+- [x] WishList Screen + State Management(BLoC)
 
 ## Installation
 

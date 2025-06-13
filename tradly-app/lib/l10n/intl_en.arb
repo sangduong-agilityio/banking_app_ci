@@ -228,5 +228,6 @@
   "browsePriceLowToHighTitle":"Price: Low to High",
   "browsePriceHighToLowTitle":"Price: High to Low",
   "browseCancelButton":"Cancel",
-  "browseApplyButton":"Apply"
+  "browseApplyButton":"Apply",
+  "wishLisTitle":"Wish List"
 }

@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/app_provider.dart';
 import 'package:tradly_app/api/api_client.dart';
 import 'package:tradly_app/env/env.dart';
+import 'package:tradly_app/features/wish_list/states/wish_list_bloc.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/themes/app_theme.dart';
@@ -104,6 +105,9 @@ class _TradlyShopAppState extends State<TradlyShopApp>
               ),
             ),
           ),
+        ),
+        BlocProvider(
+          create: (context) => WishListBloc(),
         ),
       ],
       child: TAProvider(

@@ -13,6 +13,8 @@ import 'package:tradly_app/features/product_detail/views/checkout.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/images.dart';
 import 'package:tradly_app/widgets/text.dart';
+import 'package:tradly_app/features/wish_list/states/wish_list_bloc.dart';
+import 'package:tradly_app/features/wish_list/states/wish_list_event.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({
@@ -34,18 +36,21 @@ class ProductDetailPage extends StatelessWidget {
             previous.status != current.status,
         builder: (context, state) {
           final product = state.product;
+
           return TAScaffold(
             appBar: TAAppBar.productDetail(
               bottomType: TAAppBarBottomType.imageBackground,
-              background: Image.network(
-                product?.imageUrl ?? '',
-                width: double.infinity,
-                height: 240,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Icon(Icons.error);
-                },
-              ),
+              background: product?.imageUrl != null
+                  ? Image.network(
+                      product?.imageUrl ?? '',
+                      width: double.infinity,
+                      height: 240,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.error);
+                      },
+                    )
+                  : const Icon(Icons.error),
               actions: [
                 Container(
                   decoration: BoxDecoration(
@@ -64,8 +69,28 @@ class ProductDetailPage extends StatelessWidget {
                     color: context.colorScheme.onPrimary.withAlpha(50),
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.favorite),
-                    onPressed: () {},
+                    icon: Icon(
+                      Icons.favorite,
+                      color: context
+                              .watch<WishListBloc>()
+                              .state
+                              .wishlist
+                              .any((item) => item.id == product?.id)
+                          ? context.colorScheme.error
+                          : null,
+                    ),
+                    onPressed: () {
+                      if (product != null) {
+                        final wishListBloc = context.read<WishListBloc>();
+                        if (wishListBloc.state.wishlist
+                            .any((item) => item.id == product.id)) {
+                          wishListBloc
+                              .add(RemoveFromWishListEvent(product: product));
+                        } else {
+                          wishListBloc.add(AddToWishListEvt(product: product));
+                        }
+                      }
+                    },
                   ),
                 ),
                 SizedBox(width: 5),
@@ -104,13 +129,13 @@ class ProductDetailPage extends StatelessWidget {
                               Row(
                                 children: [
                                   TAHeadlineMediumText(
-                                    text: '\$${product?.newPrice}',
+                                    text: '\$${product?.newPrice ?? 0}',
                                     color: context.colorScheme.primary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                   SizedBox(width: 8),
                                   TATitleLargeText(
-                                    text: '\$${product?.price}',
+                                    text: '\$${product?.price ?? 0}',
                                     decoration: TextDecoration.combine([
                                       TextDecoration.lineThrough,
                                     ]),

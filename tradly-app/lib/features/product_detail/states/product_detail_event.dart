@@ -74,3 +74,14 @@ final class ProductDetailCheckoutEvt extends ProductDetailEvt {
   @override
   List<Object> get props => [product];
 }
+
+final class ProductDetailToggleWishListEvt extends ProductDetailEvt {
+  const ProductDetailToggleWishListEvt({
+    required this.productId,
+  });
+
+  final int productId;
+
+  @override
+  List<Object> get props => [productId];
+}
