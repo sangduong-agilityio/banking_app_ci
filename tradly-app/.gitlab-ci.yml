@@ -2,7 +2,10 @@
   stages:
     - lints
     - test
-  
+  workflow:
+    rules:
+      - if: '$CI_COMMIT_BRANCH == "feat/tradly-shop-app"'
+      - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   lints:
     stage: lints
     before_script:
@@ -12,15 +15,18 @@
     tags:
       - flutter
 
-  unit tests:
-    stage: test
+    unit tests:
+    
+      stage: test
 
-    script:
-      - flutter test --coverage
-    artifacts:
-      paths:
-        - coverage/lcov.info
-      reports:
-        junit: test/test_results.xml
-    tags:
-      - flutter
+      script:
+        - flutter test --coverage
+      artifacts:
+        paths:
+          - coverage/lcov.info
+        reports:
+          junit: test/test_results.xml
+      tags:
+        - flutter
+
+     
