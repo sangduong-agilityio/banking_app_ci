@@ -1,33 +1,26 @@
-# Define stages for CI/CD pipeline
-stages:
-  - build
-  - test
-  - deploy
+ image: gbcr.io/cirruslabs/flutter
+  stages:
+    - lints
+    - test
+  
+  lints:
+    stage: lints
+    before_script:
+      - bash reconfigure.sh
+    script:
+      - flutter analyze
+    tags:
+      - flutter
 
-# Build stage: Install dependencies and build the Flutter app
-build:
-  stage: build
-  image: cirrusci/flutter:latest # Use Flutter Docker image
-  script:
-    - flutter pub get # Install dependencies
-    - flutter build apk --release # Build APK in release mode
-  artifacts:
-    paths:
-      - build/app/outputs/flutter-apk/app-release.apk # Save the built APK as an artifact
+  unit tests:
+    stage: test
 
-# Test stage: Run Flutter tests
-test:
-  stage: test
-  image: cirrusci/flutter:latest
-  script:
-    - flutter test # Run unit tests
-
-# Deploy stage: Deploy the APK (example assumes Firebase App Distribution)
-deploy:
-  stage: deploy
-  image: google/cloud-sdk:latest # Use Google Cloud SDK for Firebase deployment
-  script:
-    - echo $FIREBASE_AUTH_TOKEN | firebase login:ci --no-localhost # Authenticate Firebase
-    - firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app $FIREBASE_APP_ID # Deploy APK
-  only:
-    - feat/tradly-shop-app
+    script:
+      - flutter test --coverage
+    artifacts:
+      paths:
+        - coverage/lcov.info
+      reports:
+        junit: test/test_results.xml
+    tags:
+      - flutter
