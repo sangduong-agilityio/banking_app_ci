@@ -1,31 +1,31 @@
- image: gbcr.io/cirruslabs/flutter
-  stages:
-    - lints
-    - test
-  workflow:
-    rules:
-      - if: '$CI_COMMIT_BRANCH == "feat/tradly-shop-app"'
-      - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-  lints:
-    stage: lints
-    before_script:
-      - bash reconfigure.sh
-    script:
-      - flutter analyze
-    tags:
-      - flutter
+image: gbcr.io/cirruslabs/flutter
 
-    unit tests:
-      stage: test
+stages:
+  - lints
+  - test
 
-      script:
-        - flutter test --coverage
-      artifacts:
-        paths:
-          - coverage/lcov.info
-        reports:
-          junit: test/test_results.xml
-      tags:
-        - flutter
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "feat/tradly-shop-app"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
-     
+lints:
+  stage: lints
+  before_script:
+    - bash reconfigure.sh
+  script:
+    - flutter analyze
+  tags:
+    - flutter
+
+unit_tests:
+  stage: test
+  script:
+    - flutter test --coverage
+  artifacts:
+    paths:
+      - coverage/lcov.info
+    reports:
+      junit: test/test_results.xml
+  tags:
+    - flutter
