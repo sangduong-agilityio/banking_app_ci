@@ -16,7 +16,6 @@
       - flutter
 
     unit tests:
-    
       stage: test
 
       script:
