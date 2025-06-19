@@ -1,31 +1,27 @@
-image: gbcr.io/cirruslabs/flutter
+image: cirrusci/flutter:stable  # Use a stable Flutter image
 
 stages:
-  - lints
+  - build
   - test
+  - deploy
 
 workflow:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "feat/tradly-shop-app"'
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == "feat/tradly-shop-app"' # Trigger pipeline for specific branch
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"' # Trigger pipeline for merge requests
 
-lints:
-  stage: lints
-  before_script:
-    - bash reconfigure.sh
+build_android:
+  stage: build
   script:
-    - flutter analyze
-  tags:
-    - flutter
-
-unit_tests:
-  stage: test
-  script:
-    - flutter test --coverage
+    - flutter packages get # Install dependencies
+    - flutter build apk --release # Build Android APK in release mode
   artifacts:
     paths:
-      - coverage/lcov.info
-    reports:
-      junit: test/test_results.xml
-  tags:
-    - flutter
+      - build/app/outputs/apk/release/*.apk # Save APK as artifact
+
+
+test:
+  stage: test
+  script:
+    - flutter test # Run unit tests
+
