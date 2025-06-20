@@ -344,6 +344,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "You Don\'t Have a Store",
     ),
     "storeOfferPriceLabel": MessageLookupByLibrary.simpleMessage("Offer Price"),
+    "storePhotoCammeraButon": MessageLookupByLibrary.simpleMessage("Camera"),
+    "storePhotoContentDialog": MessageLookupByLibrary.simpleMessage(
+      "Please select an option to add a photo",
+    ),
+    "storePhotoGalleryButton": MessageLookupByLibrary.simpleMessage("Gallery"),
+    "storePhotoTitleDialog": MessageLookupByLibrary.simpleMessage(
+      "Choose Photo Option",
+    ),
     "storePriceLabel": MessageLookupByLibrary.simpleMessage("Price"),
     "storePriceTypeLabel": MessageLookupByLibrary.simpleMessage("Price Type"),
     "storeProductDescriptionLabel": MessageLookupByLibrary.simpleMessage(

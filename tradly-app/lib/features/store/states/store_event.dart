@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:tradly_app/features/home/models/product_model.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
@@ -103,12 +104,14 @@ class DeleteProductEvt extends StoreEvt {
 class PickImageEvt extends StoreEvt {
   const PickImageEvt({
     required this.maxPhotos,
+    required this.source,
   });
 
   final int maxPhotos;
+  final ImageSource source;
 
   @override
-  List<Object?> get props => [maxPhotos];
+  List<Object?> get props => [maxPhotos, source];
 }
 
 class RemoveImageEvt extends StoreEvt {

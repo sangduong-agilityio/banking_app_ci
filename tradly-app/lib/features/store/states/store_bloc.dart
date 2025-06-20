@@ -222,7 +222,7 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
 
     try {
       final pickedFile = await _picker.pickImage(
-        source: ImageSource.gallery,
+        source: event.source,
         maxWidth: 1600,
         maxHeight: 1200,
         imageQuality: 85,

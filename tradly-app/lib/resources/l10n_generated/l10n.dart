@@ -1314,6 +1314,46 @@ class S {
     );
   }
 
+  /// `Choose Photo Option`
+  String get storePhotoTitleDialog {
+    return Intl.message(
+      'Choose Photo Option',
+      name: 'storePhotoTitleDialog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select an option to add a photo`
+  String get storePhotoContentDialog {
+    return Intl.message(
+      'Please select an option to add a photo',
+      name: 'storePhotoContentDialog',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camera`
+  String get storePhotoCammeraButon {
+    return Intl.message(
+      'Camera',
+      name: 'storePhotoCammeraButon',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gallery`
+  String get storePhotoGalleryButton {
+    return Intl.message(
+      'Gallery',
+      name: 'storePhotoGalleryButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Profile`
   String get profileTitle {
     return Intl.message('Profile', name: 'profileTitle', desc: '', args: []);

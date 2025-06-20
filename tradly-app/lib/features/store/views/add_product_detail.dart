@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/widgets/dialog.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/store/states/store_state.dart';
@@ -256,10 +258,13 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
 
   Widget _buildAddPhotoBox() {
     return GestureDetector(
-      onTap: () {
-        context.read<StoreBloc>().add(
-              PickImageEvt(maxPhotos: _maxPhotos),
-            );
+      onTap: () async {
+        final source = await _showImageSourceDialog(context);
+        if (source != null) {
+          context.read<StoreBloc>().add(
+                PickImageEvt(maxPhotos: _maxPhotos, source: source),
+              );
+        }
       },
       child: Container(
         width: 140,
@@ -285,6 +290,24 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<ImageSource?> _showImageSourceDialog(BuildContext context) async {
+    return showDialog<ImageSource>(
+      context: context,
+      builder: (context) => TADialog(
+        title: S.current.storePhotoTitleDialog,
+        content: S.current.storePhotoContentDialog,
+        confirmButton: S.current.storePhotoCammeraButon,
+        confirmCancel: S.current.storePhotoGalleryButton,
+        onAccept: () {
+          Navigator.pop(context, ImageSource.camera);
+        },
+        onCancel: () {
+          Navigator.pop(context, ImageSource.gallery);
+        },
       ),
     );
   }

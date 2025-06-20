@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
@@ -251,7 +252,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
     return GestureDetector(
       onTap: () {
         context.read<StoreBloc>().add(
-              PickImageEvt(maxPhotos: _maxPhotos),
+              PickImageEvt(
+                maxPhotos: _maxPhotos,
+                source: ImageSource.gallery,
+              ),
             );
       },
       child: Container(

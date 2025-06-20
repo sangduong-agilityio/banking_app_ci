@@ -474,7 +474,7 @@ class PickImageEvtSuccessScenario
           },
           build: () => StoreBloc(repo: storeRepository),
           act: (bloc) => bloc.add(
-            PickImageEvt(maxPhotos: 1),
+            PickImageEvt(maxPhotos: 1, source: ImageSource.gallery),
           ),
           expect: () => [],
         );
@@ -494,7 +494,7 @@ class PickImageEvtFailureScenario
           setUp: () {},
           build: () => StoreBloc(repo: storeRepository),
           act: (bloc) => bloc.add(
-            PickImageEvt(maxPhotos: 1),
+            PickImageEvt(maxPhotos: 1, source: ImageSource.gallery),
           ),
           expect: () => [],
         );
