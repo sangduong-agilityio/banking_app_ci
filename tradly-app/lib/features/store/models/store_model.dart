@@ -12,6 +12,7 @@ class StoreModel {
   final String? logoStore;
   final String? country;
   final String? courieName;
+  final List<String>? tagLine;
   final List<ProductModel>? products;
 
   StoreModel({
@@ -27,6 +28,7 @@ class StoreModel {
     this.city,
     this.country,
     this.courieName,
+    this.tagLine,
   });
 
   factory StoreModel.fromMap(Map<String, dynamic> map) {
@@ -44,6 +46,9 @@ class StoreModel {
       city: map['city'],
       country: map['country'],
       courieName: map['courieName'],
+      tagLine: map['tagLineDetail'] != null
+          ? List<String>.from(map['tagLineDetail'])
+          : null,
       products:
           productList?.map((item) => ProductModel.fromJson(item)).toList(),
     );
@@ -62,6 +67,7 @@ class StoreModel {
       'logoStore': logoStore,
       'country': country,
       'courieName': courieName,
+      if (tagLine != null) 'tagLineDetail': tagLine,
       if (products != null)
         'products': products!.map((product) => product.toJson()).toList(),
     };

@@ -15,6 +15,7 @@ import 'package:tradly_app/widgets/form.dart';
 import 'package:tradly_app/widgets/snackbar.dart';
 import 'package:tradly_app/widgets/text_field.dart';
 import 'package:tradly_app/widgets/text.dart';
+import 'package:tradly_app/utils/details_util.dart';
 
 class CreateStoreScreen extends StatefulWidget {
   const CreateStoreScreen({
@@ -39,7 +40,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   final _courierNameController = TextEditingController();
   final _countryController = TextEditingController();
 
-  List<String> _tagLineDetail = ['Vegetables', 'Fruit'];
+  List<String> _tagLineDetail = TADetails.getTagLineDetails();
 
   @override
   void dispose() {
@@ -212,6 +213,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                       city: _cityController.text,
                       country: _countryController.text,
                       courieName: _courierNameController.text,
+                      tagLine: _tagLineDetail,
                     );
 
                     context

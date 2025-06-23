@@ -49,10 +49,11 @@ class ProductModel {
   final String? state;
   final String? zipCode;
   final String? categoryType;
+  final List<String>? addtionalDetail;
   final int? categoryId;
   final int? storeId;
   final List<ProductType>? productType;
-  final bool isWishListed; // New property
+  final bool isWishListed;
 
   ProductModel({
     this.id,
@@ -73,7 +74,8 @@ class ProductModel {
     this.categoryType,
     this.storeId,
     this.productType,
-    this.isWishListed = false, // Default value
+    this.isWishListed = false,
+    this.addtionalDetail,
   });
 
   // Factory method to create a ProductModel from a JSON object
@@ -96,10 +98,13 @@ class ProductModel {
       categoryType: json['categoryType'],
       categoryId: json['categoryId'],
       storeId: json['storeId'],
+      addtionalDetail: (json['addtionalDetail'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList(),
       productType: (json['productType'] as List<dynamic>?)
           ?.map((e) => ProductType.fromJson(e))
           .toList(),
-      isWishListed: json['isWishListed'] ?? false, // Parse from JSON
+      isWishListed: json['isWishListed'] ?? false,
     );
   }
 
@@ -123,8 +128,9 @@ class ProductModel {
       'categoryType': categoryType,
       'categoryId': categoryId,
       'storeId': storeId,
+      'addtionalDetail': addtionalDetail,
       'productType': productType?.map((e) => e.toJson()).toList(),
-      'isWishListed': isWishListed, // Include in JSON
+      'isWishListed': isWishListed,
     };
   }
 
@@ -147,6 +153,7 @@ class ProductModel {
     int? categoryId,
     int? storeId,
     List<ProductType>? productType,
+    List<String>? addtionalDetail,
     bool? isWishListed,
   }) {
     return ProductModel(
@@ -167,6 +174,7 @@ class ProductModel {
       categoryType: categoryType ?? this.categoryType,
       categoryId: categoryId ?? this.categoryId,
       storeId: storeId ?? this.storeId,
+      addtionalDetail: addtionalDetail ?? this.addtionalDetail,
       productType: productType ?? this.productType,
       isWishListed: isWishListed ?? this.isWishListed,
     );

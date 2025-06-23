@@ -86,6 +86,10 @@ dependencies:
   # Overlay loader for async operations
   loader_overlay: ^5.0.0
 
+  flutter_typeahead: ^5.2.0
+
+  flutter_form_builder: ^10.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -116,8 +120,6 @@ dev_dependencies:
 
   # Fake data generator for tests
   faker: ^2.2.0
-
-  flutter_typeahead: ^5.2.0
 
 flutter:
   uses-material-design: true

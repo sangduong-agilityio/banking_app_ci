@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/utils/validators.dart';
 import 'package:tradly_app/widgets/text.dart';
 
 class TATextField extends StatefulWidget {
@@ -28,8 +30,6 @@ class TATextField extends StatefulWidget {
     this.labelStyle,
     this.suffixIcon,
     this.prefixIcon,
-    this.dropdownItems,
-    this.onDropdownChanged,
     this.useMaterialStyle = true,
     this.isChipInput = false,
     this.chips = const [],
@@ -48,7 +48,7 @@ class TATextField extends StatefulWidget {
   final VoidCallback? onTap;
   final TextInputAction? textInputAction;
   final FocusNode? focusNode;
-  final Function(String)? onFieldSubmitted;
+  final ValueChanged<String>? onFieldSubmitted;
   final ValueChanged<String>? onChanged;
   final bool autoFocus;
   final VoidCallback? onEditingComplete;
@@ -59,8 +59,6 @@ class TATextField extends StatefulWidget {
   final TextStyle? labelStyle;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
-  final List<DropdownMenuItem<String>>? dropdownItems;
-  final ValueChanged<String?>? onDropdownChanged;
   final bool useMaterialStyle;
   final bool isChipInput;
   final List<String> chips;
@@ -82,7 +80,7 @@ class TATextField extends StatefulWidget {
     VoidCallback? onTap,
     TextInputAction? textInputAction,
     FocusNode? focusNode,
-    Function(String)? onFieldSubmitted,
+    ValueChanged<String?>? onFieldSubmitted,
     ValueChanged<String>? onChanged,
     bool? autoFocus,
     VoidCallback? onEditingComplete,
@@ -93,8 +91,6 @@ class TATextField extends StatefulWidget {
     TextStyle? labelStyle,
     Widget? suffixIcon,
     Widget? prefixIcon,
-    List<DropdownMenuItem<String>>? dropdownItems,
-    ValueChanged<String?>? onDropdownChanged,
     bool? useMaterialStyle,
     bool? isChipInput,
     List<String>? chips,
@@ -123,8 +119,6 @@ class TATextField extends StatefulWidget {
       hintStyle: hintStyle ?? this.hintStyle,
       labelStyle: labelStyle ?? this.labelStyle,
       suffixIcon: suffixIcon ?? this.suffixIcon,
-      dropdownItems: dropdownItems ?? this.dropdownItems,
-      onDropdownChanged: onDropdownChanged ?? this.onDropdownChanged,
       useMaterialStyle: useMaterialStyle ?? this.useMaterialStyle,
       isChipInput: isChipInput ?? this.isChipInput,
       chips: chips ?? this.chips,
@@ -133,22 +127,13 @@ class TATextField extends StatefulWidget {
   }
 }
 
-class _TATextFieldState extends State<TATextField> {
+class _TATextFieldState extends State<TATextField> with InputValidationMixin {
   late bool _textInvisible;
-  final TextEditingController _chipController = TextEditingController();
-  final FocusNode _chipFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _textInvisible = true;
-  }
-
-  @override
-  void dispose() {
-    _chipController.dispose();
-    _chipFocusNode.dispose();
-    super.dispose();
   }
 
   void togglePasswordVisibility() {
@@ -157,33 +142,18 @@ class _TATextFieldState extends State<TATextField> {
     });
   }
 
-  void _addChip(String value) {
-    if (value.isNotEmpty &&
-        !widget.chips.contains(value) &&
-        widget.onChipsChanged != null) {
-      widget.onChipsChanged!([...widget.chips, value]);
-      _chipController.clear();
-    }
-  }
-
-  void _removeChip(String chip) {
-    if (widget.onChipsChanged != null) {
-      widget.onChipsChanged!(widget.chips.where((c) => c != chip).toList());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (widget.isChipInput) {
-      return _buildMaterialChipInput(context);
+      return _buildDynamicChip(context);
     } else {
       return widget.useMaterialStyle
-          ? _buildMaterialTextField(context)
+          ? _buildTextField(context)
           : _buildCustomTextField(context);
     }
   }
 
-  Widget _buildMaterialTextField(BuildContext context) {
+  Widget _buildTextField(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -198,7 +168,8 @@ class _TATextFieldState extends State<TATextField> {
                   fontSize: 14,
                 ),
           ),
-          TextFormField(
+          FormBuilderTextField(
+            name: widget.label,
             cursorColor: context.colorScheme.onSurface,
             controller: widget.controller,
             initialValue: widget.initialValue,
@@ -209,20 +180,19 @@ class _TATextFieldState extends State<TATextField> {
             obscuringCharacter: '*',
             textInputAction: widget.textInputAction,
             focusNode: widget.focusNode,
-            onFieldSubmitted: (value) {
+            onSubmitted: (value) {
               if (widget.textInputAction == TextInputAction.next) {
                 FocusScope.of(context).nextFocus();
               }
               if (widget.onFieldSubmitted != null) {
-                widget.onFieldSubmitted!(value);
+                widget.onFieldSubmitted!(value ?? '');
               }
             },
-            onChanged: widget.onChanged,
+            onChanged: widget.onChanged as ValueChanged<String?>?,
             onTap: widget.onTap,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onEditingComplete: widget.onEditingComplete,
             autofocus: widget.autoFocus,
-            scrollPadding: widget.scrollPadding,
             style: widget.textStyle ??
                 TextStyle(color: context.colorScheme.onSurface),
             decoration: InputDecoration(
@@ -246,12 +216,8 @@ class _TATextFieldState extends State<TATextField> {
                   ),
             ),
             validator: widget.validator ??
-                (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter ${widget.label}';
-                  }
-                  return null;
-                },
+                (value) =>
+                    InputValidationMixin.validateInput(value, widget.label),
           ),
         ],
       ),
@@ -262,20 +228,21 @@ class _TATextFieldState extends State<TATextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFormField(
+        FormBuilderTextField(
+          name: widget.label,
           cursorColor: context.colorScheme.onPrimary,
           cursorErrorColor: context.colorScheme.onPrimary,
           focusNode: widget.focusNode,
           controller: widget.controller,
-          onFieldSubmitted: (value) {
+          onSubmitted: (value) {
             if (widget.textInputAction == TextInputAction.next) {
               FocusScope.of(context).nextFocus();
             }
             if (widget.onFieldSubmitted != null) {
-              widget.onFieldSubmitted!(value);
+              widget.onFieldSubmitted!(value ?? '');
             }
           },
-          onChanged: widget.onChanged,
+          onChanged: widget.onChanged as ValueChanged<String?>?,
           onTap: widget.onTap,
           obscuringCharacter: '*',
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -292,7 +259,6 @@ class _TATextFieldState extends State<TATextField> {
           obscureText: widget.isPassword ? _textInvisible : false,
           maxLines: widget.maxLines,
           maxLength: widget.maxLength,
-          enableSuggestions: false,
           onEditingComplete: widget.onEditingComplete,
           autofocus: widget.autoFocus,
           decoration: InputDecoration(
@@ -360,72 +326,49 @@ class _TATextFieldState extends State<TATextField> {
                     )
                   : widget.suffixIcon),
           validator: widget.validator ??
-              (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter ${widget.label}';
-                }
-                return null;
-              },
+              (value) =>
+                  InputValidationMixin.validateInput(value, widget.label),
         )
       ],
     );
   }
 
-  Widget _buildMaterialChipInput(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Semantics(
-            child: Text(
-              widget.label,
-              style: widget.labelStyle ??
-                  TextStyle(
-                    color: context.colorScheme.onSecondary,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                  ),
+  Widget _buildDynamicChip(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.label,
+          style: widget.labelStyle ??
+              TextStyle(
+                color: context.colorScheme.onSecondary,
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+              ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: Color(0xffdbdbde),
+                width: 1.0,
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              ...widget.chips.map((chip) => _buildChip(context, chip)),
-            ],
-          ),
-          TextFormField(
-            cursorColor: context.colorScheme.onSurface,
-            initialValue: widget.initialValue,
-            controller: _chipController,
-            maxLines: widget.maxLines,
-            maxLength: widget.maxLength,
-            focusNode: widget.focusNode,
-            style: widget.textStyle ??
-                TextStyle(color: context.colorScheme.onSurface),
-            decoration: InputDecoration(
-              border: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
-              ),
-              enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Color(0xffdbdbde),
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.onSurface),
-              ),
-              contentPadding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ...widget.chips.map((chip) => _buildChip(context, chip)),
+              ],
             ),
-            onFieldSubmitted: (value) {
-              _addChip(value);
-              _chipFocusNode.requestFocus();
-            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -436,8 +379,11 @@ class _TATextFieldState extends State<TATextField> {
         color: context.colorScheme.onSurface,
       ),
       backgroundColor: Colors.grey[300],
-      deleteIcon: const Icon(Icons.close, size: 18),
-      onDeleted: () => _removeChip(label),
+      deleteIcon: widget.onChipsChanged != null
+          ? const Icon(Icons.close, size: 18)
+          : null,
+      onDeleted:
+          widget.onChipsChanged != null ? () => _removeChip(label) : null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
         side: BorderSide(
@@ -446,5 +392,11 @@ class _TATextFieldState extends State<TATextField> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
     );
+  }
+
+  void _removeChip(String chip) {
+    if (widget.onChipsChanged != null) {
+      widget.onChipsChanged!(widget.chips.where((c) => c != chip).toList());
+    }
   }
 }

@@ -18,6 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
 import 'package:tradly_app/features/store/states/store_bloc.dart';
 import 'package:tradly_app/features/store/states/store_event.dart';
+import 'package:tradly_app/utils/details_util.dart';
 
 class AddProductDetailScreen extends StatefulWidget {
   const AddProductDetailScreen({
@@ -44,7 +45,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
 
   final int _maxPhotos = 4;
 
-  List<String> _additionalDetails = ['Cash on delivery', 'Available'];
+  List<String> _additionalDetails = TADetails.getAdditionalDetails();
 
   @override
   void dispose() {
@@ -220,6 +221,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
                       imageUrl:
                           state.imageFiles?.map((e) => e.path).join(',') ?? '',
                       storeId: storeId,
+                      addtionalDetail: _additionalDetails,
                     );
                     Navigator.pop(context);
                     context

@@ -206,14 +206,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             state.imageFiles?.map((e) => e.path).join(',') ??
                                 '',
                         storeId: storeId,
+                        addtionalDetail: _additionalDetails,
                       );
 
-                      Future.delayed(const Duration(seconds: 1), () {
-                        if (context.mounted) {
-                          context.loaderOverlay.hide();
-                          Navigator.pop(context, updatedProduct);
-                        }
-                      });
+                      Navigator.pop(context, updatedProduct);
                     }
                   },
                 ),

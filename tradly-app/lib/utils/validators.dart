@@ -68,6 +68,13 @@ mixin InputValidationMixin {
     }
     return null;
   }
+
+  static String? validateInput<T>(T? value, String fieldName) {
+    if (value == null || value.toString().isEmpty) {
+      return 'Please enter $fieldName';
+    }
+    return null;
+  }
 }
 
 class RegExpValidator {
