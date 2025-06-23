@@ -3,29 +3,40 @@ image: gbcr.io/cirruslabs/flutter
 stages:
   - lints
   - test
+  - build
 
 workflow:
   rules:
-    - if: '$CI_COMMIT_BRANCH == "feat/tradly-shop-app"' # Trigger pipeline for specific branch
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"' # Trigger pipeline for merge requests
+    - if: '$CI_COMMIT_BRANCH == "feat/tradly-shop-app"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
 
 lints:
   stage: lints
   before_script:
-    - if [ -f reconfigure.sh ]; then bash reconfigure.sh; else echo "reconfigure.sh not found"; fi # Ensure script exists
+    - if [ -f reconfigure.sh ]; then bash reconfigure.sh; else echo "reconfigure.sh not found"; fi
   script:
-    - flutter analyze || echo "Linting failed" # Run linting with error handling
+    - flutter analyze || echo "Linting failed"
   tags:
     - flutter
 
 unit_tests:
   stage: test
   script:
-    - flutter test --coverage || echo "Tests failed" # Run tests with error handling
+    - flutter test --coverage || echo "Tests failed"
   artifacts:
     paths:
-      - coverage/lcov.info # Save coverage report
+      - coverage/lcov.info
     reports:
-      junit: test/test_results.xml # Save test results in JUnit format
+      junit: test/test_results.xml
+  tags:
+    - flutter
+
+build_apk:
+  stage: build
+  script:
+    - flutter build apk --release || echo "APK build failed"
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/app-release.apk
   tags:
     - flutter
