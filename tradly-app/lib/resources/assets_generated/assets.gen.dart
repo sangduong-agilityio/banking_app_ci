@@ -96,9 +96,17 @@ class $AssetsImagesGen {
   AssetGenImage get icLauncher =>
       const AssetGenImage('assets/images/ic_launcher.png');
 
+  /// File path: assets/images/img_done.png
+  AssetGenImage get imgDone =>
+      const AssetGenImage('assets/images/img_done.png');
+
   /// File path: assets/images/img_empty_store.png
   AssetGenImage get imgEmptyStore =>
       const AssetGenImage('assets/images/img_empty_store.png');
+
+  /// File path: assets/images/img_mastercard.png
+  AssetGenImage get imgMastercard =>
+      const AssetGenImage('assets/images/img_mastercard.png');
 
   /// File path: assets/images/img_onboarding_business.png
   AssetGenImage get imgOnboardingBusiness =>
@@ -119,7 +127,9 @@ class $AssetsImagesGen {
   /// List of all assets
   List<AssetGenImage> get values => [
     icLauncher,
+    imgDone,
     imgEmptyStore,
+    imgMastercard,
     imgOnboardingBusiness,
     imgOnboardingSocial,
     imgOnboardingSupport,
