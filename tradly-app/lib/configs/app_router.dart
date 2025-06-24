@@ -6,7 +6,6 @@ import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
 import 'package:tradly_app/features/payment/payment_option_screen.dart';
 import 'package:tradly_app/features/payment/views/add_card_screen.dart';
-import 'package:tradly_app/features/payment/views/order_success_screen.dart';
 import 'package:tradly_app/features/wish_list/wish_list_screen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/router_guard.dart';
@@ -114,14 +113,14 @@ class TARouter {
           return AddCardScreen();
         },
       ),
-      GoRoute(
-        name: TAPaths.orderSuccess.name,
-        path: TAPaths.orderSuccess.path,
-        builder: (context, state) {
-          final product = state.extra as ProductModel;
-          return OrderSuccessScreen(product: product);
-        },
-      ),
+      // GoRoute(
+      //   name: TAPaths.orderSuccess.name,
+      //   path: TAPaths.orderSuccess.path,
+      //   builder: (context, state) {
+      //     final product = state.extra as ProductModel;
+      //     return OrderSuccessScreen(product: product);
+      //   },
+      // ),
       GoRoute(
         name: TAPaths.editProduct.name,
         path: TAPaths.editProduct.path,
@@ -367,10 +366,10 @@ enum TAPaths {
     name: 'productList',
     path: '/productList',
   ),
-  orderSuccess(
-    name: 'orderSuccess',
-    path: '/orderSuccess',
-  ),
+  // orderSuccess(
+  //   name: 'orderSuccess',
+  //   path: '/orderSuccess',
+  // ),
   addCard(
     name: 'addCard',
     path: '/addCard',

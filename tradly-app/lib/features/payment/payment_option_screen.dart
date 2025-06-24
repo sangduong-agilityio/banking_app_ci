@@ -68,8 +68,8 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
             text: S.current.checkoutCheckoutButton,
             backgroundColor: context.colorScheme.primary,
             onPressed: () {
-              context.pushNamed(TAPaths.orderSuccess.name,
-                  extra: widget.product);
+              // context.pushNamed(TAPaths.orderSuccess.name,
+              //     extra: widget.product);
             },
           ),
         ),

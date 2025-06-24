@@ -201,15 +201,15 @@ class _AddCardScreenState extends State<AddCardScreen> {
     );
   }
 
-  String _formatCardNumber(String cardNumber) {
-    final cleaned = cardNumber.replaceAll(' ', '');
-    final buffer = StringBuffer();
-    for (int i = 0; i < cleaned.length; i++) {
-      if (i > 0 && i % 4 == 0) {
-        buffer.write(' ');
-      }
-      buffer.write(cleaned[i]);
-    }
-    return buffer.toString();
-  }
+  // String _formatCardNumber(String cardNumber) {
+  //   final cleaned = cardNumber.replaceAll(' ', '');
+  //   final buffer = StringBuffer();
+  //   for (int i = 0; i < cleaned.length; i++) {
+  //     if (i > 0 && i % 4 == 0) {
+  //       buffer.write(' ');
+  //     }
+  //     buffer.write(cleaned[i]);
+  //   }
+  //   return buffer.toString();
+  // }
 }
