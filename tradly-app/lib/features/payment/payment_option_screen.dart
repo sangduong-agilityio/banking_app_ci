@@ -243,12 +243,12 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
   }
 
   Widget _buildPageIndicators(int itemCount) {
-    int totalPages = itemCount + 1;
+    const int defaultIndicators = 3;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
-        totalPages > 3 ? 3 : totalPages,
+        defaultIndicators,
         (index) => Container(
           margin: const EdgeInsets.symmetric(horizontal: 4),
           width: 8,
