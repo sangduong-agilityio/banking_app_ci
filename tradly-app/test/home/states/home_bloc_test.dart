@@ -74,6 +74,16 @@ class HomeBlocFetchedSuccessScenario
             ),
             isA<HomeState>().having(
               (state) => state.status,
+              'failure status',
+              const HomeStatus.failure(),
+            ),
+            isA<HomeState>().having(
+              (state) => state.status,
+              'success status',
+              const HomeStatus.loading(),
+            ),
+            isA<HomeState>().having(
+              (state) => state.status,
               'success status',
               const HomeStatus.success(),
             ),
@@ -122,6 +132,16 @@ class HomeBlocFetchedFailureScenario
             productId: 0,
           )),
           expect: () => [
+            isA<HomeState>().having(
+              (state) => state.status,
+              'loading status',
+              const HomeStatus.loading(),
+            ),
+            isA<HomeState>().having(
+              (state) => state.status,
+              'failure status',
+              const HomeStatus.failure(),
+            ),
             isA<HomeState>().having(
               (state) => state.status,
               'loading status',

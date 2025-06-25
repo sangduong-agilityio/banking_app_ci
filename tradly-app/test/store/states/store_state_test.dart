@@ -147,7 +147,7 @@ class StoreStateToStringScenario extends TAUTScenario<StoreState, String> {
           act: (state) => state.toString(),
           expect: (String result) {
             expect(result,
-                'StoreState(false, false, null, null, null, StoreStatus.success(), error, false, false, null)');
+                'StoreState(false, false, null, null, null, StoreStatus.success(), error, false, null)');
           },
         );
 }

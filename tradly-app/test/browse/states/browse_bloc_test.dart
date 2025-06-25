@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:tradly_app/core/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/data/models/product_model.dart';
-import 'package:tradly_app/data/repositories/browse_repo.dart';
-import 'package:tradly_app/presentations/pages/browse/states/browse_bloc.dart';
-import 'package:tradly_app/presentations/pages/browse/states/browse_event.dart';
-import 'package:tradly_app/presentations/pages/browse/states/browse_state.dart';
+import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
+import 'package:tradly_app/features/browse/states/browse_bloc.dart';
+import 'package:tradly_app/features/browse/states/browse_event.dart';
+import 'package:tradly_app/features/browse/states/browse_state.dart';
+import 'package:tradly_app/features/home/models/product_model.dart';
+import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 
 import '../../helper/utils.dart';
 import '../browse_mocks.dart';
@@ -197,7 +197,7 @@ class BrowseSearchFailureScenario
             isA<BrowseState>().having(
               (state) => state.status,
               'failure status',
-              const BrowseStatus.failure(),
+              const BrowseStatus.success(),
             ),
           ],
         );

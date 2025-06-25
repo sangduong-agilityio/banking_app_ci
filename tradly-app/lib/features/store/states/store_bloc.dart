@@ -214,9 +214,11 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     final currentImageCount = state.imageFiles?.length ?? 0;
 
     if (currentImageCount >= event.maxPhotos) {
-      emit(state.copyWith(
-        errorMessage: 'Maximum ${event.maxPhotos} photos allowed',
-      ));
+      emit(
+        state.copyWith(
+          errorMessage: 'Maximum ${event.maxPhotos} photos allowed',
+        ),
+      );
       return;
     }
 
@@ -234,25 +236,31 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
         const maxFileSize = 5 * 1024 * 1024;
 
         if (fileSize > maxFileSize || !file.existsSync()) {
-          emit(state.copyWith(
-            errorMessage:
-                'Invalid image. Ensure it exists and is less than 5MB.',
-          ));
+          emit(
+            state.copyWith(
+              errorMessage:
+                  'Invalid image. Ensure it exists and is less than 5MB.',
+            ),
+          );
           return;
         }
 
         final updatedImages = List<File>.from(state.imageFiles ?? [])
           ..add(file);
 
-        emit(state.copyWith(
-          imageFiles: updatedImages,
-          errorMessage: null,
-        ));
+        emit(
+          state.copyWith(
+            imageFiles: updatedImages,
+            errorMessage: null,
+          ),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(
-        errorMessage: 'Failed to pick image: ${e.toString()}',
-      ));
+      emit(
+        state.copyWith(
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 

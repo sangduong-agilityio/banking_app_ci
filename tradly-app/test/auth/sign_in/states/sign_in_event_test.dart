@@ -53,11 +53,7 @@ class SignInFormValidateChangedPropsScenario
             expect(
               result,
               equals(
-                [
-                  'test@example.com',
-                  'password123',
-                  true,
-                ],
+                ['test@example.com', 'password123', true, null],
               ),
             );
           },
@@ -80,11 +76,7 @@ class SignInFormValidateChangedSuccessScenario
               expect(
                 result,
                 equals(
-                  [
-                    'test@example.com',
-                    'password123',
-                    true,
-                  ],
+                  ['test@example.com', 'password123', true, null],
                 ),
               );
             });
@@ -106,11 +98,7 @@ class SignInFormValidateChangedFailureScenario
             expect(
               result,
               equals(
-                [
-                  null,
-                  null,
-                  false,
-                ],
+                [null, null, false, null],
               ),
             );
           },

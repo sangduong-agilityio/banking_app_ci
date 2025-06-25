@@ -49,14 +49,7 @@ class SignInStatePropScenario extends TAUTScenario<SignInState, List<Object?>> {
             expect(
               result,
               equals(
-                [
-                  SignInStatus.initial(),
-                  null,
-                  false,
-                  '',
-                  '',
-                  null,
-                ],
+                [SignInStatus.initial(), null, false, '', '', '', null],
               ),
             );
           },
