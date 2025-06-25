@@ -39,7 +39,6 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   final _cityController = TextEditingController();
   final _courierNameController = TextEditingController();
   final _countryController = TextEditingController();
-
   List<String> _tagLineDetail = TADetails.getTagLineDetails();
 
   @override
@@ -130,58 +129,59 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                         buildWhen: (previous, current) => previous != current,
                         builder: (context, state) {
                           return TAForm(
-                              isValidated: (valid) =>
-                                  context.read<StoreBloc>().add(
-                                        CreateStoreFormValidateChangedEvt(
-                                          isValidate: valid,
-                                          store: widget.store,
-                                        ),
+                            isValidated: (valid) =>
+                                context.read<StoreBloc>().add(
+                                      CreateStoreFormValidateChangedEvt(
+                                        isValidate: valid,
+                                        store: widget.store,
                                       ),
-                              spaceBetweenRow: 20,
-                              textFields: [
-                                TATextField(
-                                  label: S.current.storeNameLabel,
-                                  controller: _storeNameController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeWebAddressLabel,
-                                  controller: _storeWebAddressController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeDescriptionLabel,
-                                  controller: _storeDescriptionController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeTypeLabel,
-                                  controller: _storeTypeController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeAddressLabel,
-                                  controller: _addressController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeCityLabel,
-                                  controller: _cityController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeCountryLabel,
-                                  controller: _countryController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeCourierNameLabel,
-                                  controller: _courierNameController,
-                                ),
-                                TATextField(
-                                  label: S.current.storeTaglineLabel,
-                                  isChipInput: true,
-                                  chips: _tagLineDetail,
-                                  onChipsChanged: (chips) {
-                                    setState(() {
-                                      _tagLineDetail = chips;
-                                    });
-                                  },
-                                ),
-                              ]);
+                                    ),
+                            spaceBetweenRow: 20,
+                            textFields: [
+                              TATextField(
+                                label: S.current.storeNameLabel,
+                                controller: _storeNameController,
+                              ),
+                              TATextField(
+                                label: S.current.storeWebAddressLabel,
+                                controller: _storeWebAddressController,
+                              ),
+                              TATextField(
+                                label: S.current.storeDescriptionLabel,
+                                controller: _storeDescriptionController,
+                              ),
+                              TATextField(
+                                label: S.current.storeTypeLabel,
+                                controller: _storeTypeController,
+                              ),
+                              TATextField(
+                                label: S.current.storeAddressLabel,
+                                controller: _addressController,
+                              ),
+                              TATextField(
+                                label: S.current.storeCityLabel,
+                                controller: _cityController,
+                              ),
+                              TATextField(
+                                label: S.current.storeCountryLabel,
+                                controller: _countryController,
+                              ),
+                              TATextField(
+                                label: S.current.storeCourierNameLabel,
+                                controller: _courierNameController,
+                              ),
+                              TATextField(
+                                label: S.current.storeTaglineLabel,
+                                isChipInput: true,
+                                chips: _tagLineDetail,
+                                onChipsChanged: (chips) {
+                                  setState(() {
+                                    _tagLineDetail = chips;
+                                  });
+                                },
+                              ),
+                            ],
+                          );
                         },
                       ),
                     ),

@@ -13,8 +13,7 @@ import 'package:tradly_app/features/product_detail/views/checkout.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/images.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/features/wish_list/states/wish_list_bloc.dart';
-import 'package:tradly_app/features/wish_list/states/wish_list_event.dart';
+import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({
@@ -72,7 +71,7 @@ class ProductDetailPage extends StatelessWidget {
                     icon: Icon(
                       Icons.favorite,
                       color: context
-                              .watch<WishListBloc>()
+                              .watch<WishListCubit>()
                               .state
                               .wishlist
                               .any((item) => item.id == product?.id)
@@ -81,13 +80,12 @@ class ProductDetailPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       if (product != null) {
-                        final wishListBloc = context.read<WishListBloc>();
-                        if (wishListBloc.state.wishlist
+                        final wishListCubit = context.read<WishListCubit>();
+                        if (wishListCubit.state.wishlist
                             .any((item) => item.id == product.id)) {
-                          wishListBloc
-                              .add(RemoveFromWishListEvent(product: product));
+                          wishListCubit.removeFromWishList(product);
                         } else {
-                          wishListBloc.add(AddToWishListEvt(product: product));
+                          wishListCubit.addToWishList(product);
                         }
                       }
                     },

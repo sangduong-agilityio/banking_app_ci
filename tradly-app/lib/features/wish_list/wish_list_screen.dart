@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
-import 'package:tradly_app/features/wish_list/states/wish_list_bloc.dart';
+import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
 import 'package:tradly_app/features/wish_list/states/wish_list_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/utils/responsive.dart';
@@ -16,7 +16,7 @@ class WishListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WishListBloc, WishListState>(
+    return BlocBuilder<WishListCubit, WishListState>(
       builder: (context, state) {
         if (state.status is WishListStatusLoading) {
           return ShimmerProductGrid();

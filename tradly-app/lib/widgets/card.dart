@@ -6,6 +6,7 @@ import 'package:tradly_app/features/home/models/product_model.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/widgets/icons.dart';
 import 'package:tradly_app/widgets/images.dart';
 import 'package:tradly_app/widgets/text.dart';
 
@@ -215,6 +216,109 @@ class TACardStoreFollow extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class TAPhotoUpload extends StatelessWidget {
+  const TAPhotoUpload({
+    super.key,
+    required this.imageFiles,
+    required this.maxPhotos,
+    required this.onAddPhoto,
+    required this.onRemovePhoto,
+  });
+
+  final List<File> imageFiles;
+  final int maxPhotos;
+  final VoidCallback onAddPhoto;
+  final void Function(int index) onRemovePhoto;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 105,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: imageFiles.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: _buildAddPhotoBox(context),
+            );
+          } else {
+            return _buildPhotoBox(imageFiles[index - 1], index - 1, context);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildAddPhotoBox(BuildContext context) {
+    return GestureDetector(
+      onTap: onAddPhoto,
+      child: Container(
+        width: 140,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: context.colorScheme.onPrimaryContainer,
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TAIcons.add(),
+            TATitleLargeText(
+              text: 'Add Photo',
+              color: context.colorScheme.onPrimaryContainer,
+              fontWeight: FontWeight.w600,
+            ),
+            TALabelLargeText(
+              text: 'Max $maxPhotos photos',
+              color: context.colorScheme.onPrimaryContainer,
+              fontWeight: FontWeight.w500,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhotoBox(File imageFile, int index, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: 16),
+      width: 140,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.file(
+              imageFile,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
+          Positioned(
+            top: 4,
+            right: 4,
+            child: GestureDetector(
+              onTap: () => onRemovePhoto(index),
+              child: Container(
+                decoration: BoxDecoration(
+                  color:
+                      context.colorScheme.onSecondaryContainer.withAlpha(150),
+                  shape: BoxShape.circle,
+                ),
+                child: TAIcons.close(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

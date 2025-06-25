@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/widgets/card.dart';
 import 'package:tradly_app/widgets/dialog.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
@@ -42,9 +43,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
   final _productDescriptionController = TextEditingController();
   final _additionalDetailsController = TextEditingController();
   final _priceTypeController = TextEditingController();
-
   final int _maxPhotos = 4;
-
   List<String> _additionalDetails = TADetails.getAdditionalDetails();
 
   @override
@@ -238,29 +237,10 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
   }
 
   Widget _buildPhotoUploadSection(StoreState state) {
-    return SizedBox(
-      height: 105,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: (state.imageFiles?.length ?? 0) + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: _buildAddPhotoBox(),
-            );
-          } else {
-            return _buildPhotoBox(
-                File(state.imageFiles![index - 1].path), index - 1);
-          }
-        },
-      ),
-    );
-  }
-
-  Widget _buildAddPhotoBox() {
-    return GestureDetector(
-      onTap: () async {
+    return TAPhotoUpload(
+      imageFiles: state.imageFiles?.map((e) => File(e.path)).toList() ?? [],
+      maxPhotos: _maxPhotos,
+      onAddPhoto: () async {
         final source = await _showImageSourceDialog(context);
         if (source != null) {
           context.read<StoreBloc>().add(
@@ -268,31 +248,9 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
               );
         }
       },
-      child: Container(
-        width: 140,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: context.colorScheme.onPrimaryContainer,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TAIcons.add(),
-            TATitleLargeText(
-              text: S.current.storeAddPhotoTitle,
-              color: context.colorScheme.onSecondary,
-              fontWeight: FontWeight.w600,
-            ),
-            TALabelLargeText(
-              text: S.current.storeAddPhotoDescription,
-              color: context.colorScheme.onPrimaryContainer,
-              fontWeight: FontWeight.w500,
-            ),
-          ],
-        ),
-      ),
+      onRemovePhoto: (index) {
+        context.read<StoreBloc>().add(RemoveImageEvt(image: index));
+      },
     );
   }
 
@@ -310,40 +268,6 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
         onCancel: () {
           Navigator.pop(context, ImageSource.gallery);
         },
-      ),
-    );
-  }
-
-  Widget _buildPhotoBox(File imageFile, int index) {
-    return Container(
-      margin: const EdgeInsets.only(right: 16),
-      width: 140,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.file(
-              imageFile,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-            ),
-          ),
-          Positioned(
-            top: 4,
-            right: 4,
-            child: GestureDetector(
-              onTap: () {
-                context.read<StoreBloc>().add(RemoveImageEvt(image: index));
-              },
-              child: Container(
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                child: TAIcons.close(),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

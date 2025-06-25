@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tradly_app/features/wish_list/states/wish_list_bloc.dart';
-import 'package:tradly_app/features/wish_list/states/wish_list_event.dart';
+import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
+
 import 'package:tradly_app/features/wish_list/states/wish_list_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 
@@ -46,7 +46,7 @@ void main() {
 }
 
 class FetchWishListEvtSuccessScenario
-    extends TABlocTestScenario<WishListBloc, WishListState> {
+    extends TABlocTestScenario<WishListCubit, WishListState> {
   FetchWishListEvtSuccessScenario()
       : super(
           description: '''
@@ -55,8 +55,10 @@ class FetchWishListEvtSuccessScenario
               When FetchWishListEvt is added
               Then it should emit a success state with an empty wishlist
           ''',
-          build: () => WishListBloc(),
-          act: (bloc) => bloc.add(FetchWishListEvt()),
+          build: () => WishListCubit(),
+          act: (bloc) {
+            bloc.fetchWishList();
+          },
           expect: () => [
             const WishListState(
               wishlist: [],
@@ -67,19 +69,18 @@ class FetchWishListEvtSuccessScenario
 }
 
 class AddToWishListEvtSuccessScenario
-    extends TABlocTestScenario<WishListBloc, WishListState> {
+    extends TABlocTestScenario<WishListCubit, WishListState> {
   AddToWishListEvtSuccessScenario()
       : super(
           description: '''
             Scenario: Test AddToWishListEvt adds product to wishlist
               Given WishListBloc instance
-              When AddToWishListEvt is added
+              When AddToWishListEvt is added with a product
               Then it should emit a success state with the product in the wishlist
           ''',
-          build: () => WishListBloc(),
+          build: () => WishListCubit(),
           act: (bloc) {
-            final product = WishListMocks.products;
-            bloc.add(AddToWishListEvt(product: product));
+            bloc.addToWishList(WishListMocks.products);
           },
           expect: () => [
             WishListState(
@@ -91,25 +92,24 @@ class AddToWishListEvtSuccessScenario
 }
 
 class RemoveFromWishListEvtSuccessScenario
-    extends TABlocTestScenario<WishListBloc, WishListState> {
+    extends TABlocTestScenario<WishListCubit, WishListState> {
   RemoveFromWishListEvtSuccessScenario()
       : super(
           description: '''
-            Scenario: Test RemoveFromWishListEvent removes product from wishlist
-              Given WishListBloc instance
-              When RemoveFromWishListEvent is added
-              Then it should emit a success state with the product removed from the wishlist
+            Scenario: Test RemoveFromWishListEvt removes product from wishlist
+              Given WishListBloc instance with a product in the wishlist
+              When RemoveFromWishListEvt is added with the product
+              Then it should emit a success state with an empty wishlist
           ''',
-          build: () => WishListBloc(),
+          build: () => WishListCubit(),
           act: (bloc) {
-            final product = WishListMocks.products;
-            bloc.add(AddToWishListEvt(product: product));
-            bloc.add(RemoveFromWishListEvent(product: product));
+            bloc.addToWishList(WishListMocks.products);
+            bloc.removeFromWishList(WishListMocks.products);
           },
           expect: () => [
             WishListState(
               wishlist: [WishListMocks.products],
-              status: const WishListStatus.success(),
+              status: WishListStatus.success(),
             ),
             const WishListState(
               wishlist: [],

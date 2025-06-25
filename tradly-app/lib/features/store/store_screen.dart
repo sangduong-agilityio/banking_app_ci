@@ -50,127 +50,137 @@ class _StoreScreenState extends State<StoreScreen> {
           ],
         ),
       ),
-      body: BlocBuilder<StoreBloc, StoreState>(
-        buildWhen: (previous, current) =>
-            previous.products != current.products ||
-            previous.status != current.status ||
-            previous.stores != current.stores,
-        builder: (context, state) {
-          return state.hasStore
-              ? SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        color: context.colorScheme.onPrimary,
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 30),
-                            Center(
-                              child: TAImageCircle(
-                                radius: 32,
-                                Assets.images.imgTradly.path,
-                                boxFit: BoxFit.cover,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            TADisplaySmallText(
-                              text: state.stores?.storeName ?? '',
-                              fontWeight: FontWeight.w700,
-                              color: context.colorScheme.onSurface,
-                            ),
-                            const SizedBox(height: 12),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  style: OutlinedButton.styleFrom(
-                                    minimumSize: const Size(100, 25),
-                                    side: BorderSide(
-                                      color: context.colorScheme.primary,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                  ),
-                                  child: TATitleMediumText(
-                                    text: S.current.storeEditStoreButton,
-                                    color: context.colorScheme.primary,
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                OutlinedButton(
-                                  onPressed: () {},
-                                  style: OutlinedButton.styleFrom(
-                                    minimumSize: const Size(100, 25),
-                                    side: BorderSide(
-                                      color: context.colorScheme.primary,
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                  ),
-                                  child: TATitleMediumText(
-                                    text: S.current.storeViewButton,
-                                    color: context.colorScheme.primary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8),
-                            Divider(color: Colors.grey[300]),
-                            TextButton(
-                              onPressed: () {},
-                              child: TATitleLargeText(
-                                text: S.current.storeRemoveButton,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      state.hasProducts
-                          ? _buildProductsList(context, state)
-                          : _buildNoProductsContent(),
-                    ],
+      body: _buildBody(context),
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return BlocBuilder<StoreBloc, StoreState>(
+      buildWhen: (previous, current) =>
+          previous.products != current.products ||
+          previous.status != current.status ||
+          previous.stores != current.stores,
+      builder: (context, state) {
+        return state.hasStore
+            ? _buildStoreContent(context, state)
+            : _buildNoStoreContent(context);
+      },
+    );
+  }
+
+  Widget _buildStoreContent(BuildContext context, StoreState state) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            color: context.colorScheme.onPrimary,
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                Center(
+                  child: TAImageCircle(
+                    radius: 32,
+                    Assets.images.imgTradly.path,
+                    boxFit: BoxFit.cover,
                   ),
-                )
-              : Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        height: 120,
-                        Assets.images.imgEmptyStore.path,
-                        fit: BoxFit.cover,
-                      ),
-                      const SizedBox(height: 30),
-                      TAHeadlineMediumText(
-                        text: S.current.storeNoStore,
-                        color: context.colorScheme.onSurface,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      const SizedBox(height: 37),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 100),
-                        child: TAElevatedButton(
-                          text: S.current.storeCreateStoreButton,
-                          backgroundColor: context.colorScheme.primary,
-                          onPressed: () {
-                            context.pushNamed(TAPaths.createStore.name);
-                          },
+                ),
+                const SizedBox(height: 16),
+                TADisplaySmallText(
+                  text: state.stores?.storeName ?? '',
+                  fontWeight: FontWeight.w700,
+                  color: context.colorScheme.onSurface,
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(100, 25),
+                        side: BorderSide(
+                          color: context.colorScheme.primary,
                         ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                       ),
-                    ],
+                      child: TATitleMediumText(
+                        text: S.current.storeEditStoreButton,
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size(100, 25),
+                        side: BorderSide(
+                          color: context.colorScheme.primary,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                      ),
+                      child: TATitleMediumText(
+                        text: S.current.storeViewButton,
+                        color: context.colorScheme.primary,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Divider(color: Colors.grey[300]),
+                TextButton(
+                  onPressed: () {},
+                  child: TATitleLargeText(
+                    text: S.current.storeRemoveButton,
+                    color: Colors.grey,
                   ),
-                );
-        },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 30),
+          state.hasProducts
+              ? _buildProductsList(context, state)
+              : _buildNoProductsContent(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoStoreContent(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            height: 120,
+            Assets.images.imgEmptyStore.path,
+            fit: BoxFit.cover,
+          ),
+          const SizedBox(height: 30),
+          TAHeadlineMediumText(
+            text: S.current.storeNoStore,
+            color: context.colorScheme.onSurface,
+            fontWeight: FontWeight.w600,
+          ),
+          const SizedBox(height: 37),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 100),
+            child: TAElevatedButton(
+              text: S.current.storeCreateStoreButton,
+              backgroundColor: context.colorScheme.primary,
+              onPressed: () {
+                context.pushNamed(TAPaths.createStore.name);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

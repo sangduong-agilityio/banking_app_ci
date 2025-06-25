@@ -15,13 +15,10 @@ class TAResponsive {
     BuildContext context, {
     double? mobile,
     double? tablet,
-    double? desktop,
     double? defaultValue,
   }) {
     if (ResponsiveBreakpoints.of(context).isTablet) {
       return tablet ?? 0;
-    } else if (ResponsiveBreakpoints.of(context).isDesktop) {
-      return desktop ?? 0;
     } else if (ResponsiveBreakpoints.of(context).isMobile) {
       return mobile ?? 0;
     }
@@ -37,8 +34,6 @@ class TAResponsive {
   }) {
     if (ResponsiveBreakpoints.of(context).isTablet) {
       return tablet ?? const SizedBox.shrink();
-    } else if (ResponsiveBreakpoints.of(context).isDesktop) {
-      return desktop ?? const SizedBox.shrink();
     } else {
       return mobile ?? const SizedBox.shrink();
     }
@@ -56,9 +51,6 @@ class TAResponsive {
     }
     if (ResponsiveBreakpoints.of(context).isMobile && mobile != null) {
       return defaultValue * mobile;
-    }
-    if (ResponsiveBreakpoints.of(context).isDesktop && desktop != null) {
-      return defaultValue * desktop;
     }
     return defaultValue;
   }
