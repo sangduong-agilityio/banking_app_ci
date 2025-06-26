@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/order_history/states/order_history_event.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/service/notification_service.dart';
@@ -17,6 +18,7 @@ import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/dialog.dart';
 import 'package:tradly_app/widgets/images.dart';
 import 'package:tradly_app/widgets/text.dart';
+import 'package:tradly_app/features/order_history/states/order_history_bloc.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({
@@ -48,9 +50,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       context
           .read<ProductDetailBloc>()
           .add(ProductDetailCheckoutEvt(product: widget.product));
+      context
+          .read<OrderHistoryBloc>()
+          .add(AddProductToOrderHistoryEvt(product: widget.product));
       context.goNamed(
         TAPaths.orderHistory.name,
-        extra: widget.product,
       );
     } else if (status.isDenied) {
       final result = await Permission.notification.request();
@@ -59,9 +63,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         context
             .read<ProductDetailBloc>()
             .add(ProductDetailCheckoutEvt(product: widget.product));
+        context
+            .read<OrderHistoryBloc>()
+            .add(AddProductToOrderHistoryEvt(product: widget.product));
         context.goNamed(
           TAPaths.orderHistory.name,
-          extra: widget.product,
         );
       } else {
         return;

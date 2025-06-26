@@ -251,10 +251,7 @@ class TARouter {
                 name: TAPaths.orderHistory.name,
                 path: TAPaths.orderHistory.path,
                 builder: (context, state) {
-                  final product = state.extra is ProductModel
-                      ? state.extra as ProductModel
-                      : null;
-                  return OrderHistoryScreen(product: product);
+                  return OrderHistoryScreen();
                 },
               ),
             ],

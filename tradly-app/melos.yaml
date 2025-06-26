@@ -115,7 +115,7 @@ scripts:
         lib/features/store/store_screen.dart
         lib/features/wish_list/wish_list_screen.dart
         lib/features/on_boarding/*
-        lib/features/order_history/*
+        lib/features/order_history/order_history_screen.dart
         lib/features/payment/models/*
         lib/features/payment/states/*
         lib/features/payment/views/*
