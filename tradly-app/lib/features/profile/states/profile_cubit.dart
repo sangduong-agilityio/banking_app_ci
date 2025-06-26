@@ -10,7 +10,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   final AuthRepository _repo;
 
-  Future<void> fetchProfile() async {
+  void fetchProfile() async {
     emit(
       state.copyWith(
         status: const ProfileStatus.loading(),
@@ -23,10 +23,12 @@ class ProfileCubit extends Cubit<ProfileState> {
         email: currentUser?.email ?? '',
         phoneNumber: currentUser?.phone ?? '',
       );
-      emit(state.copyWith(
-        user: user,
-        status: const ProfileStatus.success(),
-      ));
+      emit(
+        state.copyWith(
+          user: user,
+          status: const ProfileStatus.success(),
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

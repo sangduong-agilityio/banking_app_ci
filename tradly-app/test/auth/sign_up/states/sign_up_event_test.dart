@@ -17,6 +17,12 @@ void main() {
     description: 'SignUpEvent Tests',
     features: [
       TAUTFeature(
+        description: 'SignUpEvent',
+        scenarios: [
+          SignUpEventPropsScenario(),
+        ],
+      ),
+      TAUTFeature(
         description: 'SignUpFormValidateChangedEvt',
         scenarios: [
           SignUpFormValidateChangedPropsScenario(),
@@ -35,6 +41,25 @@ void main() {
       ),
     ],
   ).test();
+}
+
+class SignUpEventPropsScenario extends TAUTScenario<SignUpEvt, List<Object?>> {
+  SignUpEventPropsScenario()
+      : super(
+          description: '''
+          Scenario: Test SignUpEvt Props
+            Given SignUpEvt event
+            When creating a SignUpEvt event and accessing props
+            Then the props should be empty
+            ''',
+          when: () async {
+            return SignUpEvt();
+          },
+          act: (event) => event.props,
+          expect: (List<Object?> result) {
+            expect(result, isEmpty);
+          },
+        );
 }
 
 class SignUpFormValidateChangedPropsScenario

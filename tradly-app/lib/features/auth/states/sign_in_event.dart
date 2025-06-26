@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-sealed class SignInEvt extends Equatable {
+class SignInEvt extends Equatable {
   const SignInEvt();
 
   @override
@@ -28,35 +28,9 @@ class SignInFormValidateChangedEvt extends SignInEvt {
       ];
 }
 
-class SendOtpFormValidateChangedevt extends SignInEvt {
-  const SendOtpFormValidateChangedevt({
-    required this.isValidate,
-    this.phoneNumber,
-  });
-  final bool isValidate;
-  final String? phoneNumber;
-
-  @override
-  List<Object?> get props => [
-        phoneNumber,
-        isValidate,
-      ];
-}
-
 class SignInButtonPressedEvt extends SignInEvt {
   const SignInButtonPressedEvt();
 
   @override
   List<Object?> get props => [];
-}
-
-class SendOtpButtonPressedEvt extends SignInEvt {
-  const SendOtpButtonPressedEvt({
-    required this.phoneNumber,
-  });
-
-  final String phoneNumber;
-
-  @override
-  List<Object?> get props => [phoneNumber];
 }

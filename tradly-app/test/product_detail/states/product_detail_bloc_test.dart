@@ -95,6 +95,17 @@ void main() {
           ),
         ],
       ),
+      TABlocTestFeature(
+        description: 'ProductDetailToggleWishListEvt',
+        scenarios: [
+          ProductDetailToggleWishListEvtSuccessScenario(
+            productRepository: productRepository,
+          ),
+          ProductDetailToggleWishListEvtFailureScenario(
+            productRepository: productRepository,
+          ),
+        ],
+      ),
     ],
   ).test();
 }
@@ -573,5 +584,60 @@ class ProductDetailCheckoutEvtFailureScenario
               const ProductDetailStatus.failure(),
             ),
           ],
+        );
+}
+
+class ProductDetailToggleWishListEvtSuccessScenario
+    extends TABlocTestScenario<ProductDetailBloc, ProductDetailState> {
+  ProductDetailToggleWishListEvtSuccessScenario({
+    required ProductRepository productRepository,
+  }) : super(
+          description: '''
+         Scenario: Ensure that when the ProductDetailToggleWishListEvt is initialized, the wishlist is toggled successfully
+          Given: The ProductDetailToggleWishListEvt is created with a mock repository.
+          When: The _onToggleWishList method is called. 
+          Then: The bloc should emit a HomeState with a status of success.
+          ''',
+          setUp: () {
+            when(() => productRepository.fetchProductsByCategoryId(0))
+                .thenAnswer((_) async => []);
+            when(() => productRepository.fetchProductById(0)).thenAnswer(
+              (_) async => [],
+            );
+          },
+          build: () => ProductDetailBloc(
+            repo: productRepository,
+          ),
+          act: (bloc) => bloc.add(
+            const ProductDetailToggleWishListEvt(productId: 0),
+          ),
+          expect: () => [],
+        );
+}
+
+class ProductDetailToggleWishListEvtFailureScenario
+    extends TABlocTestScenario<ProductDetailBloc, ProductDetailState> {
+  ProductDetailToggleWishListEvtFailureScenario({
+    required ProductRepository productRepository,
+  }) : super(
+          description: '''
+         Scenario: Ensure that when the ProductDetailToggleWishListEvt is initialized, the wishlist toggle fails
+          Given: The ProductDetailToggleWishListEvt is created with a mock repository.
+          When: The _onToggleWishList method is called. 
+          Then: The bloc should emit a HomeState with a status of failure.
+          ''',
+          setUp: () {
+            when(() => productRepository.fetchProductsByCategoryId(0))
+                .thenThrow(Exception());
+            when(() => productRepository.fetchProductById(0))
+                .thenThrow(Exception());
+          },
+          build: () => ProductDetailBloc(
+            repo: productRepository,
+          ),
+          act: (bloc) => bloc.add(
+            const ProductDetailToggleWishListEvt(productId: 0),
+          ),
+          expect: () => [],
         );
 }

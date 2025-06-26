@@ -72,6 +72,12 @@ void main() {
           ProductDetailCheckoutEvtEqualityScenario(),
         ],
       ),
+      TAUTFeature(
+        description: 'ProductDetailToggleWishListEvt',
+        scenarios: [
+          ProductDetailToggleWishListEvtPropsScenario(),
+        ],
+      ),
     ],
   ).test();
 }
@@ -494,6 +500,28 @@ class ProductDetailCheckoutEvtEqualityScenario
               ),
           expect: (bool result) {
             expect(result, isTrue);
+          },
+        );
+}
+
+class ProductDetailToggleWishListEvtPropsScenario
+    extends TAUTScenario<ProductDetailToggleWishListEvt, List<Object?>> {
+  ProductDetailToggleWishListEvtPropsScenario()
+      : super(
+          description: '''
+          Scenario: Test ProductDetailToggleWishListEvt Props
+            Given ProductDetailToggleWishListEvt event
+            When creating a ProductDetailToggleWishListEvt event and accessing props
+            Then the props should not be empty
+            ''',
+          when: () async {
+            return ProductDetailToggleWishListEvt(
+              productId: 1,
+            );
+          },
+          act: (event) => event.props,
+          expect: (List<Object?> result) {
+            expect(result, [1]);
           },
         );
 }

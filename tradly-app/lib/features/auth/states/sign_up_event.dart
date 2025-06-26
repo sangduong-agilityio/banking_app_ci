@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-sealed class SignUpEvt extends Equatable {
+class SignUpEvt extends Equatable {
   const SignUpEvt();
 
   @override

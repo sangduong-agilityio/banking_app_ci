@@ -13,7 +13,7 @@ packages:
 scripts:
   # Setup env and git hooks via Hanzo
   postbootstrap: >
-    melos exec -- puro flutter pub get && 
+    melos exec -- puro flutter pub get &&
     puro pub global activate git_hooks &&
     puro dart pub global activate full_coverage &&
     puro dart pub global activate flutter_gen &&
@@ -81,3 +81,73 @@ scripts:
         - open_mail_app
         - search_field
 
+  # Unit testing scripts
+  test:selective_unit_test:
+    run: |
+      melos exec -- \
+      "full_coverage; \
+      puro flutter test --fail-fast --no-pub --coverage -r expanded || exit 1; \
+      lcov --remove coverage/lcov.info \
+        $(echo '
+        lib/api/*
+        lib/env/*
+        lib/main.dart
+        lib/app_provider.dart
+        lib/firebase_options.dart
+        lib/main_device_preview.dart
+        lib/configs/app_config.dart
+        lib/configs/app_router.dart
+        lib/configs/constants.dart
+        lib/configs/router_guard.dart
+        lib/extensions/*
+        lib/features/auth/models/*
+        lib/features/auth/view/*
+        lib/features/browse/browse_screen.dart
+        lib/features/auth/repositories/*
+        lib/features/browse/repositories/*
+        lib/features/home/models/*
+        lib/features/home/repositories/*
+        lib/features/home/views/*
+        lib/features/home/home_screen.dart
+        lib/features/payment/payment_option_screen.dart
+        lib/features/product_detail/product_detail_screen.dart
+        lib/features/profile/profile_screen.dart
+        lib/features/store/store_screen.dart
+        lib/features/wish_list/wish_list_screen.dart
+        lib/features/on_boarding/*
+        lib/features/order_history/*
+        lib/features/payment/models/*
+        lib/features/payment/states/*
+        lib/features/payment/views/*
+        lib/features/product_detail/repositories/*
+        lib/features/product_detail/views/*
+        lib/features/store/models/*
+        lib/features/store/repositories/*
+        lib/features/store/views/*
+        lib/resources/l10n_generated/*
+        lib/resources/l10n_generated/intl/*
+        lib/service/*
+        lib/themes/*
+        lib/utils/*
+        lib/widgets/*
+        lib/widgets/layouts/*
+        ' | tr '\n' ' ') -o coverage/lcov.info; \
+      genhtml coverage/lcov.info --output=coverage/html; \
+      open coverage/html/index.html"
+    description: Run Flutter unit tests and generate coverage reports.
+    packageFilters:
+      flutter: true
+      dirExists: test
+      scope:
+        - tradly_app
+  test:
+    run: melos run test:selective_unit_test --no-select
+    description: Run all Flutter tests in this project.
+
+  # Run unit test and generate html coverage (MacOS support for now)
+  coverage:
+    run: brew install lcov && melos run test
+    description: Run unit testing and generate html coverage report.
+    packageFilters:
+      scope:
+        - tradly_app

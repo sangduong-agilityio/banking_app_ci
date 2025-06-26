@@ -10,8 +10,6 @@ class SignInBloc extends Bloc<SignInEvt, SignInState> {
   SignInBloc({required this.authRepository}) : super(const SignInState()) {
     on<SignInFormValidateChangedEvt>(_onFormValidateChanged);
     on<SignInButtonPressedEvt>(_onLoginPressed);
-    on<SendOtpButtonPressedEvt>(_onSendOtpPressed);
-    on<SendOtpFormValidateChangedevt>(_onSendOtpFormValidateChanged);
   }
 
   Future<void> _onFormValidateChanged(
@@ -58,45 +56,5 @@ class SignInBloc extends Bloc<SignInEvt, SignInState> {
         ),
       );
     }
-  }
-
-  Future<void> _onSendOtpPressed(
-    SendOtpButtonPressedEvt event,
-    Emitter<SignInState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        status: const SignInStatus.loading(),
-      ),
-    );
-    try {
-      await authRepository.sendOtp(phone: event.phoneNumber);
-      emit(
-        state.copyWith(
-          status: SignInStatus.success(),
-          errorMessage: '',
-          phoneNumber: event.phoneNumber,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: SignInStatus.failure(),
-          errorMessage: e.toString(),
-        ),
-      );
-    }
-  }
-
-  Future<void> _onSendOtpFormValidateChanged(
-    SendOtpFormValidateChangedevt event,
-    Emitter<SignInState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        isFormValid: event.isValidate,
-        phoneNumber: event.phoneNumber,
-      ),
-    );
   }
 }

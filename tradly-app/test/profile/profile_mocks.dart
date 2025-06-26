@@ -11,6 +11,7 @@ class ProfileMocks {
     email: 'test@example.com',
     phoneNumber: '1234567890',
   );
+
   static final User user = User(
     id: 'test_id',
     email: 'test@example.com',
