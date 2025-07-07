@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
@@ -29,8 +30,10 @@ class ProductList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProductDetailBloc(
-        repo: context.read<ProductRepository>(),
-      )..add(ProductDetailInitializeEvt(categoryId: categoryId)),
+        repo: locator.get<ProductRepository>(),
+      )..add(
+          ProductDetailInitializeEvt(categoryId: categoryId),
+        ),
       child: TAScaffold(
         appBar: TAAppBar.productList(
           backgroundColor: context.colorScheme.primary,

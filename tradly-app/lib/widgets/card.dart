@@ -90,7 +90,7 @@ class TACardProduct extends StatelessWidget {
                       ),
                       const SizedBox(height: 6),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Semantics(
                             excludeSemantics: true,

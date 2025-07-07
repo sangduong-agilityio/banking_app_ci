@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
@@ -11,6 +10,7 @@ import 'package:tradly_app/features/auth/states/sign_in_bloc.dart';
 import 'package:tradly_app/features/auth/states/sign_in_event.dart';
 import 'package:tradly_app/features/auth/states/sign_in_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/validators.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/form.dart';
@@ -27,7 +27,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final _authRepository = AuthRepositoryImplement(Supabase.instance.client);
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -41,13 +40,13 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LoaderOverlay(
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: BlocProvider(
-          create: (context) => SignInBloc(
-            authRepository: _authRepository,
-          ),
+    return BlocProvider(
+      create: (context) => SignInBloc(
+        authRepository: locator.get<AuthRepository>(),
+      ),
+      child: LoaderOverlay(
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: BlocListener<SignInBloc, SignInState>(
             listener: (context, state) {
               state.status.maybeWhen(
@@ -92,6 +91,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(height: 66),
                       TAHeadlineSmallText(
                         text: S.current.signInLoginPrompt,
+                        textAlign: TextAlign.start,
                       ),
                       const SizedBox(height: 25),
                       BlocBuilder<SignInBloc, SignInState>(

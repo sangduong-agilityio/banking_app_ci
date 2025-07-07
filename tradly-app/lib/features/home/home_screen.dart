@@ -18,6 +18,7 @@ import 'package:tradly_app/features/home/views/store_follow_list.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
 import 'package:tradly_app/features/product_detail/views/product_list.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/assets.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/widgets/text.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeBloc(
-        repo: context.read<HomeRepository>(),
+        repo: locator.get<HomeRepository>(),
       )..add(HomeInitializeEvt(productId: widget.productId ?? 0)),
       child: TAScaffold(
         body: MediaQuery.removePadding(

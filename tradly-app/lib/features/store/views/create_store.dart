@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
@@ -56,174 +57,179 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LoaderOverlay(
-      child: TAScaffold(
-        backgroundColor: context.colorScheme.inversePrimary,
-        appBar: TAAppBar(
-          toolbarHeight: TAAppBarSize.small,
-          backgroundColor: context.colorScheme.primary,
-          title: Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Semantics(
-              child: TADisplaySmallText(
-                text: S.current.storeTitle,
-                fontWeight: FontWeight.w700,
+    return BlocProvider(
+      create: (context) => StoreBloc(
+        repo: context.read<StoreRepository>(),
+      ),
+      child: LoaderOverlay(
+        child: TAScaffold(
+          backgroundColor: context.colorScheme.inversePrimary,
+          appBar: TAAppBar(
+            toolbarHeight: TAAppBarSize.small,
+            backgroundColor: context.colorScheme.primary,
+            title: Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Semantics(
+                child: TADisplaySmallText(
+                  text: S.current.storeTitle,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
-        ),
-        body: BlocListener<StoreBloc, StoreState>(
-          listener: (context, state) {
-            state.status.maybeWhen(
-              orElse: () {
-                context.loaderOverlay.hide();
-              },
-              success: () {
-                context.loaderOverlay.hide();
-                Navigator.pop(context);
-              },
-              loading: () {
-                context.loaderOverlay.show();
-              },
-              failure: () {
-                context.loaderOverlay.hide();
-                TASnackBar.buildErrorSnackbar(
-                  context,
-                  state.errorMessage ?? '',
-                );
-              },
-            );
-          },
-          child: SingleChildScrollView(
-            child: GestureDetector(
-              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  Image.asset(
-                    height: 120,
-                    Assets.images.imgEmptyStore.path,
-                    fit: BoxFit.cover,
-                  ),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Semantics(
-                      child: TATitleLargeText(
-                        textAlign: TextAlign.center,
-                        text: S.current.storeDetailTitle,
-                        color: context.colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 20,
-                    ),
-                    color: context.colorScheme.surface,
-                    child: Form(
-                      key: _formKey,
-                      child: BlocBuilder<StoreBloc, StoreState>(
-                        buildWhen: (previous, current) => previous != current,
-                        builder: (context, state) {
-                          return TAForm(
-                            isValidated: (valid) =>
-                                context.read<StoreBloc>().add(
-                                      CreateStoreFormValidateChangedEvt(
-                                        isValidate: valid,
-                                        store: widget.store,
-                                      ),
-                                    ),
-                            spaceBetweenRow: 20,
-                            textFields: [
-                              TATextField(
-                                label: S.current.storeNameLabel,
-                                controller: _storeNameController,
-                              ),
-                              TATextField(
-                                label: S.current.storeWebAddressLabel,
-                                controller: _storeWebAddressController,
-                              ),
-                              TATextField(
-                                label: S.current.storeDescriptionLabel,
-                                controller: _storeDescriptionController,
-                              ),
-                              TATextField(
-                                label: S.current.storeTypeLabel,
-                                controller: _storeTypeController,
-                              ),
-                              TATextField(
-                                label: S.current.storeAddressLabel,
-                                controller: _addressController,
-                              ),
-                              TATextField(
-                                label: S.current.storeCityLabel,
-                                controller: _cityController,
-                              ),
-                              TATextField(
-                                label: S.current.storeCountryLabel,
-                                controller: _countryController,
-                              ),
-                              TATextField(
-                                label: S.current.storeCourierNameLabel,
-                                controller: _courierNameController,
-                              ),
-                              TATextField(
-                                label: S.current.storeTaglineLabel,
-                                isChipInput: true,
-                                chips: _tagLineDetail,
-                                onChipsChanged: (chips) {
-                                  setState(() {
-                                    _tagLineDetail = chips;
-                                  });
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        bottomNavigationBar: BlocBuilder<StoreBloc, StoreState>(
-          buildWhen: (previous, current) =>
-              previous.isFormValid != current.isFormValid,
-          builder: (context, state) {
-            return Container(
-              padding: const EdgeInsets.all(20),
-              color: context.colorScheme.onPrimary,
-              child: TAElevatedButton(
-                isDisabled: !state.isFormValid,
-                text: S.current.storeCreateButton,
-                backgroundColor: context.colorScheme.primary,
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    final store = StoreModel(
-                      storeName: _storeNameController.text,
-                      storeWebAddress: _storeWebAddressController.text,
-                      storeDescription: _storeDescriptionController.text,
-                      storeType: _storeTypeController.text,
-                      address: _addressController.text,
-                      city: _cityController.text,
-                      country: _countryController.text,
-                      courieName: _courierNameController.text,
-                      tagLine: _tagLineDetail,
-                    );
-
-                    context
-                        .read<StoreBloc>()
-                        .add(CreateStoreButtonEvt(store: store));
-                  }
+          body: BlocListener<StoreBloc, StoreState>(
+            listener: (context, state) {
+              state.status.maybeWhen(
+                orElse: () {
+                  context.loaderOverlay.hide();
                 },
+                success: () {
+                  context.loaderOverlay.hide();
+                  Navigator.pop(context);
+                },
+                loading: () {
+                  context.loaderOverlay.show();
+                },
+                failure: () {
+                  context.loaderOverlay.hide();
+                  TASnackBar.buildErrorSnackbar(
+                    context,
+                    state.errorMessage ?? '',
+                  );
+                },
+              );
+            },
+            child: SingleChildScrollView(
+              child: GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    Image.asset(
+                      height: 120,
+                      Assets.images.imgEmptyStore.path,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Semantics(
+                        child: TATitleLargeText(
+                          textAlign: TextAlign.center,
+                          text: S.current.storeDetailTitle,
+                          color: context.colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                      color: context.colorScheme.surface,
+                      child: Form(
+                        key: _formKey,
+                        child: BlocBuilder<StoreBloc, StoreState>(
+                          buildWhen: (previous, current) => previous != current,
+                          builder: (context, state) {
+                            return TAForm(
+                              isValidated: (valid) =>
+                                  context.read<StoreBloc>().add(
+                                        CreateStoreFormValidateChangedEvt(
+                                          isValidate: valid,
+                                          store: widget.store,
+                                        ),
+                                      ),
+                              spaceBetweenRow: 20,
+                              textFields: [
+                                TATextField(
+                                  label: S.current.storeNameLabel,
+                                  controller: _storeNameController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeWebAddressLabel,
+                                  controller: _storeWebAddressController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeDescriptionLabel,
+                                  controller: _storeDescriptionController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeTypeLabel,
+                                  controller: _storeTypeController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeAddressLabel,
+                                  controller: _addressController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeCityLabel,
+                                  controller: _cityController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeCountryLabel,
+                                  controller: _countryController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeCourierNameLabel,
+                                  controller: _courierNameController,
+                                ),
+                                TATextField(
+                                  label: S.current.storeTaglineLabel,
+                                  isChipInput: true,
+                                  chips: _tagLineDetail,
+                                  onChipsChanged: (chips) {
+                                    setState(() {
+                                      _tagLineDetail = chips;
+                                    });
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            );
-          },
+            ),
+          ),
+          bottomNavigationBar: BlocBuilder<StoreBloc, StoreState>(
+            buildWhen: (previous, current) =>
+                previous.isFormValid != current.isFormValid,
+            builder: (context, state) {
+              return Container(
+                padding: const EdgeInsets.all(20),
+                color: context.colorScheme.onPrimary,
+                child: TAElevatedButton(
+                  isDisabled: !state.isFormValid,
+                  text: S.current.storeCreateButton,
+                  backgroundColor: context.colorScheme.primary,
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      final store = StoreModel(
+                        storeName: _storeNameController.text,
+                        storeWebAddress: _storeWebAddressController.text,
+                        storeDescription: _storeDescriptionController.text,
+                        storeType: _storeTypeController.text,
+                        address: _addressController.text,
+                        city: _cityController.text,
+                        country: _countryController.text,
+                        courieName: _courierNameController.text,
+                        tagLine: _tagLineDetail,
+                      );
+
+                      context
+                          .read<StoreBloc>()
+                          .add(CreateStoreButtonEvt(store: store));
+                    }
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

@@ -1,7 +1,6 @@
 // ignore_for_file: unused_import
 import 'package:tradly_app/api/api_client.dart';
 import 'package:tradly_app/api/failure.dart';
-import 'package:tradly_app/app_provider.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/configs/constants.dart';
 import 'package:tradly_app/configs/router_guard.dart';

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/auth/repositories/auth_repo.dart';
 import 'package:tradly_app/features/auth/states/sign_up_bloc.dart';
 import 'package:tradly_app/features/auth/states/sign_up_event.dart';
 import 'package:tradly_app/features/auth/states/sign_up_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/validators.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/form.dart';
@@ -26,7 +26,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
-  final _authRepository = AuthRepositoryImplement(Supabase.instance.client);
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -46,13 +45,13 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
 
   @override
   Widget build(BuildContext context) {
-    return LoaderOverlay(
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: BlocProvider(
-          create: (context) => SignUpBloc(
-            authRepository: _authRepository,
-          ),
+    return BlocProvider(
+      create: (context) => SignUpBloc(
+        authRepository: locator.get<AuthRepository>(),
+      ),
+      child: LoaderOverlay(
+        child: GestureDetector(
+          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: BlocListener<SignUpBloc, SignUpState>(
             listener: (context, state) {
               state.status.maybeWhen(

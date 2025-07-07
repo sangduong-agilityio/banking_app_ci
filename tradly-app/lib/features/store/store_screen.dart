@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/home/views/search_view.dart';
@@ -30,27 +32,32 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
-    return TAScaffold(
-      appBar: TAAppBar(
-        toolbarHeight: TAAppBarSize.small,
-        bottomType: TAAppBarBottomType.none,
-        title: TADisplaySmallText(
-          text: S.current.storeTitle,
-          fontWeight: FontWeight.w700,
-        ),
-        centerTitle: false,
-        backgroundColor: context.colorScheme.primary,
-        trailing: Row(
-          children: [
-            IconButton(
-              icon: const Icon(Icons.favorite),
-              onPressed: () {},
-            ),
-            TAAssets.cart(),
-          ],
-        ),
+    return BlocProvider(
+      create: (context) => StoreBloc(
+        repo: locator.get<StoreRepository>(),
       ),
-      body: _buildBody(context),
+      child: TAScaffold(
+        appBar: TAAppBar(
+          toolbarHeight: TAAppBarSize.small,
+          bottomType: TAAppBarBottomType.none,
+          title: TADisplaySmallText(
+            text: S.current.storeTitle,
+            fontWeight: FontWeight.w700,
+          ),
+          centerTitle: false,
+          backgroundColor: context.colorScheme.primary,
+          trailing: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.favorite),
+                onPressed: () {},
+              ),
+              TAAssets.cart(),
+            ],
+          ),
+        ),
+        body: _buildBody(context),
+      ),
     );
   }
 

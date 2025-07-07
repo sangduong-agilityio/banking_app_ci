@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/product_detail/states/product_detail_event.dart';
+import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
-import 'package:tradly_app/features/product_detail/states/product_detail_event.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_state.dart';
 import 'package:tradly_app/features/product_detail/views/checkout.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/images.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
 
 class ProductDetailPage extends StatelessWidget {
   const ProductDetailPage({
@@ -27,7 +28,7 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProductDetailBloc(
-        repo: context.read<ProductRepository>(),
+        repo: locator.get<ProductRepository>(),
       )..add(ProductDetailFetchEvt(productId: productId)),
       child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
         buildWhen: (previous, current) =>
@@ -127,13 +128,13 @@ class ProductDetailPage extends StatelessWidget {
                               Row(
                                 children: [
                                   TAHeadlineMediumText(
-                                    text: '\$${product?.newPrice ?? 0}',
+                                    text: '${product?.newPrice ?? 0}',
                                     color: context.colorScheme.primary,
                                     fontWeight: FontWeight.w700,
                                   ),
                                   SizedBox(width: 8),
                                   TATitleLargeText(
-                                    text: '\$${product?.price ?? 0}',
+                                    text: '${product?.price ?? 0}',
                                     decoration: TextDecoration.combine([
                                       TextDecoration.lineThrough,
                                     ]),

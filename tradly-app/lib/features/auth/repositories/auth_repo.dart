@@ -26,7 +26,9 @@ abstract class AuthRepository {
 class AuthRepositoryImplement implements AuthRepository {
   final SupabaseClient _client;
 
-  AuthRepositoryImplement(this._client);
+  AuthRepositoryImplement({
+    required SupabaseClient client,
+  }) : _client = client;
 
   @override
   Future<AuthResponse> signUp({

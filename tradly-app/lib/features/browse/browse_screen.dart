@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
@@ -33,8 +34,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
       landscape: 4,
     );
     return BlocProvider(
-      create: (context) => BrowseBloc(repo: context.read<BrowseRepository>())
-        ..add(const BrowseInitializeEvt()),
+      create: (context) => BrowseBloc(
+        repo: locator.get<BrowseRepository>(),
+      )..add(const BrowseInitializeEvt()),
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: TAScaffold(
