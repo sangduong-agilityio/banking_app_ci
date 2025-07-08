@@ -34,6 +34,11 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      # Install CMake
+      - name: Install CMake
+        run: |
+          sdkmanager "cmake;4.0.2"
+
       # Fetches proj dependencies from pub
       - name: Install dependencies
         run: flutter pub get
@@ -49,17 +54,28 @@ jobs:
       # Clean build directory
       - name: Clean build directory
         run: flutter clean
-
-      # Create android apk
+      # Build with environment variables
       - name: Build apk
-        run: flutter build apk --debug
+        run: |
+          flutter build apk --debug \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
 
-      # Create android app bundle
-      - name: Build app bundle
-        run: flutter build appbundle
-      # Uploads the apk as an artifact
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: apk
-          path: build/app/outputs/apk/debug/app-debug.apk
+      # Decode Firebase credential
+      - name: Decode Firebase credentials
+        run: echo "${{ secrets.FIREBASE_CREDENTIALS }}" | base64 --decode > ${{ github.workspace }}/firebase.json
+
+      # Install Firebase CLI
+      - name: Install Firebase CLI
+        run: |
+          curl -sL https://firebase.tools | bash
+          firebase --version
+
+      # Upload to Firebase App Distribution
+      - name: Upload to Firebase App Distribution
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/firebase.json
+        run: |
+          firebase appdistribution:distribute build/app/outputs/apk/debug/app-debug.apk \
+            --app ${{ secrets.FIREBASE_APP_ID }} \
+            --groups testers
