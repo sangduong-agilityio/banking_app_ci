@@ -15,5 +15,13 @@
             "flutterMode": "debug",
             "program": "tradly-app/lib/main_device_preview.dart",
         },
+        {
+            "name": "[TradlyApp][Web] Start development",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "tradly-app/lib/main.dart",
+            "args": ["--web-renderer", "auto"]
+        }
     ]
 }

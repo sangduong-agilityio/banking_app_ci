@@ -20,10 +20,7 @@ class AppLocators {
 
     locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImplement(
-        client: SupabaseClient(
-          Env.supabaseUrl,
-          Env.supabaseKey,
-        ),
+        Supabase.instance.client,
       ),
     );
 

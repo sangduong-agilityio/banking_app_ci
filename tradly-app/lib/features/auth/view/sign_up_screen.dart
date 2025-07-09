@@ -26,6 +26,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
+  final _authRepository = locator<AuthRepository>();
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -47,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignUpBloc(
-        authRepository: locator.get<AuthRepository>(),
+        authRepository: _authRepository,
       ),
       child: LoaderOverlay(
         child: GestureDetector(

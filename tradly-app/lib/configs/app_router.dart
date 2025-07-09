@@ -4,6 +4,7 @@ import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/home/views/see_all_new_product.dart';
 import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
+import 'package:tradly_app/features/notification_detail/notification_detail_screen.dart';
 import 'package:tradly_app/features/payment/payment_option_screen.dart';
 import 'package:tradly_app/features/payment/views/add_card_screen.dart';
 import 'package:tradly_app/features/wish_list/wish_list_screen.dart';
@@ -121,6 +122,14 @@ class TARouter {
       //     return OrderSuccessScreen(product: product);
       //   },
       // ),
+      GoRoute(
+        name: TAPaths.notificationDetail.name,
+        path: TAPaths.notificationDetail.path,
+        builder: (context, state) {
+          final notificationData = state.extra as Map<String, String>? ?? {};
+          return NotificationDetailScreen(notificationData: notificationData);
+        },
+      ),
       GoRoute(
         name: TAPaths.editProduct.name,
         path: TAPaths.editProduct.path,
@@ -327,6 +336,11 @@ enum TAPaths {
     name: 'profile',
     path: '/profile',
   ),
+  notificationDetail(
+    name: 'notificationDetail',
+    path: '/notificationDetail',
+  ),
+
   addProduct(
     name: 'addProduct',
     path: '/addProduct',

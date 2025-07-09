@@ -15,16 +15,15 @@ import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
 import 'package:tradly_app/features/order_history/states/order_history_bloc.dart';
 import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
+import 'package:tradly_app/service/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppLocators.setupLocators();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.supabaseKey,
@@ -42,16 +41,26 @@ class TradlyShopApp extends StatefulWidget {
 
 class _TradlyShopAppState extends State<TradlyShopApp>
     with WidgetsBindingObserver {
+  final NotificationService _notificationService = NotificationService();
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+
+    NotificationService.navigatorKey = TARouter.rootNavigatorKey;
+
+    _initializeNotifications();
+  }
+
+  Future<void> _initializeNotifications() async {
+    await _notificationService.init();
+    await _notificationService.initializeFirebaseMessaging();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-
     if (state == AppLifecycleState.inactive) {
       if ((FocusManager.instance.primaryFocus?.hasFocus ?? false) &&
           Platform.isAndroid) {
