@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,12 +104,35 @@ class _TradlyShopAppState extends State<TradlyShopApp>
           ...S.delegate.supportedLocales,
           const Locale('en', ''),
         ],
-        builder: (context, child) => ResponsiveBreakpoints.builder(
-          child: child!,
-          breakpoints: [
-            const Breakpoint(start: 0, end: 768, name: MOBILE),
-            const Breakpoint(start: 769, end: 1024, name: TABLET),
-          ],
+        builder: (context, child) => AccessibilityTools(
+          minimumTapAreas: MinimumTapAreas.material,
+          // Check for semantic labels
+          checkSemanticLabels: false,
+          // Check for flex overflows
+          checkFontOverflows: true,
+          // Check for image labels
+          checkImageLabels: true,
+          // Set how much info about issues is printed
+          logLevel: LogLevel.verbose,
+          // Set where the buttons are placed
+          buttonsAlignment: ButtonsAlignment.bottomRight,
+          // Enable or disable draging the buttons around
+          enableButtonsDrag: false,
+          // Customize testing tools configuration
+          testingToolsConfiguration: TestingToolsConfiguration(
+            enabled: true,
+            minTextScale: 1.0,
+            maxTextScale: 2,
+          ),
+          // Customize default test environment
+
+          child: ResponsiveBreakpoints.builder(
+            child: child!,
+            breakpoints: [
+              const Breakpoint(start: 0, end: 768, name: MOBILE),
+              const Breakpoint(start: 769, end: 1024, name: TABLET),
+            ],
+          ),
         ),
         routeInformationProvider: TARouter.router.routeInformationProvider,
         routeInformationParser: TARouter.router.routeInformationParser,

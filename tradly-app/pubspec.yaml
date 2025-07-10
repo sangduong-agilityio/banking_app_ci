@@ -92,6 +92,8 @@ dependencies:
 
   get_it: ^8.0.3    
 
+  accessibility_tools: ^2.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -16,3 +16,8 @@ String dateTimeFormat(DateTime date) {
   String convertedDate = DateFormat("MMMM yyyy").format(date);
   return convertedDate;
 }
+
+String dateTimeFormatWithDay(DateTime date) {
+  String convertedDate = DateFormat("dd MMMM yyyy").format(date);
+  return convertedDate;
+}

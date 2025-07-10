@@ -1,15 +1,47 @@
-abstract class NotificationDetailState {}
+import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class NotificationDetailLoading extends NotificationDetailState {}
+part 'notification_detail_state.freezed.dart';
 
-class NotificationDetailLoaded extends NotificationDetailState {
+class NotificationDetailState extends Equatable {
+  const NotificationDetailState({
+    this.notificationData = const {},
+    this.status = const NotificationDetailStatus.initial(),
+    this.errorMessage,
+  });
+
   final Map<String, dynamic> notificationData;
+  final NotificationDetailStatus status;
+  final String? errorMessage;
 
-  NotificationDetailLoaded(this.notificationData);
+  NotificationDetailState copyWith({
+    Map<String, dynamic>? notificationData,
+    NotificationDetailStatus? status,
+    String? errorMessage,
+  }) {
+    return NotificationDetailState(
+      notificationData: notificationData ?? this.notificationData,
+      status: status ?? this.status,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        notificationData,
+        status,
+        errorMessage,
+      ];
 }
 
-class NotificationDetailError extends NotificationDetailState {
-  final String message;
-
-  NotificationDetailError(this.message);
+@freezed
+sealed class NotificationDetailStatus with _$NotificationDetailStatus {
+  const factory NotificationDetailStatus.initial() =
+      NotificationDetailStatusInitial;
+  const factory NotificationDetailStatus.loading() =
+      NotificationDetailStatusLoading;
+  const factory NotificationDetailStatus.success() =
+      NotificationDetailStatusSuccess;
+  const factory NotificationDetailStatus.failure() =
+      NotificationDetailStatusFailure;
 }

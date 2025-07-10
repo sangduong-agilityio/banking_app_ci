@@ -5,10 +5,16 @@ import 'package:tradly_app/features/notification_detail/states/notification_deta
 class NotificationDetailCubit extends Cubit<NotificationDetailState> {
   final SupabaseClient supabase;
 
-  NotificationDetailCubit(this.supabase) : super(NotificationDetailLoading());
+  NotificationDetailCubit(this.supabase)
+      : super(const NotificationDetailState());
 
   Future<void> fetchNotificationDetails(
       Map<String, String> notificationData) async {
+    emit(
+      state.copyWith(
+        status: NotificationDetailStatus.loading(),
+      ),
+    );
     try {
       final notificationId = notificationData['id'];
       if (notificationId != null && notificationId.isNotEmpty) {
@@ -18,18 +24,24 @@ class NotificationDetailCubit extends Cubit<NotificationDetailState> {
             .eq('id', notificationId)
             .single();
         emit(
-          NotificationDetailLoaded(response),
+          state.copyWith(
+            notificationData: Map<String, dynamic>.from(response),
+            status: NotificationDetailStatus.success(),
+          ),
         );
       } else {
         emit(
-          NotificationDetailLoaded(
-            Map<String, dynamic>.from(notificationData),
+          state.copyWith(
+            notificationData: Map<String, dynamic>.from(notificationData),
+            status: NotificationDetailStatus.success(),
           ),
         );
       }
     } catch (e) {
       emit(
-        NotificationDetailError('Failed to load notification details'),
+        state.copyWith(
+            status: NotificationDetailStatus.failure(),
+            errorMessage: e.toString()),
       );
     }
   }

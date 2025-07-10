@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/notification_detail/states/notification_detail_cubit.dart';
 import 'package:tradly_app/features/notification_detail/states/notification_detail_state.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
+import 'package:tradly_app/widgets/not_found.dart';
 import 'package:tradly_app/widgets/text.dart';
+import 'package:tradly_app/configs/constants.dart';
 
 class NotificationDetailScreen extends StatelessWidget {
   final Map<String, String> notificationData;
@@ -18,6 +21,8 @@ class NotificationDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('en', null);
+
     return BlocProvider(
       create: (context) => NotificationDetailCubit(Supabase.instance.client)
         ..fetchNotificationDetails(notificationData),
@@ -28,30 +33,13 @@ class NotificationDetailScreen extends StatelessWidget {
           backgroundColor: context.colorScheme.primary,
         ),
         body: BlocBuilder<NotificationDetailCubit, NotificationDetailState>(
+          buildWhen: (previous, current) =>
+              previous.status != current.status ||
+              previous.notificationData != current.notificationData,
           builder: (context, state) {
-            if (state is NotificationDetailLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is NotificationDetailError) {
-              return Center(child: Text(state.message));
-            } else if (state is NotificationDetailLoaded) {
-              final fullNotificationData = state.notificationData;
-              final title = fullNotificationData['title'] ?? 'No Title';
-              final body = fullNotificationData['body'] ?? 'No Content';
-              final timestamp = fullNotificationData['timestamp'];
-
-              DateTime? notificationTime;
-              if (timestamp != null) {
-                try {
-                  final timestampInt = int.tryParse(timestamp.toString());
-                  if (timestampInt != null) {
-                    notificationTime =
-                        DateTime.fromMillisecondsSinceEpoch(timestampInt);
-                  }
-                } catch (e) {
-                  notificationTime = null;
-                }
-              }
-
+            if (state.status is NotificationDetailStatusLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.status is NotificationDetailStatusSuccess) {
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -81,7 +69,7 @@ class NotificationDetailScreen extends StatelessWidget {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: TAHeadlineLargeText(
-                                    text: title,
+                                    text: state.notificationData['title'] ?? '',
                                     color: context.colorScheme.primary,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -90,14 +78,17 @@ class NotificationDetailScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 12),
                             TAHeadlineSmallText(
-                              text: body,
+                              text: state.notificationData['body'] ?? '',
                               color: context.colorScheme.onSecondary,
                             ),
-                            if (notificationTime != null) ...[
+                            ...[
                               const SizedBox(height: 12),
                               TATitleMediumText(
-                                text:
-                                    'Received: ${_formatDateTime(notificationTime)}',
+                                text: 'Received: ${dateTimeFormatWithDay(
+                                  DateTime.parse(
+                                      state.notificationData['received_at'] ??
+                                          DateTime.now().toIso8601String()),
+                                )}',
                                 color: context.colorScheme.onSecondary,
                               ),
                             ],
@@ -109,16 +100,13 @@ class NotificationDetailScreen extends StatelessWidget {
                   ],
                 ),
               );
-            } else {
-              return Center(child: Text('Unknown state'));
+            } else if (state.status is NotificationDetailStatusFailure) {
+              return NotFoundScreen();
             }
+            return const SizedBox.shrink();
           },
         ),
       ),
     );
-  }
-
-  String _formatDateTime(DateTime dateTime) {
-    return '${dateTime.day}/${dateTime.month}/${dateTime.year} at ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}';
   }
 }
