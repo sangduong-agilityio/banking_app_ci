@@ -37,3 +37,7 @@ class BrowseSortEvt extends BrowseEvt {
   @override
   List<Object> get props => [sort];
 }
+
+class BrowseLoadMoreEvt extends BrowseEvt {
+  const BrowseLoadMoreEvt();
+}

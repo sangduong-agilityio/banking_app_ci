@@ -9,30 +9,35 @@ final class BrowseState extends Equatable {
     this.products,
     this.status = const BrowseStatus.initial(),
     this.errorMessage,
+    this.hasMore = true,
+    this.currentPage = 1,
   });
 
   final List<ProductModel>? products;
   final BrowseStatus status;
   final String? errorMessage;
+  final bool hasMore;
+  final int currentPage;
 
   BrowseState copyWith({
     List<ProductModel>? products,
     BrowseStatus? status,
     String? errorMessage,
+    bool? hasMore,
+    int? currentPage,
   }) {
     return BrowseState(
       products: products ?? this.products,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      hasMore: hasMore ?? this.hasMore,
+      currentPage: currentPage ?? this.currentPage,
     );
   }
 
   @override
-  List<Object?> get props => [
-        products,
-        status,
-        errorMessage,
-      ];
+  List<Object?> get props =>
+      [products, status, errorMessage, hasMore, currentPage];
 }
 
 @freezed

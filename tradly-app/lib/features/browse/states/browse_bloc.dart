@@ -12,6 +12,7 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
     on<BrowseInitializeEvt>(_onInitialize);
     on<BrowseSearchEvt>(_onSearchProduct);
     on<BrowseSortEvt>(_onSortProduct);
+    on<BrowseLoadMoreEvt>(_onLoadMoreProducts);
   }
 
   final BrowseRepository _repo;
@@ -134,6 +135,38 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
           errorMessage: e.toString(),
         ),
       );
+    }
+  }
+
+  Future<void> _onLoadMoreProducts(
+    BrowseLoadMoreEvt event,
+    Emitter<BrowseState> emit,
+  ) async {
+    if (!state.hasMore || state.status is BrowseStatusLoading) return;
+
+    emit(state.copyWith(status: const BrowseStatus.loading()));
+
+    try {
+      final nextPage = state.currentPage + 1;
+      final newProducts = await _repo.fetchProducts(page: nextPage, limit: 20);
+
+      if (newProducts.isEmpty) {
+        emit(state.copyWith(
+          hasMore: false,
+          status: const BrowseStatus.success(),
+        ));
+      } else {
+        emit(state.copyWith(
+          products: [...?state.products, ...newProducts],
+          currentPage: nextPage, // move to next page
+          status: const BrowseStatus.success(),
+        ));
+      }
+    } catch (e) {
+      emit(state.copyWith(
+        status: const BrowseStatus.failure(),
+        errorMessage: e.toString(),
+      ));
     }
   }
 }

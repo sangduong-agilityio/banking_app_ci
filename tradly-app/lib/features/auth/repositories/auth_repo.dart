@@ -7,20 +7,22 @@ abstract class AuthRepository {
     required String password,
     required String username,
   });
+
   Future<AuthResponse> signIn({
     required String email,
     required String password,
   });
 
-  Future<void> sendOtp({
-    required String phone,
-  });
+  Future<void> sendOtp({required String phone});
 
   Future<String?> getSessionToken();
 
   Future<User?> getCurrentUser();
 
   Future<void> logout();
+
+  Future<AuthResponse> verifyOtp(
+      {required String otpCode, required String phone});
 }
 
 class AuthRepositoryImplement implements AuthRepository {
@@ -42,7 +44,6 @@ class AuthRepositoryImplement implements AuthRepository {
     );
 
     final user = response.user;
-
     if (user != null) {
       await _client.from('users').insert({
         'user_id': user.id,
@@ -63,23 +64,45 @@ class AuthRepositoryImplement implements AuthRepository {
       email: email,
       password: password,
     );
+
     if (response.session != null) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('session_token', response.session!.accessToken);
     }
+
     return response;
   }
 
   @override
-  Future<void> sendOtp({
+  Future<void> sendOtp({required String phone}) async {
+    try {
+      await _client.auth.signInWithOtp(phone: phone);
+    } catch (e) {
+      throw Exception('Failed to send OTP: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<AuthResponse> verifyOtp({
+    required String otpCode,
     required String phone,
   }) async {
     try {
-      await _client.auth.signInWithOtp(
-        phone: phone,
+      // Ensure the token is trimmed and properly formatted
+      final response = await _client.auth.verifyOTP(
+        phone: phone.trim(),
+        token: otpCode.trim(),
+        type: OtpType.sms, // Correctly specify the type
       );
+
+      if (response.session != null) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('session_token', response.session!.accessToken);
+      }
+
+      return response;
     } catch (e) {
-      throw Exception('Failed to send OTP: ${e.toString()}');
+      throw Exception('Failed to verify OTP: ${e.toString()}');
     }
   }
 

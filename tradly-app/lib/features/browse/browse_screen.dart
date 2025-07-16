@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
@@ -26,6 +24,27 @@ class BrowseScreen extends StatefulWidget {
 }
 
 class _BrowseScreenState extends State<BrowseScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<BrowseBloc>().add(const BrowseLoadMoreEvt());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final crossAxisCount = TAResponsive.orientationSizeOf(
@@ -33,112 +52,99 @@ class _BrowseScreenState extends State<BrowseScreen> {
       portrait: 2,
       landscape: 4,
     );
-    return BlocProvider(
-      create: (context) => BrowseBloc(
-        repo: locator.get<BrowseRepository>(),
-      )..add(const BrowseInitializeEvt()),
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: TAScaffold(
-          appBar: TAAppBar(
-            toolbarHeight: TAAppBarSize.large,
-            centerTitle: false,
-            title: TADisplaySmallText(
-              text: S.current.browseTitle,
-              fontWeight: FontWeight.w700,
-            ),
-            trailing: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.favorite),
-                  onPressed: () {},
-                ),
-                TAAssets.cart(),
-              ],
-            ),
-            searchForm: BlocBuilder<BrowseBloc, BrowseState>(
-              buildWhen: (previous, current) =>
-                  previous.status != current.status,
-              builder: (context, state) {
-                return TASearchView(
-                  onChanged: (query) {
-                    context
-                        .read<BrowseBloc>()
-                        .add(BrowseSearchEvt(query: query));
-                  },
-                  placeholder: S.current.homeSearchProductPlaceholder,
-                );
-              },
-            ),
-            filterOptions: Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  BlocBuilder<BrowseBloc, BrowseState>(
-                    buildWhen: (previous, current) =>
-                        previous.status != current.status,
-                    builder: (context, state) {
-                      return _buildFilterButton(
-                        context,
-                        icon: TAAssets.sortList(),
-                        label: S.current.productDetailSortByButton,
-                        onPressed: () => showSortBottomSheet(context),
-                      );
-                    },
-                  ),
-                  _buildFilterButton(
-                    context,
-                    icon: const Icon(
-                      Icons.location_on,
-                      size: 16,
-                    ),
-                    label: S.current.productDetailLocationButton,
-                    onPressed: () {},
-                  ),
-                  _buildFilterButton(
-                    context,
-                    icon: TAAssets.category(),
-                    label: S.current.productDetailCategoryButton,
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-            bottomType: TAAppBarBottomType.custom,
+
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: TAScaffold(
+        appBar: TAAppBar(
+          toolbarHeight: TAAppBarSize.large,
+          centerTitle: false,
+          title: TADisplaySmallText(
+            text: S.current.browseTitle,
+            fontWeight: FontWeight.w700,
           ),
-          body: BlocBuilder<BrowseBloc, BrowseState>(
+          trailing: Row(
+            children: [
+              IconButton(icon: const Icon(Icons.favorite), onPressed: () {}),
+              TAAssets.cart(),
+            ],
+          ),
+          searchForm: BlocBuilder<BrowseBloc, BrowseState>(
+            buildWhen: (previous, current) => previous.status != current.status,
             builder: (context, state) {
-              if (state.status is BrowseStatusLoading) {
-                return ShimmerProductGrid();
-              } else if (state.status is BrowseStatusSuccess) {
-                final products = state.products ?? [];
-                return Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount.toInt(),
-                      ),
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        final product = products[index];
-                        return TACardProduct(
-                          product: product,
-                          onTapProduct: () {},
-                        );
-                      },
-                    ),
-                  ),
-                );
-              } else if (state.status is BrowseStatusFailure) {
-                return NotFoundScreen();
-              }
-              return const SizedBox.shrink();
+              return TASearchView(
+                onChanged: (query) {
+                  context.read<BrowseBloc>().add(BrowseSearchEvt(query: query));
+                },
+                placeholder: S.current.homeSearchProductPlaceholder,
+              );
             },
           ),
+          filterOptions: Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                BlocBuilder<BrowseBloc, BrowseState>(
+                  buildWhen: (previous, current) =>
+                      previous.status != current.status,
+                  builder: (context, state) {
+                    return _buildFilterButton(
+                      context,
+                      icon: TAAssets.sortList(),
+                      label: S.current.productDetailSortByButton,
+                      onPressed: () => showSortBottomSheet(context),
+                    );
+                  },
+                ),
+                _buildFilterButton(
+                  context,
+                  icon: const Icon(Icons.location_on, size: 16),
+                  label: S.current.productDetailLocationButton,
+                  onPressed: () {},
+                ),
+                _buildFilterButton(
+                  context,
+                  icon: TAAssets.category(),
+                  label: S.current.productDetailCategoryButton,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          bottomType: TAAppBarBottomType.custom,
+        ),
+        body: BlocBuilder<BrowseBloc, BrowseState>(
+          builder: (context, state) {
+            if (state.status is BrowseStatusLoading) {
+              return ShimmerProductGrid();
+            } else if (state.status is BrowseStatusSuccess) {
+              final products = state.products ?? [];
+              return GridView.builder(
+                addAutomaticKeepAlives: true,
+                controller: _scrollController,
+                padding: const EdgeInsets.all(20),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount.toInt(),
+                ),
+                itemCount:
+                    state.hasMore ? products.length + 1 : products.length,
+                itemBuilder: (context, index) {
+                  if (index >= products.length) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final product = products[index];
+                  return TACardProduct(
+                    product: product,
+                    onTapProduct: () {},
+                  );
+                },
+              );
+            } else if (state.status is BrowseStatusFailure) {
+              return NotFoundScreen();
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );
@@ -149,9 +155,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(16),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (BuildContext modalContext) {
         return TABottomSheet(
@@ -175,9 +179,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: icon,
-      label: TATitleLargeText(
-        text: label,
-      ),
+      label: TATitleLargeText(text: label),
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),

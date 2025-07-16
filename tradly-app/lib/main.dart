@@ -22,9 +22,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppLocators.setupLocators();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.supabaseKey,

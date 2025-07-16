@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/features/auth/view/otp_verification_screen.dart';
+import 'package:tradly_app/features/auth/view/send_otp_screen.dart';
+import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
+import 'package:tradly_app/features/browse/states/browse_bloc.dart';
+import 'package:tradly_app/features/browse/states/browse_event.dart';
 import 'package:tradly_app/features/home/views/see_all_new_product.dart';
 import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
@@ -11,6 +17,7 @@ import 'package:tradly_app/features/wish_list/wish_list_screen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/router_guard.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/auth/view/sign_in_screen.dart';
@@ -114,14 +121,16 @@ class TARouter {
           return AddCardScreen();
         },
       ),
-      // GoRoute(
-      //   name: TAPaths.orderSuccess.name,
-      //   path: TAPaths.orderSuccess.path,
-      //   builder: (context, state) {
-      //     final product = state.extra as ProductModel;
-      //     return OrderSuccessScreen(product: product);
-      //   },
-      // ),
+      GoRoute(
+        name: TAPaths.sendOtp.name,
+        path: TAPaths.sendOtp.path,
+        builder: (context, state) => SendOtpScreen(),
+      ),
+      GoRoute(
+        name: TAPaths.otpVerification.name,
+        path: TAPaths.otpVerification.path,
+        builder: (context, state) => OtpVerificationScreen(),
+      ),
       GoRoute(
         name: TAPaths.notificationDetail.name,
         path: TAPaths.notificationDetail.path,
@@ -239,7 +248,11 @@ class TARouter {
               GoRoute(
                 name: TAPaths.browse.name,
                 path: TAPaths.browse.path,
-                builder: (context, state) => const BrowseScreen(),
+                builder: (context, state) => BlocProvider(
+                  create: (_) => BrowseBloc(repo: locator<BrowseRepository>())
+                    ..add(const BrowseInitializeEvt()),
+                  child: const BrowseScreen(),
+                ),
               ),
             ],
           ),
@@ -377,10 +390,15 @@ enum TAPaths {
     name: 'productList',
     path: '/productList',
   ),
-  // orderSuccess(
-  //   name: 'orderSuccess',
-  //   path: '/orderSuccess',
-  // ),
+  sendOtp(
+    name: 'sendOtp',
+    path: '/sendOtp',
+  ),
+  otpVerification(
+    name: 'otpVerification',
+    path: '/otpVerification',
+  ),
+
   addCard(
     name: 'addCard',
     path: '/addCard',
