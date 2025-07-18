@@ -1,6 +1,8 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
+import 'package:tradly_app/utils/date_time.dart';
 import 'package:tradly_app/utils/validators.dart';
 import 'package:tradly_app/widgets/text.dart';
 
@@ -34,6 +36,11 @@ class TATextField extends StatefulWidget {
     this.isChipInput = false,
     this.chips = const [],
     this.onChipsChanged,
+    this.isDatePicker = false,
+    this.firstDate,
+    this.lastDate,
+    this.initialDate,
+    this.onDateSubmitted,
   });
 
   final String label;
@@ -63,6 +70,11 @@ class TATextField extends StatefulWidget {
   final bool isChipInput;
   final List<String> chips;
   final Function(List<String>)? onChipsChanged;
+  final bool isDatePicker;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
+  final DateTime? initialDate;
+  final ValueChanged<DateTime?>? onDateSubmitted;
 
   @override
   State<TATextField> createState() => _TATextFieldState();
@@ -95,6 +107,11 @@ class TATextField extends StatefulWidget {
     bool? isChipInput,
     List<String>? chips,
     Function(List<String>)? onChipsChanged,
+    bool? isDatePicker,
+    DateTime? firstDate,
+    DateTime? lastDate,
+    DateTime? initialDate,
+    ValueChanged<DateTime?>? onDateSubmitted,
   }) {
     return TATextField(
       label: label ?? this.label,
@@ -123,6 +140,11 @@ class TATextField extends StatefulWidget {
       isChipInput: isChipInput ?? this.isChipInput,
       chips: chips ?? this.chips,
       onChipsChanged: onChipsChanged ?? this.onChipsChanged,
+      isDatePicker: isDatePicker ?? this.isDatePicker,
+      firstDate: firstDate ?? this.firstDate,
+      lastDate: lastDate ?? this.lastDate,
+      initialDate: initialDate ?? this.initialDate,
+      onDateSubmitted: onDateSubmitted ?? this.onDateSubmitted,
     );
   }
 }
@@ -150,6 +172,23 @@ class _TATextFieldState extends State<TATextField> with InputValidationMixin {
       return widget.useMaterialStyle
           ? _buildTextField(context)
           : _buildCustomTextField(context);
+    }
+  }
+
+  Future<void> _handleDatePickerTap(BuildContext context) async {
+    FocusScope.of(context).unfocus();
+
+    final pickedDate = await showDatePickerDialog(
+      context: context,
+      minDate: widget.firstDate ?? DateTime(1900),
+      maxDate: widget.lastDate ?? DateTime(2100),
+      initialDate: widget.initialDate ?? DateTime.now(),
+      selectedDate: widget.initialDate,
+    );
+
+    if (pickedDate != null) {
+      widget.controller?.text = DateTimeUtil.formatPickerValue(pickedDate);
+      widget.onDateSubmitted?.call(pickedDate);
     }
   }
 
@@ -184,18 +223,26 @@ class _TATextFieldState extends State<TATextField> with InputValidationMixin {
               if (widget.textInputAction == TextInputAction.next) {
                 FocusScope.of(context).nextFocus();
               }
-              if (widget.onFieldSubmitted != null) {
-                widget.onFieldSubmitted!(value ?? '');
-              }
+              widget.onFieldSubmitted?.call(value ?? '');
             },
             onChanged: widget.onChanged as ValueChanged<String?>?,
-            onTap: widget.onTap,
+            onTap: widget.isDatePicker
+                ? () => _handleDatePickerTap(context)
+                : widget.onTap,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             onEditingComplete: widget.onEditingComplete,
             autofocus: widget.autoFocus,
             style: widget.textStyle ??
                 TextStyle(color: context.colorScheme.onSurface),
             decoration: InputDecoration(
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 0,
+                minHeight: 0,
+              ),
+              prefixIcon: widget.isDatePicker
+                  ? Icon(Icons.calendar_today,
+                      color: context.colorScheme.primary)
+                  : widget.prefixIcon,
               contentPadding: const EdgeInsets.only(top: 10),
               border: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
@@ -214,6 +261,7 @@ class _TATextFieldState extends State<TATextField> with InputValidationMixin {
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                   ),
+              hintText: widget.hint,
             ),
             validator: widget.validator ??
                 (value) =>
@@ -386,9 +434,7 @@ class _TATextFieldState extends State<TATextField> with InputValidationMixin {
           widget.onChipsChanged != null ? () => _removeChip(label) : null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
-        side: BorderSide(
-          style: BorderStyle.none,
-        ),
+        side: BorderSide(style: BorderStyle.none),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
     );

@@ -14,6 +14,7 @@ class StoreModel {
   final String? courieName;
   final List<String>? tagLine;
   final List<ProductModel>? products;
+  final DateTime? startDate;
 
   StoreModel({
     this.id,
@@ -29,6 +30,7 @@ class StoreModel {
     this.country,
     this.courieName,
     this.tagLine,
+    this.startDate,
   });
 
   factory StoreModel.fromMap(Map<String, dynamic> map) {
@@ -51,6 +53,8 @@ class StoreModel {
           : null,
       products:
           productList?.map((item) => ProductModel.fromJson(item)).toList(),
+      startDate:
+          map['startDate'] != null ? DateTime.parse(map['startDate']) : null,
     );
   }
 
@@ -70,6 +74,7 @@ class StoreModel {
       if (tagLine != null) 'tagLineDetail': tagLine,
       if (products != null)
         'products': products!.map((product) => product.toJson()).toList(),
+      if (startDate != null) 'startDate': startDate!.toIso8601String(),
     };
   }
 }

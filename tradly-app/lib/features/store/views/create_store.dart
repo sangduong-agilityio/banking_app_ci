@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
+import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/store/states/store_bloc.dart';
@@ -40,6 +42,8 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   final _cityController = TextEditingController();
   final _courierNameController = TextEditingController();
   final _countryController = TextEditingController();
+  final _startDateController = TextEditingController();
+
   List<String> _tagLineDetail = TADetails.getTagLineDetails();
 
   @override
@@ -57,9 +61,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('en', null);
+
     return BlocProvider(
       create: (context) => StoreBloc(
-        repo: context.read<StoreRepository>(),
+        repo: locator.get<StoreRepository>(),
       ),
       child: LoaderOverlay(
         child: TAScaffold(
@@ -152,6 +158,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                   controller: _storeWebAddressController,
                                 ),
                                 TATextField(
+                                  label: 'Start Date',
+                                  controller: _startDateController,
+                                  isDatePicker: true,
+                                ),
+                                TATextField(
                                   label: S.current.storeDescriptionLabel,
                                   controller: _storeDescriptionController,
                                 ),
@@ -219,6 +230,9 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                         country: _countryController.text,
                         courieName: _courierNameController.text,
                         tagLine: _tagLineDetail,
+                        startDate: _startDateController.text.isNotEmpty
+                            ? DateTime.parse(_startDateController.text)
+                            : null,
                       );
 
                       context
