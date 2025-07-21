@@ -41,6 +41,9 @@ class TATextField extends StatefulWidget {
     this.lastDate,
     this.initialDate,
     this.onDateSubmitted,
+    this.suggestions,
+    this.isValidOption,
+    this.enabled = true,
   });
 
   final String label;
@@ -75,6 +78,9 @@ class TATextField extends StatefulWidget {
   final DateTime? lastDate;
   final DateTime? initialDate;
   final ValueChanged<DateTime?>? onDateSubmitted;
+  final List<String>? suggestions;
+  final bool Function(String)? isValidOption;
+  final bool enabled;
 
   @override
   State<TATextField> createState() => _TATextFieldState();
@@ -112,6 +118,9 @@ class TATextField extends StatefulWidget {
     DateTime? lastDate,
     DateTime? initialDate,
     ValueChanged<DateTime?>? onDateSubmitted,
+    List<String>? suggestions,
+    bool? enabled,
+    bool Function(String)? isValidOption,
   }) {
     return TATextField(
       label: label ?? this.label,
@@ -145,6 +154,9 @@ class TATextField extends StatefulWidget {
       lastDate: lastDate ?? this.lastDate,
       initialDate: initialDate ?? this.initialDate,
       onDateSubmitted: onDateSubmitted ?? this.onDateSubmitted,
+      suggestions: suggestions ?? this.suggestions,
+      enabled: enabled ?? this.enabled,
+      isValidOption: isValidOption ?? this.isValidOption,
     );
   }
 }
@@ -207,65 +219,123 @@ class _TATextFieldState extends State<TATextField> with InputValidationMixin {
                   fontSize: 14,
                 ),
           ),
-          FormBuilderTextField(
-            name: widget.label,
-            cursorColor: context.colorScheme.onSurface,
-            controller: widget.controller,
-            initialValue: widget.initialValue,
-            maxLines: widget.maxLines,
-            maxLength: widget.maxLength,
-            keyboardType: widget.keyboardType,
-            obscureText: widget.isPassword ? _textInvisible : false,
-            obscuringCharacter: '*',
-            textInputAction: widget.textInputAction,
-            focusNode: widget.focusNode,
-            onSubmitted: (value) {
-              if (widget.textInputAction == TextInputAction.next) {
-                FocusScope.of(context).nextFocus();
-              }
-              widget.onFieldSubmitted?.call(value ?? '');
-            },
-            onChanged: widget.onChanged as ValueChanged<String?>?,
-            onTap: widget.isDatePicker
-                ? () => _handleDatePickerTap(context)
-                : widget.onTap,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            onEditingComplete: widget.onEditingComplete,
-            autofocus: widget.autoFocus,
-            style: widget.textStyle ??
-                TextStyle(color: context.colorScheme.onSurface),
-            decoration: InputDecoration(
-              prefixIconConstraints: const BoxConstraints(
-                minWidth: 0,
-                minHeight: 0,
-              ),
-              prefixIcon: widget.isDatePicker
-                  ? Icon(Icons.calendar_today,
-                      color: context.colorScheme.primary)
-                  : widget.prefixIcon,
-              contentPadding: const EdgeInsets.only(top: 10),
-              border: const UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.grey),
-              ),
-              enabledBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(
-                  color: Color(0xffdbdbde),
-                ),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.onSurface),
-              ),
-              errorStyle: widget.validatorStyle ??
-                  TextStyle(
-                    color: context.colorScheme.error,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
+          Autocomplete<String>(
+            optionsViewBuilder: (context, onSelected, options) {
+              return Align(
+                alignment: Alignment.topLeft,
+                child: Material(
+                  elevation: 4.0,
+                  color: context.colorScheme.surface,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: 200,
+                    ),
+                    child: ListView.builder(
+                      itemCount: options.length,
+                      itemBuilder: (context, index) {
+                        final option = options.elementAt(index);
+                        return ListTile(
+                          title: Text(option),
+                          onTap: () => onSelected(option),
+                        );
+                      },
+                    ),
                   ),
-              hintText: widget.hint,
-            ),
-            validator: widget.validator ??
-                (value) =>
-                    InputValidationMixin.validateInput(value, widget.label),
+                ),
+              );
+            },
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              if (widget.suggestions == null || textEditingValue.text.isEmpty) {
+                return const Iterable<String>.empty();
+              }
+              return widget.suggestions!.where((suggestion) => suggestion
+                  .toLowerCase()
+                  .contains(textEditingValue.text.toLowerCase()));
+            },
+            onSelected: (String selection) {
+              widget.controller?.text = selection;
+              widget.onChanged?.call(selection);
+            },
+            fieldViewBuilder:
+                (context, controller, focusNode, onFieldSubmitted) {
+              return FormBuilderTextField(
+                name: widget.label,
+                enabled: widget.enabled,
+                cursorColor: context.colorScheme.onSurface,
+                controller: controller,
+                initialValue: widget.initialValue,
+                maxLines: widget.maxLines,
+                maxLength: widget.maxLength,
+                keyboardType: widget.keyboardType,
+                obscureText: widget.isPassword ? _textInvisible : false,
+                obscuringCharacter: '*',
+                textInputAction: widget.textInputAction,
+                focusNode: focusNode,
+                onSubmitted: (value) {
+                  if (widget.textInputAction == TextInputAction.next) {
+                    FocusScope.of(context).nextFocus();
+                  }
+                  widget.onFieldSubmitted?.call(value ?? '');
+                },
+                onChanged: widget.onChanged as ValueChanged<String?>?,
+                onTap: widget.isDatePicker
+                    ? () => _handleDatePickerTap(context)
+                    : widget.onTap,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                onEditingComplete: widget.onEditingComplete,
+                autofocus: widget.autoFocus,
+                style: widget.textStyle ??
+                    TextStyle(color: context.colorScheme.onSurface),
+                decoration: InputDecoration(
+                  prefixIconConstraints: const BoxConstraints(
+                    minWidth: 0,
+                    minHeight: 0,
+                  ),
+                  prefixIcon: widget.isDatePicker
+                      ? Icon(Icons.calendar_today,
+                          color: context.colorScheme.primary)
+                      : widget.prefixIcon,
+                  contentPadding: const EdgeInsets.only(top: 10),
+                  border: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                        color: widget.enabled
+                            ? Colors.grey
+                            : context.colorScheme.primary),
+                  ),
+                  disabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: context.colorScheme.onSurface,
+                    ),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: context.colorScheme.onSecondary),
+                  ),
+                  errorStyle: widget.validatorStyle ??
+                      TextStyle(
+                        color: context.colorScheme.error,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                  hintText: widget.hint,
+                ),
+                validator: widget.validator ??
+                    (value) {
+                      if (widget.isValidOption != null &&
+                          value != null &&
+                          value.isNotEmpty) {
+                        if (!widget.isValidOption!(value)) {
+                          return 'Invalid option selected';
+                        }
+                      }
+                      return InputValidationMixin.validateInput(
+                          value, widget.label);
+                    },
+              );
+            },
           ),
         ],
       ),

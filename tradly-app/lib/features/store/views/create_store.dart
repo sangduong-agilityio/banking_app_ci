@@ -46,6 +46,8 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
   List<String> _tagLineDetail = TADetails.getTagLineDetails();
 
+  String? _selectedCountry;
+
   @override
   void dispose() {
     _storeNameController.dispose();
@@ -171,16 +173,54 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                   controller: _storeTypeController,
                                 ),
                                 TATextField(
-                                  label: S.current.storeAddressLabel,
-                                  controller: _addressController,
+                                  label: S.current.storeCountryLabel,
+                                  controller: _countryController,
+                                  suggestions: TADetails.getCountries,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _selectedCountry = value;
+                                      _cityController.clear();
+                                      _addressController.clear();
+                                    });
+                                  },
                                 ),
                                 TATextField(
                                   label: S.current.storeCityLabel,
                                   controller: _cityController,
+                                  suggestions: _selectedCountry != null
+                                      ? TADetails.countryCityMap[
+                                              _selectedCountry!] ??
+                                          []
+                                      : [],
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      _addressController.clear();
+                                    });
+                                  },
+                                  isValidOption: (value) =>
+                                      _selectedCountry != null &&
+                                      (TADetails
+                                              .countryCityMap[_selectedCountry!]
+                                              ?.contains(value) ??
+                                          false),
+                                  enabled: _selectedCountry != null,
                                 ),
                                 TATextField(
-                                  label: S.current.storeCountryLabel,
-                                  controller: _countryController,
+                                  label: S.current.storeAddressLabel,
+                                  controller: _addressController,
+                                  suggestions: _cityController.text.isNotEmpty
+                                      ? TADetails.cityAddressMap[
+                                              _cityController.text] ??
+                                          []
+                                      : [],
+                                  isValidOption: (value) =>
+                                      _cityController.text.isNotEmpty &&
+                                      (TADetails.cityAddressMap[
+                                                  _cityController.text]
+                                              ?.contains(value) ??
+                                          false),
+                                  enabled: _selectedCountry != null &&
+                                      _cityController.text.isNotEmpty,
                                 ),
                                 TATextField(
                                   label: S.current.storeCourierNameLabel,
