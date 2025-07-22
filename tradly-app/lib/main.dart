@@ -1,27 +1,18 @@
-import 'dart:io';
-
 import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tradly_app/app_provider.dart';
 import 'package:tradly_app/env/env.dart';
-import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/themes/app_theme.dart';
 import 'package:tradly_app/firebase_options.dart';
-import 'package:tradly_app/utils/locator.dart';
-import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
-import 'package:tradly_app/features/order_history/states/order_history_bloc.dart';
-import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
 import 'package:tradly_app/service/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await AppLocators.setupLocators();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -62,17 +53,6 @@ class _TradlyShopAppState extends State<TradlyShopApp>
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.inactive) {
-      if ((FocusManager.instance.primaryFocus?.hasFocus ?? false) &&
-          Platform.isAndroid) {
-        FocusManager.instance.primaryFocus?.unfocus();
-      }
-    }
-  }
-
-  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
@@ -80,20 +60,7 @@ class _TradlyShopAppState extends State<TradlyShopApp>
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => ProductDetailBloc(
-            repo: locator.get<ProductRepository>(),
-          ),
-        ),
-        BlocProvider(
-          create: (_) => OrderHistoryBloc(),
-        ),
-        BlocProvider(
-          create: (_) => WishListCubit(),
-        ),
-      ],
+    return TAProvider(
       child: MaterialApp.router(
         theme: TATheme.light,
         darkTheme: TATheme.dark,
@@ -108,26 +75,17 @@ class _TradlyShopAppState extends State<TradlyShopApp>
         ],
         builder: (context, child) => AccessibilityTools(
           minimumTapAreas: MinimumTapAreas.material,
-          // Check for semantic labels
           checkSemanticLabels: false,
-          // Check for flex overflows
           checkFontOverflows: true,
-          // Check for image labels
           checkImageLabels: true,
-          // Set how much info about issues is printed
           logLevel: LogLevel.verbose,
-          // Set where the buttons are placed
           buttonsAlignment: ButtonsAlignment.bottomRight,
-          // Enable or disable draging the buttons around
           enableButtonsDrag: false,
-          // Customize testing tools configuration
           testingToolsConfiguration: TestingToolsConfiguration(
             enabled: true,
             minTextScale: 1.0,
             maxTextScale: 2,
           ),
-          // Customize default test environment
-
           child: ResponsiveBreakpoints.builder(
             child: child!,
             breakpoints: [

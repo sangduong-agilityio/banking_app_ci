@@ -90,8 +90,6 @@ dependencies:
 
   flutter_form_builder: ^10.0.1
 
-  get_it: ^8.0.3    
-
   accessibility_tools: ^2.6.0
 
   date_picker_plus: ^4.2.0

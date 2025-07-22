@@ -30,9 +30,7 @@ class TACardProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isGalleryImage = File(product.imageUrl).existsSync();
-    final isValidImage =
-        isGalleryImage && File(product.imageUrl).lengthSync() > 0;
+    final isValidImage = product.imageUrl.isNotEmpty;
 
     return Semantics(
       label: label,
@@ -55,15 +53,17 @@ class TACardProduct extends StatelessWidget {
                     label: 'Image of ${product.title}',
                     child: isValidImage
                         ? ClipRRect(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),
-                            child: Image.file(
-                              File(product.imageUrl),
+                            child: Image.network(
+                              product.imageUrl, // Use network image
                               width: width ?? double.infinity,
                               height: height ?? 130,
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.error),
                             ),
                           )
                         : TAImageRectangle(

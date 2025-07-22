@@ -7,7 +7,6 @@ import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/home/views/search_view.dart';
@@ -34,7 +33,7 @@ class _StoreScreenState extends State<StoreScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => StoreBloc(
-        repo: locator.get<StoreRepository>(),
+        repo: context.read<StoreRepository>(),
       ),
       child: TAScaffold(
         appBar: TAAppBar(

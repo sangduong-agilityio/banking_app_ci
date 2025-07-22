@@ -23,6 +23,9 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
     on<EditFormValidateChangedEvt>(_onEditFormValidateChanged);
     on<AddProductFormValidateChangedEvt>(_onAddProductFormValidateChanged);
     on<InitializeEditProductEvt>(_onInitializeEditProduct);
+    on<CountryChangedEvt>(_onCountryChanged);
+    on<CityChangedEvt>(_onCityChanged);
+    on<TaglineChipsChangedEvt>(_onTaglineChipsChanged);
   }
 
   final StoreRepository _repo;
@@ -275,6 +278,40 @@ class StoreBloc extends Bloc<StoreEvt, StoreState> {
       state.copyWith(
         productToEdit: event.product,
         imageFiles: imageFiles,
+      ),
+    );
+  }
+
+  void _onCountryChanged(
+    CountryChangedEvt event,
+    Emitter<StoreState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        selectedCountry: event.selectedCountry,
+        selectedCity: null,
+      ),
+    );
+  }
+
+  void _onCityChanged(
+    CityChangedEvt event,
+    Emitter<StoreState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        selectedCity: event.selectedCity,
+      ),
+    );
+  }
+
+  void _onTaglineChipsChanged(
+    TaglineChipsChangedEvt event,
+    Emitter<StoreState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        taglineChips: event.chips,
       ),
     );
   }

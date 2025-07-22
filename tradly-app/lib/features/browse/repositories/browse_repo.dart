@@ -35,12 +35,14 @@ abstract class BrowseRepository {
 //     return products;
 //   }
 // }
+
 class BrowseRepositoryImpl implements BrowseRepository {
-  final TradlyApiClient _apiClient;
+  // final TradlyApiClient _apiClient;
 
   BrowseRepositoryImpl({
     required TradlyApiClient apiClient,
-  }) : _apiClient = apiClient;
+  });
+  //  : _apiClient = apiClient;
 
   @override
   Future<List<ProductModel>> fetchProducts(

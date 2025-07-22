@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tradly_app/features/profile/states/profile_state.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/profile/states/profile_cubit.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
@@ -24,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProfileCubit(
-        repo: locator.get<AuthRepository>(),
+        repo: context.read<AuthRepository>(),
       )..fetchProfile(),
       child: TAScaffold(
         appBar: TAAppBar(

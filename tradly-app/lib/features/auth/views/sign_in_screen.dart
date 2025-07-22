@@ -10,7 +10,6 @@ import 'package:tradly_app/features/auth/states/sign_in_bloc.dart';
 import 'package:tradly_app/features/auth/states/sign_in_event.dart';
 import 'package:tradly_app/features/auth/states/sign_in_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/validators.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/form.dart';
@@ -42,7 +41,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignInBloc(
-        authRepository: locator.get<AuthRepository>(),
+        authRepository: context.read<AuthRepository>(),
       ),
       child: LoaderOverlay(
         child: GestureDetector(

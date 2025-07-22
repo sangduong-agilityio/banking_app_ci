@@ -7,7 +7,6 @@ import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/store/states/store_bloc.dart';
@@ -44,9 +43,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
   final _countryController = TextEditingController();
   final _startDateController = TextEditingController();
 
-  List<String> _tagLineDetail = TADetails.getTagLineDetails();
-
-  String? _selectedCountry;
+  final List<String> _tagLineDetail = TADetails.getTagLineDetails();
 
   @override
   void dispose() {
@@ -67,7 +64,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
 
     return BlocProvider(
       create: (context) => StoreBloc(
-        repo: locator.get<StoreRepository>(),
+        repo: context.read<StoreRepository>(),
       ),
       child: LoaderOverlay(
         child: TAScaffold(
@@ -177,50 +174,51 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                   controller: _countryController,
                                   suggestions: TADetails.getCountries,
                                   onChanged: (String? value) {
-                                    setState(() {
-                                      _selectedCountry = value;
-                                      _cityController.clear();
-                                      _addressController.clear();
-                                    });
+                                    context
+                                        .read<StoreBloc>()
+                                        .add(CountryChangedEvt(
+                                          selectedCountry: value,
+                                        ));
                                   },
                                 ),
                                 TATextField(
                                   label: S.current.storeCityLabel,
                                   controller: _cityController,
-                                  suggestions: _selectedCountry != null
+                                  suggestions: state.selectedCountry != null
                                       ? TADetails.countryCityMap[
-                                              _selectedCountry!] ??
+                                              state.selectedCountry!] ??
                                           []
                                       : [],
                                   onChanged: (String? value) {
-                                    setState(() {
-                                      _addressController.clear();
-                                    });
+                                    context
+                                        .read<StoreBloc>()
+                                        .add(CityChangedEvt(
+                                          selectedCity: value,
+                                        ));
                                   },
                                   isValidOption: (value) =>
-                                      _selectedCountry != null &&
-                                      (TADetails
-                                              .countryCityMap[_selectedCountry!]
+                                      state.selectedCountry != null &&
+                                      (TADetails.countryCityMap[
+                                                  state.selectedCountry!]
                                               ?.contains(value) ??
                                           false),
-                                  enabled: _selectedCountry != null,
+                                  enabled: state.selectedCountry != null,
                                 ),
                                 TATextField(
                                   label: S.current.storeAddressLabel,
                                   controller: _addressController,
-                                  suggestions: _cityController.text.isNotEmpty
+                                  suggestions: state.selectedCity != null
                                       ? TADetails.cityAddressMap[
-                                              _cityController.text] ??
+                                              state.selectedCity!] ??
                                           []
                                       : [],
                                   isValidOption: (value) =>
-                                      _cityController.text.isNotEmpty &&
+                                      state.selectedCity != null &&
                                       (TADetails.cityAddressMap[
-                                                  _cityController.text]
+                                                  state.selectedCity!]
                                               ?.contains(value) ??
                                           false),
-                                  enabled: _selectedCountry != null &&
-                                      _cityController.text.isNotEmpty,
+                                  enabled: state.selectedCity != null,
                                 ),
                                 TATextField(
                                   label: S.current.storeCourierNameLabel,
@@ -231,9 +229,8 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                   isChipInput: true,
                                   chips: _tagLineDetail,
                                   onChipsChanged: (chips) {
-                                    setState(() {
-                                      _tagLineDetail = chips;
-                                    });
+                                    context.read<StoreBloc>().add(
+                                        TaglineChipsChangedEvt(chips: chips));
                                   },
                                 ),
                               ],

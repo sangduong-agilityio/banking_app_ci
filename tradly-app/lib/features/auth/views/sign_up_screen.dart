@@ -8,7 +8,6 @@ import 'package:tradly_app/features/auth/states/sign_up_bloc.dart';
 import 'package:tradly_app/features/auth/states/sign_up_event.dart';
 import 'package:tradly_app/features/auth/states/sign_up_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/validators.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/form.dart';
@@ -26,7 +25,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
-  final _authRepository = locator<AuthRepository>();
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -48,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> with InputValidationMixin {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SignUpBloc(
-        authRepository: _authRepository,
+        authRepository: context.read<AuthRepository>(),
       ),
       child: LoaderOverlay(
         child: GestureDetector(

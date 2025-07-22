@@ -135,3 +135,30 @@ class InitializeEditProductEvt extends StoreEvt {
   @override
   List<Object?> get props => [product];
 }
+
+class CountryChangedEvt extends StoreEvt {
+  const CountryChangedEvt({required this.selectedCountry});
+
+  final String? selectedCountry;
+
+  @override
+  List<Object?> get props => [selectedCountry];
+}
+
+class CityChangedEvt extends StoreEvt {
+  const CityChangedEvt({required this.selectedCity});
+
+  final String? selectedCity;
+
+  @override
+  List<Object?> get props => [selectedCity];
+}
+
+class TaglineChipsChangedEvt extends StoreEvt {
+  const TaglineChipsChangedEvt({required this.chips});
+
+  final List<String> chips;
+
+  @override
+  List<Object?> get props => [chips];
+}

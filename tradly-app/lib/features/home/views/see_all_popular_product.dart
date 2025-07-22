@@ -5,7 +5,6 @@ import 'package:tradly_app/features/home/states/home_bloc.dart';
 import 'package:tradly_app/features/home/states/home_event.dart';
 import 'package:tradly_app/features/home/states/home_state.dart';
 import 'package:tradly_app/features/home/repositories/home_repo.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/widgets/card.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
@@ -27,7 +26,7 @@ class SeeAllPopularProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeBloc(
-        repo: locator.get<HomeRepository>(),
+        repo: context.read<HomeRepository>(),
       )..add(
           HomeInitializeEvt(productId: productId),
         ),

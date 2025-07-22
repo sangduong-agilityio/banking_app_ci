@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
-import 'package:tradly_app/features/auth/view/otp_verification_screen.dart';
-import 'package:tradly_app/features/auth/view/send_otp_screen.dart';
 import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
 import 'package:tradly_app/features/browse/states/browse_bloc.dart';
 import 'package:tradly_app/features/browse/states/browse_event.dart';
@@ -11,17 +9,14 @@ import 'package:tradly_app/features/home/views/see_all_new_product.dart';
 import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
 import 'package:tradly_app/features/notification_detail/notification_detail_screen.dart';
-import 'package:tradly_app/features/payment/payment_option_screen.dart';
-import 'package:tradly_app/features/payment/views/add_card_screen.dart';
 import 'package:tradly_app/features/wish_list/wish_list_screen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/router_guard.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
-import 'package:tradly_app/features/auth/view/sign_in_screen.dart';
-import 'package:tradly_app/features/auth/view/sign_up_screen.dart';
+import 'package:tradly_app/features/auth/views/sign_in_screen.dart';
+import 'package:tradly_app/features/auth/views/sign_up_screen.dart';
 import 'package:tradly_app/features/browse/browse_screen.dart';
 import 'package:tradly_app/features/home/home_screen.dart';
 import 'package:tradly_app/features/on_boarding/on_boarding_screen.dart';
@@ -105,31 +100,6 @@ class TARouter {
         builder: (context, state) {
           return WishListScreen();
         },
-      ),
-      GoRoute(
-        name: TAPaths.paymentOption.name,
-        path: TAPaths.paymentOption.path,
-        builder: (context, state) {
-          final product = state.extra as ProductModel;
-          return PaymentOptionScreen(product: product);
-        },
-      ),
-      GoRoute(
-        name: TAPaths.addCard.name,
-        path: TAPaths.addCard.path,
-        builder: (context, state) {
-          return AddCardScreen();
-        },
-      ),
-      GoRoute(
-        name: TAPaths.sendOtp.name,
-        path: TAPaths.sendOtp.path,
-        builder: (context, state) => SendOtpScreen(),
-      ),
-      GoRoute(
-        name: TAPaths.otpVerification.name,
-        path: TAPaths.otpVerification.path,
-        builder: (context, state) => OtpVerificationScreen(),
       ),
       GoRoute(
         name: TAPaths.notificationDetail.name,
@@ -249,8 +219,9 @@ class TARouter {
                 name: TAPaths.browse.name,
                 path: TAPaths.browse.path,
                 builder: (context, state) => BlocProvider(
-                  create: (_) => BrowseBloc(repo: locator<BrowseRepository>())
-                    ..add(const BrowseInitializeEvt()),
+                  create: (_) =>
+                      BrowseBloc(repo: context.read<BrowseRepository>())
+                        ..add(const BrowseInitializeEvt()),
                   child: const BrowseScreen(),
                 ),
               ),
@@ -389,23 +360,6 @@ enum TAPaths {
   productList(
     name: 'productList',
     path: '/productList',
-  ),
-  sendOtp(
-    name: 'sendOtp',
-    path: '/sendOtp',
-  ),
-  otpVerification(
-    name: 'otpVerification',
-    path: '/otpVerification',
-  ),
-
-  addCard(
-    name: 'addCard',
-    path: '/addCard',
-  ),
-  paymentOption(
-    name: 'paymentOption',
-    path: '/paymentOption',
   );
 
   const TAPaths({

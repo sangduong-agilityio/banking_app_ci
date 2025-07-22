@@ -6,7 +6,6 @@ import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
-import 'package:tradly_app/utils/locator.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
@@ -28,7 +27,7 @@ class ProductDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProductDetailBloc(
-        repo: locator.get<ProductRepository>(),
+        repo: context.read<ProductRepository>(),
       )..add(ProductDetailFetchEvt(productId: productId)),
       child: BlocBuilder<ProductDetailBloc, ProductDetailState>(
         buildWhen: (previous, current) =>
