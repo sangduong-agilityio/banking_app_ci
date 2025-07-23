@@ -26,7 +26,6 @@ class HomeSectionHeader extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20, right: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           TAHeadlineMediumText(
             text: title,

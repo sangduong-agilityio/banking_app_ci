@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class DioExceptionMessages {
   static const String unauthenticated = 'Unauthenticated';
   static const String connectionTimeout = 'Connection request timeout';
@@ -10,14 +8,4 @@ class DioExceptionMessages {
   static const String cancel = 'Request Cancelled';
   static const String connectionError = 'No internet connection';
   static const String unexpectedErrorOccurred = 'Unexpected error occurred';
-}
-
-String dateTimeFormat(DateTime date) {
-  String convertedDate = DateFormat("MMMM yyyy").format(date);
-  return convertedDate;
-}
-
-String dateTimeFormatWithDay(DateTime date) {
-  String convertedDate = DateFormat("dd MMMM yyyy").format(date);
-  return convertedDate;
 }

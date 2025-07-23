@@ -82,7 +82,7 @@ import 'package:tradly_app/themes/app_colors.dart';
 import 'package:tradly_app/themes/app_palette.dart';
 import 'package:tradly_app/themes/app_theme.dart';
 import 'package:tradly_app/themes/typography.dart';
-import 'package:tradly_app/utils/details_util.dart';
+import 'package:tradly_app/utils/location_details.dart';
 import 'package:tradly_app/utils/permission_helper.dart';
 import 'package:tradly_app/utils/responsive.dart';
 import 'package:tradly_app/utils/validators.dart';

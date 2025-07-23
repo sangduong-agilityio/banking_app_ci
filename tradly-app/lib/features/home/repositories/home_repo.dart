@@ -92,7 +92,9 @@ class HomeRepositoryImpl implements HomeRepository {
     final jsonData = response.data;
 
     return (jsonData as List)
-        .map((json) => ProductModel.fromJson(json['productId']))
+        .map(
+          (json) => ProductModel.fromJson(json['productId']),
+        )
         .toList();
   }
 

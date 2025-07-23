@@ -291,7 +291,6 @@ enum TAPaths {
     name: 'signUp',
     path: '/signUp',
   ),
-
   home(
     name: 'home',
     path: '/home',

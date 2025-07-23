@@ -33,15 +33,12 @@ class TradlyShopApp extends StatefulWidget {
   State<TradlyShopApp> createState() => _TradlyShopAppState();
 }
 
-class _TradlyShopAppState extends State<TradlyShopApp>
-    with WidgetsBindingObserver {
+class _TradlyShopAppState extends State<TradlyShopApp> {
   final NotificationService _notificationService = NotificationService();
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
-
     NotificationService.navigatorKey = TARouter.rootNavigatorKey;
 
     _initializeNotifications();
@@ -50,12 +47,6 @@ class _TradlyShopAppState extends State<TradlyShopApp>
   Future<void> _initializeNotifications() async {
     await _notificationService.init();
     await _notificationService.initializeFirebaseMessaging();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
   }
 
   @override

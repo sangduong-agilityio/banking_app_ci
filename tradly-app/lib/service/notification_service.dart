@@ -71,14 +71,14 @@ class NotificationService {
     int id = 0,
     String? title,
     String? body,
-    String? payload, // Add payload parameter
+    String? payload,
   }) async {
     await notificationsPlugin.show(
       id,
       title,
       body,
       notificationsDetails(),
-      payload: payload, // Pass payload to local notification
+      payload: payload,
     );
   }
 

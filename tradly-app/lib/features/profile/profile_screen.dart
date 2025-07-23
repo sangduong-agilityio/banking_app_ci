@@ -22,9 +22,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProfileCubit(
-        repo: context.read<AuthRepository>(),
-      )..fetchProfile(),
+      create: (context) =>
+          ProfileCubit(repo: context.read<AuthRepository>())..fetchProfile(),
       child: TAScaffold(
         appBar: TAAppBar(
           centerTitle: false,
@@ -43,121 +42,125 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-        body:
-            BlocBuilder<ProfileCubit, ProfileState>(builder: (context, state) {
-          if (state.status is ProfileStatusLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state.status is ProfileStatusSuccess) {
-            final user = state.user;
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: 251,
-                    width: double.infinity,
-                    color: context.colorScheme.primary,
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 80),
-                    child: SafeArea(
-                      bottom: false,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TAImageCircle(
-                            radius: 32,
-                            Assets.images.imgTradly.path,
-                            boxFit: BoxFit.cover,
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TATitleLargeText(
-                                  text: user?.userName ?? '',
-                                  color: context.colorScheme.onPrimary,
-                                ),
-                                const SizedBox(height: 4),
-                                TATitleLargeText(
-                                  text: user?.email ?? '',
-                                  color: context.colorScheme.onPrimary,
-                                ),
-                                const SizedBox(height: 2),
-                                TATitleLargeText(
-                                  text: user?.phoneNumber ?? '',
-                                  color: context.colorScheme.onPrimary,
-                                ),
-                              ],
+        body: BlocBuilder<ProfileCubit, ProfileState>(
+          buildWhen: (previous, current) =>
+              previous.status != current.status ||
+              previous.user != current.user,
+          builder: (context, state) {
+            if (state.status is ProfileStatusLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.status is ProfileStatusSuccess) {
+              final user = state.user;
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 251,
+                      width: double.infinity,
+                      color: context.colorScheme.primary,
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 80),
+                      child: SafeArea(
+                        bottom: false,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TAImageCircle(
+                              radius: 32,
+                              Assets.images.imgTradly.path,
+                              boxFit: BoxFit.cover,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TATitleLargeText(
+                                    text: user?.userName ?? '',
+                                    color: context.colorScheme.onPrimary,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  TATitleLargeText(
+                                    text: user?.email ?? '',
+                                    color: context.colorScheme.onPrimary,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  TATitleLargeText(
+                                    text: user?.phoneNumber ?? '',
+                                    color: context.colorScheme.onPrimary,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Transform.translate(
-                    offset: const Offset(0, -150),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16),
-                      decoration: BoxDecoration(
-                        color: context.colorScheme.surface,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        children: [
-                          _buildMenuItem(
-                            context: context,
-                            title: S.current.profileEditTitle,
-                            onTap: () {},
-                          ),
-                          _buildDivider(),
-                          _buildMenuItem(
-                            context: context,
-                            title: S.current.profileLanguageCurrencyTitle,
-                            onTap: () {},
-                          ),
-                          _buildDivider(),
-                          _buildMenuItem(
-                            context: context,
-                            title: S.current.profileFeedbackTitle,
-                            onTap: () {},
-                          ),
-                          _buildDivider(),
-                          _buildMenuItem(
-                            context: context,
-                            title: S.current.profileReferFriendTitle,
-                            onTap: () {},
-                          ),
-                          _buildDivider(),
-                          _buildMenuItem(
-                            context: context,
-                            title: S.current.profileTermsAndConditionsTitle,
-                            onTap: () {},
-                          ),
-                          _buildDivider(),
-                          _buildMenuItem(
+                    Transform.translate(
+                      offset: const Offset(0, -150),
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          children: [
+                            _buildMenuItem(
                               context: context,
-                              title: S.current.profileLogoutTitle,
-                              textColor: context.colorScheme.primary,
-                              onTap: () async {
-                                final prefs =
-                                    await SharedPreferences.getInstance();
-                                await prefs.remove('session_token');
-                                if (context.mounted) {
-                                  context.go(TAPaths.onboarding.path);
-                                }
-                              }),
-                        ],
+                              title: S.current.profileEditTitle,
+                              onTap: () {},
+                            ),
+                            _buildDivider(),
+                            _buildMenuItem(
+                              context: context,
+                              title: S.current.profileLanguageCurrencyTitle,
+                              onTap: () {},
+                            ),
+                            _buildDivider(),
+                            _buildMenuItem(
+                              context: context,
+                              title: S.current.profileFeedbackTitle,
+                              onTap: () {},
+                            ),
+                            _buildDivider(),
+                            _buildMenuItem(
+                              context: context,
+                              title: S.current.profileReferFriendTitle,
+                              onTap: () {},
+                            ),
+                            _buildDivider(),
+                            _buildMenuItem(
+                              context: context,
+                              title: S.current.profileTermsAndConditionsTitle,
+                              onTap: () {},
+                            ),
+                            _buildDivider(),
+                            _buildMenuItem(
+                                context: context,
+                                title: S.current.profileLogoutTitle,
+                                textColor: context.colorScheme.primary,
+                                onTap: () async {
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.remove('session_token');
+                                  if (context.mounted) {
+                                    context.go(TAPaths.onboarding.path);
+                                  }
+                                }),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                ],
-              ),
-            );
-          } else if (state.status is ProfileStatusFailure) {
-            return NotFoundScreen();
-          }
-          return const SizedBox.shrink();
-        }),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              );
+            } else if (state.status is ProfileStatusFailure) {
+              return NotFoundScreen();
+            }
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

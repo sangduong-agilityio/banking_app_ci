@@ -30,9 +30,7 @@ class ProductList extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProductDetailBloc(
         repo: context.read<ProductRepository>(),
-      )..add(
-          ProductDetailInitializeEvt(categoryId: categoryId),
-        ),
+      )..add(ProductDetailInitializeEvt(categoryId: categoryId)),
       child: TAScaffold(
         appBar: TAAppBar.productList(
           backgroundColor: context.colorScheme.primary,

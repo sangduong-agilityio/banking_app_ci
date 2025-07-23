@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tradly_app/configs/constants.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/order_history/states/order_history_bloc.dart';
 import 'package:tradly_app/features/order_history/states/order_history_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
+import 'package:tradly_app/utils/date_time.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/widgets/assets.dart';
@@ -63,7 +63,7 @@ class OrderHistoryScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: TATitleLargeText(
-                        text: dateTimeFormat(DateTime.now()),
+                        text: DateTimeUtil.dateTimeFormat(DateTime.now()),
                         fontWeight: FontWeight.w700,
                         color: context.colorScheme.primary,
                       ),

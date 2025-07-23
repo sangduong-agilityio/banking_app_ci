@@ -8,12 +8,12 @@ class HomeBloc extends Bloc<HomeEvt, HomeState> {
     required HomeRepository repo,
   })  : _repo = repo,
         super(const HomeState()) {
-    on<HomeInitializeEvt>(_onInitializeHandler);
+    on<HomeInitializeEvt>(_onInitialize);
   }
 
   final HomeRepository _repo;
 
-  Future<void> _onInitializeHandler(
+  Future<void> _onInitialize(
     HomeInitializeEvt event,
     Emitter<HomeState> emit,
   ) async {

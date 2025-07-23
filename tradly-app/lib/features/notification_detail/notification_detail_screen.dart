@@ -5,11 +5,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/notification_detail/states/notification_detail_cubit.dart';
 import 'package:tradly_app/features/notification_detail/states/notification_detail_state.dart';
+import 'package:tradly_app/utils/date_time.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/widgets/not_found.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/configs/constants.dart';
 
 class NotificationDetailScreen extends StatelessWidget {
   final Map<String, String> notificationData;
@@ -84,7 +84,8 @@ class NotificationDetailScreen extends StatelessWidget {
                             ...[
                               const SizedBox(height: 12),
                               TATitleMediumText(
-                                text: 'Received: ${dateTimeFormatWithDay(
+                                text:
+                                    'Received: ${DateTimeUtil.dateTimeFormatWithDay(
                                   DateTime.parse(
                                       state.notificationData['received_at'] ??
                                           DateTime.now().toIso8601String()),

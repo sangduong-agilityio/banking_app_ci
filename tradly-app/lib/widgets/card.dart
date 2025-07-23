@@ -58,7 +58,7 @@ class TACardProduct extends StatelessWidget {
                               topRight: Radius.circular(10),
                             ),
                             child: Image.network(
-                              product.imageUrl, // Use network image
+                              product.imageUrl,
                               width: width ?? double.infinity,
                               height: height ?? 130,
                               fit: BoxFit.cover,

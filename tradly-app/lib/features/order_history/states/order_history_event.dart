@@ -7,7 +7,10 @@ class OrderHistoryEvt extends Equatable {
 }
 
 class AddProductToOrderHistoryEvt extends OrderHistoryEvt {
-  AddProductToOrderHistoryEvt({required this.product});
+  AddProductToOrderHistoryEvt({
+    required this.product,
+  });
+
   final ProductModel product;
 
   @override

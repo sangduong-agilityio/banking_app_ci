@@ -20,7 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
 import 'package:tradly_app/features/store/states/store_bloc.dart';
 import 'package:tradly_app/features/store/states/store_event.dart';
-import 'package:tradly_app/utils/details_util.dart';
+import 'package:tradly_app/utils/location_details.dart';
 
 class AddProductDetailScreen extends StatefulWidget {
   const AddProductDetailScreen({

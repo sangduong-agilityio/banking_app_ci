@@ -27,9 +27,7 @@ class SeeAllNewProductScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBloc(
         repo: context.read<HomeRepository>(),
-      )..add(
-          HomeInitializeEvt(productId: productId),
-        ),
+      )..add(HomeInitializeEvt(productId: productId)),
       child: TAScaffold(
         appBar: TAAppBar.productList(
           backgroundColor: context.colorScheme.primary,

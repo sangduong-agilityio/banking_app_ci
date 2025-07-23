@@ -115,6 +115,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
           bottomType: TAAppBarBottomType.custom,
         ),
         body: BlocBuilder<BrowseBloc, BrowseState>(
+          buildWhen: (previous, current) =>
+              previous.status != current.status ||
+              previous.hasMore != current.hasMore ||
+              previous.products != current.products,
           builder: (context, state) {
             if (state.status is BrowseStatusLoading) {
               return ShimmerProductGrid();

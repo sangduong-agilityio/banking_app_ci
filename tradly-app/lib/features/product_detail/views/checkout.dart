@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/order_history/states/order_history_event.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
-import 'package:tradly_app/service/notification_service.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
@@ -33,16 +31,6 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final supabase = Supabase.instance.client;
-  final notiService = NotificationService();
-
-  @override
-  void initState() {
-    super.initState();
-    notiService.initializeFirebaseMessaging();
-    notiService.init();
-  }
-
   Future<void> _onGetNotification() async {
     final status = await Permission.notification.status;
     if (status.isGranted || status.isLimited) {

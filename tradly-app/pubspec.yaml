@@ -86,12 +86,16 @@ dependencies:
   # Overlay loader for async operations
   loader_overlay: ^5.0.0
 
+  # Provides a typeahead input field
   flutter_typeahead: ^5.2.0
 
+  # Provides a form builder for Flutter
   flutter_form_builder: ^10.0.1
 
+  # Provides a rich text editor
   accessibility_tools: ^2.6.0
 
+  # Provides a date picker with additional features
   date_picker_plus: ^4.2.0
 
 dev_dependencies:

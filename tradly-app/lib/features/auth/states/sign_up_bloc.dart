@@ -4,12 +4,14 @@ import 'sign_up_event.dart';
 import 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvt, SignUpState> {
-  final AuthRepository authRepository;
-
-  SignUpBloc({required this.authRepository}) : super(const SignUpState()) {
+  SignUpBloc({
+    required this.authRepository,
+  }) : super(const SignUpState()) {
     on<SignUpFormValidateChangedEvt>(_onFormValidateChanged);
     on<SignUpButtonPressedEvt>(_onSignUpPressed);
   }
+
+  final AuthRepository authRepository;
 
   void _onFormValidateChanged(
     SignUpFormValidateChangedEvt event,
@@ -50,10 +52,12 @@ class SignUpBloc extends Bloc<SignUpEvt, SignUpState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(
-        status: SignUpStatus.failure(),
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: SignUpStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

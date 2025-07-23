@@ -17,6 +17,7 @@ final class HomeState extends Equatable {
     this.status = const HomeStatus.initial(),
     this.errorMessage,
   });
+
   final HomeStatus status;
   final String? errorMessage;
   final List<BannerModel>? banners;

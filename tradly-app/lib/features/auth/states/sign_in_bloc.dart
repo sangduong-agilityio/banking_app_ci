@@ -4,12 +4,14 @@ import 'sign_in_event.dart';
 import 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvt, SignInState> {
-  final AuthRepository authRepository;
-
-  SignInBloc({required this.authRepository}) : super(const SignInState()) {
+  SignInBloc({
+    required this.authRepository,
+  }) : super(const SignInState()) {
     on<SignInFormValidateChangedEvt>(_onFormValidateChanged);
     on<SignInButtonPressedEvt>(_onLoginPressed);
   }
+
+  final AuthRepository authRepository;
 
   Future<void> _onFormValidateChanged(
     SignInFormValidateChangedEvt event,

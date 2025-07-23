@@ -59,19 +59,23 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
 
       if (event.query.isEmpty) {
         allProducts = await _repo.fetchProducts();
-        emit(state.copyWith(
-          products: allProducts,
-          status: const BrowseStatus.success(),
-        ));
+        emit(
+          state.copyWith(
+            products: allProducts,
+            status: const BrowseStatus.success(),
+          ),
+        );
         return;
       }
 
       final String query = event.query.toLowerCase();
 
       final List<ProductModel> searchProducts = allProducts
-          .where((product) =>
-              product.title.toLowerCase().contains(query) ||
-              product.price.toLowerCase().contains(query))
+          .where(
+            (product) =>
+                product.title.toLowerCase().contains(query) ||
+                product.price.toLowerCase().contains(query),
+          )
           .toList();
 
       emit(
@@ -148,25 +152,34 @@ class BrowseBloc extends Bloc<BrowseEvt, BrowseState> {
 
     try {
       final nextPage = state.currentPage + 1;
-      final newProducts = await _repo.fetchProducts(page: nextPage, limit: 20);
+      final newProducts = await _repo.fetchProducts(
+        page: nextPage,
+        limit: 20,
+      );
 
       if (newProducts.isEmpty) {
-        emit(state.copyWith(
-          hasMore: false,
-          status: const BrowseStatus.success(),
-        ));
+        emit(
+          state.copyWith(
+            hasMore: false,
+            status: const BrowseStatus.success(),
+          ),
+        );
       } else {
-        emit(state.copyWith(
-          products: [...?state.products, ...newProducts],
-          currentPage: nextPage, // move to next page
-          status: const BrowseStatus.success(),
-        ));
+        emit(
+          state.copyWith(
+            products: [...?state.products, ...newProducts],
+            currentPage: nextPage,
+            status: const BrowseStatus.success(),
+          ),
+        );
       }
     } catch (e) {
-      emit(state.copyWith(
-        status: const BrowseStatus.failure(),
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: const BrowseStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

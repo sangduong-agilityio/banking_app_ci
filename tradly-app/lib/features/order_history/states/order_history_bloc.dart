@@ -8,15 +8,16 @@ class OrderHistoryBloc extends Bloc<OrderHistoryEvt, OrderHistoryState> {
     on<AddProductToOrderHistoryEvt>(_onAddProduct);
   }
 
-  void _onAddProduct(
+  Future<void> _onAddProduct(
     AddProductToOrderHistoryEvt event,
     Emitter<OrderHistoryState> emit,
-  ) {
-    final updatedProducts = List<ProductModel>.from(state.products);
-    updatedProducts.add(event.product);
-
+  ) async {
+    final updatedProducts = List<ProductModel>.from(state.products)
+      ..add(event.product);
     emit(
-      state.copyWith(products: updatedProducts),
+      state.copyWith(
+        products: updatedProducts,
+      ),
     );
   }
 }
