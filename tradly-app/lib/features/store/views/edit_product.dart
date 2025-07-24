@@ -7,6 +7,7 @@ import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/home/models/product_model.dart';
+import 'package:tradly_app/utils/location_details.dart';
 import 'package:tradly_app/widgets/card.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
@@ -40,8 +41,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionController = TextEditingController();
   final _priceTypeController = TextEditingController();
   final int _maxPhotos = 4;
-
-  List<String> _additionalDetails = ['Cash on delivery', 'Available'];
+  List<String> _additionalDetails = TADetails.getAdditionalDetails();
 
   @override
   void dispose() {

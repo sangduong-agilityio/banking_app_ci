@@ -129,6 +129,8 @@ dev_dependencies:
   # Fake data generator for tests
   faker: ^2.2.0
 
+  json_serializable: ^6.7.1
+
 flutter:
   uses-material-design: true
   generate: true

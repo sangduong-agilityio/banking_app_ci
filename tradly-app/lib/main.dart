@@ -13,16 +13,13 @@ import 'package:tradly_app/service/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.supabaseKey,
   );
-
   runApp(const TradlyShopApp());
 }
 
@@ -40,13 +37,7 @@ class _TradlyShopAppState extends State<TradlyShopApp> {
   void initState() {
     super.initState();
     NotificationService.navigatorKey = TARouter.rootNavigatorKey;
-
-    _initializeNotifications();
-  }
-
-  Future<void> _initializeNotifications() async {
-    await _notificationService.init();
-    await _notificationService.initializeFirebaseMessaging();
+    _notificationService.initializeAllNotifications();
   }
 
   @override

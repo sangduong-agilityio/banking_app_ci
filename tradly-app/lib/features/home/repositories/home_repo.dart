@@ -22,36 +22,34 @@ class HomeRepositoryImpl implements HomeRepository {
 
   @override
   Future<List<BannerModel>> fetchBanners() async {
-    String apiUrl = '${Env.endPoint}banners';
+    final apiUrl = '${Env.endPoint}banners';
 
     final response = await _apiClient.get(
       apiUrl,
-      queryParams: {
-        'select': '*',
-      },
+      queryParams: {'select': '*'},
     );
+
     final jsonData = response.data;
 
-    final banners =
-        (jsonData as List).map((json) => BannerModel.fromJson(json)).toList();
-    return banners;
+    return (jsonData as List)
+        .map((json) => BannerModel.fromJson(json))
+        .toList();
   }
 
   @override
   Future<List<CategoryModel>> fetchCategories() async {
-    String apiUrl = '${Env.endPoint}categories';
+    final apiUrl = '${Env.endPoint}categories';
 
     final response = await _apiClient.get(
       apiUrl,
-      queryParams: {
-        'select': '*',
-      },
+      queryParams: {'select': '*'},
     );
+
     final jsonData = response.data;
 
-    final categories =
-        (jsonData as List).map((json) => CategoryModel.fromJson(json)).toList();
-    return categories;
+    return (jsonData as List)
+        .map((json) => CategoryModel.fromJson(json))
+        .toList();
   }
 
   @override
@@ -61,19 +59,18 @@ class HomeRepositoryImpl implements HomeRepository {
 
       final response = await _apiClient.get(
         apiUrl,
-        queryParams: {
-          'select': '*',
-        },
+        queryParams: {'select': '*'},
       );
 
       final data = response.data;
 
       if (data is List) {
-        return data.map((json) => StoreModel.fromMap(json)).toList();
+        return data.map((json) => StoreModel.fromJson(json)).toList();
       } else {
         throw Exception('Invalid response format: expected a List');
       }
     } catch (e) {
+      // Optional: log or report error
       return [];
     }
   }
@@ -81,6 +78,7 @@ class HomeRepositoryImpl implements HomeRepository {
   @override
   Future<List<ProductModel>> fetchNewProducts() async {
     final apiUrl = '${Env.endPoint}productType';
+
     final response = await _apiClient.get(
       apiUrl,
       queryParams: {
@@ -92,15 +90,14 @@ class HomeRepositoryImpl implements HomeRepository {
     final jsonData = response.data;
 
     return (jsonData as List)
-        .map(
-          (json) => ProductModel.fromJson(json['productId']),
-        )
+        .map((json) => ProductModel.fromJson(json['productId']))
         .toList();
   }
 
   @override
   Future<List<ProductModel>> fetchPopularProducts() async {
     final apiUrl = '${Env.endPoint}productType';
+
     final response = await _apiClient.get(
       apiUrl,
       queryParams: {

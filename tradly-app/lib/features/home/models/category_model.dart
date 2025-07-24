@@ -1,38 +1,18 @@
 import 'package:tradly_app/features/home/models/product_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class CategoryModel {
-  final int? id;
-  final String? category;
-  final String? imageUrl;
-  final List<ProductModel> products;
+part 'category_model.freezed.dart';
+part 'category_model.g.dart';
 
-  CategoryModel({
-    this.id,
-    this.category,
-    this.imageUrl,
-    required this.products,
-  });
+@freezed
+class CategoryModel with _$CategoryModel {
+  const factory CategoryModel({
+    int? id,
+    String? category,
+    String? imageUrl,
+    List<ProductModel>? products,
+  }) = _CategoryModel;
 
-  // Factory method to create a CategoryModel from a JSON object
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    var productList = json['products'] as List? ?? [];
-    List<ProductModel> productModels =
-        productList.map((i) => ProductModel.fromJson(i)).toList();
-
-    return CategoryModel(
-      id: json['id'],
-      category: json['category'],
-      imageUrl: json['imageUrl'],
-      products: productModels,
-    );
-  }
-
-  // Method to convert CategoryModel to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'category': category,
-      'imageUrl': imageUrl,
-    };
-  }
+  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
+      _$CategoryModelFromJson(json);
 }

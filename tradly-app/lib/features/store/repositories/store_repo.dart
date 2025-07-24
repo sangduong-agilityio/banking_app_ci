@@ -8,7 +8,7 @@ abstract class StoreRepository {
   Future<StoreModel> createStore(StoreModel store);
   Future<ProductModel> addProduct(ProductModel product);
   Future<void> editProduct(ProductModel product);
-  Future<void> deleteProduct(int product);
+  Future<void> deleteProduct(int productId);
 }
 
 class StoreRepositoryImpl implements StoreRepository {
@@ -16,6 +16,8 @@ class StoreRepositoryImpl implements StoreRepository {
 
   StoreRepositoryImpl({required TradlyApiClient apiClient})
       : _apiClient = apiClient;
+
+  final SupabaseClient _supabase = Supabase.instance.client;
 
   @override
   Future<bool> hasStore() async {
@@ -25,80 +27,61 @@ class StoreRepositoryImpl implements StoreRepository {
 
   @override
   Future<StoreModel> createStore(StoreModel store) async {
-    final supabase = Supabase.instance.client;
+    try {
+      final response = await _supabase
+          .from('stores')
+          .insert(store.toJson()
+            ..remove('products')
+            ..remove('tagLine'))
+          .select()
+          .single();
 
-    final response = await supabase
-        .from('stores')
-        .insert({
-          'storeName': store.storeName,
-          'storeWebAddress': store.storeWebAddress,
-          'storeDescription': store.storeDescription,
-          'storeType': store.storeType,
-          'imageUrl': store.imageUrl,
-          'address': store.address,
-          'city': store.city,
-          'logoStore': store.logoStore,
-          'country': store.country,
-          'courieName': store.courieName,
-        })
-        .select()
-        .single();
-
-    return StoreModel.fromMap(response);
+      return StoreModel.fromJson(response);
+    } catch (e) {
+      throw Exception('Failed to create store: $e');
+    }
   }
 
   @override
   Future<ProductModel> addProduct(ProductModel product) async {
-    final supabase = Supabase.instance.client;
     try {
-      final response = await supabase
+      final response = await _supabase
           .from('products')
-          .insert({
-            'title': product.title,
-            'imageUrl': product.imageUrl,
-            'price': product.price,
-            'brand': product.brand,
-            'newPrice': product.newPrice,
-            'description': product.description,
-            'priceType': product.priceType,
-            'condition': product.condition,
-            'location': product.location,
-            'storeId': product.storeId,
-          })
+          .insert(product.toJson()
+            ..remove('id')
+            ..remove('productType'))
           .select()
           .single();
 
       return ProductModel.fromJson(response);
     } catch (e) {
-      throw Exception('Failed to add product');
+      throw Exception('Failed to add product: $e');
     }
   }
 
   @override
   Future<void> editProduct(ProductModel product) async {
-    final supabase = Supabase.instance.client;
+    if (product.id == null) {
+      throw Exception('Product ID is required for editing');
+    }
 
-    await supabase
-        .from('products')
-        .update({
-          'title': product.title,
-          'imageUrl': product.imageUrl,
-          'price': product.price,
-          'brand': product.brand,
-          'newPrice': product.newPrice,
-          'description': product.description,
-          'priceType': product.priceType,
-          'condition': product.condition,
-          'location': product.location,
-          'storeId': product.storeId,
-        })
-        .eq('id', product.id ?? 0)
-        .select();
+    try {
+      await _supabase
+          .from('products')
+          .update(product.toJson()..remove('productType'))
+          .eq('id', product.id!)
+          .select();
+    } catch (e) {
+      throw Exception('Failed to edit product: $e');
+    }
   }
 
   @override
   Future<void> deleteProduct(int productId) async {
-    final supabase = Supabase.instance.client;
-    await supabase.from('products').delete().eq('id', productId);
+    try {
+      await _supabase.from('products').delete().eq('id', productId);
+    } catch (e) {
+      throw Exception('Failed to delete product: $e');
+    }
   }
 }

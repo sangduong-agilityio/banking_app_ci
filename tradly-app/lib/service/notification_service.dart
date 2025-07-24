@@ -9,15 +9,17 @@ class NotificationService {
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
   final supabase = Supabase.instance.client;
   bool _initialized = false;
-
-  // Add a global navigator key reference
   static GlobalKey<NavigatorState>? navigatorKey;
 
   bool get initialized => _initialized;
 
+  Future<void> initializeAllNotifications() async {
+    await init();
+    await initializeFirebaseMessaging();
+  }
+
   Future<void> init() async {
     if (_initialized) return;
-
     const initSettingAndroid =
         AndroidInitializationSettings('@drawable/ic_launcher');
     const initSettingIOS = DarwinInitializationSettings(
@@ -25,18 +27,14 @@ class NotificationService {
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
-
     const initSettings = InitializationSettings(
       android: initSettingAndroid,
       iOS: initSettingIOS,
     );
-
-    // Handle notification tap when app is running
     await notificationsPlugin.initialize(
       initSettings,
       onDidReceiveNotificationResponse: _onNotificationTapped,
     );
-
     _initialized = true;
   }
 
@@ -88,7 +86,6 @@ class NotificationService {
     if (initialMessage != null) {
       _handleNotificationNavigation(initialMessage);
     }
-
     // Handle notification when app is in background and opened via notification
     FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationNavigation);
 
@@ -112,7 +109,6 @@ class NotificationService {
       if (notification != null) {
         // Create payload with notification data
         final notificationPayload = _createNotificationPayload(payload);
-
         await showNotification(
           title: notification.title,
           body: notification.body,
@@ -134,7 +130,6 @@ class NotificationService {
       'productId': message.data['product_id'] ?? '',
       'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
     };
-
     // Convert to JSON string
     return data.entries.map((e) => '${e.key}:${e.value}').join('|');
   }
@@ -143,14 +138,12 @@ class NotificationService {
   Map<String, String> _parseNotificationPayload(String payload) {
     final Map<String, String> data = {};
     final pairs = payload.split('|');
-
     for (final pair in pairs) {
       final keyValue = pair.split(':');
       if (keyValue.length == 2) {
         data[keyValue[0]] = keyValue[1];
       }
     }
-
     return data;
   }
 
@@ -163,7 +156,6 @@ class NotificationService {
   // Navigate to notification detail screen
   void _navigateToNotificationDetail(String payload) {
     final data = _parseNotificationPayload(payload);
-
     // Use the global navigator key or the router
     if (navigatorKey?.currentContext != null) {
       navigatorKey!.currentContext!.pushNamed(
@@ -187,10 +179,9 @@ class NotificationService {
     try {
       final response =
           await supabase.from('notifications').select('id').eq('read', false);
-
       return response.length;
     } catch (e) {
-      return 0; // Return 0 if an error occurs
+      return 0;
     }
   }
 }
