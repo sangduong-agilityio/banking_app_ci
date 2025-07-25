@@ -38,6 +38,9 @@ class OrderHistoryScreen extends StatelessWidget {
         ),
       ),
       body: BlocBuilder<OrderHistoryBloc, OrderHistoryState>(
+        buildWhen: (previous, current) =>
+            previous.products != current.products ||
+            previous.status != current.status,
         builder: (context, state) {
           if (state.products.isEmpty) {
             return const NotFoundScreen();

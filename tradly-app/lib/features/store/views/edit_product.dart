@@ -41,7 +41,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionController = TextEditingController();
   final _priceTypeController = TextEditingController();
   final int _maxPhotos = 4;
-  List<String> _additionalDetails = TADetails.getAdditionalDetails();
+  final List<String> _additionalDetails = TADetails.getAdditionalDetails();
 
   @override
   void dispose() {
@@ -121,69 +121,66 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           child: BlocBuilder<StoreBloc, StoreState>(
                             builder: (context, state) {
                               return TAForm(
-                                  isValidated: (valid) =>
+                                isValidated: (valid) =>
+                                    context.read<StoreBloc>().add(
+                                          EditFormValidateChangedEvt(
+                                            isValidate: valid,
+                                            product: widget.product,
+                                          ),
+                                        ),
+                                textFields: [
+                                  TATextField(
+                                    label: S.current.storeProductNameLabel,
+                                    controller: _productNameController,
+                                  ),
+                                  TATextField(
+                                    label: S.current.storeCategoryProductLabel,
+                                    controller: _categoryController,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: TATextField(
+                                          label: S.current.storePriceLabel,
+                                          controller: _priceController,
+                                          keyboardType: TextInputType.number,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: TATextField(
+                                          label: S.current.storeOfferPriceLabel,
+                                          controller: _priceTypeController,
+                                          keyboardType: TextInputType.number,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  TATextField(
+                                    label: S.current.storeLocationDetailsLabel,
+                                    controller: _locationController,
+                                    suffixIcon: TAIcons.map(),
+                                  ),
+                                  TATextField(
+                                    label:
+                                        S.current.storeProductDescriptionLabel,
+                                    controller: _descriptionController,
+                                  ),
+                                  TATextField(
+                                    label: S.current.storePriceTypeLabel,
+                                    controller: _priceTypeController,
+                                  ),
+                                  TATextField(
+                                    label: S.current.storeAddDeataisLabel,
+                                    isChipInput: true,
+                                    chips: _additionalDetails,
+                                    onChipsChanged: (chips) {
                                       context.read<StoreBloc>().add(
-                                            EditFormValidateChangedEvt(
-                                              isValidate: valid,
-                                              product: widget.product,
-                                            ),
-                                          ),
-                                  textFields: [
-                                    TATextField(
-                                      label: S.current.storeProductNameLabel,
-                                      controller: _productNameController,
-                                    ),
-                                    TATextField(
-                                      label:
-                                          S.current.storeCategoryProductLabel,
-                                      controller: _categoryController,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: TATextField(
-                                            label: S.current.storePriceLabel,
-                                            controller: _priceController,
-                                            keyboardType: TextInputType.number,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 16),
-                                        Expanded(
-                                          child: TATextField(
-                                            label:
-                                                S.current.storeOfferPriceLabel,
-                                            controller: _priceTypeController,
-                                            keyboardType: TextInputType.number,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TATextField(
-                                      label:
-                                          S.current.storeLocationDetailsLabel,
-                                      controller: _locationController,
-                                      suffixIcon: TAIcons.map(),
-                                    ),
-                                    TATextField(
-                                      label: S
-                                          .current.storeProductDescriptionLabel,
-                                      controller: _descriptionController,
-                                    ),
-                                    TATextField(
-                                      label: S.current.storePriceTypeLabel,
-                                      controller: _priceTypeController,
-                                    ),
-                                    TATextField(
-                                      label: S.current.storeAddDeataisLabel,
-                                      isChipInput: true,
-                                      chips: _additionalDetails,
-                                      onChipsChanged: (chips) {
-                                        setState(() {
-                                          _additionalDetails = chips;
-                                        });
-                                      },
-                                    ),
-                                  ]);
+                                          TaglineChipsChangedEvt(chips: chips));
+                                    },
+                                  ),
+                                ],
+                              );
                             },
                           ),
                         ),

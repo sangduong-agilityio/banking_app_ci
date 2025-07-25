@@ -14,31 +14,32 @@ class NewProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
-        buildWhen: (previous, current) =>
-            previous.status != current.status ||
-            previous.newProducts != current.newProducts,
-        builder: (context, state) {
-          if (state.status is HomeStatusLoading) {
-            return const ShimmerProductList();
-          } else if (state.status is HomeStatusSuccess) {
-            final newProducts = state.newProducts ?? [];
-            return SizedBox(
-              height: 200,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: newProducts.length,
-                itemBuilder: (context, index) {
-                  return TACardProduct(
-                    product: newProducts[index],
-                    onTapProduct: () {},
-                  );
-                },
-              ),
-            );
-          } else if (state.status is HomeStatusFailure) {
-            return NotFoundScreen();
-          }
-          return const SizedBox.shrink();
-        });
+      buildWhen: (previous, current) =>
+          previous.status != current.status ||
+          previous.newProducts != current.newProducts,
+      builder: (context, state) {
+        if (state.status is HomeStatusLoading) {
+          return const ShimmerProductList();
+        } else if (state.status is HomeStatusSuccess) {
+          final newProducts = state.newProducts ?? [];
+          return SizedBox(
+            height: 200,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: newProducts.length,
+              itemBuilder: (context, index) {
+                return TACardProduct(
+                  product: newProducts[index],
+                  onTapProduct: () {},
+                );
+              },
+            ),
+          );
+        } else if (state.status is HomeStatusFailure) {
+          return NotFoundScreen();
+        }
+        return const SizedBox.shrink();
+      },
+    );
   }
 }

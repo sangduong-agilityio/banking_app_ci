@@ -45,7 +45,7 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
   final _additionalDetailsController = TextEditingController();
   final _priceTypeController = TextEditingController();
   final int _maxPhotos = 4;
-  List<String> _additionalDetails = TADetails.getAdditionalDetails();
+  final List<String> _additionalDetails = TADetails.getAdditionalDetails();
 
   @override
   void dispose() {
@@ -184,9 +184,8 @@ class _AddProductDetailScreenState extends State<AddProductDetailScreen> {
                                 isChipInput: true,
                                 chips: _additionalDetails,
                                 onChipsChanged: (chips) {
-                                  setState(() {
-                                    _additionalDetails = chips;
-                                  });
+                                  context.read<StoreBloc>().add(
+                                      TaglineChipsChangedEvt(chips: chips));
                                 },
                               ),
                             ],
