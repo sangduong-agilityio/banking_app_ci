@@ -10,12 +10,12 @@ import 'package:tradly_app/features/auth/states/sign_up_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/utils/validators.dart';
 import 'package:tradly_app/widgets/button.dart';
-import 'package:tradly_app/widgets/form.dart';
+import 'package:tradly_app/widgets/forms/form.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/widgets/snackbar.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/widgets/text_field.dart';
+import 'package:tradly_app/widgets/forms/text_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

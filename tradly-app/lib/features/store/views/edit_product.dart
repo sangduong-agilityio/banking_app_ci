@@ -15,10 +15,10 @@ import 'package:tradly_app/features/store/states/store_bloc.dart';
 import 'package:tradly_app/features/store/states/store_event.dart';
 import 'package:tradly_app/features/store/states/store_state.dart';
 import 'package:tradly_app/widgets/button.dart';
-import 'package:tradly_app/widgets/form.dart';
+import 'package:tradly_app/widgets/forms/form.dart';
 import 'package:tradly_app/widgets/icons.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/widgets/text_field.dart';
+import 'package:tradly_app/widgets/forms/text_field.dart';
 
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({

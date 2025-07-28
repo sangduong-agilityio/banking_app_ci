@@ -159,6 +159,7 @@
   "storeProductNameLabel":"Product Name",
   "storeCategoryProductLabel":"Category Product",
   "storePriceLabel":"Price",
+  "storeStartDateLabel":"Start Date",
   "storeOfferPriceLabel":"Offer Price",
   "storeLocationDetailsLabel":"Location Details",
   "storeProductDescriptionLabel":"Product Description",

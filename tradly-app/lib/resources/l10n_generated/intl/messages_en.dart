@@ -362,6 +362,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "storeProductsTitle": MessageLookupByLibrary.simpleMessage("Products"),
     "storeRemoveButton": MessageLookupByLibrary.simpleMessage("Remove Store"),
+    "storeStartDateLabel": MessageLookupByLibrary.simpleMessage("Start Date"),
     "storeTaglineLabel": MessageLookupByLibrary.simpleMessage("Tagline"),
     "storeTitle": MessageLookupByLibrary.simpleMessage("My Store"),
     "storeTypeLabel": MessageLookupByLibrary.simpleMessage("Store Type"),

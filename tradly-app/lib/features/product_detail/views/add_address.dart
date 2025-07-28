@@ -9,10 +9,10 @@ import 'package:tradly_app/features/product_detail/states/product_detail_state.d
 import 'package:tradly_app/widgets/assets.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/dialog.dart';
-import 'package:tradly_app/widgets/form.dart';
+import 'package:tradly_app/widgets/forms/form.dart';
 import 'package:tradly_app/widgets/snackbar.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/widgets/text_field.dart';
+import 'package:tradly_app/widgets/forms/text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_event.dart';

@@ -75,6 +75,21 @@ mixin InputValidationMixin {
     }
     return null;
   }
+
+  static String? validateOption({
+    required String? value,
+    required String label,
+    bool Function(String)? isValidOption,
+  }) {
+    final baseValidation = validateInput(value, label);
+    if (baseValidation != null) return baseValidation;
+
+    if (isValidOption != null && value != null && !isValidOption(value)) {
+      return 'Invalid option selected';
+    }
+
+    return null;
+  }
 }
 
 class RegExpValidator {

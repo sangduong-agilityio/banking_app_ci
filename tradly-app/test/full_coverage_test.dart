@@ -91,7 +91,7 @@ import 'package:tradly_app/widgets/bottom_sheet.dart';
 import 'package:tradly_app/widgets/button.dart';
 import 'package:tradly_app/widgets/card.dart';
 import 'package:tradly_app/widgets/dialog.dart';
-import 'package:tradly_app/widgets/form.dart';
+import 'package:tradly_app/widgets/forms/form.dart';
 import 'package:tradly_app/widgets/icons.dart';
 import 'package:tradly_app/widgets/images.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
@@ -101,6 +101,6 @@ import 'package:tradly_app/widgets/not_found.dart';
 import 'package:tradly_app/widgets/shimmer.dart';
 import 'package:tradly_app/widgets/snackbar.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/widgets/text_field.dart';
+import 'package:tradly_app/widgets/forms/text_field.dart';
 
 void main() {}

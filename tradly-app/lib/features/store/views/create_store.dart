@@ -7,17 +7,17 @@ import 'package:tradly_app/features/store/repositories/store_repo.dart';
 import 'package:tradly_app/resources/assets_generated/assets.gen.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/features/store/models/store_model.dart';
+import 'package:tradly_app/utils/location_details.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
 import 'package:tradly_app/features/store/states/store_bloc.dart';
 import 'package:tradly_app/features/store/states/store_event.dart';
 import 'package:tradly_app/features/store/states/store_state.dart';
 import 'package:tradly_app/widgets/button.dart';
-import 'package:tradly_app/widgets/form.dart';
+import 'package:tradly_app/widgets/forms/form.dart';
 import 'package:tradly_app/widgets/snackbar.dart';
-import 'package:tradly_app/widgets/text_field.dart';
+import 'package:tradly_app/widgets/forms/text_field.dart';
 import 'package:tradly_app/widgets/text.dart';
-import 'package:tradly_app/utils/details_util.dart';
 
 class CreateStoreScreen extends StatefulWidget {
   const CreateStoreScreen({
@@ -157,7 +157,7 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                   controller: _storeWebAddressController,
                                 ),
                                 TATextField(
-                                  label: 'Start Date',
+                                  label: S.current.storeStartDateLabel,
                                   controller: _startDateController,
                                   isDatePicker: true,
                                 ),
@@ -174,27 +174,23 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                   controller: _countryController,
                                   suggestions: TADetails.getCountries,
                                   onChanged: (String? value) {
-                                    context
-                                        .read<StoreBloc>()
-                                        .add(CountryChangedEvt(
-                                          selectedCountry: value,
-                                        ));
+                                    context.read<StoreBloc>().add(
+                                        CountryChangedEvt(
+                                            selectedCountry: value));
                                   },
                                 ),
                                 TATextField(
                                   label: S.current.storeCityLabel,
                                   controller: _cityController,
+                                  enabled: state.selectedCountry != null,
                                   suggestions: state.selectedCountry != null
                                       ? TADetails.countryCityMap[
                                               state.selectedCountry!] ??
                                           []
                                       : [],
                                   onChanged: (String? value) {
-                                    context
-                                        .read<StoreBloc>()
-                                        .add(CityChangedEvt(
-                                          selectedCity: value,
-                                        ));
+                                    context.read<StoreBloc>().add(
+                                        CityChangedEvt(selectedCity: value));
                                   },
                                   isValidOption: (value) =>
                                       state.selectedCountry != null &&
@@ -202,11 +198,11 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                                   state.selectedCountry!]
                                               ?.contains(value) ??
                                           false),
-                                  enabled: state.selectedCountry != null,
                                 ),
                                 TATextField(
                                   label: S.current.storeAddressLabel,
                                   controller: _addressController,
+                                  enabled: state.selectedCity != null,
                                   suggestions: state.selectedCity != null
                                       ? TADetails.cityAddressMap[
                                               state.selectedCity!] ??
@@ -218,7 +214,6 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                                   state.selectedCity!]
                                               ?.contains(value) ??
                                           false),
-                                  enabled: state.selectedCity != null,
                                 ),
                                 TATextField(
                                   label: S.current.storeCourierNameLabel,
@@ -230,7 +225,8 @@ class _CreateStoreScreenState extends State<CreateStoreScreen> {
                                   chips: _tagLineDetail,
                                   onChipsChanged: (chips) {
                                     context.read<StoreBloc>().add(
-                                        TaglineChipsChangedEvt(chips: chips));
+                                          TaglineChipsChangedEvt(chips: chips),
+                                        );
                                   },
                                 ),
                               ],

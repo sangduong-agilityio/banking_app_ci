@@ -1224,6 +1224,16 @@ class S {
     return Intl.message('Price', name: 'storePriceLabel', desc: '', args: []);
   }
 
+  /// `Start Date`
+  String get storeStartDateLabel {
+    return Intl.message(
+      'Start Date',
+      name: 'storeStartDateLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Offer Price`
   String get storeOfferPriceLabel {
     return Intl.message(
