@@ -9,7 +9,6 @@ import 'package:tradly_app/features/home/repositories/home_repo.dart';
 import 'package:tradly_app/features/product_detail/repositories/product_repo.dart';
 import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
 import 'package:tradly_app/features/store/repositories/store_repo.dart';
-import 'package:tradly_app/features/order_history/states/order_history_bloc.dart';
 import 'package:tradly_app/features/wish_list/states/wish_list_cubit.dart';
 
 class TAProvider extends StatelessWidget {
@@ -56,9 +55,6 @@ class TAProvider extends StatelessWidget {
             create: (_) => ProductDetailBloc(
               repo: productRepository,
             ),
-          ),
-          BlocProvider(
-            create: (_) => OrderHistoryBloc(),
           ),
           BlocProvider(
             create: (_) => WishListCubit(),

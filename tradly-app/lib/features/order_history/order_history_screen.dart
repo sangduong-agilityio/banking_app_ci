@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
-import 'package:tradly_app/features/order_history/states/order_history_bloc.dart';
-import 'package:tradly_app/features/order_history/states/order_history_state.dart';
+import 'package:tradly_app/features/product_detail/states/product_detail_bloc.dart';
+import 'package:tradly_app/features/product_detail/states/product_detail_state.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/utils/date_time.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
@@ -37,12 +37,12 @@ class OrderHistoryScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: BlocBuilder<OrderHistoryBloc, OrderHistoryState>(
+      body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
         buildWhen: (previous, current) =>
-            previous.products != current.products ||
+            previous.orderHistory != current.orderHistory ||
             previous.status != current.status,
         builder: (context, state) {
-          if (state.products.isEmpty) {
+          if (state.orderHistory.isEmpty) {
             return const NotFoundScreen();
           }
           return Column(
@@ -76,9 +76,9 @@ class OrderHistoryScreen extends StatelessWidget {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: state.products.length,
+                  itemCount: state.orderHistory.length,
                   itemBuilder: (context, index) {
-                    final product = state.products[index];
+                    final product = state.orderHistory[index];
                     return Card(
                       child: Padding(
                         padding: const EdgeInsets.all(16),

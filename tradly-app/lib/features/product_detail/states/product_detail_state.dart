@@ -11,12 +11,14 @@ final class ProductDetailState extends Equatable {
     this.status = const ProductDetailStatus.initial(),
     this.errorMessage,
     this.hasAddress = false,
+    this.orderHistory = const [],
     this.isFormValid = false,
   });
 
   final ProductDetailStatus status;
   final String? errorMessage;
   final List<ProductModel>? products;
+  final List<ProductModel> orderHistory;
   final ProductModel? product;
   final bool hasAddress;
   final bool isFormValid;
@@ -25,8 +27,8 @@ final class ProductDetailState extends Equatable {
     ProductDetailStatus? status,
     String? errorMessage,
     List<ProductModel>? products,
+    List<ProductModel>? orderHistory,
     ProductModel? product,
-    Set<int>? wishlist,
     bool? hasAddress,
     bool? isFormValid,
   }) {
@@ -34,6 +36,7 @@ final class ProductDetailState extends Equatable {
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       products: products ?? this.products,
+      orderHistory: orderHistory ?? this.orderHistory,
       product: product ?? this.product,
       hasAddress: hasAddress ?? this.hasAddress,
       isFormValid: isFormValid ?? this.isFormValid,
@@ -47,6 +50,7 @@ final class ProductDetailState extends Equatable {
         products,
         product,
         hasAddress,
+        orderHistory,
         isFormValid,
       ];
 }

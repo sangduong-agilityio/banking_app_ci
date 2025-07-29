@@ -234,5 +234,11 @@
   "browsePriceHighToLowTitle":"Price: High to Low",
   "browseCancelButton":"Cancel",
   "browseApplyButton":"Apply",
-  "wishLisTitle":"Wish List"
+  "wishLisTitle":"Wish List",
+    "@segmentNotification": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Notification feature"
+  },
+  "notificationDetailsTitle":"Notification Details",
+  "notificationReceivedTitle":"Received"
 }

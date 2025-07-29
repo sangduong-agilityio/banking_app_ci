@@ -1698,6 +1698,26 @@ class S {
   String get wishLisTitle {
     return Intl.message('Wish List', name: 'wishLisTitle', desc: '', args: []);
   }
+
+  /// `Notification Details`
+  String get notificationDetailsTitle {
+    return Intl.message(
+      'Notification Details',
+      name: 'notificationDetailsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Received`
+  String get notificationReceivedTitle {
+    return Intl.message(
+      'Received',
+      name: 'notificationReceivedTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

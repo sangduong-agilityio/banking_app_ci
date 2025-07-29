@@ -112,6 +112,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "homeTradlyTitle": MessageLookupByLibrary.simpleMessage("Tradly"),
     "homeViewAllButton": MessageLookupByLibrary.simpleMessage("View All"),
+    "notificationDetailsTitle": MessageLookupByLibrary.simpleMessage(
+      "Notification Details",
+    ),
+    "notificationReceivedTitle": MessageLookupByLibrary.simpleMessage(
+      "Received",
+    ),
     "onBoardingBusinessDescription": MessageLookupByLibrary.simpleMessage(
       "Empowering Artisans, Farmers & Micro Business",
     ),

@@ -16,7 +16,6 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
     on<ProductDetailGetCurrentLocationEvt>(_onGetCurrentLocation);
     on<ProductDetailAddAddressEvt>(_onAddAddress);
     on<ProductDetailCheckoutEvt>(_onCheckout);
-    on<ProductDetailToggleWishListEvt>(_onToggleWishList);
   }
 
   final ProductRepository _repo;
@@ -166,10 +165,12 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
             '${event.product.street}, ${event.product.city}, ${event.product.state}, ${event.product.zipCode}',
       };
       await supabase.from('orders').insert(orderData);
+      final updatedOrderHistory = [event.product, ...state.orderHistory];
 
       emit(
         state.copyWith(
           product: event.product,
+          orderHistory: updatedOrderHistory,
           status: const ProductDetailStatus.success(),
         ),
       );
@@ -180,19 +181,6 @@ class ProductDetailBloc extends Bloc<ProductDetailEvt, ProductDetailState> {
           errorMessage: e.toString(),
         ),
       );
-    }
-  }
-
-  Future<void> _onToggleWishList(
-    ProductDetailToggleWishListEvt event,
-    Emitter<ProductDetailState> emit,
-  ) async {
-    final currentProduct = state.product;
-    if (currentProduct != null) {
-      final updatedProduct = currentProduct.copyWith(
-        isWishListed: !currentProduct.isWishListed,
-      );
-      emit(state.copyWith(product: updatedProduct));
     }
   }
 }

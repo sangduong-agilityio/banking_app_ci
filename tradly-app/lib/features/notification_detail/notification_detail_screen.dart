@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
 import 'package:tradly_app/features/notification_detail/states/notification_detail_cubit.dart';
 import 'package:tradly_app/features/notification_detail/states/notification_detail_state.dart';
+import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/utils/date_time.dart';
 import 'package:tradly_app/widgets/layouts/app_bar.dart';
 import 'package:tradly_app/widgets/layouts/scaffold.dart';
@@ -28,7 +29,7 @@ class NotificationDetailScreen extends StatelessWidget {
         ..fetchNotificationDetails(notificationData),
       child: TAScaffold(
         appBar: TAAppBar.checkout(
-          title: 'Notification Details',
+          title: S.current.notificationDetailsTitle,
           onBackPressed: () => Navigator.pop(context),
           backgroundColor: context.colorScheme.primary,
         ),
@@ -85,7 +86,7 @@ class NotificationDetailScreen extends StatelessWidget {
                               const SizedBox(height: 12),
                               TATitleMediumText(
                                 text:
-                                    'Received: ${DateTimeUtil.dateTimeFormatWithDay(
+                                    ' ${S.current.notificationReceivedTitle} ${DateTimeUtil.dateTimeFormatWithDay(
                                   DateTime.parse(
                                       state.notificationData['received_at'] ??
                                           DateTime.now().toIso8601String()),
