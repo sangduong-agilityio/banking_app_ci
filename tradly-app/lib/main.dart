@@ -1,25 +1,17 @@
 import 'package:accessibility_tools/accessibility_tools.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tradly_app/app_provider.dart';
-import 'package:tradly_app/env/env.dart';
 import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
+import 'package:tradly_app/service/service_initializer.dart';
 import 'package:tradly_app/themes/app_theme.dart';
-import 'package:tradly_app/firebase_options.dart';
-import 'package:tradly_app/service/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await Supabase.initialize(
-    url: Env.supabaseUrl,
-    anonKey: Env.supabaseKey,
-  );
+
+  await initializeServices();
+
   runApp(const TradlyShopApp());
 }
 
@@ -31,15 +23,6 @@ class TradlyShopApp extends StatefulWidget {
 }
 
 class _TradlyShopAppState extends State<TradlyShopApp> {
-  final NotificationService _notificationService = NotificationService();
-
-  @override
-  void initState() {
-    super.initState();
-    NotificationService.navigatorKey = TARouter.rootNavigatorKey;
-    _notificationService.initializeAllNotifications();
-  }
-
   @override
   Widget build(BuildContext context) {
     return TAProvider(

@@ -13,10 +13,10 @@ class SignUpBloc extends Bloc<SignUpEvt, SignUpState> {
 
   final AuthRepository authRepository;
 
-  void _onFormValidateChanged(
+  Future<void> _onFormValidateChanged(
     SignUpFormValidateChangedEvt event,
     Emitter<SignUpState> emit,
-  ) {
+  ) async {
     emit(
       state.copyWith(
         isFormValid: event.isValidate,

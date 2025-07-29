@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:tradly_app/extensions/context_extensions.dart';
-import 'package:tradly_app/features/browse/repositories/browse_repo.dart';
-import 'package:tradly_app/features/browse/states/browse_bloc.dart';
-import 'package:tradly_app/features/browse/states/browse_event.dart';
 import 'package:tradly_app/features/home/views/see_all_new_product.dart';
 import 'package:tradly_app/features/home/views/see_all_popular_product.dart';
 import 'package:tradly_app/features/home/views/view_all_store.dart';
@@ -218,12 +214,7 @@ class TARouter {
               GoRoute(
                 name: TAPaths.browse.name,
                 path: TAPaths.browse.path,
-                builder: (context, state) => BlocProvider(
-                  create: (_) =>
-                      BrowseBloc(repo: context.read<BrowseRepository>())
-                        ..add(const BrowseInitializeEvt()),
-                  child: const BrowseScreen(),
-                ),
+                builder: (context, state) => const BrowseScreen(),
               ),
             ],
           ),
