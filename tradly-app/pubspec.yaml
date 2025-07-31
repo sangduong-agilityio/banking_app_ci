@@ -98,6 +98,8 @@ dependencies:
   # Provides a date picker with additional features
   date_picker_plus: ^4.2.0
 
+  get_it: ^8.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

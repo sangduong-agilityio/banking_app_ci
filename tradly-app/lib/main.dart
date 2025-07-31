@@ -6,11 +6,14 @@ import 'package:tradly_app/resources/l10n_generated/l10n.dart';
 import 'package:tradly_app/configs/app_router.dart';
 import 'package:tradly_app/service/service_initializer.dart';
 import 'package:tradly_app/themes/app_theme.dart';
+import 'package:tradly_app/utils/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await initializeServices();
+
+  await AppLocator.setup();
 
   runApp(const TradlyShopApp());
 }

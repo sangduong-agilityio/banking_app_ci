@@ -65,266 +65,253 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: context.read<ProductDetailBloc>(),
-      child: Stack(
-        children: [
-          TAScaffold(
-            appBar: TAAppBar.checkout(
-              title: S.current.checkoutTitle,
-              onBackPressed: () => Navigator.pop(context),
-              backgroundColor: context.colorScheme.primary,
-            ),
-            body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
-              builder: (context, state) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.pushNamed(TAPaths.addAddress.name);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 15,
-                          ),
-                          color: context.colorScheme.onPrimary,
-                          child: state.hasAddress
-                              ? Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        TATitleLargeText(
-                                          text:
-                                              '${state.product?.title}, ${state.product?.zipCode}',
-                                          color: context.colorScheme.onSurface,
-                                        ),
-                                        SizedBox(height: 5),
-                                        TATitleLargeText(
-                                          text:
-                                              '${state.product?.city}, ${state.product?.state} ',
-                                          color:
-                                              context.colorScheme.onSecondary,
-                                        ),
-                                      ],
-                                    ),
-                                    const Spacer(),
-                                    OutlinedButton(
-                                      onPressed: () {
-                                        context.pushNamed(
-                                          TAPaths.addAddress.name,
-                                          extra: state.product,
-                                        );
-                                      },
-                                      style: OutlinedButton.styleFrom(
-                                        backgroundColor:
-                                            context.colorScheme.primary,
-                                        minimumSize: const Size(100, 25),
-                                        side: BorderSide(
-                                          color: context.colorScheme.primary,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                      ),
-                                      child: TATitleMediumText(
-                                        text: S.current
-                                            .productDetailLocationChangeButton,
-                                        color: context.colorScheme.onPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Center(
-                                  child: TATitleLargeText(
-                                    text: S.current.checkoutAddNewAddressTitle,
-                                    color: context.colorScheme.onSurface,
-                                  ),
-                                ),
+    return Stack(
+      children: [
+        TAScaffold(
+          appBar: TAAppBar.checkout(
+            title: S.current.checkoutTitle,
+            onBackPressed: () => Navigator.pop(context),
+            backgroundColor: context.colorScheme.primary,
+          ),
+          body: BlocBuilder<ProductDetailBloc, ProductDetailState>(
+            builder: (context, state) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context.pushNamed(TAPaths.addAddress.name);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 15,
                         ),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
                         color: context.colorScheme.onPrimary,
-                        child: Column(
-                          children: [
-                            SizedBox(height: 30),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Row(
+                        child: state.hasAddress
+                            ? Row(
                                 children: [
-                                  TAImageRectangle(
-                                    widget.product.imageUrl,
-                                    borderRadius: 5,
-                                    width: 100,
-                                    height: 100,
-                                    boxFit: BoxFit.cover,
-                                  ),
-                                  SizedBox(width: 15),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       TATitleLargeText(
-                                        text: widget.product.title,
+                                        text:
+                                            '${state.product?.title}, ${state.product?.zipCode}',
                                         color: context.colorScheme.onSurface,
                                       ),
-                                      SizedBox(height: 10),
-                                      Row(
-                                        children: [
-                                          TAHeadlineMediumText(
-                                            text:
-                                                '\$${widget.product.newPrice}',
-                                            color: context.colorScheme.primary,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          SizedBox(width: 8),
-                                          TATitleLargeText(
-                                            text: '\$${widget.product.price}',
-                                            decoration: TextDecoration.combine([
-                                              TextDecoration.lineThrough,
-                                            ]),
-                                            color:
-                                                context.colorScheme.onSurface,
-                                          ),
-                                          SizedBox(width: 8),
-                                          TATitleLargeText(
-                                            text: S.current
-                                                .productDetailSaleOffTitle,
-                                            color:
-                                                context.colorScheme.onSurface,
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(height: 10),
-                                      TATitleMediumText(
-                                        text: S
-                                            .current.productDetailQuantityTitle,
-                                        color: context.colorScheme.onSurface,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Divider(color: Colors.grey[300]),
-                            TextButton(
-                              onPressed: () {},
-                              child: TATitleLargeText(
-                                text: S.current.storeRemoveButton,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 60),
-                      Container(
-                        width: double.infinity,
-                        color: context.colorScheme.onPrimary,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TAHeadlineMediumText(
-                                    text: S.current.checkoutPriceDetailsTitle,
-                                    fontWeight: FontWeight.w600,
-                                    color: context.colorScheme.onSurface,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      TATitleLargeText(
-                                        text: S.current
-                                            .checkoutPriceItemTitle('1'),
-                                        color: context.colorScheme.onSurface,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                      TATitleLargeText(
-                                        text: widget.product.newPrice ?? '',
-                                        color: context.colorScheme.onSurface,
-                                        fontWeight: FontWeight.w500,
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
+                                      SizedBox(height: 5),
                                       TATitleLargeText(
                                         text:
-                                            S.current.checkoutDeliveryFreeTitle,
-                                        color: context.colorScheme.onSurface,
-                                        fontWeight: FontWeight.w500,
+                                            '${state.product?.city}, ${state.product?.state} ',
+                                        color: context.colorScheme.onSecondary,
                                       ),
-                                      TATitleLargeText(
-                                        text: S.current.checkoutInforTitle,
-                                        color: context.colorScheme.onSurface,
-                                        fontWeight: FontWeight.w500,
-                                      )
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            Divider(color: Colors.grey[300]),
-                            const SizedBox(height: 5),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TAHeadlineMediumText(
-                                    text: S.current.checkoutTotalAmountTitle,
-                                    fontWeight: FontWeight.w600,
-                                    color: context.colorScheme.onSurface,
+                                  const Spacer(),
+                                  OutlinedButton(
+                                    onPressed: () {
+                                      context.pushNamed(
+                                        TAPaths.addAddress.name,
+                                        extra: state.product,
+                                      );
+                                    },
+                                    style: OutlinedButton.styleFrom(
+                                      backgroundColor:
+                                          context.colorScheme.primary,
+                                      minimumSize: const Size(100, 25),
+                                      side: BorderSide(
+                                        color: context.colorScheme.primary,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                    ),
+                                    child: TATitleMediumText(
+                                      text: S.current
+                                          .productDetailLocationChangeButton,
+                                      color: context.colorScheme.onPrimary,
+                                    ),
                                   ),
-                                  TATitleLargeText(
-                                    text: widget.product.newPrice ?? '',
-                                    color: context.colorScheme.onSurface,
-                                    fontWeight: FontWeight.w500,
-                                  )
                                 ],
+                              )
+                            : Center(
+                                child: TATitleLargeText(
+                                  text: S.current.checkoutAddNewAddressTitle,
+                                  color: context.colorScheme.onSurface,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
                       ),
-                    ],
-                  ),
-                );
-              },
-            ),
-            bottomNavigationBar: Container(
-              padding: const EdgeInsets.all(20),
-              color: context.colorScheme.onPrimary,
-              child: TAElevatedButton(
-                text: S.current.checkoutCheckoutButton,
-                backgroundColor: context.colorScheme.primary,
-                onPressed: _onGetNotification,
-              ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      color: context.colorScheme.onPrimary,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 30),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              children: [
+                                TAImageRectangle(
+                                  widget.product.imageUrl,
+                                  borderRadius: 5,
+                                  width: 100,
+                                  height: 100,
+                                  boxFit: BoxFit.cover,
+                                ),
+                                SizedBox(width: 15),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TATitleLargeText(
+                                      text: widget.product.title,
+                                      color: context.colorScheme.onSurface,
+                                    ),
+                                    SizedBox(height: 10),
+                                    Row(
+                                      children: [
+                                        TAHeadlineMediumText(
+                                          text: '\$${widget.product.newPrice}',
+                                          color: context.colorScheme.primary,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        SizedBox(width: 8),
+                                        TATitleLargeText(
+                                          text: '\$${widget.product.price}',
+                                          decoration: TextDecoration.combine([
+                                            TextDecoration.lineThrough,
+                                          ]),
+                                          color: context.colorScheme.onSurface,
+                                        ),
+                                        SizedBox(width: 8),
+                                        TATitleLargeText(
+                                          text: S.current
+                                              .productDetailSaleOffTitle,
+                                          color: context.colorScheme.onSurface,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
+                                    TATitleMediumText(
+                                      text:
+                                          S.current.productDetailQuantityTitle,
+                                      color: context.colorScheme.onSurface,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Divider(color: Colors.grey[300]),
+                          TextButton(
+                            onPressed: () {},
+                            child: TATitleLargeText(
+                              text: S.current.storeRemoveButton,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 60),
+                    Container(
+                      width: double.infinity,
+                      color: context.colorScheme.onPrimary,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TAHeadlineMediumText(
+                                  text: S.current.checkoutPriceDetailsTitle,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.colorScheme.onSurface,
+                                ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TATitleLargeText(
+                                      text:
+                                          S.current.checkoutPriceItemTitle('1'),
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    TATitleLargeText(
+                                      text: widget.product.newPrice ?? '',
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    TATitleLargeText(
+                                      text: S.current.checkoutDeliveryFreeTitle,
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    TATitleLargeText(
+                                      text: S.current.checkoutInforTitle,
+                                      color: context.colorScheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Divider(color: Colors.grey[300]),
+                          const SizedBox(height: 5),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TAHeadlineMediumText(
+                                  text: S.current.checkoutTotalAmountTitle,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.colorScheme.onSurface,
+                                ),
+                                TATitleLargeText(
+                                  text: widget.product.newPrice ?? '',
+                                  color: context.colorScheme.onSurface,
+                                  fontWeight: FontWeight.w500,
+                                )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          bottomNavigationBar: Container(
+            padding: const EdgeInsets.all(20),
+            color: context.colorScheme.onPrimary,
+            child: TAElevatedButton(
+              text: S.current.checkoutCheckoutButton,
+              backgroundColor: context.colorScheme.primary,
+              onPressed: _onGetNotification,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
