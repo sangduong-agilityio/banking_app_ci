@@ -2,26 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "[TradlyApp][Dev] Start development",
+            "name": "[BankingApp][Dev] Start development",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "program": "tradly-app/lib/main.dart",
+            "program": "lib/main.dart",
         },
         {
-            "name": "[TradlyApp][Dev] Start development with Device Preview",
+            "name": "[BankingApp][Dev] Start development with Device Preview",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "program": "tradly-app/lib/main_device_preview.dart",
+            "program": "lib/main_device_preview.dart",
         },
-        {
-            "name": "[TradlyApp][Web] Start development",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "debug",
-            "program": "tradly-app/lib/main.dart",
-            "args": ["--web-renderer", "auto"]
-        }
     ]
 }
