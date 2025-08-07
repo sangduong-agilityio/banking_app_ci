@@ -29,8 +29,8 @@ This is the design of the app:
 
 ## Tech Stack
 
-- **Dart:** Latest version
-- **Flutter:** Latest version (3.29.2+)
+- **Dart:** SDK version >= 3.9.0
+- **Flutter:** SDK version >= 3.35.0
 - **Backend:** Supabase
 - **State Management:** BLoC
 - **HTTP Client:** Dio
@@ -130,21 +130,13 @@ This is the design of the app:
 - **Pay Bills** - Utility bills and service payments
 - **Account Management** - Profile and settings
 
-## Prerequisites
-
-Before you continue, ensure you meet the following requirements:
-
-- Flutter SDK version >= 3.35.0
-- Dart SDK version >= 3.9.0
-- Supabase account for backend services
-- Development environment (VSCode, XCode/Android Studio)
-
 ## Project Structure
 
 ```
 Feature-First Architecture
 
 lib/
+├── main_device_preview.dart
 ├── main.dart
 ├── app/
 │   ├── app.dart
@@ -284,7 +276,6 @@ lib/
 - [ ] Comprehensive error handling implementation
 - [ ] Offline support and cache management
 - [ ] Widget testing implementation
-- [ ] CI/CD pipeline setup with GitHub Actions
 
 ## Installation & Setup
 
@@ -295,12 +286,12 @@ lib/
 
 2. **Checkout banking branch:**
    ```bash
-   git checkout feat/banking-app
+   git checkout feat/implement-banking-application
    ```
 
 3. **Pull latest changes:**
    ```bash
-   git pull origin feat/banking-app
+   git pull origin feat/implement-banking-application
    ```
 
 4. **Install dependencies:**
