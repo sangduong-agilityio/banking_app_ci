@@ -1,22 +1,106 @@
 name: banking_app
-description: "A new Flutter project."
+description: "Banking Application"
 publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.0-333.2.beta
+  sdk: ^3.8.0
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
+  # Http client library for making API calls
+  dio: ^5.5.0+1
+
+  # Used for generating union types and data classes
+  freezed: ^2.5.2
+
+  # Helps implement value-based equality
+  equatable: ^2.0.7
+
+  # State management library based on BLoC pattern
+  flutter_bloc: ^9.1.0
+
+  # Renders SVG images in Flutter
+  flutter_svg: ^2.0.17
+
+  # Supabase client for Flutter
+  supabase_flutter: ^2.8.4
+
+  # Routing and navigation library
+  go_router: ^15.1.2
+
+  # Provides internationalization and formatting utilities
+  intl: ^0.20.2
+
+  # Framework for responsive design
+  responsive_framework: ^1.5.1
+
+  # Adds native splash screens for iOS and Android
+  flutter_native_splash: ^2.4.4
+
+  # Generates localization code from ARB files
+  intl_utils: ^2.8.5
+
+  # Displays cached images from the internet
+  cached_network_image: ^3.4.1
+
+  # Environment variable management
+  envied: ^1.1.1
+
+  # Persistent storage for simple data
+  shared_preferences: ^2.5.3
+
+  # Freezed annotations for code generation
+  freezed_annotation: ^2.4.4
+
+  # Preview application on different devices
+  device_preview: ^1.2.0
+
+  # Dependency injection library
+  get_it: ^8.1.0
+
+  connectivity_plus: ^6.1.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # Code generation tool
+  build_runner: ^2.4.11
+
+  # Generates launcher icons
+  flutter_launcher_icons: ^0.14.3
+
+  # Generates Flutter asset references
+  flutter_gen_runner: ^5.10.0
+
+  # Monorepo management tool
+  melos: ^6.1.0
+
+  # Linting rules for Flutter projects
   flutter_lints: ^5.0.0
+
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
+  generate: true
+  assets:
+    - assets/
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
+
+# Flutter Intl plugin configuration
+flutter_intl:
+  enabled: true
+  arb_dir: lib/l10n
+  output_dir: lib/core/resources/l10n_generated/
+
+# Flutter Gen plugin configuration
+flutter_gen:
+  output: lib/core/resources/assets_generated/
+  integrations:
+    flutter_svg: true
