@@ -47,8 +47,7 @@ class BAScaffold extends StatelessWidget {
         child: Scaffold(
           extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
           appBar: appBar,
-          backgroundColor:
-              backgroundColor ?? context.colorScheme.inversePrimary,
+          backgroundColor: backgroundColor ?? context.colorScheme.onPrimary,
           body: body,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? true,
           persistentFooterButtons: persistentFooterButtons,

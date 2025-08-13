@@ -1,0 +1,87 @@
+{
+  "@@locale": "en",
+  "@segmentBankingApp": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Banking Application "
+  },
+  "homeTitle":"Home",
+  "searchTitle":"Search",
+  "messageTitle":"Message",
+  "settingTitle":"Setting",
+  "@segmentLanding": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Landing feature "
+  },
+  "landingTitle": "Jane Cooper",
+  "landingDescription":"Ut enim ad minima veniam, quis nostrum exercitat \n ionem ullam corporis suscipit laboriosam,",
+  "@segmentSignIn": {
+      "---------------------------": "---------------------------",
+      "description": "Store translations that are likely to be used only in Sign In feature "
+    },
+  "signInTitle":"Sign in",
+  "signInWelcomeTitle":"Welcome Back",
+  "signInDescription":"Hello there, sign in to continue",
+  "signInForgotPassword": "Forgot your password?",
+  "signInSignUpPrompt": "Don't have an account? ",
+  "signInButton": "Sign in",
+   "@segmentSignUp": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in SignUp feature"
+  },
+  "signUpTitle":"Sign up",
+  "signUpWelcomeTitle": "Welcome to us",
+  "signUpTitle":"Hello there, create New account",
+  "signUpTermAndConditions":"By creating an account your aggree \n to our  Term and Condtions",
+  "signUpButton":"Sign up",
+  "signUpAlreadyAcccount":"Have an account? ",
+  "signInButton":"Sign in",
+  "@segmentHome": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Home feature"
+  },
+  "homegreetingTitle":"Good Morning",
+  "homeAccountAndCardTitle":"Account and Card",
+  "homeTransferTitle":"Transfer",
+  "homeWithdrawTitle":"Withdraw",
+  "homeMobileRechargeTitle":"Mobile recharge",
+  "homePayTheBillTitle":"Pay the bill",
+  "homeCreditCardTitle":"Creadit card",
+  "homeTransactionReportTitle":"Transaction Report",
+  "@segmentTransactionsHistory": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Transactions history feature"
+  },
+  "transactionsHistoryTitle":"Recent Transactions",
+  "@segmentTransferMoney": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Transfer Money feature"
+  },
+  "transferMoneyTitle":"Tranfer money to",
+  "tranfersMoneyNoFeeTitle":"No fee",
+  "tranfersMoneySelectAccount":"Select your account",
+  "tranfersMoneySendButton":"Send",
+  "tranfersMoneyCloseButton":"Close",
+  "tranfersMoneyViewReceipt":"View Recepit",
+  "@segmentAccount": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Account feature"
+  },
+  "accountTitle":"Account",
+  "accountDetailInfoTitle":"DETAIL INFORMATION",
+  "accountNameLabel":"Name",
+  "accountPhoneNumberLabel":"Phone Number",
+  "accountEmailLabel":"E-mail",
+  "accountHomeAddressLabel":"Home Address",
+  "@segmentPaybill": {
+      "---------------------------": "---------------------------",
+      "description": "Store translations that are likely to be used only in Pay bill feature"
+    },
+  "payBillTitle":"Pay the bill",
+  "payBillElectricTitle":"Electric bill",
+  "payBillElectricDescription":"Pay electric bill this month",
+  "payBillWaterTitle":"Water bill",
+  "payBillWaterDescription":"Pay water bill this month",
+  "payBillInternetTitle":"Internet bill",
+  "payBillInternetDescription":"Pay internet bill this month",
+  "payBillCheckHistoryTitle":"Check Payment history"
+}
