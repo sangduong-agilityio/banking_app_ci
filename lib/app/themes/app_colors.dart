@@ -32,7 +32,7 @@ class BAAppColors {
   static const Color black = Color(0xFF000000);
   static const Color grey50 = Color(0xFFF9FAFB);
   static const Color grey100 = Color(0xFFF3F4F6);
-  static const Color grey200 = Color(0xFFE5E7EB);
+  static const Color grey200 = Color(0xFFF2F1F9);
   static const Color grey300 = Color(0xFFD1D5DB);
   static const Color grey400 = Color(0xFF9CA3AF);
   static const Color grey500 = Color(0xFF898989);
@@ -53,6 +53,7 @@ class BAAppColors {
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
+    stops: [0.0, 0.26, 0.65],
     colors: [Color(0xFF469FEF), Color(0xFF5C75F0), Color(0xFF6C56F0)],
   );
 
