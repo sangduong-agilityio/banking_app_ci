@@ -50,7 +50,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeWithdrawTitle": MessageLookupByLibrary.simpleMessage("Withdraw"),
     "homegreetingTitle": MessageLookupByLibrary.simpleMessage("Good Morning"),
     "landingDescription": MessageLookupByLibrary.simpleMessage(
-      "Ut enim ad minima veniam, quis nostrum exercitat \n ionem ullam corporis suscipit laboriosam,",
+      "Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,",
     ),
     "landingTitle": MessageLookupByLibrary.simpleMessage("Jane Cooper"),
     "messageTitle": MessageLookupByLibrary.simpleMessage("Message"),
@@ -92,12 +92,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Have an account? ",
     ),
     "signUpButton": MessageLookupByLibrary.simpleMessage("Sign up"),
+    "signUpDescription": MessageLookupByLibrary.simpleMessage(
+      "Hello there, create New account",
+    ),
     "signUpTermAndConditions": MessageLookupByLibrary.simpleMessage(
       "By creating an account your aggree \n to our  Term and Condtions",
     ),
-    "signUpTitle": MessageLookupByLibrary.simpleMessage(
-      "Hello there, create New account",
-    ),
+    "signUpTitle": MessageLookupByLibrary.simpleMessage("Sign up"),
     "signUpWelcomeTitle": MessageLookupByLibrary.simpleMessage("Welcome to us"),
     "tranfersMoneyCloseButton": MessageLookupByLibrary.simpleMessage("Close"),
     "tranfersMoneyNoFeeTitle": MessageLookupByLibrary.simpleMessage("No fee"),

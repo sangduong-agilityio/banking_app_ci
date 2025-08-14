@@ -1,3 +1,5 @@
+import 'package:banking_app/app/themes/app_colors.dart';
+import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
@@ -14,7 +16,7 @@ class BABottomNavigationBar extends StatelessWidget {
     this.onTap,
   });
 
-  final List<TABottomNavigationBarItem> items;
+  final List<BABottomNavigationBarItem> items;
   final Color? backgroundColor;
   final Color selectedItemColor;
   final Color unselectedItemColor;
@@ -44,7 +46,7 @@ class BABottomNavigationBar extends StatelessWidget {
                 ),
                 decoration: isSelected
                     ? BoxDecoration(
-                        color: context.colorScheme.secondary,
+                        gradient: BAAppColors.primaryGradient,
                         borderRadius: BorderRadius.circular(20),
                       )
                     : null,
@@ -64,10 +66,10 @@ class BABottomNavigationBar extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         item.label,
-                        style: TextStyle(
+                        style: context.bodySmall?.copyWith(
                           color: selectedItemColor,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
                         ),
                       ),
                     ],
@@ -82,36 +84,36 @@ class BABottomNavigationBar extends StatelessWidget {
   }
 }
 
-class TABottomNavigationBarItem {
+class BABottomNavigationBarItem {
   final Widget icon;
   final Widget activeIcon;
   final String label;
 
-  TABottomNavigationBarItem({
+  BABottomNavigationBarItem({
     required this.icon,
     required this.activeIcon,
     required this.label,
   });
 }
 
-List<TABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
+List<BABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
   return [
-    TABottomNavigationBarItem(
+    BABottomNavigationBarItem(
       icon: BAAssets.home(),
       activeIcon: BAAssets.homeFilled(color: context.colorScheme.onPrimary),
       label: S.current.homeTitle,
     ),
-    TABottomNavigationBarItem(
+    BABottomNavigationBarItem(
       icon: BAAssets.search(),
       activeIcon: BAAssets.search(color: context.colorScheme.onPrimary),
       label: S.current.searchTitle,
     ),
-    TABottomNavigationBarItem(
+    BABottomNavigationBarItem(
       icon: BAAssets.message(),
       activeIcon: BAAssets.messageFilled(color: context.colorScheme.onPrimary),
       label: S.current.messageTitle,
     ),
-    TABottomNavigationBarItem(
+    BABottomNavigationBarItem(
       icon: BAAssets.setting(),
       activeIcon: BAAssets.settingFilled(color: context.colorScheme.onPrimary),
       label: S.current.settingTitle,

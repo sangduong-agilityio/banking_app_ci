@@ -20,15 +20,15 @@ class AppPalette {
     onErrorContainer: BAAppColors.error,
     surface: BAAppColors.surface,
     onSurface: BAAppColors.textPrimary,
-    onSurfaceVariant: BAAppColors.textSecondary,
+    onSurfaceVariant: BAAppColors.infoLight,
     outline: BAAppColors.border,
     outlineVariant: BAAppColors.grey200,
     shadow: BAAppColors.shadow,
     scrim: BAAppColors.black,
     inverseSurface: BAAppColors.grey500,
-    onInverseSurface: BAAppColors.white,
-    inversePrimary: BAAppColors.primaryLight,
-    surfaceTint: BAAppColors.primary,
+    onInverseSurface: BAAppColors.grey800,
+    inversePrimary: BAAppColors.warning,
+    surfaceTint: BAAppColors.success,
   );
 
   // Dark Theme Palette (for future dark mode support)

@@ -153,6 +153,9 @@ class _BAImageLoader extends StatelessWidget {
 }
 
 class BAAssets {
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  lockDriver = _BALockDriveImage.new;
+
   static Widget Function({
     double? width,
     double? height,
@@ -355,6 +358,23 @@ class _BASettingFilledImage extends StatelessWidget {
       width: BAResponsive.scale(context, defaultValue: width ?? 20),
       height: BAResponsive.scale(context, defaultValue: height ?? 20),
       color: color ?? context.colorScheme.inverseSurface,
+    );
+  }
+}
+
+class _BALockDriveImage extends StatelessWidget {
+  const _BALockDriveImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgLockDrive.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 50),
+      height: BAResponsive.scale(context, defaultValue: height ?? 73),
     );
   }
 }

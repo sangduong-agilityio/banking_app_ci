@@ -13,7 +13,7 @@
     "description": "Store translations that are likely to be used only in Landing feature "
   },
   "landingTitle": "Jane Cooper",
-  "landingDescription":"Ut enim ad minima veniam, quis nostrum exercitat \n ionem ullam corporis suscipit laboriosam,",
+  "landingDescription":"Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,",
   "@segmentSignIn": {
       "---------------------------": "---------------------------",
       "description": "Store translations that are likely to be used only in Sign In feature "
@@ -30,7 +30,7 @@
   },
   "signUpTitle":"Sign up",
   "signUpWelcomeTitle": "Welcome to us",
-  "signUpTitle":"Hello there, create New account",
+  "signUpDescription":"Hello there, create New account",
   "signUpTermAndConditions":"By creating an account your aggree \n to our  Term and Condtions",
   "signUpButton":"Sign up",
   "signUpAlreadyAcccount":"Have an account? ",

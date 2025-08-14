@@ -1,6 +1,6 @@
 import 'package:banking_app/app/themes/app_colors.dart';
+import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
-import 'package:banking_app/core/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 class BAElevatedButton extends StatelessWidget {
@@ -21,8 +21,7 @@ class BAElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 42),
+    return SizedBox(
       width: width ?? double.infinity,
       height: height ?? 44,
       child: DecoratedBox(
@@ -42,9 +41,12 @@ class BAElevatedButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          child: BATitleMediumText(
-            text: text,
-            color: context.colorScheme.onPrimary,
+          child: Text(
+            text,
+            style: context.bodyLarge?.copyWith(
+              color: context.colorScheme.onPrimary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),

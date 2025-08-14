@@ -1,28 +1,34 @@
+import 'package:banking_app/app/themes/app_colors.dart';
+import 'package:banking_app/app/themes/app_palette.dart';
+import 'package:banking_app/app/themes/typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'app_colors.dart';
-import 'app_palette.dart';
-import 'typography.dart';
 
 class BATheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: AppPalette.lightColorScheme,
-      textTheme: AppTypography.textTheme,
-      fontFamily: AppTypography.fontFamily,
+      textTheme: BATypography.getLightTextTheme(),
+      fontFamily: BATypography.familyPoppins,
 
       // AppBar Theme
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: BAAppColors.surface,
         foregroundColor: BAAppColors.textPrimary,
         elevation: 0,
         scrolledUnderElevation: 1,
         shadowColor: BAAppColors.shadowLight,
-        titleTextStyle: AppTypography.heading4,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         centerTitle: true,
-        iconTheme: IconThemeData(color: BAAppColors.textPrimary, size: 24),
+        iconTheme: const IconThemeData(
+          color: BAAppColors.textPrimary,
+          size: 24,
+        ),
+        titleTextStyle: BATypography.getLightTextTheme().titleLarge?.copyWith(
+          color: BAAppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
       ),
 
       // Card Theme
@@ -44,8 +50,10 @@ class BATheme {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          textStyle: AppTypography.buttonMedium,
           minimumSize: const Size(120, 48),
+          textStyle: BATypography.getLightTextTheme().labelLarge?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
 
@@ -55,8 +63,8 @@ class BATheme {
           foregroundColor: BAAppColors.primary,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          textStyle: AppTypography.buttonMedium.copyWith(
-            color: BAAppColors.primary,
+          textStyle: BATypography.getLightTextTheme().labelLarge?.copyWith(
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),
@@ -70,10 +78,10 @@ class BATheme {
             borderRadius: BorderRadius.circular(12),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          textStyle: AppTypography.buttonMedium.copyWith(
-            color: BAAppColors.primary,
-          ),
           minimumSize: const Size(120, 48),
+          textStyle: BATypography.getLightTextTheme().labelLarge?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
 
@@ -108,33 +116,35 @@ class BATheme {
           horizontal: 16,
           vertical: 16,
         ),
-        hintStyle: AppTypography.bodyMedium.copyWith(
+        labelStyle: BATypography.getLightTextTheme().bodyMedium,
+        hintStyle: BATypography.getLightTextTheme().bodyMedium?.copyWith(
           color: BAAppColors.textTertiary,
         ),
-        labelStyle: AppTypography.labelMedium,
-        floatingLabelStyle: AppTypography.labelMedium.copyWith(
-          color: BAAppColors.primary,
+        helperStyle: BATypography.getLightTextTheme().bodySmall,
+        errorStyle: BATypography.getLightTextTheme().bodySmall?.copyWith(
+          color: BAAppColors.error,
         ),
       ),
 
       // Bottom Navigation Bar Theme
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: BAAppColors.surface,
         selectedItemColor: BAAppColors.primary,
         unselectedItemColor: BAAppColors.textTertiary,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
-        selectedLabelStyle: AppTypography.tabLabel,
-        unselectedLabelStyle: AppTypography.tabLabel,
+        selectedLabelStyle: BATypography.getLightTextTheme().labelSmall
+            ?.copyWith(fontWeight: FontWeight.w600),
+        unselectedLabelStyle: BATypography.getLightTextTheme().labelSmall,
       ),
 
       // Chip Theme
       chipTheme: ChipThemeData(
         backgroundColor: BAAppColors.grey100,
         selectedColor: BAAppColors.primary,
-        labelStyle: AppTypography.labelMedium,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        labelStyle: BATypography.getLightTextTheme().labelMedium,
       ),
 
       // Bottom Sheet Theme
@@ -217,7 +227,23 @@ class BATheme {
     return lightTheme.copyWith(
       colorScheme: AppPalette.darkColorScheme,
       scaffoldBackgroundColor: const Color(0xFF121212),
-      // Add more dark theme customizations as needed
+
+      // Add Dark Text Theme
+      textTheme: BATypography.getDarkTextTheme(),
+
+      // Update AppBar for dark theme
+      appBarTheme: lightTheme.appBarTheme.copyWith(
+        backgroundColor: const Color(0xFF1F1F1F),
+        foregroundColor: Colors.white,
+        titleTextStyle: BATypography.getDarkTextTheme().titleLarge?.copyWith(
+          color: Colors.white,
+          fontWeight: FontWeight.w600,
+        ),
+        iconTheme: const IconThemeData(color: Colors.white, size: 24),
+      ),
+
+      // Update other themes for dark mode as needed
+      cardTheme: lightTheme.cardTheme.copyWith(color: const Color(0xFF1F1F1F)),
     );
   }
 
@@ -233,4 +259,30 @@ class BATheme {
   static const double defaultElevation = 2.0;
   static const double cardElevation = 4.0;
   static const double modalElevation = 8.0;
+}
+
+// Extension for easy access to text styles
+extension TextThemeExtension on BuildContext {
+  TextTheme get textTheme => Theme.of(this).textTheme;
+
+  // Quick access to common text styles
+  TextStyle? get displayLarge => textTheme.displayLarge;
+  TextStyle? get displayMedium => textTheme.displayMedium;
+  TextStyle? get displaySmall => textTheme.displaySmall;
+
+  TextStyle? get headlineLarge => textTheme.headlineLarge;
+  TextStyle? get headlineMedium => textTheme.headlineMedium;
+  TextStyle? get headlineSmall => textTheme.headlineSmall;
+
+  TextStyle? get titleLarge => textTheme.titleLarge;
+  TextStyle? get titleMedium => textTheme.titleMedium;
+  TextStyle? get titleSmall => textTheme.titleSmall;
+
+  TextStyle? get bodyLarge => textTheme.bodyLarge;
+  TextStyle? get bodyMedium => textTheme.bodyMedium;
+  TextStyle? get bodySmall => textTheme.bodySmall;
+
+  TextStyle? get labelLarge => textTheme.labelLarge;
+  TextStyle? get labelMedium => textTheme.labelMedium;
+  TextStyle? get labelSmall => textTheme.labelSmall;
 }
