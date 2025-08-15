@@ -8,6 +8,15 @@
   "searchTitle":"Search",
   "messageTitle":"Message",
   "settingTitle":"Setting",
+  "validatorEmailRequired": "Email is required",
+  "validatorEmailWrongFormat": "Email is invalid format",
+  "validatorNameRequired": "Name is required",
+  "validatorNameCharacterMinimum": "Name 6-character minimum",
+  "validatorPasswordRequired": "Password is required",
+  "validatorPasswordCharacterMinimum": "Password 8-character minimum",
+  "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter",
+  "validatorConfirmPasswordRequired": "Confirm Password is required",
+  "validatorConfirmedPasswordNotMatch": "Password and confirm password not match",
   "@segmentLanding": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Landing feature "
@@ -20,6 +29,8 @@
     },
   "signInTitle":"Sign in",
   "signInWelcomeTitle":"Welcome Back",
+  "signInEmailHint":"Enter your email address",
+  "signInPassowrdHint":"Enter your password",
   "signInDescription":"Hello there, sign in to continue",
   "signInForgotPassword": "Forgot your password?",
   "signInSignUpPrompt": "Don't have an account? ",
@@ -35,6 +46,9 @@
   "signUpButton":"Sign up",
   "signUpAlreadyAcccount":"Have an account? ",
   "signInButton":"Sign in",
+  "signUpUsername":"Enter your user name",
+  "signUpEmailHint":"Enter your email address",
+  "signUpPassowrdHint":"Enter your password",
   "@segmentHome": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Home feature"

@@ -19,7 +19,7 @@ class BAAppColors {
   static const Color textPrimary = Color(0xFF1A1D29);
   static const Color textSecondary = Color(0xFF6C7278);
   static const Color textTertiary = Color(0xFF9CA3AF);
-  static const Color textDisabled = Color(0xFFD1D5DB);
+  static const Color textDisabled = Color(0xFFCBCBCB);
 
   // Status Colors
   static const Color success = Color(0xFF52D5BA);
@@ -38,7 +38,7 @@ class BAAppColors {
   static const Color grey400 = Color(0xFF9CA3AF);
   static const Color grey500 = Color(0xFF898989);
   static const Color grey600 = Color(0xFF4B5563);
-  static const Color grey700 = Color(0xFF374151);
+  static const Color grey700 = Color(0xFFCACACA);
   static const Color grey800 = Color(0xFF343434);
   static const Color grey900 = Color(0xFF111827);
 

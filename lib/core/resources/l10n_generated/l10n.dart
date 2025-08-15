@@ -74,6 +74,96 @@ class S {
     return Intl.message('Setting', name: 'settingTitle', desc: '', args: []);
   }
 
+  /// `Email is required`
+  String get validatorEmailRequired {
+    return Intl.message(
+      'Email is required',
+      name: 'validatorEmailRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email is invalid format`
+  String get validatorEmailWrongFormat {
+    return Intl.message(
+      'Email is invalid format',
+      name: 'validatorEmailWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name is required`
+  String get validatorNameRequired {
+    return Intl.message(
+      'Name is required',
+      name: 'validatorNameRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name 6-character minimum`
+  String get validatorNameCharacterMinimum {
+    return Intl.message(
+      'Name 6-character minimum',
+      name: 'validatorNameCharacterMinimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is required`
+  String get validatorPasswordRequired {
+    return Intl.message(
+      'Password is required',
+      name: 'validatorPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password 8-character minimum`
+  String get validatorPasswordCharacterMinimum {
+    return Intl.message(
+      'Password 8-character minimum',
+      name: 'validatorPasswordCharacterMinimum',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is least one uppercase, lowercase letter`
+  String get validatorPasswordWrongFormat {
+    return Intl.message(
+      'Password is least one uppercase, lowercase letter',
+      name: 'validatorPasswordWrongFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password is required`
+  String get validatorConfirmPasswordRequired {
+    return Intl.message(
+      'Confirm Password is required',
+      name: 'validatorConfirmPasswordRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password and confirm password not match`
+  String get validatorConfirmedPasswordNotMatch {
+    return Intl.message(
+      'Password and confirm password not match',
+      name: 'validatorConfirmedPasswordNotMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Jane Cooper`
   String get landingTitle {
     return Intl.message(
@@ -84,10 +174,10 @@ class S {
     );
   }
 
-  /// `Ut enim ad minima veniam, quis nostrum exercitat \n ionem ullam corporis suscipit laboriosam,`
+  /// `Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,`
   String get landingDescription {
     return Intl.message(
-      'Ut enim ad minima veniam, quis nostrum exercitat \n ionem ullam corporis suscipit laboriosam,',
+      'Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,',
       name: 'landingDescription',
       desc: '',
       args: [],
@@ -104,6 +194,26 @@ class S {
     return Intl.message(
       'Welcome Back',
       name: 'signInWelcomeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address`
+  String get signInEmailHint {
+    return Intl.message(
+      'Enter your email address',
+      name: 'signInEmailHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get signInPassowrdHint {
+    return Intl.message(
+      'Enter your password',
+      name: 'signInPassowrdHint',
       desc: '',
       args: [],
     );
@@ -144,14 +254,9 @@ class S {
     return Intl.message('Sign in', name: 'signInButton', desc: '', args: []);
   }
 
-  /// `Hello there, create New account`
+  /// `Sign up`
   String get signUpTitle {
-    return Intl.message(
-      'Hello there, create New account',
-      name: 'signUpTitle',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Sign up', name: 'signUpTitle', desc: '', args: []);
   }
 
   /// `Welcome to us`
@@ -159,6 +264,16 @@ class S {
     return Intl.message(
       'Welcome to us',
       name: 'signUpWelcomeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hello there, create New account`
+  String get signUpDescription {
+    return Intl.message(
+      'Hello there, create New account',
+      name: 'signUpDescription',
       desc: '',
       args: [],
     );
@@ -184,6 +299,36 @@ class S {
     return Intl.message(
       'Have an account? ',
       name: 'signUpAlreadyAcccount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your user name`
+  String get signUpUsername {
+    return Intl.message(
+      'Enter your user name',
+      name: 'signUpUsername',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your email address`
+  String get signUpEmailHint {
+    return Intl.message(
+      'Enter your email address',
+      name: 'signUpEmailHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get signUpPassowrdHint {
+    return Intl.message(
+      'Enter your password',
+      name: 'signUpPassowrdHint',
       desc: '',
       args: [],
     );

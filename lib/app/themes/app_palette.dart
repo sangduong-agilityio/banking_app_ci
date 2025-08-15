@@ -13,7 +13,7 @@ class AppPalette {
     secondaryContainer: BAAppColors.secondaryLight,
     onSecondaryContainer: BAAppColors.textPrimary,
     tertiary: BAAppColors.info,
-    onTertiary: BAAppColors.white,
+    onTertiary: BAAppColors.grey700,
     error: BAAppColors.error,
     onError: BAAppColors.white,
     errorContainer: Color(0xFFFFEDED),

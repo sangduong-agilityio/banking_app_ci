@@ -80,8 +80,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "signInDescription": MessageLookupByLibrary.simpleMessage(
       "Hello there, sign in to continue",
     ),
+    "signInEmailHint": MessageLookupByLibrary.simpleMessage(
+      "Enter your email address",
+    ),
     "signInForgotPassword": MessageLookupByLibrary.simpleMessage(
       "Forgot your password?",
+    ),
+    "signInPassowrdHint": MessageLookupByLibrary.simpleMessage(
+      "Enter your password",
     ),
     "signInSignUpPrompt": MessageLookupByLibrary.simpleMessage(
       "Don\'t have an account? ",
@@ -95,10 +101,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUpDescription": MessageLookupByLibrary.simpleMessage(
       "Hello there, create New account",
     ),
+    "signUpEmailHint": MessageLookupByLibrary.simpleMessage(
+      "Enter your email address",
+    ),
+    "signUpPassowrdHint": MessageLookupByLibrary.simpleMessage(
+      "Enter your password",
+    ),
     "signUpTermAndConditions": MessageLookupByLibrary.simpleMessage(
       "By creating an account your aggree \n to our  Term and Condtions",
     ),
     "signUpTitle": MessageLookupByLibrary.simpleMessage("Sign up"),
+    "signUpUsername": MessageLookupByLibrary.simpleMessage(
+      "Enter your user name",
+    ),
     "signUpWelcomeTitle": MessageLookupByLibrary.simpleMessage("Welcome to us"),
     "tranfersMoneyCloseButton": MessageLookupByLibrary.simpleMessage("Close"),
     "tranfersMoneyNoFeeTitle": MessageLookupByLibrary.simpleMessage("No fee"),
@@ -114,6 +129,33 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "transferMoneyTitle": MessageLookupByLibrary.simpleMessage(
       "Tranfer money to",
+    ),
+    "validatorConfirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "Confirm Password is required",
+    ),
+    "validatorConfirmedPasswordNotMatch": MessageLookupByLibrary.simpleMessage(
+      "Password and confirm password not match",
+    ),
+    "validatorEmailRequired": MessageLookupByLibrary.simpleMessage(
+      "Email is required",
+    ),
+    "validatorEmailWrongFormat": MessageLookupByLibrary.simpleMessage(
+      "Email is invalid format",
+    ),
+    "validatorNameCharacterMinimum": MessageLookupByLibrary.simpleMessage(
+      "Name 6-character minimum",
+    ),
+    "validatorNameRequired": MessageLookupByLibrary.simpleMessage(
+      "Name is required",
+    ),
+    "validatorPasswordCharacterMinimum": MessageLookupByLibrary.simpleMessage(
+      "Password 8-character minimum",
+    ),
+    "validatorPasswordRequired": MessageLookupByLibrary.simpleMessage(
+      "Password is required",
+    ),
+    "validatorPasswordWrongFormat": MessageLookupByLibrary.simpleMessage(
+      "Password is least one uppercase, lowercase letter",
     ),
   };
 }
