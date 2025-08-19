@@ -2,10 +2,10 @@ import 'package:banking_app/core/api/failure.dart';
 import 'package:banking_app/core/env/env.dart';
 import 'package:dio/dio.dart';
 
-class TradlyApiClient {
+class BankingApiClient {
   final Dio _dio;
 
-  TradlyApiClient({required String baseUrl})
+  BankingApiClient({required String baseUrl})
     : _dio = Dio(BaseOptions(baseUrl: baseUrl));
 
   Future<Response> _request(

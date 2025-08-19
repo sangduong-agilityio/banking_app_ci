@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
   }
 
   final AuthRepository authRepository;
+
   Future<void> _onSignInFormValidateChanged(
     SignInFormValidateChangedEvt event,
     Emitter<AuthState> emit,

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:banking_app/app/constants/api_constants.dart';
+import 'package:banking_app/app/constants/constants.dart';
 import 'package:dio/dio.dart';
 
 class Failure {

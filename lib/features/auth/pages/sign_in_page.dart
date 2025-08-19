@@ -1,8 +1,14 @@
 import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
+import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/validators.dart';
+import 'package:banking_app/core/widgets/snackbar.dart';
+import 'package:banking_app/features/auth/bloc/auth_bloc.dart';
+import 'package:banking_app/features/auth/bloc/auth_event.dart';
+import 'package:banking_app/features/auth/bloc/auth_state.dart';
+import 'package:banking_app/features/auth/services/auth_repository.dart';
 import 'package:banking_app/features/auth/widgets/animated_floating_dot.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
@@ -10,8 +16,10 @@ import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/widgets/auth_form.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -21,10 +29,10 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
-  final TextEditingController _emaiController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  @override
+  final _formKey = GlobalKey<FormBuilderState>();
+  final _emaiController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   void dispose() {
     _emaiController.dispose();
@@ -34,118 +42,176 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BAScaffold(
-      backgroundColor: context.colorScheme.primary,
-      appBar: BAAppBar(
-        title: S.current.signInTitle,
-        alignment: BAAppBarAlignment.left,
-        titleColor: context.colorScheme.onPrimary,
-        iconColor: context.colorScheme.onPrimary,
+    return BlocProvider(
+      create: (context) =>
+          AuthBloc(authRepository: locator.get<AuthRepository>()),
+      child: BAScaffold(
         backgroundColor: context.colorScheme.primary,
-      ),
-      body: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: context.colorScheme.onPrimary,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 24,
-                    ),
-                    child: BAForm(
-                      formKey: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            S.current.signInWelcomeTitle,
-                            style: context.displaySmall?.copyWith(
-                              color: context.colorScheme.secondary,
-                            ),
+        appBar: BAAppBar(
+          title: S.current.signInTitle,
+          alignment: BAAppBarAlignment.left,
+          titleColor: context.colorScheme.onPrimary,
+          iconColor: context.colorScheme.onPrimary,
+          backgroundColor: context.colorScheme.primary,
+        ),
+        body: LoaderOverlay(
+          child: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {
+                state.status.maybeWhen(
+                  loading: () => context.loaderOverlay.show(),
+                  success: () async {
+                    if (context.mounted) {
+                      await context.pushNamed(BAPaths.home.name);
+                    }
+                    if (context.mounted) {
+                      context.loaderOverlay.hide();
+                    }
+                  },
+                  failure: () {
+                    context.loaderOverlay.hide();
+                    BASnackBar.buildErrorSnackbar(
+                      context,
+                      state.errorMessage ?? '',
+                    );
+                  },
+                  orElse: () => context.loaderOverlay.hide(),
+                );
+              },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: context.colorScheme.onPrimary,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            S.current.signInDescription,
-                            style: context.labelMedium?.copyWith(
-                              color: context.colorScheme.onInverseSurface,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                            vertical: 24,
                           ),
-                          const SizedBox(height: 32),
-                          const AnimatedDot(),
-                          const SizedBox(height: 20),
-                          EmailInput(
-                            hint: S.current.signInEmailHint,
-                            validators: [
-                              (value) => value != null
-                                  ? InputValidationMixin.validEmail(value)
-                                  : 'Email is required',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                S.current.signInWelcomeTitle,
+                                style: context.displaySmall?.copyWith(
+                                  color: context.colorScheme.secondary,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                S.current.signInDescription,
+                                style: context.labelMedium?.copyWith(
+                                  color: context.colorScheme.onInverseSurface,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              const AnimatedDot(),
+                              const SizedBox(height: 20),
+                              BlocBuilder<AuthBloc, AuthState>(
+                                builder: (context, state) {
+                                  return BAForm(
+                                    key: _formKey,
+                                    isValidated: (isValid) {
+                                      // Trigger the event to update the form validation state
+                                      context.read<AuthBloc>().add(
+                                        SignInFormValidateChangedEvt(
+                                          isValidate: isValid,
+                                          email: _emaiController.text,
+                                          password: _passwordController.text,
+                                        ),
+                                      );
+                                    },
+                                    textFields: [
+                                      EmailInput(
+                                        controller: _emaiController,
+                                        hint: S.current.signInEmailHint,
+                                        validator: (value) =>
+                                            InputValidationMixin.validEmail(
+                                              value ?? '',
+                                            ),
+                                      ),
+                                      PasswordInput(
+                                        controller: _passwordController,
+                                        hint: S.current.signInPassowrdHint,
+                                        validator: (value) =>
+                                            InputValidationMixin.validPassword(
+                                              value ?? '',
+                                            ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 12),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () {},
+                                  child: Text(
+                                    S.current.signInForgotPassword,
+                                    style: context.bodySmall,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 40),
+                              BlocBuilder<AuthBloc, AuthState>(
+                                builder: (context, state) {
+                                  return BAElevatedButton(
+                                    isDisabled: !state.isFormValid,
+                                    text: S.current.signInButton,
+                                    onPressed: () {
+                                      context.read<AuthBloc>().add(
+                                        const SignInButtonPressedEvt(),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 14),
+                              Center(
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: S.current.signInSignUpPrompt,
+                                    style: context.bodySmall,
+                                    children: [
+                                      TextSpan(
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            context.pushNamed(
+                                              BAPaths.signUp.name,
+                                            );
+                                          },
+                                        text: S.current.signUpTitle,
+                                        style: context.bodySmall?.copyWith(
+                                          color: context.colorScheme.secondary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 150),
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          PasswordInput(hint: S.current.signInPassowrdHint),
-                          const SizedBox(height: 12),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                S.current.signInForgotPassword,
-                                style: context.bodySmall,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                          BAElevatedButton(
-                            text: S.current.signInButton,
-                            onPressed: () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                _formKey.currentState?.save();
-                              }
-                            },
-                          ),
-                          const SizedBox(height: 14),
-                          Center(
-                            child: RichText(
-                              text: TextSpan(
-                                text: S.current.signInSignUpPrompt,
-                                style: context.bodySmall,
-                                children: [
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        context.pushNamed(BAPaths.signUp.name);
-                                      },
-                                    text: S.current.signUpTitle,
-                                    style: context.bodySmall?.copyWith(
-                                      color: context.colorScheme.secondary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 150),
-                        ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
