@@ -112,49 +112,63 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               const SizedBox(height: 32),
                               const AnimatedDot(),
 
-                              BlocBuilder<AuthBloc, AuthState>(
-                                builder: (context, state) {
-                                  return BAForm(
-                                    key: _formKey,
-                                    isValidated: (isValid) {
-                                      context.read<AuthBloc>().add(
-                                        SignUpFormValidateChangedEvt(
-                                          isValidate: isValid,
-                                          username: _usernameController.text,
-                                          email: _emailController.text,
-                                          password: _passwordController.text,
-                                        ),
-                                      );
-                                    },
-                                    textFields: [
-                                      UsernameInput(
-                                        controller: _usernameController,
-                                        hint: S.current.validatorNameRequired,
-                                        validator: (value) =>
-                                            InputValidationMixin.validUserName(
-                                              value ?? '',
-                                            ),
-                                      ),
-                                      EmailInput(
-                                        controller: _emailController,
-                                        hint: S.current.signInEmailHint,
-                                        validator: (value) =>
-                                            InputValidationMixin.validEmail(
-                                              value ?? '',
-                                            ),
-                                      ),
-                                      PasswordInput(
-                                        hint: S.current.signInPassowrdHint,
-                                        controller: _passwordController,
-                                      ),
-                                    ],
+                              BAForm(
+                                key: _formKey,
+                                isValidated: (isValid) {
+                                  context.read<AuthBloc>().add(
+                                    SignUpFormValidateChangedEvt(
+                                      isValidate: isValid,
+                                      username: _usernameController.text,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    ),
                                   );
                                 },
+                                textFields: [
+                                  UsernameInput(
+                                    controller: _usernameController,
+                                    hint: S.current.validatorNameRequired,
+                                    validator: (value) =>
+                                        InputValidationMixin.validUserName(
+                                          value ?? '',
+                                        ),
+                                  ),
+                                  EmailInput(
+                                    controller: _emailController,
+                                    hint: S.current.signInEmailHint,
+                                    validator: (value) =>
+                                        InputValidationMixin.validEmail(
+                                          value ?? '',
+                                        ),
+                                  ),
+                                  PasswordInput(
+                                    hint: S.current.signInPassowrdHint,
+                                    controller: _passwordController,
+                                  ),
+                                ],
                               ),
-
-                              Text(
-                                S.current.signUpTermAndConditions,
-                                style: context.bodySmall,
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  BlocBuilder<AuthBloc, AuthState>(
+                                    builder: (context, state) {
+                                      return Checkbox(
+                                        value: state.isTermsAccepted,
+                                        onChanged: (value) {
+                                          context.read<AuthBloc>().add(
+                                            SignUpTermsChangedEvt(
+                                              isAccepted: value ?? false,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  Text(
+                                    S.current.signUpTermAndConditions,
+                                    style: context.bodySmall,
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 40),
                               BlocBuilder<AuthBloc, AuthState>(

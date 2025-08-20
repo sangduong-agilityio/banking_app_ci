@@ -41,10 +41,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeMobileRechargeTitle": MessageLookupByLibrary.simpleMessage(
       "Mobile recharge",
     ),
-    "homePayTheBillTitle": MessageLookupByLibrary.simpleMessage("Pay the bill"),
+    "homePayTheBillTitle": MessageLookupByLibrary.simpleMessage(
+      "Pay the \nbill",
+    ),
     "homeTitle": MessageLookupByLibrary.simpleMessage("Home"),
     "homeTransactionReportTitle": MessageLookupByLibrary.simpleMessage(
-      "Transaction Report",
+      "Transaction \nReport",
     ),
     "homeTransferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
     "homeWithdrawTitle": MessageLookupByLibrary.simpleMessage("Withdraw"),
@@ -108,7 +110,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enter your password",
     ),
     "signUpTermAndConditions": MessageLookupByLibrary.simpleMessage(
-      "By creating an account your aggree \n to our  Term and Condtions",
+      "By creating an account your aggree \nto our  Term and Condtions",
     ),
     "signUpTitle": MessageLookupByLibrary.simpleMessage("Sign up"),
     "signUpUsername": MessageLookupByLibrary.simpleMessage(

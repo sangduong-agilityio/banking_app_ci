@@ -65,6 +65,8 @@ dependencies:
 
   flutter_form_builder: ^10.1.0
 
+  loader_overlay: ^5.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

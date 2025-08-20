@@ -14,6 +14,7 @@ class BAAppColors {
   static const Color background = Color(0xFFFFFFFF);
   static const Color surface = Color(0xFFF8F9FA);
   static const Color surfaceVariant = Color(0xFFF5F6FA);
+  static const Color surfaceLight = Color(0xFFFFFDFF);
 
   // Text Colors
   static const Color textPrimary = Color(0xFF1A1D29);

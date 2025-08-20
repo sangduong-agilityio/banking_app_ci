@@ -10,6 +10,7 @@ class AuthState extends Equatable {
     this.email = '',
     this.password = '',
     this.isFormValid = false,
+    this.isTermsAccepted = false,
     this.errorMessage,
   });
 
@@ -18,6 +19,7 @@ class AuthState extends Equatable {
   final String email;
   final String password;
   final bool isFormValid;
+  final bool isTermsAccepted;
   final String? errorMessage;
 
   AuthState copyWith({
@@ -26,6 +28,7 @@ class AuthState extends Equatable {
     String? email,
     String? password,
     bool? isFormValid,
+    bool? isTermsAccepted,
     String? errorMessage,
   }) {
     return AuthState(
@@ -34,6 +37,7 @@ class AuthState extends Equatable {
       email: email ?? this.email,
       password: password ?? this.password,
       isFormValid: isFormValid ?? this.isFormValid,
+      isTermsAccepted: isTermsAccepted ?? this.isTermsAccepted,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -45,6 +49,7 @@ class AuthState extends Equatable {
     email,
     password,
     isFormValid,
+    isTermsAccepted,
     errorMessage,
   ];
 }

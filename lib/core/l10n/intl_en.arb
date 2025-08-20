@@ -42,7 +42,7 @@
   "signUpTitle":"Sign up",
   "signUpWelcomeTitle": "Welcome to us",
   "signUpDescription":"Hello there, create New account",
-  "signUpTermAndConditions":"By creating an account your aggree \n to our  Term and Condtions",
+  "signUpTermAndConditions":"By creating an account your aggree \nto our  Term and Condtions",
   "signUpButton":"Sign up",
   "signUpAlreadyAcccount":"Have an account? ",
   "signInButton":"Sign in",
@@ -58,9 +58,9 @@
   "homeTransferTitle":"Transfer",
   "homeWithdrawTitle":"Withdraw",
   "homeMobileRechargeTitle":"Mobile recharge",
-  "homePayTheBillTitle":"Pay the bill",
+  "homePayTheBillTitle":"Pay the \nbill",
   "homeCreditCardTitle":"Creadit card",
-  "homeTransactionReportTitle":"Transaction Report",
+  "homeTransactionReportTitle":"Transaction \nReport",
   "@segmentTransactionsHistory": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Transactions history feature"

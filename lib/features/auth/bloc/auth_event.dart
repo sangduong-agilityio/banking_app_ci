@@ -51,3 +51,12 @@ class SignUpButtonPressedEvt extends AuthEvt {
   @override
   List<Object?> get props => [];
 }
+
+class SignUpTermsChangedEvt extends AuthEvt {
+  const SignUpTermsChangedEvt({required this.isAccepted});
+
+  final bool isAccepted;
+
+  @override
+  List<Object?> get props => [isAccepted];
+}

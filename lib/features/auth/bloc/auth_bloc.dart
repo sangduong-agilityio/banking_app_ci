@@ -9,6 +9,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     on<SignInButtonPressedEvt>(_onLoginPressed);
     on<SignUpFormValidateChangedEvt>(_onSignUpFormValidateChanged);
     on<SignUpButtonPressedEvt>(_onSignUpPressed);
+    on<SignUpTermsChangedEvt>(_onSignUpTermsChanged);
   }
 
   final AuthRepository authRepository;
@@ -98,5 +99,12 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         ),
       );
     }
+  }
+
+  Future<void> _onSignUpTermsChanged(
+    SignUpTermsChangedEvt event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(state.copyWith(isTermsAccepted: event.isAccepted));
   }
 }

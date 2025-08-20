@@ -1,11 +1,18 @@
 import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
+import 'package:banking_app/core/dependency_injection/service_locator.dart';
+import 'package:banking_app/core/env/env.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseKey);
+
+  await AppLocators.setupLocators();
 
   runApp(const BankingApp());
 }

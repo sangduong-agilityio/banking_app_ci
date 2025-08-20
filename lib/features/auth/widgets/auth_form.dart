@@ -29,10 +29,20 @@ class _BAFormState extends State<BAForm> {
     return FormBuilder(
       key: formStateKey,
       onChanged: () {
-        // Save and validate the form state
-        formStateKey.currentState?.save();
-        final isValid = formStateKey.currentState?.validate() ?? false;
-        widget.isValidated(isValid);
+        final allFieldsValid = widget.textFields.every((element) {
+          if (element is Row) {
+            return element.children.every(
+              (child) =>
+                  child is BATextField &&
+                  (child.controller?.text.isNotEmpty ?? true),
+            );
+          }
+          return element is BATextField &&
+              (element.controller?.text.isNotEmpty ?? true);
+        });
+        widget.isValidated(
+          allFieldsValid && formStateKey.currentState!.validate(),
+        );
       },
       child: Column(
         children: [

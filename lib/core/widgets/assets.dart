@@ -210,6 +210,32 @@ class BAAssets {
     Color? color,
   })
   settingFilled = _BASettingFilledImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  contacts = _BAContactsImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  creditCard = _BACreditCardImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  creditCardIn = _BACreditCardInImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  fileParagraph = _BAFileParagraphImage.new;
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  mobileBanking = _BAMobileBankingImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit}) pig =
+      _BAPigImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  receipt = _BAReceiptImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  syncDevices = _BASyncDevicesImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  wallet = _BAWalletImage.new;
 }
 
 class _BAHomeImage extends StatelessWidget {
@@ -375,6 +401,159 @@ class _BALockDriveImage extends StatelessWidget {
       path: Assets.images.imgLockDrive.path,
       width: BAResponsive.scale(context, defaultValue: width ?? 50),
       height: BAResponsive.scale(context, defaultValue: height ?? 73),
+    );
+  }
+}
+
+class _BAContactsImage extends StatelessWidget {
+  const _BAContactsImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgContacts.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BACreditCardImage extends StatelessWidget {
+  const _BACreditCardImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgCreditCard.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BACreditCardInImage extends StatelessWidget {
+  const _BACreditCardInImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgCreditCardIn.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BAFileParagraphImage extends StatelessWidget {
+  const _BAFileParagraphImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgFileParagraph.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BAMobileBankingImage extends StatelessWidget {
+  const _BAMobileBankingImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgMobileBanking.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BAPigImage extends StatelessWidget {
+  const _BAPigImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgPig.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BAReceiptImage extends StatelessWidget {
+  const _BAReceiptImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgReceiptList.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BASyncDevicesImage extends StatelessWidget {
+  const _BASyncDevicesImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgSyncDevices.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BAWalletImage extends StatelessWidget {
+  const _BAWalletImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgWallet.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
     );
   }
 }

@@ -279,10 +279,10 @@ class S {
     );
   }
 
-  /// `By creating an account your aggree \n to our  Term and Condtions`
+  /// `By creating an account your aggree \nto our  Term and Condtions`
   String get signUpTermAndConditions {
     return Intl.message(
-      'By creating an account your aggree \n to our  Term and Condtions',
+      'By creating an account your aggree \nto our  Term and Condtions',
       name: 'signUpTermAndConditions',
       desc: '',
       args: [],
@@ -384,10 +384,10 @@ class S {
     );
   }
 
-  /// `Pay the bill`
+  /// `Pay the \nbill`
   String get homePayTheBillTitle {
     return Intl.message(
-      'Pay the bill',
+      'Pay the \nbill',
       name: 'homePayTheBillTitle',
       desc: '',
       args: [],
@@ -404,10 +404,10 @@ class S {
     );
   }
 
-  /// `Transaction Report`
+  /// `Transaction \nReport`
   String get homeTransactionReportTitle {
     return Intl.message(
-      'Transaction Report',
+      'Transaction \nReport',
       name: 'homeTransactionReportTitle',
       desc: '',
       args: [],

@@ -167,7 +167,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, state) {
                                   return BAElevatedButton(
-                                    isDisabled: !state.isFormValid,
+                                    isDisabled: state.isFormValid,
                                     text: S.current.signInButton,
                                     onPressed: () {
                                       context.read<AuthBloc>().add(
