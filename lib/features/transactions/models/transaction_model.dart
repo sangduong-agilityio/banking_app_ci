@@ -10,6 +10,7 @@ class TransactionModel with _$TransactionModel {
     required String userId,
     required TransactionType type,
     required double amount,
+    String? imageUrl,
     String? recipientName,
     String? recipientAccount,
     String? description,

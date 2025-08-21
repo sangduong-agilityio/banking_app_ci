@@ -58,10 +58,4 @@ class BAAppColors {
     stops: [0.0, 0.26, 0.65],
     colors: [Color(0xFF469FEF), Color(0xFF5C75F0), Color(0xFF6C56F0)],
   );
-
-  static const LinearGradient backgroundGradient = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [Color(0xFFFFFFFF), Color(0xFFF8F9FA)],
-  );
 }

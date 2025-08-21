@@ -9,6 +9,8 @@ import 'package:banking_app/features/landing/landing_page.dart';
 import 'package:banking_app/features/landing/pages/message.dart';
 import 'package:banking_app/features/landing/pages/search.dart';
 import 'package:banking_app/features/profile/pages/account_page.dart';
+import 'package:banking_app/features/profile/pages/profile_page.dart';
+import 'package:banking_app/features/transactions/pages/transaction_history_page.dart';
 import 'package:banking_app/features/transfer/pages/transfer_amount_page.dart';
 import 'package:banking_app/features/transfer/pages/transfer_page.dart';
 import 'package:banking_app/features/transfer/pages/transfer_success_page.dart';
@@ -91,6 +93,22 @@ class BAAppRouter {
                   child: TransferSuccessScreen(),
                 ),
               ),
+              GoRoute(
+                path: BAPaths.transferHistory.path,
+                name: BAPaths.transferHistory.name,
+                pageBuilder: (context, state) => MaterialPage(
+                  key: state.pageKey,
+                  child: TransactionHistoryScreen(),
+                ),
+              ),
+              GoRoute(
+                path: BAPaths.account.path,
+                name: BAPaths.account.name,
+                pageBuilder: (context, state) => MaterialPage(
+                  key: state.pageKey,
+                  child: AccountDetailsScreen(),
+                ),
+              ),
             ],
           ),
           StatefulShellBranch(
@@ -136,7 +154,9 @@ enum BAPaths {
   home(name: 'home', path: '/home'),
   transfer(name: 'transfer', path: '/transfer'),
   transferAmout(name: 'transferAmout', path: '/transferAmout'),
+  transferHistory(name: 'transferHistory', path: '/transferHistory'),
   transferSuccess(name: 'transferSuccess', path: '/transferSuccess'),
+  account(name: 'account', path: '/account'),
   search(name: 'search', path: '/search'),
   message(name: 'message', path: '/message'),
   setting(name: 'setting', path: '/setting');

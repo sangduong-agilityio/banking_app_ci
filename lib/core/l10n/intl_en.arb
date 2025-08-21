@@ -81,6 +81,9 @@
     "description": "Store translations that are likely to be used only in Account feature"
   },
   "accountTitle":"Account",
+  "accountSaveButton":"Save Changes",
+  "accountCardHolderTitle":"Card Holder Name",
+  "accountExpiryDateTitle":"Expiry date",
   "accountDetailInfoTitle":"DETAIL INFORMATION",
   "accountNameLabel":"Name",
   "accountPhoneNumberLabel":"Phone Number",

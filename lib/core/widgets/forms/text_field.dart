@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class BATextField extends StatefulWidget {
-  final String name;
+  final String? name;
   final String? label;
   final String? hint;
   final Widget? prefixIcon;
@@ -23,10 +23,11 @@ class BATextField extends StatefulWidget {
   final TextEditingController? controller;
   final bool isLast;
   final VoidCallback? onEditingComplete;
+  final Color? fillColor;
 
   const BATextField({
     super.key,
-    required this.name,
+    this.name,
     this.label,
     this.hint,
     this.prefixIcon,
@@ -42,6 +43,7 @@ class BATextField extends StatefulWidget {
     this.focusNode,
     this.controller,
     this.onEditingComplete,
+    this.fillColor,
     this.isLast = false,
   });
 
@@ -60,7 +62,7 @@ class _BATextFieldState extends State<BATextField> {
           const SizedBox(height: 8),
         ],
         FormBuilderTextField(
-          name: widget.name,
+          name: widget.name ?? '',
           cursorColor: context.colorScheme.primary,
           keyboardType: widget.keyboardType,
           obscureText: widget.obscureText,
@@ -102,7 +104,11 @@ class _BATextFieldState extends State<BATextField> {
                   )
                 : null,
             filled: true,
-            fillColor: context.colorScheme.onPrimary,
+            fillColor:
+                widget.fillColor ??
+                (widget.enabled
+                    ? context.colorScheme.onPrimary
+                    : BAAppColors.textDisabled),
             errorStyle: TextStyle(
               color: BAAppColors.error,
               fontSize: 12,

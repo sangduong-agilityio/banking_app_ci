@@ -19,6 +19,7 @@ class ListViewActions extends StatelessWidget {
           CardAction(
             icon: BAAssets.wallet(),
             label: S.current.homeAccountAndCardTitle,
+            onTap: () => context.pushNamed(BAPaths.account.name),
           ),
           CardAction(
             icon: BAAssets.syncDevices(),
@@ -44,6 +45,7 @@ class ListViewActions extends StatelessWidget {
           CardAction(
             icon: BAAssets.fileParagraph(),
             label: S.current.homeTransactionReportTitle,
+            onTap: () => context.pushNamed(BAPaths.transferHistory.name),
           ),
         ],
       ),

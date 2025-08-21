@@ -489,6 +489,36 @@ class S {
     return Intl.message('Account', name: 'accountTitle', desc: '', args: []);
   }
 
+  /// `Save Changes`
+  String get accountSaveButton {
+    return Intl.message(
+      'Save Changes',
+      name: 'accountSaveButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card Holder Name`
+  String get accountCardHolderTitle {
+    return Intl.message(
+      'Card Holder Name',
+      name: 'accountCardHolderTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expiry date`
+  String get accountExpiryDateTitle {
+    return Intl.message(
+      'Expiry date',
+      name: 'accountExpiryDateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `DETAIL INFORMATION`
   String get accountDetailInfoTitle {
     return Intl.message(
