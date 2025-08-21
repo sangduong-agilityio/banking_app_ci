@@ -5,13 +5,18 @@ import 'package:flutter/material.dart';
 class CardAction extends StatelessWidget {
   final Widget icon;
   final String label;
-
-  const CardAction({super.key, required this.icon, required this.label});
+  final VoidCallback? onTap;
+  const CardAction({
+    super.key,
+    required this.icon,
+    required this.label,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           color: context.colorScheme.onPrimary,

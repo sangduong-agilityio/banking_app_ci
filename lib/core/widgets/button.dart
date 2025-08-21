@@ -3,7 +3,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
-class BAElevatedButton extends StatelessWidget {
+class BAElevatedButton extends StatefulWidget {
   final String text;
   final VoidCallback? onPressed;
   final bool isDisabled;
@@ -20,18 +20,23 @@ class BAElevatedButton extends StatelessWidget {
   });
 
   @override
+  State<BAElevatedButton> createState() => _BAElevatedButtonState();
+}
+
+class _BAElevatedButtonState extends State<BAElevatedButton> {
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? double.infinity,
-      height: height ?? 44,
+      width: widget.width ?? double.infinity,
+      height: widget.height ?? 44,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          gradient: isDisabled ? null : BAAppColors.primaryGradient,
-          color: isDisabled ? context.colorScheme.outlineVariant : null,
+          gradient: widget.isDisabled ? null : BAAppColors.primaryGradient,
+          color: widget.isDisabled ? context.colorScheme.outlineVariant : null,
           borderRadius: BorderRadius.circular(15),
         ),
         child: ElevatedButton(
-          onPressed: isDisabled ? null : onPressed,
+          onPressed: widget.isDisabled ? null : widget.onPressed,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
             elevation: 0,
@@ -42,7 +47,7 @@ class BAElevatedButton extends StatelessWidget {
             ),
           ),
           child: Text(
-            text,
+            widget.text,
             style: context.bodyLarge?.copyWith(
               color: context.colorScheme.onPrimary,
               fontWeight: FontWeight.w600,

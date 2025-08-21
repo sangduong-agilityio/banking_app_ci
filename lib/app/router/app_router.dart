@@ -2,7 +2,6 @@ import 'package:banking_app/app/router/router_guard.dart';
 import 'package:banking_app/core/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/features/auth/pages/forgot_password_page.dart';
 import 'package:banking_app/features/auth/pages/sign_in_page.dart';
 import 'package:banking_app/features/auth/pages/sign_up_page.dart';
 import 'package:banking_app/features/dashboard/pages/home_page.dart';
@@ -10,6 +9,9 @@ import 'package:banking_app/features/landing/landing_page.dart';
 import 'package:banking_app/features/landing/pages/message.dart';
 import 'package:banking_app/features/landing/pages/search.dart';
 import 'package:banking_app/features/profile/pages/account_page.dart';
+import 'package:banking_app/features/transfer/pages/transfer_amount_page.dart';
+import 'package:banking_app/features/transfer/pages/transfer_page.dart';
+import 'package:banking_app/features/transfer/pages/transfer_success_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,8 +22,8 @@ class BAAppRouter {
     initialLocation: BAPaths.home.path,
     navigatorKey: rootNavigatorKey,
     routes: _getRoutes(),
-    // errorBuilder: (context, state) => const NotFoundScreen(),
-    // redirect: (context, state) => RouterGuard.authGuard(context, state),
+    errorBuilder: (context, state) => const NotFoundScreen(),
+    redirect: (context, state) => RouterGuard.authGuard(context, state),
   );
 
   static List<RouteBase> _getRoutes() {
@@ -30,25 +32,19 @@ class BAAppRouter {
         path: BAPaths.landing.path,
         name: BAPaths.landing.name,
         pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const LandingPage()),
+            MaterialPage(key: state.pageKey, child: const LandingSceen()),
       ),
       GoRoute(
         path: BAPaths.signIn.path,
         name: BAPaths.signIn.name,
         pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const SignInPage()),
+            MaterialPage(key: state.pageKey, child: SignInScreen()),
       ),
       GoRoute(
         path: BAPaths.signUp.path,
         name: BAPaths.signUp.name,
         pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const SignUpPage()),
-      ),
-      GoRoute(
-        path: BAPaths.forgotPassword.path,
-        name: BAPaths.forgotPassword.name,
-        pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const ForgotPasswordPage()),
+            MaterialPage(key: state.pageKey, child: const SignUpScreen()),
       ),
 
       StatefulShellRoute.indexedStack(
@@ -71,7 +67,29 @@ class BAAppRouter {
               GoRoute(
                 path: BAPaths.home.path,
                 name: BAPaths.home.name,
-                builder: (context, state) => const HomePage(),
+                builder: (context, state) => HomePage(),
+              ),
+              GoRoute(
+                path: BAPaths.transfer.path,
+                name: BAPaths.transfer.name,
+                pageBuilder: (context, state) =>
+                    MaterialPage(key: state.pageKey, child: TransferScreen()),
+              ),
+              GoRoute(
+                path: BAPaths.transferAmout.path,
+                name: BAPaths.transferAmout.name,
+                pageBuilder: (context, state) => MaterialPage(
+                  key: state.pageKey,
+                  child: TransferAmountScreen(),
+                ),
+              ),
+              GoRoute(
+                path: BAPaths.transferSuccess.path,
+                name: BAPaths.transferSuccess.name,
+                pageBuilder: (context, state) => MaterialPage(
+                  key: state.pageKey,
+                  child: TransferSuccessScreen(),
+                ),
               ),
             ],
           ),
@@ -115,8 +133,10 @@ enum BAPaths {
   landing(name: 'landing', path: '/landing'),
   signIn(name: 'signIn', path: '/signin'),
   signUp(name: 'signUp', path: '/signup'),
-  forgotPassword(name: 'forgotPassword', path: '/forgot-password'),
   home(name: 'home', path: '/home'),
+  transfer(name: 'transfer', path: '/transfer'),
+  transferAmout(name: 'transferAmout', path: '/transferAmout'),
+  transferSuccess(name: 'transferSuccess', path: '/transferSuccess'),
   search(name: 'search', path: '/search'),
   message(name: 'message', path: '/message'),
   setting(name: 'setting', path: '/setting');

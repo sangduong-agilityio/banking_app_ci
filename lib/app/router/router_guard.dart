@@ -17,7 +17,6 @@ class RouterGuard {
       BAPaths.landing.path,
       BAPaths.signIn.path,
       BAPaths.signUp.path,
-      BAPaths.forgotPassword.path,
     ];
 
     final currentPath = state.uri.toString();

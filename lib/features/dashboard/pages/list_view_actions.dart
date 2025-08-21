@@ -1,7 +1,9 @@
+import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/features/dashboard/widgets/card_action.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ListViewActions extends StatelessWidget {
   const ListViewActions({super.key});
@@ -21,6 +23,7 @@ class ListViewActions extends StatelessWidget {
           CardAction(
             icon: BAAssets.syncDevices(),
             label: S.current.homeTransferTitle,
+            onTap: () => context.pushNamed(BAPaths.transfer.name),
           ),
           CardAction(
             icon: BAAssets.creditCardIn(),

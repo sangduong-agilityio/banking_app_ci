@@ -12,6 +12,8 @@ class ContactModel with _$ContactModel {
     String? email,
     String? phoneNumber,
     String? accountNumber,
+    String? imageUrl,
+    String? amount,
     required bool isFavorite,
     required DateTime createdAt,
   }) = _ContactModel;
