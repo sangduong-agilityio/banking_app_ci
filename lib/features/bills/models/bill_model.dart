@@ -11,7 +11,13 @@ class BillModel with _$BillModel {
     required BillType billType,
     required String providerName,
     required String accountNumber,
-    double? amount,
+    required String address,
+    required String phoneNumber,
+    required String billCode,
+    required String startDate,
+    required String endDate,
+    required double amount,
+    required double tax,
     DateTime? dueDate,
     required bool isRecurring,
     required bool isFavorite,
@@ -23,4 +29,17 @@ class BillModel with _$BillModel {
       _$BillModelFromJson(json);
 }
 
-enum BillType { water, internet, electric, gas, phone, other }
+enum BillType { water, internet, electric }
+
+extension BillTypeExtension on BillType {
+  String get displayName {
+    switch (this) {
+      case BillType.water:
+        return "Water bill";
+      case BillType.internet:
+        return "Internet bill";
+      case BillType.electric:
+        return "Electric bill";
+    }
+  }
+}

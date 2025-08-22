@@ -1,13 +1,17 @@
-import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
+import 'package:banking_app/features/bills/models/bill_model.dart';
+import 'package:banking_app/features/bills/pages/bill_payment_page.dart';
 import 'package:banking_app/features/dashboard/widgets/card_action.dart';
+import 'package:banking_app/features/profile/pages/account_page.dart';
+import 'package:banking_app/features/transactions/pages/transaction_history_page.dart';
+import 'package:banking_app/features/transfer/pages/transfer_page.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class ListViewActions extends StatelessWidget {
-  const ListViewActions({super.key});
+  const ListViewActions({super.key, this.bills});
 
+  final List<BillModel>? bills;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -19,12 +23,22 @@ class ListViewActions extends StatelessWidget {
           CardAction(
             icon: BAAssets.wallet(),
             label: S.current.homeAccountAndCardTitle,
-            onTap: () => context.pushNamed(BAPaths.account.name),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AccountDetailsScreen()),
+              );
+            },
           ),
           CardAction(
             icon: BAAssets.syncDevices(),
             label: S.current.homeTransferTitle,
-            onTap: () => context.pushNamed(BAPaths.transfer.name),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const TransferScreen()),
+              );
+            },
           ),
           CardAction(
             icon: BAAssets.creditCardIn(),
@@ -37,6 +51,14 @@ class ListViewActions extends StatelessWidget {
           CardAction(
             icon: BAAssets.receipt(),
             label: S.current.homePayTheBillTitle,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BillPaymentScreen(bills: bills ?? []),
+                ),
+              );
+            },
           ),
           CardAction(
             icon: BAAssets.creditCard(),
@@ -45,7 +67,14 @@ class ListViewActions extends StatelessWidget {
           CardAction(
             icon: BAAssets.fileParagraph(),
             label: S.current.homeTransactionReportTitle,
-            onTap: () => context.pushNamed(BAPaths.transferHistory.name),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TransactionHistoryScreen(),
+                ),
+              );
+            },
           ),
         ],
       ),

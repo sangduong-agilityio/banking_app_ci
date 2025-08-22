@@ -574,6 +574,46 @@ class S {
     );
   }
 
+  /// `Pay the bill`
+  String get payBillButton {
+    return Intl.message(
+      'Pay the bill',
+      name: 'payBillButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get payBillConfirmButton {
+    return Intl.message(
+      'Confirm',
+      name: 'payBillConfirmButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction successfully!`
+  String get payBillTransactionSuccess {
+    return Intl.message(
+      'Transaction successfully!',
+      name: 'payBillTransactionSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You 've pay your {type} bill!`
+  String payBillTracsactionTitle(String type) {
+    return Intl.message(
+      'You \'ve pay your $type bill!',
+      name: 'payBillTracsactionTitle',
+      desc: '',
+      args: [type],
+    );
+  }
+
   /// `Electric bill`
   String get payBillElectricTitle {
     return Intl.message(
@@ -641,6 +681,86 @@ class S {
       name: 'payBillCheckHistoryTitle',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `All the Bills`
+  String get payBillAllTitle {
+    return Intl.message(
+      'All the Bills',
+      name: 'payBillAllTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get payBillNameTitle {
+    return Intl.message('Name', name: 'payBillNameTitle', desc: '', args: []);
+  }
+
+  /// `Address`
+  String get payBillAddressTitle {
+    return Intl.message(
+      'Address',
+      name: 'payBillAddressTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number`
+  String get payBillPhoneNumberTitle {
+    return Intl.message(
+      'Phone number',
+      name: 'payBillPhoneNumberTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Code`
+  String get payBillCodeTitle {
+    return Intl.message('Code', name: 'payBillCodeTitle', desc: '', args: []);
+  }
+
+  /// `From`
+  String get payBillFormTitle {
+    return Intl.message('From', name: 'payBillFormTitle', desc: '', args: []);
+  }
+
+  /// `To`
+  String get payBillToTitle {
+    return Intl.message('To', name: 'payBillToTitle', desc: '', args: []);
+  }
+
+  /// `{type} fee`
+  String payBillTypeTitle(String type) {
+    return Intl.message(
+      '$type fee',
+      name: 'payBillTypeTitle',
+      desc: '',
+      args: [type],
+    );
+  }
+
+  /// `Tax`
+  String get payBillTaxTitle {
+    return Intl.message('Tax', name: 'payBillTaxTitle', desc: '', args: []);
+  }
+
+  /// `Total`
+  String get payBillTotalTitle {
+    return Intl.message('Total', name: 'payBillTotalTitle', desc: '', args: []);
+  }
+
+  /// `Pay {type} bill this month`
+  String payBillTypeCategory(String type) {
+    return Intl.message(
+      'Pay $type bill this month',
+      name: 'payBillTypeCategory',
+      desc: '',
+      args: [type],
     );
   }
 }

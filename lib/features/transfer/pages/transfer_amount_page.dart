@@ -1,4 +1,3 @@
-import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/app/themes/app_colors.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
@@ -7,8 +6,8 @@ import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/transfer/models/contact_model.dart';
+import 'package:banking_app/features/transfer/pages/transfer_success_page.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class TransferAmountScreen extends StatefulWidget {
   const TransferAmountScreen({super.key, this.contacts});
@@ -134,9 +133,9 @@ class _TransferAmountScreenState extends State<TransferAmountScreen> {
           height: 56,
           text: S.current.tranfersMoneySendButton,
           onPressed: () {
-            context.pushNamed(
-              BAPaths.transferSuccess.name,
-              extra: widget.contacts,
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TransferSuccessScreen()),
             );
           },
         ),

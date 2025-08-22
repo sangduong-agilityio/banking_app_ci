@@ -242,6 +242,18 @@ class BAAssets {
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
   empty = _BAEmptyImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  electric = _BAElectricImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  water = _BAWaterImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  internet = _BAInternetImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  transactionSuccess = _BATransactionSuccessImage.new;
 }
 
 class _BAHomeImage extends StatelessWidget {
@@ -594,6 +606,74 @@ class _BAEmptyImage extends StatelessWidget {
       path: Assets.images.imgEmpty.path,
       width: BAResponsive.scale(context, defaultValue: width ?? 140),
       height: BAResponsive.scale(context, defaultValue: height ?? 140),
+    );
+  }
+}
+
+class _BAElectricImage extends StatelessWidget {
+  const _BAElectricImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgElectric.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 90),
+      height: BAResponsive.scale(context, defaultValue: height ?? 80),
+    );
+  }
+}
+
+class _BAWaterImage extends StatelessWidget {
+  const _BAWaterImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgWater.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 90),
+      height: BAResponsive.scale(context, defaultValue: height ?? 80),
+    );
+  }
+}
+
+class _BAInternetImage extends StatelessWidget {
+  const _BAInternetImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgInternet.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 90),
+      height: BAResponsive.scale(context, defaultValue: height ?? 80),
+    );
+  }
+}
+
+class _BATransactionSuccessImage extends StatelessWidget {
+  const _BATransactionSuccessImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgDigitalBanking.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 327),
+      height: BAResponsive.scale(context, defaultValue: height ?? 204),
     );
   }
 }

@@ -1,12 +1,11 @@
-import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/transfer/models/contact_model.dart';
+import 'package:banking_app/features/transfer/pages/transfer_amount_page.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class TransferScreen extends StatelessWidget {
   const TransferScreen({super.key, this.contacts});
@@ -33,10 +32,14 @@ class TransferScreen extends StatelessWidget {
                   final contact = contacts?[index];
                   return TransactionCard(
                     title: contact?.name ?? "Jane Cooper",
-                    onTap: () => context.pushNamed(
-                      BAPaths.transferAmout.name,
-                      extra: contact,
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TransferAmountScreen(),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

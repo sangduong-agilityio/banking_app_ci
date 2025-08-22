@@ -94,11 +94,50 @@
       "description": "Store translations that are likely to be used only in Pay bill feature"
     },
   "payBillTitle":"Pay the bill",
+  "payBillButton":"Pay the bill",
+  "payBillConfirmButton":"Confirm",
+  "payBillTransactionSuccess":"Transaction successfully!",
+  "payBillTracsactionTitle": "You 've pay your {type} bill!",
+  "@payBillTracsactionTitle": {
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "internet"
+      }
+    }
+  },
   "payBillElectricTitle":"Electric bill",
   "payBillElectricDescription":"Pay electric bill this month",
   "payBillWaterTitle":"Water bill",
   "payBillWaterDescription":"Pay water bill this month",
   "payBillInternetTitle":"Internet bill",
   "payBillInternetDescription":"Pay internet bill this month",
-  "payBillCheckHistoryTitle":"Check Payment history"
+  "payBillCheckHistoryTitle":"Check Payment history",
+  "payBillAllTitle":"All the Bills",
+  "payBillNameTitle":"Name",
+  "payBillAddressTitle":"Address",
+  "payBillPhoneNumberTitle":"Phone number",
+  "payBillCodeTitle":"Code",
+  "payBillFormTitle":"From",
+  "payBillToTitle":"To",
+  "payBillTypeTitle": "{type} fee",
+  "@payBillTypeTitle": {
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "internet"
+      }
+    }
+  },
+  "payBillTaxTitle":"Tax",
+  "payBillTotalTitle":"Total",
+  "payBillTypeCategory": "Pay {type} bill this month",
+  "@payBillTypeCategory": {
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "internet"
+      }
+    }
+  }
 }

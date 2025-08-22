@@ -20,6 +20,12 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static String m0(type) => "You \'ve pay your ${type} bill!";
+
+  static String m1(type) => "Pay ${type} bill this month";
+
+  static String m2(type) => "${type} fee";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "accountCardHolderTitle": MessageLookupByLibrary.simpleMessage(
@@ -63,22 +69,41 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "landingTitle": MessageLookupByLibrary.simpleMessage("Jane Cooper"),
     "messageTitle": MessageLookupByLibrary.simpleMessage("Message"),
+    "payBillAddressTitle": MessageLookupByLibrary.simpleMessage("Address"),
+    "payBillAllTitle": MessageLookupByLibrary.simpleMessage("All the Bills"),
+    "payBillButton": MessageLookupByLibrary.simpleMessage("Pay the bill"),
     "payBillCheckHistoryTitle": MessageLookupByLibrary.simpleMessage(
       "Check Payment history",
     ),
+    "payBillCodeTitle": MessageLookupByLibrary.simpleMessage("Code"),
+    "payBillConfirmButton": MessageLookupByLibrary.simpleMessage("Confirm"),
     "payBillElectricDescription": MessageLookupByLibrary.simpleMessage(
       "Pay electric bill this month",
     ),
     "payBillElectricTitle": MessageLookupByLibrary.simpleMessage(
       "Electric bill",
     ),
+    "payBillFormTitle": MessageLookupByLibrary.simpleMessage("From"),
     "payBillInternetDescription": MessageLookupByLibrary.simpleMessage(
       "Pay internet bill this month",
     ),
     "payBillInternetTitle": MessageLookupByLibrary.simpleMessage(
       "Internet bill",
     ),
+    "payBillNameTitle": MessageLookupByLibrary.simpleMessage("Name"),
+    "payBillPhoneNumberTitle": MessageLookupByLibrary.simpleMessage(
+      "Phone number",
+    ),
+    "payBillTaxTitle": MessageLookupByLibrary.simpleMessage("Tax"),
     "payBillTitle": MessageLookupByLibrary.simpleMessage("Pay the bill"),
+    "payBillToTitle": MessageLookupByLibrary.simpleMessage("To"),
+    "payBillTotalTitle": MessageLookupByLibrary.simpleMessage("Total"),
+    "payBillTracsactionTitle": m0,
+    "payBillTransactionSuccess": MessageLookupByLibrary.simpleMessage(
+      "Transaction successfully!",
+    ),
+    "payBillTypeCategory": m1,
+    "payBillTypeTitle": m2,
     "payBillWaterDescription": MessageLookupByLibrary.simpleMessage(
       "Pay water bill this month",
     ),
