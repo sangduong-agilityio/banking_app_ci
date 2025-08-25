@@ -734,6 +734,96 @@ class S {
     return Intl.message('To', name: 'payBillToTitle', desc: '', args: []);
   }
 
+  /// `Payment history`
+  String get payBillHistoryTitle {
+    return Intl.message(
+      'Payment history',
+      name: 'payBillHistoryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status`
+  String get payBillStatusTitle {
+    return Intl.message(
+      'Status',
+      name: 'payBillStatusTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get payBillAmountTitle {
+    return Intl.message(
+      'Amount',
+      name: 'payBillAmountTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose Company`
+  String get payBillChooseCompanyHint {
+    return Intl.message(
+      'Choose Company',
+      name: 'payBillChooseCompanyHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bill Code`
+  String get payBillCodeHint {
+    return Intl.message(
+      'Bill Code',
+      name: 'payBillCodeHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the correct bill code to check information.`
+  String get payBillDescription {
+    return Intl.message(
+      'Please enter the correct bill code to check information.',
+      name: 'payBillDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check`
+  String get payBillCheckButton {
+    return Intl.message(
+      'Check',
+      name: 'payBillCheckButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type {type} bill code `
+  String payBillTypeLabel(String type) {
+    return Intl.message(
+      'Type $type bill code ',
+      name: 'payBillTypeLabel',
+      desc: '',
+      args: [type],
+    );
+  }
+
+  /// `Company`
+  String get payBillCompanyTitle {
+    return Intl.message(
+      'Company',
+      name: 'payBillCompanyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `{type} fee`
   String payBillTypeTitle(String type) {
     return Intl.message(

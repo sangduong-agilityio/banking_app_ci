@@ -9,15 +9,15 @@ import 'package:banking_app/features/bills/models/bill_model.dart';
 import 'package:flutter/material.dart';
 
 class PaymentSuccessScreen extends StatelessWidget {
-  final BillType bills;
+  final BillModel bill;
 
-  const PaymentSuccessScreen({super.key, required this.bills});
+  const PaymentSuccessScreen({super.key, required this.bill});
 
   @override
   Widget build(BuildContext context) {
     return BAScaffold(
       appBar: BAAppBar(
-        title: bills.displayName,
+        title: bill.billType.displayName,
         alignment: BAAppBarAlignment.left,
         titleColor: context.colorScheme.scrim,
         iconColor: context.colorScheme.scrim,
@@ -36,7 +36,7 @@ class PaymentSuccessScreen extends StatelessWidget {
           ),
           SizedBox(height: 24),
           Text(
-            S.current.payBillTracsactionTitle(bills.name),
+            S.current.payBillTracsactionTitle(bill.billType.displayName),
             style: context.titleSmall?.copyWith(
               color: context.colorScheme.onInverseSurface,
             ),

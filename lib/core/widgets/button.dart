@@ -9,6 +9,7 @@ class BAElevatedButton extends StatefulWidget {
   final bool isDisabled;
   final double? width;
   final double? height;
+  final EdgeInsetsGeometry? padding;
 
   const BAElevatedButton({
     super.key,
@@ -17,6 +18,7 @@ class BAElevatedButton extends StatefulWidget {
     this.isDisabled = false,
     this.width,
     this.height,
+    this.padding,
   });
 
   @override
@@ -26,7 +28,8 @@ class BAElevatedButton extends StatefulWidget {
 class _BAElevatedButtonState extends State<BAElevatedButton> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 30),
       width: widget.width ?? double.infinity,
       height: widget.height ?? 44,
       child: DecoratedBox(

@@ -1,52 +1,75 @@
+import 'package:banking_app/app/themes/app_theme.dart';
+import 'package:banking_app/core/extensions/context_extensions.dart';
+import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/utils/formatters.dart';
+import 'package:banking_app/core/widgets/layouts/app_bar.dart';
+import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
 import 'package:banking_app/features/bills/models/payment_history_model.dart';
+import 'package:banking_app/features/bills/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 
-class PaymentHistoryScreen extends StatelessWidget {
+class PaymentHistoryScreen extends StatefulWidget {
   final List<BillModel> bills;
+  final List<PaymentHistoryModel> paymentHistory;
 
-  const PaymentHistoryScreen({super.key, required this.bills});
+  const PaymentHistoryScreen({
+    super.key,
+    required this.bills,
+    required this.paymentHistory,
+  });
+
+  @override
+  State<PaymentHistoryScreen> createState() => _PaymentHistoryScreenState();
+}
+
+class _PaymentHistoryScreenState extends State<PaymentHistoryScreen>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+  late List<BillType> availableTypes;
+
+  @override
+  void initState() {
+    super.initState();
+    availableTypes = widget.bills.map((b) => b.billType).toSet().toList();
+    _tabController = TabController(length: availableTypes.length, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final availableTypes = bills.map((b) => b.billType).toSet().toList();
+    final tabNames = availableTypes
+        .map((type) => _capitalize(type.name))
+        .toList();
 
-    return DefaultTabController(
-      length: availableTypes.length,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            'Payment history',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
-          ),
-        ),
-        body: Column(
-          children: [
-            TabBar(
-              indicatorColor: Color(0xFF4C7CE5),
-              labelColor: Color(0xFF4C7CE5),
-              unselectedLabelColor: Colors.grey,
-              isScrollable: true,
-              tabs: availableTypes
-                  .map((type) => Tab(text: _capitalize(type.name)))
+    return BAScaffold(
+      appBar: BAAppBar(
+        title: S.current.payBillHistoryTitle,
+        titleColor: context.colorScheme.scrim,
+        iconColor: context.colorScheme.scrim,
+      ),
+      body: Column(
+        children: [
+          BATabBar(controller: _tabController, tabs: tabNames),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: availableTypes
+                  .map(
+                    (type) => ListViewHistory(
+                      billType: type,
+                      paymentHistory: _getPaymentHistoryByBillType(type),
+                    ),
+                  )
                   .toList(),
             ),
-            Expanded(
-              child: TabBarView(
-                children: availableTypes
-                    .map((type) => _buildHistoryList(type))
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -55,22 +78,50 @@ class PaymentHistoryScreen extends StatelessWidget {
     return text[0].toUpperCase() + text.substring(1);
   }
 
-  Widget _buildHistoryList(BillType billType) {
-    // Generate sample payment history for the bill type
-    final paymentHistory = _generatePaymentHistory(billType);
+  List<PaymentHistoryModel> _getPaymentHistoryByBillType(BillType billType) {
+    final billsOfType = widget.bills.where((bill) => bill.billType == billType);
 
+    final billIds = billsOfType.map((bill) => bill.id).toSet();
+
+    final filteredHistory = widget.paymentHistory
+        .where((history) => billIds.contains(history.billId))
+        .toList();
+
+    filteredHistory.sort((a, b) => b.paymentDate.compareTo(a.paymentDate));
+
+    return filteredHistory;
+  }
+}
+
+class ListViewHistory extends StatelessWidget {
+  const ListViewHistory({
+    super.key,
+    required this.billType,
+    required this.paymentHistory,
+  });
+
+  final BillType billType;
+  final List<PaymentHistoryModel> paymentHistory;
+
+  @override
+  Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       itemCount: paymentHistory.length,
       itemBuilder: (context, index) {
         final history = paymentHistory[index];
         return Container(
-          margin: EdgeInsets.only(bottom: 15),
-          padding: EdgeInsets.all(15),
+          margin: const EdgeInsets.only(bottom: 15),
+          padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey[200]!),
+            color: context.colorScheme.onPrimary,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFCBD5E0).withAlpha(150),
+                blurRadius: 5,
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,109 +130,74 @@ class PaymentHistoryScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _formatMonthYear(history.paymentDate),
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    DateTimeUtils.formatMonthYear(history.paymentDate),
+                    style: context.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   Text(
-                    _formatDate(history.paymentDate),
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                    DateTimeUtils.formatDate(history.paymentDate),
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    history.status.displayName,
-                    style: TextStyle(fontSize: 14, color: history.status.color),
+                    S.current.payBillStatusTitle,
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                   Text(
-                    '\${history.amount.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    history.status.displayName,
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: history.status.color,
+                    ),
+                  ),
+                  Text(
+                    S.current.payBillAmountTitle,
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    "\$${history.amount}",
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: context.colorScheme.secondary,
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 5),
-              Text(
-                'Company: ${history.providerName}',
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Text(
+                    S.current.payBillCompanyTitle,
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  Text(
+                    history.providerName,
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: context.colorScheme.secondary,
+                    ),
+                  ),
+                ],
               ),
-              if (history.transactionId != null) ...[
-                SizedBox(height: 5),
-                Text(
-                  'Transaction ID: ${history.transactionId}',
-                  style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-                ),
-              ],
             ],
           ),
         );
       },
     );
-  }
-
-  List<PaymentHistoryModel> _generatePaymentHistory(BillType billType) {
-    final now = DateTime.now();
-    final providerName = _getProviderName(billType);
-    final baseAmount = _getBaseAmount(billType);
-
-    return List.generate(5, (index) {
-      final paymentDate = DateTime(now.year, now.month - index, 15);
-      return PaymentHistoryModel(
-        id: 'payment_${billType.name}_$index',
-        billId: 'bill_${billType.name}',
-        userId: 'user123',
-        amount: baseAmount + (index * 5),
-        paymentDate: paymentDate,
-        status: PaymentStatus.successful,
-        providerName: providerName,
-        transactionId: 'TXN${DateTime.now().millisecondsSinceEpoch + index}',
-      );
-    });
-  }
-
-  String _getProviderName(BillType billType) {
-    switch (billType) {
-      case BillType.electric:
-        return 'Electric Company';
-      case BillType.water:
-        return 'Water Authority';
-      case BillType.internet:
-        return 'Fage Telecom';
-    }
-  }
-
-  double _getBaseAmount(BillType billType) {
-    switch (billType) {
-      case BillType.electric:
-        return 450.0;
-      case BillType.water:
-        return 85.0;
-      case BillType.internet:
-        return 50.0;
-    }
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
-  }
-
-  String _formatMonthYear(DateTime date) {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return '${months[date.month - 1]} ${date.year}';
   }
 }

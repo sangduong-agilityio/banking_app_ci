@@ -24,7 +24,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m1(type) => "Pay ${type} bill this month";
 
-  static String m2(type) => "${type} fee";
+  static String m2(type) => "Type ${type} bill code ";
+
+  static String m3(type) => "${type} fee";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -71,12 +73,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "messageTitle": MessageLookupByLibrary.simpleMessage("Message"),
     "payBillAddressTitle": MessageLookupByLibrary.simpleMessage("Address"),
     "payBillAllTitle": MessageLookupByLibrary.simpleMessage("All the Bills"),
+    "payBillAmountTitle": MessageLookupByLibrary.simpleMessage("Amount"),
     "payBillButton": MessageLookupByLibrary.simpleMessage("Pay the bill"),
+    "payBillCheckButton": MessageLookupByLibrary.simpleMessage("Check"),
     "payBillCheckHistoryTitle": MessageLookupByLibrary.simpleMessage(
       "Check Payment history",
     ),
+    "payBillChooseCompanyHint": MessageLookupByLibrary.simpleMessage(
+      "Choose Company",
+    ),
+    "payBillCodeHint": MessageLookupByLibrary.simpleMessage("Bill Code"),
     "payBillCodeTitle": MessageLookupByLibrary.simpleMessage("Code"),
+    "payBillCompanyTitle": MessageLookupByLibrary.simpleMessage("Company"),
     "payBillConfirmButton": MessageLookupByLibrary.simpleMessage("Confirm"),
+    "payBillDescription": MessageLookupByLibrary.simpleMessage(
+      "Please enter the correct bill code to check information.",
+    ),
     "payBillElectricDescription": MessageLookupByLibrary.simpleMessage(
       "Pay electric bill this month",
     ),
@@ -84,6 +96,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Electric bill",
     ),
     "payBillFormTitle": MessageLookupByLibrary.simpleMessage("From"),
+    "payBillHistoryTitle": MessageLookupByLibrary.simpleMessage(
+      "Payment history",
+    ),
     "payBillInternetDescription": MessageLookupByLibrary.simpleMessage(
       "Pay internet bill this month",
     ),
@@ -94,6 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "payBillPhoneNumberTitle": MessageLookupByLibrary.simpleMessage(
       "Phone number",
     ),
+    "payBillStatusTitle": MessageLookupByLibrary.simpleMessage("Status"),
     "payBillTaxTitle": MessageLookupByLibrary.simpleMessage("Tax"),
     "payBillTitle": MessageLookupByLibrary.simpleMessage("Pay the bill"),
     "payBillToTitle": MessageLookupByLibrary.simpleMessage("To"),
@@ -103,7 +119,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Transaction successfully!",
     ),
     "payBillTypeCategory": m1,
-    "payBillTypeTitle": m2,
+    "payBillTypeLabel": m2,
+    "payBillTypeTitle": m3,
     "payBillWaterDescription": MessageLookupByLibrary.simpleMessage(
       "Pay water bill this month",
     ),

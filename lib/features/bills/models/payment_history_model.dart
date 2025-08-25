@@ -1,4 +1,5 @@
 // Payment History Model
+import 'package:banking_app/app/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -23,9 +24,9 @@ class PaymentHistoryModel with _$PaymentHistoryModel {
 }
 
 enum PaymentStatus {
-  successful('Successful', Colors.green),
-  failed('Failed', Colors.red),
-  pending('Pending', Colors.orange);
+  successful('Successful', BAAppColors.secondary),
+  unsuccessfully('Unsuccessfully', BAAppColors.error),
+  pending('Pending', BAAppColors.warning);
 
   final String displayName;
   final Color color;

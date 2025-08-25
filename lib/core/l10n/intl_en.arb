@@ -120,6 +120,23 @@
   "payBillCodeTitle":"Code",
   "payBillFormTitle":"From",
   "payBillToTitle":"To",
+  "payBillHistoryTitle":"Payment history",
+  "payBillStatusTitle":"Status",
+  "payBillAmountTitle":"Amount",
+  "payBillChooseCompanyHint":"Choose Company",
+  "payBillCodeHint":"Bill Code",
+  "payBillDescription":"Please enter the correct bill code to check information.",
+  "payBillCheckButton":"Check",
+  "payBillTypeLabel":"Type {type} bill code ",
+  "@payBillTypeLabel": {
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "internet"
+      }
+    }
+  },
+  "payBillCompanyTitle":"Company",
   "payBillTypeTitle": "{type} fee",
   "@payBillTypeTitle": {
     "placeholders": {

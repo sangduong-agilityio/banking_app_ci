@@ -5,8 +5,9 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
-import 'package:banking_app/features/bills/pages/bill_payment_detail_page.dart';
+import 'package:banking_app/features/bills/models/payment_history_model.dart';
 import 'package:banking_app/features/bills/pages/bill_payment_history_page.dart';
+import 'package:banking_app/features/bills/pages/bill_payment_option_page.dart';
 import 'package:banking_app/features/bills/widgets/bill_category_card.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BillPaymentDetailsScreen(
+                  builder: (context) => PaymentOptionScreen(
                     billType: BillType.electric,
                     bills: widget.bills,
                   ),
@@ -56,7 +57,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BillPaymentDetailsScreen(
+                  builder: (context) => PaymentOptionScreen(
                     billType: BillType.water,
                     bills: widget.bills,
                   ),
@@ -72,7 +73,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BillPaymentDetailsScreen(
+                  builder: (context) => PaymentOptionScreen(
                     billType: BillType.internet,
                     bills: widget.bills,
                   ),
@@ -88,11 +89,61 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PaymentHistoryScreen(
+                      paymentHistory: [
+                        PaymentHistoryModel(
+                          id: '1',
+                          billId: '1',
+                          userId: 'User1',
+                          amount: 60.0,
+                          paymentDate: DateTime.now(),
+                          status: PaymentStatus.unsuccessfully,
+                          providerName: 'Electric Provider',
+                          transactionId: 'TXN123',
+                        ),
+                      ],
                       bills: [
                         BillModel(
                           id: '1',
                           userId: 'User1',
                           billType: BillType.electric,
+                          providerName: 'Electric Provider',
+                          accountNumber: '123456',
+                          address: '123 Main St',
+                          phoneNumber: '123-456-7890',
+                          billCode: 'ELEC123',
+                          startDate: '01/10/2019',
+                          endDate: '01/11/2019',
+                          amount: 50.0,
+                          tax: 10.0,
+                          dueDate: DateTime.now(),
+                          isRecurring: false,
+                          isFavorite: false,
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        ),
+                        BillModel(
+                          id: '1',
+                          userId: 'User1',
+                          billType: BillType.internet,
+                          providerName: 'Electric Provider',
+                          accountNumber: '123456',
+                          address: '123 Main St',
+                          phoneNumber: '123-456-7890',
+                          billCode: 'ELEC123',
+                          startDate: '01/10/2019',
+                          endDate: '01/11/2019',
+                          amount: 50.0,
+                          tax: 10.0,
+                          dueDate: DateTime.now(),
+                          isRecurring: false,
+                          isFavorite: false,
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                        ),
+                        BillModel(
+                          id: '1',
+                          userId: 'User1',
+                          billType: BillType.water,
                           providerName: 'Electric Provider',
                           accountNumber: '123456',
                           address: '123 Main St',
