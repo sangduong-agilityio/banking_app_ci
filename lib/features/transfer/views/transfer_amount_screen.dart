@@ -6,7 +6,7 @@ import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/transfer/models/contact_model.dart';
-import 'package:banking_app/features/transfer/pages/transfer_success_page.dart';
+import 'package:banking_app/features/transfer/views/transfer_success_screen.dart';
 import 'package:flutter/material.dart';
 
 class TransferAmountScreen extends StatefulWidget {

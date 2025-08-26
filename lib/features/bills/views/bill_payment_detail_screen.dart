@@ -5,7 +5,7 @@ import 'package:banking_app/core/widgets/forms/drop_down.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
-import 'package:banking_app/features/bills/pages/bill_payment_success_page.dart';
+import 'package:banking_app/features/bills/views/bill_payment_success_screen.dart';
 import 'package:banking_app/features/bills/widgets/bill_detail_card.dart';
 import 'package:flutter/material.dart';
 

@@ -2,13 +2,13 @@
 import 'package:banking_app/core/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/features/auth/pages/sign_in_page.dart';
-import 'package:banking_app/features/auth/pages/sign_up_page.dart';
-import 'package:banking_app/features/dashboard/pages/home_page.dart';
-import 'package:banking_app/features/landing/landing_page.dart';
-import 'package:banking_app/features/landing/pages/message.dart';
-import 'package:banking_app/features/landing/pages/search.dart';
-import 'package:banking_app/features/profile/pages/profile_page.dart';
+import 'package:banking_app/features/auth/views/sign_in_screen.dart';
+import 'package:banking_app/features/auth/views/sign_up_screen.dart';
+import 'package:banking_app/features/dashboard/views/home_screen.dart';
+import 'package:banking_app/features/landing/landing_screen.dart';
+import 'package:banking_app/features/message/message_screen.dart';
+import 'package:banking_app/features/search/search_screen.dart';
+import 'package:banking_app/features/setting/views/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -64,7 +64,7 @@ class BAAppRouter {
               GoRoute(
                 path: BAPaths.home.path,
                 name: BAPaths.home.name,
-                builder: (context, state) => HomePage(),
+                builder: (context, state) => HomeScreen(),
               ),
             ],
           ),
@@ -74,7 +74,7 @@ class BAAppRouter {
               GoRoute(
                 path: BAPaths.search.path,
                 name: BAPaths.search.name,
-                builder: (context, state) => const SearchPage(),
+                builder: (context, state) => const SearchScreen(),
               ),
             ],
           ),
@@ -84,7 +84,7 @@ class BAAppRouter {
               GoRoute(
                 path: BAPaths.message.path,
                 name: BAPaths.message.name,
-                builder: (context, state) => const MessagePage(),
+                builder: (context, state) => const MessageScreen(),
               ),
             ],
           ),
@@ -94,7 +94,7 @@ class BAAppRouter {
               GoRoute(
                 path: BAPaths.setting.path,
                 name: BAPaths.setting.name,
-                builder: (context, state) => const ProfilePage(),
+                builder: (context, state) => const SettingScreen(),
               ),
             ],
           ),

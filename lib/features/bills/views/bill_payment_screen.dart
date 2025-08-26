@@ -6,8 +6,8 @@ import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
 import 'package:banking_app/features/bills/models/payment_history_model.dart';
-import 'package:banking_app/features/bills/pages/bill_payment_history_page.dart';
-import 'package:banking_app/features/bills/pages/bill_payment_option_page.dart';
+import 'package:banking_app/features/bills/views/bill_payment_history_screen.dart';
+import 'package:banking_app/features/bills/views/bill_payment_option_screen.dart';
 import 'package:banking_app/features/bills/widgets/bill_category_card.dart';
 import 'package:flutter/material.dart';
 

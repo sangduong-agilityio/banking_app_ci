@@ -1,22 +1,23 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user_model.freezed.dart';
-part 'user_model.g.dart';
+part 'setting_model.freezed.dart';
+part 'setting_model.g.dart';
 
 @freezed
-class UserModel with _$UserModel {
-  const factory UserModel({
+class SettingModel with _$SettingModel {
+  const factory SettingModel({
     required String id,
     required String email,
     String? fullName,
     String? phoneNumber,
     String? accountNumber,
     String? homeAddress,
+    String? profileImage,
     required double balance,
     required DateTime createdAt,
     required DateTime updatedAt,
-  }) = _UserModel;
+  }) = _SettingModel;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory SettingModel.fromJson(Map<String, dynamic> json) =>
+      _$SettingModelFromJson(json);
 }

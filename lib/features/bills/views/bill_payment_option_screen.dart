@@ -7,7 +7,7 @@ import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
-import 'package:banking_app/features/bills/pages/bill_payment_detail_page.dart';
+import 'package:banking_app/features/bills/views/bill_payment_detail_screen.dart';
 import 'package:flutter/material.dart';
 
 class PaymentOptionScreen extends StatefulWidget {

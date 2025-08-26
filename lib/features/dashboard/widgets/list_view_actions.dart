@@ -1,11 +1,11 @@
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
-import 'package:banking_app/features/bills/pages/bill_payment_page.dart';
+import 'package:banking_app/features/bills/views/bill_payment_screen.dart';
 import 'package:banking_app/features/dashboard/widgets/card_action.dart';
-import 'package:banking_app/features/profile/pages/account_page.dart';
-import 'package:banking_app/features/transactions/pages/transaction_history_page.dart';
-import 'package:banking_app/features/transfer/pages/transfer_page.dart';
+import 'package:banking_app/features/dashboard/views/account_screen.dart';
+import 'package:banking_app/features/transactions/views/transaction_history_screen.dart';
+import 'package:banking_app/features/transfer/views/transfer_screen.dart';
 import 'package:flutter/material.dart';
 
 class ListViewActions extends StatelessWidget {

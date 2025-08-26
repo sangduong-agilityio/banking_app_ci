@@ -853,6 +853,106 @@ class S {
       args: [type],
     );
   }
+
+  /// `Password`
+  String get settingPasswordTitle {
+    return Intl.message(
+      'Password',
+      name: 'settingPasswordTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Languages`
+  String get settingLanguaguesTitle {
+    return Intl.message(
+      'Languages',
+      name: 'settingLanguaguesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `App information`
+  String get settingAppInformationTitle {
+    return Intl.message(
+      'App information',
+      name: 'settingAppInformationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer care`
+  String get settingCustomerCareTitle {
+    return Intl.message(
+      'Customer care',
+      name: 'settingCustomerCareTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change password`
+  String get settingChangePasswordTitle {
+    return Intl.message(
+      'Change password',
+      name: 'settingChangePasswordTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log out`
+  String get settingLogoutTitle {
+    return Intl.message(
+      'Log out',
+      name: 'settingLogoutTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recent password`
+  String get settingRecentPasswordLabel {
+    return Intl.message(
+      'Recent password',
+      name: 'settingRecentPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New password`
+  String get settingNewPasswordLabel {
+    return Intl.message(
+      'New password',
+      name: 'settingNewPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm password`
+  String get settingConfirmPasswordLabel {
+    return Intl.message(
+      'Confirm password',
+      name: 'settingConfirmPasswordLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Change password`
+  String get settingChangePasswordButton {
+    return Intl.message(
+      'Change password',
+      name: 'settingChangePasswordButton',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

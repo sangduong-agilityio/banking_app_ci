@@ -168,11 +168,11 @@ lib/
 │   │   │   ├── auth_bloc.dart
 │   │   │   ├── auth_event.dart
 │   │   │   └── auth_state.dart
-│   │   ├── pages/
-│   │   │   ├── landing_page.dart
-│   │   │   ├── sign_in_page.dart
-│   │   │   ├── sign_up_page.dart
-│   │   │   └── forgot_password_page.dart
+│   │   ├── views/
+│   │   │   ├── landing_screen.dart
+│   │   │   ├── sign_in_screen.dart
+│   │   │   ├── sign_up_screen.dart
+│   │   │   └── forgot_password_screen.dart
 │   │   └── widgets/
 │   │       ├── auth_form.dart
 │   │       └── auth_header.dart
@@ -186,8 +186,8 @@ lib/
 │   │   │   ├── dashboard_bloc.dart
 │   │   │   ├── dashboard_event.dart
 │   │   │   └── dashboard_state.dart
-│   │   ├── pages/
-│   │   │   └── home_page.dart
+│   │   ├── views/
+│   │   │   └── home_screen.dart
 │   │   └── widgets/
 │   │       ├── welcome_section.dart
 │   │       ├── account_card.dart
@@ -201,8 +201,8 @@ lib/
 │   │   │   ├── transaction_bloc.dart
 │   │   │   ├── transaction_event.dart
 │   │   │   └── transaction_state.dart
-│   │   ├── pages/
-│   │   │   └── transaction_history_page.dart
+│   │   ├── view/
+│   │   │   └── transaction_history_screen.dart
 │   │   └── widgets/
 │   │       └── transaction_item.dart
 │   ├── transfer/
@@ -215,10 +215,10 @@ lib/
 │   │   │   ├── transfer_bloc.dart
 │   │   │   ├── transfer_event.dart
 │   │   │   └── transfer_state.dart
-│   │   ├── pages/
-│   │   │   ├── contact_selection_page.dart
-│   │   │   ├── transfer_amount_page.dart
-│   │   │   └── transfer_success_page.dart
+│   │   ├── view/
+│   │   │   ├── contact_selection_screen.dart
+│   │   │   ├── transfer_amount_screen.dart
+│   │   │   └── transfer_success_screen.dart
 │   │   └── widgets/
 │   │       ├── contact_item.dart
 │   │       └── amount_input.dart
@@ -231,9 +231,9 @@ lib/
 │   │   │   ├── bill_bloc.dart
 │   │   │   ├── bill_event.dart
 │   │   │   └── bill_state.dart
-│   │   ├── pages/
-│   │   │   ├── bill_categories_page.dart
-│   │   │   └── bill_payment_page.dart
+│   │   ├── views/
+│   │   │   ├── bill_categories_screen.dart
+│   │   │   └── bill_payment_screen.dart
 │   │   └── widgets/
 │   │       └── bill_category_card.dart
 │   └── profile/
@@ -245,8 +245,8 @@ lib/
 │       │   ├── profile_bloc.dart
 │       │   ├── profile_event.dart
 │       │   └── profile_state.dart
-│       ├── pages/
-│       │   └── account_page.dart
+│       ├── views/
+│       │   └── account_screen.dart
 │       └── widgets/
 │           └── profile_card.dart
 ```

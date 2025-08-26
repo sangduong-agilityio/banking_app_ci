@@ -62,7 +62,10 @@ class AuthRepositoryImplement implements AuthRepository {
     );
     if (response.session != null) {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('session_token', response.session!.accessToken);
+      await prefs.setString(
+        'session_token',
+        response.session?.accessToken ?? '',
+      );
     }
     return response;
   }

@@ -6,7 +6,7 @@ import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/widgets/auth_form.dart';
-import 'package:banking_app/features/profile/widgets/card_detail.dart';
+import 'package:banking_app/features/setting/widgets/card_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 

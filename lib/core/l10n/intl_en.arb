@@ -156,5 +156,20 @@
         "example": "internet"
       }
     }
-  }
+  },
+ "@segmentSetting": {
+      "---------------------------": "---------------------------",
+      "description": "Store translations that are likely to be used only in Setting feature"
+    },
+  "settingTitle":"Setting",
+  "settingPasswordTitle":"Password",
+  "settingLanguaguesTitle":"Languages",
+  "settingAppInformationTitle":"App information",
+  "settingCustomerCareTitle":"Customer care",
+  "settingChangePasswordTitle":"Change password",
+  "settingLogoutTitle":"Log out",
+  "settingRecentPasswordLabel":"Recent password",
+  "settingNewPasswordLabel":"New password",
+  "settingConfirmPasswordLabel":"Confirm password",
+  "settingChangePasswordButton":"Change password"
 }

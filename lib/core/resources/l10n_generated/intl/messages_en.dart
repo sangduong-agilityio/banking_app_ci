@@ -126,6 +126,30 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "payBillWaterTitle": MessageLookupByLibrary.simpleMessage("Water bill"),
     "searchTitle": MessageLookupByLibrary.simpleMessage("Search"),
+    "settingAppInformationTitle": MessageLookupByLibrary.simpleMessage(
+      "App information",
+    ),
+    "settingChangePasswordButton": MessageLookupByLibrary.simpleMessage(
+      "Change password",
+    ),
+    "settingChangePasswordTitle": MessageLookupByLibrary.simpleMessage(
+      "Change password",
+    ),
+    "settingConfirmPasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Confirm password",
+    ),
+    "settingCustomerCareTitle": MessageLookupByLibrary.simpleMessage(
+      "Customer care",
+    ),
+    "settingLanguaguesTitle": MessageLookupByLibrary.simpleMessage("Languages"),
+    "settingLogoutTitle": MessageLookupByLibrary.simpleMessage("Log out"),
+    "settingNewPasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "New password",
+    ),
+    "settingPasswordTitle": MessageLookupByLibrary.simpleMessage("Password"),
+    "settingRecentPasswordLabel": MessageLookupByLibrary.simpleMessage(
+      "Recent password",
+    ),
     "settingTitle": MessageLookupByLibrary.simpleMessage("Setting"),
     "signInButton": MessageLookupByLibrary.simpleMessage("Sign in"),
     "signInDescription": MessageLookupByLibrary.simpleMessage(
