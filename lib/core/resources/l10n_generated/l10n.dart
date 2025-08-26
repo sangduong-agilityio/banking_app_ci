@@ -904,10 +904,10 @@ class S {
     );
   }
 
-  /// `Log out`
+  /// `Log out?`
   String get settingLogoutTitle {
     return Intl.message(
-      'Log out',
+      'Log out?',
       name: 'settingLogoutTitle',
       desc: '',
       args: [],
@@ -949,6 +949,36 @@ class S {
     return Intl.message(
       'Change password',
       name: 'settingChangePasswordButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You will be returned to the login screen`
+  String get settingLogoutContent {
+    return Intl.message(
+      'You will be returned to the login screen',
+      name: 'settingLogoutContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log out`
+  String get settingLogoutLogoutButton {
+    return Intl.message(
+      'Log out',
+      name: 'settingLogoutLogoutButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get settingCancelButton {
+    return Intl.message(
+      'Cancel',
+      name: 'settingCancelButton',
       desc: '',
       args: [],
     );

@@ -4,7 +4,7 @@ import 'package:banking_app/features/auth/services/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvt, AuthState> {
-  AuthBloc({required this.authRepository}) : super(const AuthState()) {
+  AuthBloc({required this.repo}) : super(const AuthState()) {
     on<SignInFormValidateChangedEvt>(_onSignInFormValidateChanged);
     on<SignInButtonPressedEvt>(_onLoginPressed);
     on<SignUpFormValidateChangedEvt>(_onSignUpFormValidateChanged);
@@ -12,7 +12,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     on<SignUpTermsChangedEvt>(_onSignUpTermsChanged);
   }
 
-  final AuthRepository authRepository;
+  final AuthRepository repo;
 
   Future<void> _onSignInFormValidateChanged(
     SignInFormValidateChangedEvt event,
@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     emit(state.copyWith(status: const AuthStatus.loading()));
 
     try {
-      final response = await authRepository.signIn(
+      final response = await repo.signIn(
         email: state.email,
         password: state.password,
       );
@@ -78,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
   ) async {
     emit(state.copyWith(status: const AuthStatus.loading()));
     try {
-      final response = await authRepository.signUp(
+      final response = await repo.signUp(
         email: state.email,
         password: state.password,
         username: state.username,

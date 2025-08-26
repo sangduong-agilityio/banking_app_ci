@@ -20,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -43,8 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          AuthBloc(authRepository: locator.get<AuthRepository>()),
+      create: (context) => AuthBloc(repo: locator.get<AuthRepository>()),
       child: BAScaffold(
         backgroundColor: context.colorScheme.primary,
         appBar: BAAppBar(
@@ -62,6 +62,11 @@ class _SignInScreenState extends State<SignInScreen> {
                 state.status.maybeWhen(
                   loading: () => context.loaderOverlay.show(),
                   success: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setString(
+                      'session_token',
+                      state.sessionToken ?? '',
+                    );
                     if (context.mounted) {
                       await context.pushNamed(BAPaths.home.name);
                     }
@@ -167,6 +172,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, state) {
                                   return BAElevatedButton(
+                                    padding: EdgeInsets.zero,
                                     isDisabled: state.isFormValid,
                                     text: S.current.signInButton,
                                     onPressed: () {

@@ -2,6 +2,7 @@ import 'package:banking_app/core/api/api_client.dart';
 import 'package:banking_app/core/env/env.dart';
 import 'package:banking_app/features/auth/bloc/auth_bloc.dart';
 import 'package:banking_app/features/auth/services/auth_repository.dart';
+import 'package:banking_app/features/setting/bloc/setting_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,7 +19,10 @@ class AppLocators {
     );
 
     locator.registerFactory<AuthBloc>(
-      () => AuthBloc(authRepository: locator<AuthRepository>()),
+      () => AuthBloc(repo: locator<AuthRepository>()),
+    );
+    locator.registerFactory<SettingCubit>(
+      () => SettingCubit(repo: locator<AuthRepository>()),
     );
   }
 }

@@ -1,4 +1,4 @@
-// import 'package:banking_app/app/router/router_guard.dart';
+import 'package:banking_app/app/router/router_guard.dart';
 import 'package:banking_app/core/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
@@ -16,11 +16,11 @@ class BAAppRouter {
   static final rootNavigatorKey = GlobalKey<NavigatorState>();
 
   static final router = GoRouter(
-    initialLocation: BAPaths.home.path,
+    initialLocation: BAPaths.landing.path,
     navigatorKey: rootNavigatorKey,
     routes: _getRoutes(),
     errorBuilder: (context, state) => const NotFoundScreen(),
-    // redirect: (context, state) => RouterGuard.authGuard(context, state),
+    redirect: (context, state) => RouterGuard.authGuard(context, state),
   );
 
   static List<RouteBase> _getRoutes() {

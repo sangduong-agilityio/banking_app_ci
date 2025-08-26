@@ -12,6 +12,7 @@ class AuthState extends Equatable {
     this.isFormValid = false,
     this.isTermsAccepted = false,
     this.errorMessage,
+    this.sessionToken,
   });
 
   final AuthStatus status;
@@ -21,6 +22,7 @@ class AuthState extends Equatable {
   final bool isFormValid;
   final bool isTermsAccepted;
   final String? errorMessage;
+  final String? sessionToken;
 
   AuthState copyWith({
     AuthStatus? status,
@@ -29,6 +31,7 @@ class AuthState extends Equatable {
     String? password,
     bool? isFormValid,
     bool? isTermsAccepted,
+    String? sessionToken,
     String? errorMessage,
   }) {
     return AuthState(
@@ -39,6 +42,7 @@ class AuthState extends Equatable {
       isFormValid: isFormValid ?? this.isFormValid,
       isTermsAccepted: isTermsAccepted ?? this.isTermsAccepted,
       errorMessage: errorMessage ?? this.errorMessage,
+      sessionToken: sessionToken ?? this.sessionToken,
     );
   }
 
@@ -51,6 +55,7 @@ class AuthState extends Equatable {
     isFormValid,
     isTermsAccepted,
     errorMessage,
+    sessionToken,
   ];
 }
 

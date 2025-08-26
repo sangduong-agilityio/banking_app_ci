@@ -171,5 +171,9 @@
   "settingRecentPasswordLabel":"Recent password",
   "settingNewPasswordLabel":"New password",
   "settingConfirmPasswordLabel":"Confirm password",
-  "settingChangePasswordButton":"Change password"
+  "settingChangePasswordButton":"Change password",
+  "settingLogoutTitle":"Log out?",
+  "settingLogoutContent":"You will be returned to the login screen",
+  "settingLogoutLogoutButton":"Log out",
+  "settingCancelButton":"Cancel"
 }

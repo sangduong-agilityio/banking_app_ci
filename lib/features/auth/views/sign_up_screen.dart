@@ -43,8 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          AuthBloc(authRepository: locator.get<AuthRepository>()),
+      create: (context) => AuthBloc(repo: locator.get<AuthRepository>()),
       child: BAScaffold(
         backgroundColor: context.colorScheme.primary,
         appBar: BAAppBar(
@@ -174,6 +173,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               BlocBuilder<AuthBloc, AuthState>(
                                 builder: (context, state) {
                                   return BAElevatedButton(
+                                    padding: EdgeInsets.zero,
+
                                     isDisabled: state.isFormValid,
                                     text: S.current.signUpButton,
                                     onPressed: () {

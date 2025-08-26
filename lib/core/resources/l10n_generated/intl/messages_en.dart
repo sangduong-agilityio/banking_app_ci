@@ -129,6 +129,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "settingAppInformationTitle": MessageLookupByLibrary.simpleMessage(
       "App information",
     ),
+    "settingCancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
     "settingChangePasswordButton": MessageLookupByLibrary.simpleMessage(
       "Change password",
     ),
@@ -142,7 +143,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Customer care",
     ),
     "settingLanguaguesTitle": MessageLookupByLibrary.simpleMessage("Languages"),
-    "settingLogoutTitle": MessageLookupByLibrary.simpleMessage("Log out"),
+    "settingLogoutContent": MessageLookupByLibrary.simpleMessage(
+      "You will be returned to the login screen",
+    ),
+    "settingLogoutLogoutButton": MessageLookupByLibrary.simpleMessage(
+      "Log out",
+    ),
+    "settingLogoutTitle": MessageLookupByLibrary.simpleMessage("Log out?"),
     "settingNewPasswordLabel": MessageLookupByLibrary.simpleMessage(
       "New password",
     ),
