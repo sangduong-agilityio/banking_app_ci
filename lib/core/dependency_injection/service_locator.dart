@@ -18,11 +18,12 @@ class AppLocators {
       () => AuthRepositoryImplement(client: Supabase.instance.client),
     );
 
-    locator.registerFactory<AuthBloc>(
-      () => AuthBloc(repo: locator<AuthRepository>()),
-    );
     locator.registerFactory<SettingCubit>(
       () => SettingCubit(repo: locator<AuthRepository>()),
+    );
+
+    locator.registerFactory<AuthBloc>(
+      () => AuthBloc(repo: locator<AuthRepository>()),
     );
   }
 }

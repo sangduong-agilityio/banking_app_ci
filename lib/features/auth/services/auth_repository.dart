@@ -12,8 +12,6 @@ abstract class AuthRepository {
     required String password,
   });
 
-  Future<void> sendOtp({required String phone});
-
   Future<String?> getSessionToken();
 
   Future<User?> getCurrentUser();
@@ -68,15 +66,6 @@ class AuthRepositoryImplement implements AuthRepository {
       );
     }
     return response;
-  }
-
-  @override
-  Future<void> sendOtp({required String phone}) async {
-    try {
-      await _client.auth.signInWithOtp(phone: phone);
-    } catch (e) {
-      throw Exception('Failed to send OTP: ${e.toString()}');
-    }
   }
 
   @override

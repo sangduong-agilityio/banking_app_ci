@@ -8,7 +8,7 @@ class SettingModel with _$SettingModel {
   const factory SettingModel({
     String? id,
     String? email,
-    String? fullName,
+    String? username,
     String? phoneNumber,
     String? accountNumber,
     String? homeAddress,

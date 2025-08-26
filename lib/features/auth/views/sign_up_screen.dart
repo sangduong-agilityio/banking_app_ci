@@ -10,7 +10,6 @@ import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/bloc/auth_bloc.dart';
 import 'package:banking_app/features/auth/bloc/auth_event.dart';
 import 'package:banking_app/features/auth/bloc/auth_state.dart';
-import 'package:banking_app/features/auth/services/auth_repository.dart';
 import 'package:banking_app/features/auth/widgets/animated_floating_dot.dart';
 import 'package:banking_app/features/auth/widgets/auth_form.dart';
 import 'package:flutter/gestures.dart';
@@ -42,183 +41,178 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc(repo: locator.get<AuthRepository>()),
-      child: BAScaffold(
-        backgroundColor: context.colorScheme.primary,
-        appBar: BAAppBar(
-          title: S.current.signUpTitle,
-          alignment: BAAppBarAlignment.left,
-          titleColor: context.colorScheme.onPrimary,
-          iconColor: context.colorScheme.onPrimary,
-          backgroundColor: context.colorScheme.primary,
-        ),
-        body: LoaderOverlay(
-          child: GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: BlocListener<AuthBloc, AuthState>(
-              listener: (context, state) {
-                state.status.maybeWhen(
-                  loading: () => context.loaderOverlay.show(),
-                  success: () {
-                    context.loaderOverlay.hide();
-                    context.pop();
-                  },
-                  failure: () {
-                    context.loaderOverlay.hide();
-                    BASnackBar.buildErrorSnackbar(
-                      context,
-                      state.errorMessage ?? '',
-                    );
-                  },
-                  orElse: () => context.loaderOverlay.hide(),
-                );
-              },
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.onPrimary,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30),
+    return BlocProvider<AuthBloc>(
+      create: (context) => locator<AuthBloc>(),
+      child: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) {
+          state.status.maybeWhen(
+            loading: () => context.loaderOverlay.show(),
+            success: () {
+              context.loaderOverlay.hide();
+              context.pop();
+            },
+            failure: () {
+              context.loaderOverlay.hide();
+              BASnackBar.buildErrorSnackbar(context, state.errorMessage ?? '');
+            },
+            orElse: () => context.loaderOverlay.hide(),
+          );
+        },
+        builder: (context, state) {
+          return BAScaffold(
+            backgroundColor: context.colorScheme.primary,
+            appBar: BAAppBar(
+              title: S.current.signUpTitle,
+              alignment: BAAppBarAlignment.left,
+              titleColor: context.colorScheme.onPrimary,
+              iconColor: context.colorScheme.onPrimary,
+              backgroundColor: context.colorScheme.primary,
+            ),
+            body: LoaderOverlay(
+              child: GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: context.colorScheme.onPrimary,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 24,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                S.current.signUpWelcomeTitle,
-                                style: context.displaySmall?.copyWith(
-                                  color: context.colorScheme.secondary,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 30,
+                              vertical: 24,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  S.current.signUpWelcomeTitle,
+                                  style: context.displaySmall?.copyWith(
+                                    color: context.colorScheme.secondary,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                S.current.signUpDescription,
-                                style: context.labelMedium?.copyWith(
-                                  color: context.colorScheme.onInverseSurface,
-                                  fontWeight: FontWeight.w500,
+                                const SizedBox(height: 4),
+                                Text(
+                                  S.current.signUpDescription,
+                                  style: context.labelMedium?.copyWith(
+                                    color: context.colorScheme.onInverseSurface,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 32),
-                              const AnimatedDot(),
-
-                              BAForm(
-                                key: _formKey,
-                                isValidated: (isValid) {
-                                  context.read<AuthBloc>().add(
-                                    SignUpFormValidateChangedEvt(
-                                      isValidate: isValid,
-                                      username: _usernameController.text,
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    ),
-                                  );
-                                },
-                                textFields: [
-                                  UsernameInput(
-                                    controller: _usernameController,
-                                    hint: S.current.validatorNameRequired,
-                                    validator: (value) =>
-                                        InputValidationMixin.validUserName(
-                                          value ?? '',
-                                        ),
-                                  ),
-                                  EmailInput(
-                                    controller: _emailController,
-                                    hint: S.current.signInEmailHint,
-                                    validator: (value) =>
-                                        InputValidationMixin.validEmail(
-                                          value ?? '',
-                                        ),
-                                  ),
-                                  PasswordInput(
-                                    hint: S.current.signInPassowrdHint,
-                                    controller: _passwordController,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  BlocBuilder<AuthBloc, AuthState>(
-                                    builder: (context, state) {
-                                      return Checkbox(
-                                        value: state.isTermsAccepted,
-                                        onChanged: (value) {
-                                          context.read<AuthBloc>().add(
-                                            SignUpTermsChangedEvt(
-                                              isAccepted: value ?? false,
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  Text(
-                                    S.current.signUpTermAndConditions,
-                                    style: context.bodySmall,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 40),
-                              BlocBuilder<AuthBloc, AuthState>(
-                                builder: (context, state) {
-                                  return BAElevatedButton(
-                                    padding: EdgeInsets.zero,
-
-                                    isDisabled: state.isFormValid,
-                                    text: S.current.signUpButton,
-                                    onPressed: () {
-                                      context.read<AuthBloc>().add(
-                                        const SignUpButtonPressedEvt(),
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-
-                              const SizedBox(height: 14),
-                              Center(
-                                child: RichText(
-                                  text: TextSpan(
-                                    text: S.current.signUpAlreadyAcccount,
-                                    style: context.bodySmall,
-                                    children: [
-                                      TextSpan(
-                                        text: ' ${S.current.signInTitle}',
-                                        style: context.bodySmall?.copyWith(
-                                          color: context.colorScheme.secondary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () => context.pop(),
+                                const SizedBox(height: 32),
+                                const AnimatedDot(),
+                                BAForm(
+                                  key: _formKey,
+                                  isValidated: (isValid) {
+                                    // Works! ✅
+                                    context.read<AuthBloc>().add(
+                                      SignUpFormValidateChangedEvt(
+                                        isValidate: isValid,
+                                        username: _usernameController.text,
+                                        email: _emailController.text,
+                                        password: _passwordController.text,
                                       ),
-                                    ],
+                                    );
+                                  },
+                                  textFields: [
+                                    UsernameInput(
+                                      controller: _usernameController,
+                                      hint: S.current.validatorNameRequired,
+                                      validator: (value) =>
+                                          InputValidationMixin.validUserName(
+                                            value ?? '',
+                                          ),
+                                    ),
+                                    EmailInput(
+                                      controller: _emailController,
+                                      hint: S.current.signInEmailHint,
+                                      validator: (value) =>
+                                          InputValidationMixin.validEmail(
+                                            value ?? '',
+                                          ),
+                                    ),
+                                    PasswordInput(
+                                      hint: S.current.signInPassowrdHint,
+                                      controller: _passwordController,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: state.isTermsAccepted,
+                                      onChanged: (value) {
+                                        // Works! ✅
+                                        context.read<AuthBloc>().add(
+                                          SignUpTermsChangedEvt(
+                                            isAccepted: value ?? false,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        S.current.signUpTermAndConditions,
+                                        style: context.bodySmall,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 40),
+                                BAElevatedButton(
+                                  padding: EdgeInsets.zero,
+                                  isDisabled:
+                                      !state.isFormValid ||
+                                      !state.isTermsAccepted,
+                                  text: S.current.signUpButton,
+                                  onPressed: () {
+                                    // Works! ✅
+                                    context.read<AuthBloc>().add(
+                                      const SignUpButtonPressedEvt(),
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 14),
+                                Center(
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: S.current.signUpAlreadyAcccount,
+                                      style: context.bodySmall,
+                                      children: [
+                                        TextSpan(
+                                          text: ' ${S.current.signInTitle}',
+                                          style: context.bodySmall?.copyWith(
+                                            color:
+                                                context.colorScheme.secondary,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () => context.pop(),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-
-                              const SizedBox(height: 150),
-                            ],
+                                const SizedBox(height: 150),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

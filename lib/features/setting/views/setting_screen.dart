@@ -46,14 +46,12 @@ class SettingScreen extends StatelessWidget {
                   Center(
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: AssetImage(
-                        user?.profileImage ?? 'assets/images/img_empty.png',
-                      ),
+                      backgroundImage: NetworkImage(user?.profileImage ?? ''),
                     ),
                   ),
                   SizedBox(height: 15),
                   Text(
-                    user?.fullName ?? '',
+                    user?.username ?? '',
                     style: context.titleMedium?.copyWith(
                       color: context.colorScheme.secondary,
                       fontWeight: FontWeight.w600,
