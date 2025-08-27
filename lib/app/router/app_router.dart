@@ -29,7 +29,7 @@ class BAAppRouter {
         path: BAPaths.landing.path,
         name: BAPaths.landing.name,
         pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const LandingSceen()),
+            MaterialPage(key: state.pageKey, child: const LandingScreen()),
       ),
       GoRoute(
         path: BAPaths.signIn.path,

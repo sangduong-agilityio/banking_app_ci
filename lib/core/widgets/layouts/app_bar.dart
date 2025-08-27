@@ -1,4 +1,3 @@
-// import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +15,7 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? iconColor;
   final VoidCallback? onBack;
   final double? fontSize;
+  final EdgeInsetsGeometry? padding;
 
   const BAAppBar({
     super.key,
@@ -28,12 +28,13 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.fontSize,
     this.iconColor,
     this.onBack,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
       child: AppBar(
         backgroundColor: backgroundColor,
         elevation: 0,

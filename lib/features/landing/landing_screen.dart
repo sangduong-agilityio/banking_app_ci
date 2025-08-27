@@ -8,39 +8,30 @@ import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LandingSceen extends StatefulWidget {
-  const LandingSceen({super.key});
+class LandingScreen extends StatelessWidget {
+  const LandingScreen({super.key});
 
-  @override
-  State<LandingSceen> createState() => _LandingSceenState();
-}
-
-class _LandingSceenState extends State<LandingSceen> {
   @override
   Widget build(BuildContext context) {
     return BAScaffold(
-      backgroundColor: const Color(0xFF5C75F0),
-      body: Column(
-        children: [
-          Expanded(
-            child: ClipPath(
-              clipper: WaveClipper(),
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: BAAppColors.primaryGradient,
-                ),
-                child: Stack(
-                  children: const [
-                    CreditCard(),
-                    BackgroundShapes(),
-                    Description(),
-                  ],
-                ),
-              ),
-            ),
+      backgroundColor: BAAppColors.primaryGradient.colors.last,
+      body: Container(
+        decoration: const BoxDecoration(gradient: BAAppColors.primaryGradient),
+        child: Stack(
+          children: const [CreditCard(), BackgroundShapes(), Description()],
+        ),
+      ),
+      bottomNavigationBar: ClipPath(
+        clipper: WaveClipper(flip: true, reverse: true),
+        child: Container(
+          height: 110,
+          decoration: const BoxDecoration(
+            gradient: BAAppColors.primaryGradient,
           ),
-          _ActionButton(),
-        ],
+          alignment: Alignment.bottomRight,
+          padding: const EdgeInsets.only(right: 32, bottom: 20),
+          child: const _ActionButton(),
+        ),
       ),
     );
   }
@@ -48,7 +39,6 @@ class _LandingSceenState extends State<LandingSceen> {
 
 class CreditCard extends StatelessWidget {
   const CreditCard({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -103,7 +93,6 @@ class _CardCircles extends StatelessWidget {
 
 class _Circle extends StatelessWidget {
   final double size;
-
   const _Circle({required this.size});
 
   @override
@@ -128,15 +117,15 @@ class _CardDetailsGraphic extends StatelessWidget {
       angle: -0.05,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: const [
           _DetailBlock(width: 50, height: 32, borderRadius: 6),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           _DetailBlock(width: 80, height: 8),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Row(
             children: [
               _DetailBlock(width: 40, height: 8),
-              const SizedBox(width: 4),
+              SizedBox(width: 4),
               _DetailBlock(width: 20, height: 8),
             ],
           ),
@@ -177,7 +166,7 @@ class BackgroundShapes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return const Stack(
       children: [
         _RotatedShape(top: 160, left: -100, width: 200, height: 150),
         _RotatedShape(top: 210, right: -70, width: 220, height: 220),
@@ -249,7 +238,6 @@ class Description extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          const SizedBox(height: 80),
         ],
       ),
     );
@@ -261,21 +249,19 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
-        child: IconButton(
-          onPressed: () {
-            context.pushNamed(BAPaths.signIn.name);
-          },
-          icon: const Icon(Icons.arrow_forward, color: Colors.black, size: 24),
-        ),
+    return Container(
+      width: 56,
+      height: 56,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 2)),
+        ],
+      ),
+      child: IconButton(
+        onPressed: () => context.pushNamed(BAPaths.signIn.name),
+        icon: const Icon(Icons.arrow_forward, color: Colors.black, size: 24),
       ),
     );
   }
