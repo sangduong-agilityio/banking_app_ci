@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-
 part 'transaction_model.freezed.dart';
 part 'transaction_model.g.dart';
 
@@ -13,10 +12,14 @@ class TransactionModel with _$TransactionModel {
     String? imageUrl,
     String? recipientName,
     String? recipientAccount,
+    String? recipientPhone,
     String? description,
     required TransactionStatus status,
     String? referenceNumber,
+    String? paymentMethod,
+    String? cardLastFour,
     required DateTime createdAt,
+    DateTime? updatedAt,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>

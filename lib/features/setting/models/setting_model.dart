@@ -13,7 +13,6 @@ class SettingModel with _$SettingModel {
     String? accountNumber,
     String? homeAddress,
     String? profileImage,
-    double? balance,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _SettingModel;

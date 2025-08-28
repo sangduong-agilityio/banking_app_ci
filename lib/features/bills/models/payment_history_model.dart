@@ -1,7 +1,6 @@
-// Payment History Model
 import 'package:banking_app/app/themes/app_colors.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/material.dart';
 
 part 'payment_history_model.freezed.dart';
 part 'payment_history_model.g.dart';

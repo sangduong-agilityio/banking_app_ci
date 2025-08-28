@@ -13,9 +13,10 @@ class ContactModel with _$ContactModel {
     String? phoneNumber,
     String? accountNumber,
     String? imageUrl,
-    String? amount,
-    required bool isFavorite,
+    String? lastTransactionAmount,
+    @Default(false) bool isFavorite,
     required DateTime createdAt,
+    DateTime? lastContactedAt,
   }) = _ContactModel;
 
   factory ContactModel.fromJson(Map<String, dynamic> json) =>
