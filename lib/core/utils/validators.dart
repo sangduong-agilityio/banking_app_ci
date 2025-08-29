@@ -11,8 +11,7 @@ mixin InputValidationMixin {
   static String? validEmail(String input) {
     if (input.isEmpty) {
       return S.current.validatorEmailRequired;
-    } else if (!RegExpValidator.regExpEmail.hasMatch(input) &&
-        !RegExpValidator.regExpPhone.hasMatch(input)) {
+    } else if (!RegExpValidator.regExpEmail.hasMatch(input)) {
       return S.current.validatorEmailWrongFormat;
     }
     return null;
@@ -23,8 +22,6 @@ mixin InputValidationMixin {
       return S.current.validatorPasswordRequired;
     } else if (password.length < 8) {
       return S.current.validatorPasswordCharacterMinimum;
-    } else if (!RegExpValidator.regExpPassword.hasMatch(password)) {
-      return S.current.validatorPasswordWrongFormat;
     }
     return null;
   }
