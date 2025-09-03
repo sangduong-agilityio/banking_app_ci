@@ -279,11 +279,21 @@ class S {
     );
   }
 
-  /// `By creating an account your aggree \nto our  Term and Condtions`
+  /// `By creating an account your aggree \nto our `
   String get signUpTermAndConditions {
     return Intl.message(
-      'By creating an account your aggree \nto our  Term and Condtions',
+      'By creating an account your aggree \nto our ',
       name: 'signUpTermAndConditions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Term and Condtions`
+  String get signUpTermAndConditionButton {
+    return Intl.message(
+      'Term and Condtions',
+      name: 'signUpTermAndConditionButton',
       desc: '',
       args: [],
     );
@@ -334,10 +344,10 @@ class S {
     );
   }
 
-  /// `Good Morning`
+  /// `Good Morning \n`
   String get homegreetingTitle {
     return Intl.message(
-      'Good Morning',
+      'Good Morning \n',
       name: 'homegreetingTitle',
       desc: '',
       args: [],

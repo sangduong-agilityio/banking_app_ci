@@ -15,14 +15,14 @@ class AnimatedDot extends StatelessWidget {
             AnimatedFloatingDot(
               color: context.colorScheme.secondary,
               size: 10,
-              left: 110,
+              left: 130,
               top: 10,
               delay: 0,
             ),
             AnimatedFloatingDot(
               color: context.colorScheme.surfaceTint,
               size: 10,
-              left: 40,
+              left: 70,
               top: 60,
               delay: 500,
             ),
@@ -30,14 +30,14 @@ class AnimatedDot extends StatelessWidget {
             AnimatedFloatingDot(
               color: context.colorScheme.tertiary,
               size: 10,
-              right: 60,
+              right: 90,
               top: 130,
               delay: 2000,
             ),
             AnimatedFloatingDot(
               color: context.colorScheme.error,
               size: 18,
-              right: 50,
+              right: 80,
               top: 40,
               delay: 1500,
             ),
@@ -87,10 +87,10 @@ class AnimatedFloatingDot extends StatefulWidget {
   });
 
   @override
-  _AnimatedFloatingDotState createState() => _AnimatedFloatingDotState();
+  AnimatedFloatingDotState createState() => AnimatedFloatingDotState();
 }
 
-class _AnimatedFloatingDotState extends State<AnimatedFloatingDot>
+class AnimatedFloatingDotState extends State<AnimatedFloatingDot>
     with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;

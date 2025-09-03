@@ -45,8 +45,7 @@ class _PasswordChangeScreenState extends State<PasswordChangeScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BAForm(
-                  isValidated: (value) => null,
+                AuthForm(
                   textFields: [
                     BATextField(
                       label: S.current.settingRecentPasswordLabel,

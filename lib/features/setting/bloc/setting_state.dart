@@ -1,4 +1,4 @@
-import 'package:banking_app/features/setting/models/setting_model.dart';
+import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,12 +11,12 @@ final class SettingState extends Equatable {
     this.errorMessage,
   });
 
-  final SettingModel? user;
+  final UserModel? user;
   final SettingStatus status;
   final String? errorMessage;
 
   SettingState copyWith({
-    SettingModel? user,
+    UserModel? user,
     SettingStatus? status,
     String? errorMessage,
   }) {

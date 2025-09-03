@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AuthBloc extends Bloc<AuthEvt, AuthState> {
   AuthBloc({required this.repo}) : super(const AuthState()) {
     on<SignInFormValidateChangedEvt>(_onSignInFormValidateChanged);
-    on<SignInButtonPressedEvt>(_onLoginPressed);
+    on<SignInButtonPressedEvt>(_onSignInPressed);
     on<SignUpFormValidateChangedEvt>(_onSignUpFormValidateChanged);
     on<SignUpButtonPressedEvt>(_onSignUpPressed);
     on<SignUpTermsChangedEvt>(_onSignUpTermsChanged);
@@ -26,7 +26,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     );
   }
 
-  Future<void> _onLoginPressed(
+  Future<void> _onSignInPressed(
     SignInButtonPressedEvt event,
     Emitter<AuthState> emit,
   ) async {
@@ -44,7 +44,6 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
               ? AuthStatus.success()
               : AuthStatus.failure(),
           errorMessage: response.user != null ? '' : 'Login failed',
-          // sessionToken: response.session?.accessToken,
         ),
       );
     } catch (e) {

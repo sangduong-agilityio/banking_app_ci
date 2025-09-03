@@ -1,4 +1,4 @@
-import 'package:banking_app/features/setting/models/setting_model.dart';
+import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
@@ -20,7 +20,7 @@ class SettingEntity {
 
   SettingEntity();
 
-  SettingEntity.fromModel(SettingModel model) {
+  SettingEntity.fromModel(UserModel model) {
     userId = model.id;
     email = model.email;
     username = model.username;
@@ -32,8 +32,8 @@ class SettingEntity {
     updatedAt = model.updatedAt;
   }
 
-  SettingModel toModel() {
-    return SettingModel(
+  UserModel toModel() {
+    return UserModel(
       id: userId,
       email: email,
       username: username,

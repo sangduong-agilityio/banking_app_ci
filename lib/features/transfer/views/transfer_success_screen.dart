@@ -25,7 +25,7 @@ class TransferSuccessScreen extends StatelessWidget {
               BAAssets.success(),
               SizedBox(height: 40),
               Text(
-                '\$ ${contact?.amount ?? '320'} has been\nsent to ${contact?.name ?? 'Jane'}!',
+                '\$ ${contact?.lastTransactionAmount ?? '320'} has been\nsent to ${contact?.name ?? 'Jane'}!',
                 style: context.displaySmall,
                 textAlign: TextAlign.center,
               ),

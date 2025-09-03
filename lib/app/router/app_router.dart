@@ -4,7 +4,7 @@ import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/views/sign_in_screen.dart';
 import 'package:banking_app/features/auth/views/sign_up_screen.dart';
-import 'package:banking_app/features/dashboard/views/home_screen.dart';
+import 'package:banking_app/features/dashboard/views/dashboard_screen.dart';
 import 'package:banking_app/features/landing/landing_screen.dart';
 import 'package:banking_app/features/message/message_screen.dart';
 import 'package:banking_app/features/search/search_screen.dart';
@@ -64,7 +64,7 @@ class BAAppRouter {
               GoRoute(
                 path: BAPaths.home.path,
                 name: BAPaths.home.name,
-                builder: (context, state) => HomeScreen(),
+                builder: (context, state) => DashBoardScreen(),
               ),
             ],
           ),

@@ -6,25 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class BATextField extends StatefulWidget {
-  final String? name;
-  final String? label;
-  final String? hint;
-  final Widget? prefixIcon;
-  final IconData? suffixIcon;
-  final VoidCallback? onSuffixIconTap;
-  final TextInputType? keyboardType;
-  final bool obscureText;
-  final String? Function(String?)? validator;
-  final int? maxLines;
-  final bool enabled;
-  final List<TextInputFormatter>? inputFormatters;
-  final TextInputAction? textInputAction;
-  final FocusNode? focusNode;
-  final TextEditingController? controller;
-  final bool isLast;
-  final VoidCallback? onEditingComplete;
-  final Color? fillColor;
-
   const BATextField({
     super.key,
     this.name,
@@ -45,15 +26,44 @@ class BATextField extends StatefulWidget {
     this.onEditingComplete,
     this.fillColor,
     this.isLast = false,
+    this.isPassword = false,
   });
+
+  final String? name;
+  final String? label;
+  final String? hint;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final VoidCallback? onSuffixIconTap;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final String? Function(String?)? validator;
+  final int? maxLines;
+  final bool enabled;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputAction? textInputAction;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
+  final bool isLast;
+  final VoidCallback? onEditingComplete;
+  final Color? fillColor;
+  final bool isPassword;
 
   @override
   State<BATextField> createState() => _BATextFieldState();
 }
 
 class _BATextFieldState extends State<BATextField> {
+  bool _textInvisible = true;
+
   @override
   Widget build(BuildContext context) {
+    void togglePasswordVisibility() {
+      setState(() {
+        _textInvisible = !_textInvisible;
+      });
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,7 +75,7 @@ class _BATextFieldState extends State<BATextField> {
           name: widget.name ?? '',
           cursorColor: context.colorScheme.primary,
           keyboardType: widget.keyboardType,
-          obscureText: widget.obscureText,
+          obscureText: widget.isPassword ? _textInvisible : false,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           maxLines: widget.maxLines,
           focusNode: widget.focusNode,
@@ -90,19 +100,21 @@ class _BATextFieldState extends State<BATextField> {
               color: context.colorScheme.onTertiary,
             ),
             prefixIcon: widget.prefixIcon,
-            suffixIcon: widget.suffixIcon != null
+            suffixIcon: widget.isPassword
                 ? IconButton(
                     focusNode: FocusNode(skipTraversal: true),
                     icon: Icon(
-                      widget.suffixIcon,
+                      _textInvisible
+                          ? Icons.visibility_off_rounded
+                          : Icons.visibility_rounded,
                       color: widget.enabled
                           ? context.colorScheme.onTertiary
                           : BAAppColors.textDisabled,
                       size: 24,
                     ),
-                    onPressed: widget.onSuffixIconTap,
+                    onPressed: togglePasswordVisibility,
                   )
-                : null,
+                : widget.suffixIcon,
             filled: true,
             fillColor:
                 widget.fillColor ??

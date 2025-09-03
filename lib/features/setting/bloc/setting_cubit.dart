@@ -1,6 +1,6 @@
 import 'package:banking_app/features/auth/services/auth_repository.dart';
 import 'package:banking_app/features/setting/bloc/setting_state.dart';
-import 'package:banking_app/features/setting/models/setting_model.dart';
+import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -24,7 +24,7 @@ class SettingCubit extends Cubit<SettingState> {
         throw Exception("No profile found for user ${currentUser?.id}");
       }
 
-      final user = SettingModel(
+      final user = UserModel(
         username: response['username'] ?? '',
         email: response['email'] ?? currentUser?.email ?? '',
         phoneNumber: currentUser?.phone ?? '',

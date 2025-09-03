@@ -1,4 +1,5 @@
 import 'package:banking_app/features/dashboard/models/card_model.dart';
+import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -7,56 +8,32 @@ part 'dashboard_state.freezed.dart';
 class DashBoardState extends Equatable {
   const DashBoardState({
     this.status = const DashBoardStatus.initial(),
-    this.cards,
-    this.defaultCard,
+    this.user,
     this.errorMessage,
-    this.existingCards,
-    this.updatingCardId,
-    this.deletingCardId,
-    this.message,
+    this.cards = const [],
   });
+
   final DashBoardStatus status;
-  final List<CardModel>? cards;
-  final CardModel? defaultCard;
+  final UserModel? user;
+  final List<CardModel> cards;
   final String? errorMessage;
-  final List<CardModel>? existingCards;
-  final String? updatingCardId;
-  final String? deletingCardId;
-  final String? message;
 
   DashBoardState copyWith({
     DashBoardStatus? status,
-    List<CardModel>? cards,
-    CardModel? defaultCard,
+    UserModel? user,
     String? errorMessage,
-    List<CardModel>? existingCards,
-    String? updatingCardId,
-    String? deletingCardId,
-    String? message,
+    List<CardModel>? cards,
   }) {
     return DashBoardState(
       status: status ?? this.status,
-      cards: cards ?? this.cards,
-      defaultCard: defaultCard ?? this.defaultCard,
       errorMessage: errorMessage ?? this.errorMessage,
-      existingCards: existingCards ?? this.existingCards,
-      updatingCardId: updatingCardId ?? this.updatingCardId,
-      deletingCardId: deletingCardId ?? this.deletingCardId,
-      message: message ?? this.message,
+      user: user ?? this.user,
+      cards: cards ?? this.cards,
     );
   }
 
   @override
-  List<Object?> get props => [
-    status,
-    cards,
-    defaultCard,
-    errorMessage,
-    existingCards,
-    updatingCardId,
-    deletingCardId,
-    message,
-  ];
+  List<Object?> get props => [status, errorMessage, user, cards];
 }
 
 @freezed

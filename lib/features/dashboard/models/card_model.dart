@@ -1,34 +1,55 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/material.dart';
 
-part 'card_model.freezed.dart';
-part 'card_model.g.dart';
+class CardModel {
+  final String id;
+  final String userId;
+  final String cardNumber;
+  final String cardHolderName;
+  final String balance;
+  final String cardTier;
+  final CardType cardType;
 
-@freezed
-class CardModel with _$CardModel {
-  const factory CardModel({
-    required String id,
-    required String userId,
-    required String cardNumber,
-    required String cardHolderName,
-    required String expiryMonth,
-    required String expiryYear,
-    String? cvv,
-    required CardType cardType,
-    @Default(false) bool isDefault,
-    @Default(true) bool isActive,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) = _CardModel;
+  CardModel({
+    required this.id,
+    required this.userId,
+    required this.cardNumber,
+    required this.cardHolderName,
+    required this.balance,
+    required this.cardType,
+    required this.cardTier,
+  });
 
-  factory CardModel.fromJson(Map<String, dynamic> json) =>
-      _$CardModelFromJson(json);
+  factory CardModel.fromJson(Map<String, dynamic> json) {
+    return CardModel(
+      id: (json['id'] ?? '') as String,
+      userId: (json['user_id'] ?? '') as String,
+      cardNumber: (json['card_number'] ?? '') as String,
+      cardHolderName: (json['card_holder_name'] ?? '') as String,
+      cardTier: (json['card_tier'] ?? '') as String,
+      balance: json['balance']?.toString() ?? '0.00',
+      cardType: CardType.values.firstWhere(
+        (e) => e.name == (json['card_type'] ?? 'visa'),
+        orElse: () => CardType.visa,
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user_id': userId,
+      'card_number': cardNumber,
+      'card_holder_name': cardHolderName,
+      'card_tier': cardTier,
+      'balance': balance,
+      'card_type': cardType.name,
+    };
+  }
 }
 
 enum CardType {
   visa,
   mastercard,
-  amex,
   discover;
 
   String get displayName {
@@ -37,49 +58,34 @@ enum CardType {
         return 'Visa';
       case CardType.mastercard:
         return 'MasterCard';
-      case CardType.amex:
-        return 'American Express';
       case CardType.discover:
         return 'Discover';
-    }
-  }
-
-  String get logoPath {
-    switch (this) {
-      case CardType.visa:
-        return 'assets/images/visa_logo.png';
-      case CardType.mastercard:
-        return 'assets/images/mastercard_logo.png';
-      case CardType.amex:
-        return 'assets/images/amex_logo.png';
-      case CardType.discover:
-        return 'assets/images/discover_logo.png';
-    }
-  }
-
-  Color get primaryColor {
-    switch (this) {
-      case CardType.visa:
-        return const Color(0xFF1A1F71);
-      case CardType.mastercard:
-        return const Color(0xFFEB001B);
-      case CardType.amex:
-        return const Color(0xFF006FCF);
-      case CardType.discover:
-        return const Color(0xFFFF6000);
     }
   }
 
   List<Color> get gradientColors {
     switch (this) {
       case CardType.visa:
-        return [const Color(0xFF1A1F71), const Color(0xFF4A90E2)];
+        return [
+          Color(0xFFFFFFFF),
+          Color(0xFF1573FF),
+          Color(0xFF1E1671),
+          Color(0xFF4EB4FF),
+        ];
       case CardType.mastercard:
-        return [const Color(0xFFEB001B), const Color(0xFFF79E1B)];
-      case CardType.amex:
-        return [const Color(0xFF006FCF), const Color(0xFF00A9E0)];
+        return [
+          Color(0xFFFDC830),
+          Color(0xFFF37335),
+          Color(0xFFFF8A80),
+          Color(0xFFFFAB40),
+        ];
       case CardType.discover:
-        return [const Color(0xFFFF6000), const Color(0xFFFFB366)];
+        return [
+          Color(0xFF667EEA),
+          Color(0xFF764BA2),
+          Color(0xFFED4264),
+          Color(0xFFFFEDBC),
+        ];
     }
   }
 }

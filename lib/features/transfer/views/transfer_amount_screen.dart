@@ -62,7 +62,7 @@ class _TransferAmountScreenState extends State<TransferAmountScreen> {
             SizedBox(height: 30),
 
             Text(
-              widget.contacts?.amount ?? '\$ 320.00',
+              widget.contacts?.lastTransactionAmount ?? '\$ 320.00',
               style: context.displayLarge,
             ),
             Text('No fee', style: context.bodySmall),

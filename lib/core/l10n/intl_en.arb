@@ -42,7 +42,8 @@
   "signUpTitle":"Sign up",
   "signUpWelcomeTitle": "Welcome to us",
   "signUpDescription":"Hello there, create New account",
-  "signUpTermAndConditions":"By creating an account your aggree \nto our  Term and Condtions",
+  "signUpTermAndConditions":"By creating an account your aggree \nto our ",
+  "signUpTermAndConditionButton":"Term and Condtions",
   "signUpButton":"Sign up",
   "signUpAlreadyAcccount":"Have an account? ",
   "signInButton":"Sign in",
@@ -53,7 +54,7 @@
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Home feature"
   },
-  "homegreetingTitle":"Good Morning",
+  "homegreetingTitle":"Good Morning \n",
   "homeAccountAndCardTitle":"Account and Card",
   "homeTransferTitle":"Transfer",
   "homeWithdrawTitle":"Withdraw",

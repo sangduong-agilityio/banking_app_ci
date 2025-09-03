@@ -65,7 +65,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "homeTransferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
     "homeWithdrawTitle": MessageLookupByLibrary.simpleMessage("Withdraw"),
-    "homegreetingTitle": MessageLookupByLibrary.simpleMessage("Good Morning"),
+    "homegreetingTitle": MessageLookupByLibrary.simpleMessage(
+      "Good Morning \n",
+    ),
     "landingDescription": MessageLookupByLibrary.simpleMessage(
       "Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,",
     ),
@@ -189,8 +191,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUpPassowrdHint": MessageLookupByLibrary.simpleMessage(
       "Enter your password",
     ),
+    "signUpTermAndConditionButton": MessageLookupByLibrary.simpleMessage(
+      "Term and Condtions",
+    ),
     "signUpTermAndConditions": MessageLookupByLibrary.simpleMessage(
-      "By creating an account your aggree \nto our  Term and Condtions",
+      "By creating an account your aggree \nto our ",
     ),
     "signUpTitle": MessageLookupByLibrary.simpleMessage("Sign up"),
     "signUpUsername": MessageLookupByLibrary.simpleMessage(

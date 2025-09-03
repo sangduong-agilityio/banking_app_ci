@@ -8,7 +8,6 @@ import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/widgets/auth_form.dart';
 import 'package:banking_app/features/setting/widgets/card_detail.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class AccountDetailsScreen extends StatefulWidget {
   const AccountDetailsScreen({super.key});
@@ -18,8 +17,6 @@ class AccountDetailsScreen extends StatefulWidget {
 }
 
 class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
-  final _formKey = GlobalKey<FormBuilderState>();
-
   @override
   Widget build(BuildContext context) {
     return BAScaffold(
@@ -47,16 +44,13 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: BAForm(
-                  key: _formKey,
-                  spaceBetweenRow: 10,
+                child: AuthForm(
                   textFields: [
                     BATextField(label: S.current.accountNameLabel),
                     BATextField(label: S.current.accountPhoneNumberLabel),
                     BATextField(label: S.current.accountEmailLabel),
                     BATextField(label: S.current.accountHomeAddressLabel),
                   ],
-                  isValidated: (value) => null,
                 ),
               ),
               Container(
