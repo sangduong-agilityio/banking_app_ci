@@ -254,6 +254,18 @@ class BAAssets {
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
   transactionSuccess = _BATransactionSuccessImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  branch = _BABranchImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  interest = _BAInterestImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  exchange = _BAExchangeImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  exchangeRate = _BAExchangeRateImage.new;
 }
 
 class _BAHomeImage extends StatelessWidget {
@@ -674,6 +686,74 @@ class _BATransactionSuccessImage extends StatelessWidget {
       path: Assets.images.imgDigitalBanking.path,
       width: BAResponsive.scale(context, defaultValue: width ?? 327),
       height: BAResponsive.scale(context, defaultValue: height ?? 204),
+    );
+  }
+}
+
+class _BABranchImage extends StatelessWidget {
+  const _BABranchImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgBranch.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 100),
+      height: BAResponsive.scale(context, defaultValue: height ?? 78),
+    );
+  }
+}
+
+class _BAInterestImage extends StatelessWidget {
+  const _BAInterestImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgInterest.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 100),
+      height: BAResponsive.scale(context, defaultValue: height ?? 78),
+    );
+  }
+}
+
+class _BAExchangeImage extends StatelessWidget {
+  const _BAExchangeImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgExchange.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 100),
+      height: BAResponsive.scale(context, defaultValue: height ?? 78),
+    );
+  }
+}
+
+class _BAExchangeRateImage extends StatelessWidget {
+  const _BAExchangeRateImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgExchangeRate.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 100),
+      height: BAResponsive.scale(context, defaultValue: height ?? 78),
     );
   }
 }

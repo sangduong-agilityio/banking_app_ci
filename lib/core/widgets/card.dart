@@ -144,3 +144,65 @@ class TransactionCard extends StatelessWidget {
     );
   }
 }
+
+class CardCategorySelected extends StatelessWidget {
+  const CardCategorySelected({
+    super.key,
+    required this.onTap,
+    this.categoryName,
+    this.category,
+    this.imageUrl,
+  });
+  final String? category;
+  final String? categoryName;
+  final Widget? imageUrl;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: context.colorScheme.onPrimary,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [
+              BoxShadow(color: Color(0xFFCBD5E0).withAlpha(150), blurRadius: 5),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(category ?? '', style: context.titleMedium),
+                      ],
+                    ),
+                    Text(
+                      categoryName ?? '',
+                      style: context.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              imageUrl ??
+                  Image.asset(
+                    'assets/images/bill_category.png',
+                    fit: BoxFit.cover,
+                  ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

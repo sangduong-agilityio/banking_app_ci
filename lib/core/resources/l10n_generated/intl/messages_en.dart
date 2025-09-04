@@ -20,13 +20,15 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(type) => "You \'ve pay your ${type} bill!";
+  static String m0(type) => "Good Morning,\n${type}!";
 
-  static String m1(type) => "Pay ${type} bill this month";
+  static String m1(type) => "You \'ve pay your ${type} bill!";
 
-  static String m2(type) => "Type ${type} bill code ";
+  static String m2(type) => "Pay ${type} bill this month";
 
-  static String m3(type) => "${type} fee";
+  static String m3(type) => "Type ${type} bill code ";
+
+  static String m4(type) => "${type} fee";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -53,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Account and Card",
     ),
     "homeCreditCardTitle": MessageLookupByLibrary.simpleMessage("Creadit card"),
+    "homeGreetingTitle": m0,
     "homeMobileRechargeTitle": MessageLookupByLibrary.simpleMessage(
       "Mobile recharge",
     ),
@@ -65,9 +68,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "homeTransferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
     "homeWithdrawTitle": MessageLookupByLibrary.simpleMessage("Withdraw"),
-    "homegreetingTitle": MessageLookupByLibrary.simpleMessage(
-      "Good Morning \n",
-    ),
     "landingDescription": MessageLookupByLibrary.simpleMessage(
       "Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,",
     ),
@@ -116,18 +116,53 @@ class MessageLookup extends MessageLookupByLibrary {
     "payBillTitle": MessageLookupByLibrary.simpleMessage("Pay the bill"),
     "payBillToTitle": MessageLookupByLibrary.simpleMessage("To"),
     "payBillTotalTitle": MessageLookupByLibrary.simpleMessage("Total"),
-    "payBillTracsactionTitle": m0,
+    "payBillTracsactionTitle": m1,
     "payBillTransactionSuccess": MessageLookupByLibrary.simpleMessage(
       "Transaction successfully!",
     ),
-    "payBillTypeCategory": m1,
-    "payBillTypeLabel": m2,
-    "payBillTypeTitle": m3,
+    "payBillTypeCategory": m2,
+    "payBillTypeLabel": m3,
+    "payBillTypeTitle": m4,
     "payBillWaterDescription": MessageLookupByLibrary.simpleMessage(
       "Pay water bill this month",
     ),
     "payBillWaterTitle": MessageLookupByLibrary.simpleMessage("Water bill"),
+    "searchBranchDescription": MessageLookupByLibrary.simpleMessage(
+      "Search for branch",
+    ),
+    "searchBranchSelectedTitle": MessageLookupByLibrary.simpleMessage("Branch"),
+    "searchBuyTitle": MessageLookupByLibrary.simpleMessage("Buy"),
+    "searchCountryTitle": MessageLookupByLibrary.simpleMessage("Country"),
+    "searchCurrentRateTitle": MessageLookupByLibrary.simpleMessage(
+      "Current Rate",
+    ),
+    "searchDepositTitle": MessageLookupByLibrary.simpleMessage("Deposit"),
+    "searchExchangeButton": MessageLookupByLibrary.simpleMessage("Exchange"),
+    "searchExchangeDescription": MessageLookupByLibrary.simpleMessage(
+      "Exchange amount of money",
+    ),
+    "searchExchangeRateDescription": MessageLookupByLibrary.simpleMessage(
+      "Search for exchange rate",
+    ),
+    "searchExchangeRateTitle": MessageLookupByLibrary.simpleMessage(
+      "Exchange rate",
+    ),
+    "searchExchangeTitle": MessageLookupByLibrary.simpleMessage("Exchange"),
+    "searchFormTitle": MessageLookupByLibrary.simpleMessage("From"),
+    "searchInterestKindTitle": MessageLookupByLibrary.simpleMessage(
+      "Interest kind",
+    ),
+    "searchInterestRateDescription": MessageLookupByLibrary.simpleMessage(
+      "Search for interest rate",
+    ),
+    "searchInterestRateTitle": MessageLookupByLibrary.simpleMessage(
+      "Interest rate",
+    ),
+    "searchLanguageTitle": MessageLookupByLibrary.simpleMessage(":Language"),
+    "searchRateTitle": MessageLookupByLibrary.simpleMessage("Rate"),
+    "searchSellTitle": MessageLookupByLibrary.simpleMessage("Sell"),
     "searchTitle": MessageLookupByLibrary.simpleMessage("Search"),
+    "searchToTitle": MessageLookupByLibrary.simpleMessage("To"),
     "settingAppInformationTitle": MessageLookupByLibrary.simpleMessage(
       "App information",
     ),

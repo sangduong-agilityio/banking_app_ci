@@ -11,29 +11,44 @@ class DashBoardState extends Equatable {
     this.user,
     this.errorMessage,
     this.cards = const [],
+    this.currentCardIndex = 0,
+    this.shouldPlayAnimation = false,
   });
 
   final DashBoardStatus status;
   final UserModel? user;
   final List<CardModel> cards;
   final String? errorMessage;
+  final int currentCardIndex;
+  final bool shouldPlayAnimation;
 
   DashBoardState copyWith({
     DashBoardStatus? status,
     UserModel? user,
     String? errorMessage,
     List<CardModel>? cards,
+    int? currentCardIndex,
+    bool? shouldPlayAnimation,
   }) {
     return DashBoardState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       user: user ?? this.user,
       cards: cards ?? this.cards,
+      currentCardIndex: currentCardIndex ?? this.currentCardIndex,
+      shouldPlayAnimation: shouldPlayAnimation ?? this.shouldPlayAnimation,
     );
   }
 
   @override
-  List<Object?> get props => [status, errorMessage, user, cards];
+  List<Object?> get props => [
+    status,
+    errorMessage,
+    user,
+    cards,
+    currentCardIndex,
+    shouldPlayAnimation,
+  ];
 }
 
 @freezed

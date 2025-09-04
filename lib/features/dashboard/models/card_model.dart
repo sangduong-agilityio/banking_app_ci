@@ -1,50 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class CardModel {
-  final String id;
-  final String userId;
-  final String cardNumber;
-  final String cardHolderName;
-  final String balance;
-  final String cardTier;
-  final CardType cardType;
+part 'card_model.freezed.dart';
+part 'card_model.g.dart';
 
-  CardModel({
-    required this.id,
-    required this.userId,
-    required this.cardNumber,
-    required this.cardHolderName,
-    required this.balance,
-    required this.cardType,
-    required this.cardTier,
-  });
+class CardTypeConverter implements JsonConverter<CardType?, String?> {
+  const CardTypeConverter();
 
-  factory CardModel.fromJson(Map<String, dynamic> json) {
-    return CardModel(
-      id: (json['id'] ?? '') as String,
-      userId: (json['user_id'] ?? '') as String,
-      cardNumber: (json['card_number'] ?? '') as String,
-      cardHolderName: (json['card_holder_name'] ?? '') as String,
-      cardTier: (json['card_tier'] ?? '') as String,
-      balance: json['balance']?.toString() ?? '0.00',
-      cardType: CardType.values.firstWhere(
-        (e) => e.name == (json['card_type'] ?? 'visa'),
-        orElse: () => CardType.visa,
-      ),
+  @override
+  CardType? fromJson(String? json) {
+    if (json == null) return null;
+    return CardType.values.firstWhere(
+      (e) => e.name.toLowerCase() == json.toLowerCase(),
+      orElse: () => CardType.discover,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'user_id': userId,
-      'card_number': cardNumber,
-      'card_holder_name': cardHolderName,
-      'card_tier': cardTier,
-      'balance': balance,
-      'card_type': cardType.name,
-    };
-  }
+  @override
+  String? toJson(CardType? object) => object?.name;
+}
+
+@freezed
+class CardModel with _$CardModel {
+  const factory CardModel({
+    required String id,
+    @JsonKey(name: 'user_id') required String userId,
+    @JsonKey(name: 'card_number') required String cardNumber,
+    @JsonKey(name: 'card_holder_name') required String cardHolderName,
+    required String balance,
+    @JsonKey(name: 'card_tier') required String cardTier,
+    @CardTypeConverter() @JsonKey(name: 'card_type') CardType? cardType,
+  }) = _CardModel;
+
+  factory CardModel.fromJson(Map<String, dynamic> json) =>
+      _$CardModelFromJson(json);
 }
 
 enum CardType {
@@ -63,29 +52,41 @@ enum CardType {
     }
   }
 
-  List<Color> get gradientColors {
+  Gradient get gradient {
     switch (this) {
       case CardType.visa:
-        return [
-          Color(0xFFFFFFFF),
-          Color(0xFF1573FF),
-          Color(0xFF1E1671),
-          Color(0xFF4EB4FF),
-        ];
+        return const LinearGradient(
+          colors: [
+            Color(0xFF4A5568),
+            Color(0xFF2D3748),
+            Color(0xFF4299E1),
+            Color(0xFF48BB78),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
       case CardType.mastercard:
-        return [
-          Color(0xFFFDC830),
-          Color(0xFFF37335),
-          Color(0xFFFF8A80),
-          Color(0xFFFFAB40),
-        ];
+        return const LinearGradient(
+          colors: [
+            Color(0xFF667EEA),
+            Color(0xFF764BA2),
+            Color(0xFFED4264),
+            Color(0xFFFFEDBC),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
       case CardType.discover:
-        return [
-          Color(0xFF667EEA),
-          Color(0xFF764BA2),
-          Color(0xFFED4264),
-          Color(0xFFFFEDBC),
-        ];
+        return const LinearGradient(
+          colors: [
+            Color(0xFFFDC830),
+            Color(0xFFF37335),
+            Color(0xFFFF8A80),
+            Color(0xFFFFAB40),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
     }
   }
 }

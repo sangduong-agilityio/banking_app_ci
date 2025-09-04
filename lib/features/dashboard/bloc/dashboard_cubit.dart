@@ -29,4 +29,12 @@ class DashBoardCubit extends Cubit<DashBoardState> {
       );
     }
   }
+
+  Future<void> changeCardIndex(int index) async {
+    emit(state.copyWith(currentCardIndex: index));
+  }
+
+  Future<void> setAnimationStatus(bool value) async {
+    emit(state.copyWith(shouldPlayAnimation: value));
+  }
 }

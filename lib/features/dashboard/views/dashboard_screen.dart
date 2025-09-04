@@ -20,25 +20,20 @@ class DashBoardScreen extends StatefulWidget {
 
 class _DashBoardScreenState extends State<DashBoardScreen>
     with TickerProviderStateMixin {
-  late AnimationController _pageAnimationController;
-
-  bool _shouldPlayAnimation = false;
-  int currentCardIndex = 0;
+  late AnimationController _fadeController;
 
   @override
   void initState() {
     super.initState();
-    _pageAnimationController = AnimationController(
-      duration: Duration(milliseconds: 600),
+    _fadeController = AnimationController(
+      duration: const Duration(milliseconds: 600),
       vsync: this,
-    );
-
-    _pageAnimationController.forward();
+    )..forward();
   }
 
   @override
   void dispose() {
-    _pageAnimationController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -50,56 +45,45 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         backgroundColor: context.colorScheme.onPrimary,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      BlocBuilder<DashBoardCubit, DashBoardState>(
-                        builder: (context, state) {
-                          return Text(
-                            '${S.current.homegreetingTitle}${state.user?.username}',
-                            style: context.displayLarge,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    BlocBuilder<DashBoardCubit, DashBoardState>(
+                      buildWhen: (previous, current) =>
+                          previous.user != current.user,
+                      builder: (context, state) {
+                        final username = state.user?.username ?? '';
+                        return Text(
+                          '${S.current.homeGreetingTitle(username)} ',
+                          style: context.displayLarge,
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                SizedBox(
+
+                // Card swiper
+                Container(
+                  margin: const EdgeInsets.only(top: 20),
                   height: 220,
                   child: BlocBuilder<DashBoardCubit, DashBoardState>(
+                    buildWhen: (previous, current) =>
+                        previous.cards != current.cards,
                     builder: (context, state) {
                       return CardsSwiperWidget<CardModel>(
                         cardData: state.cards,
-                        animationDuration: Duration(milliseconds: 600),
-                        downDragDuration: Duration(milliseconds: 200),
-                        topCardOffsetStart: 0.0,
-                        topCardOffsetEnd: 0.0,
-                        topCardScaleStart: 1.0,
-                        topCardScaleEnd: 1.0,
-                        secondCardOffsetStart: 8.0,
-                        secondCardOffsetEnd: 0.0,
-                        secondCardScaleStart: 0.96,
-                        secondCardScaleEnd: 1.0,
-                        thirdCardOffsetStart: 16.0,
-                        thirdCardOffsetEnd: 8.0,
-                        thirdCardScaleStart: 0.92,
-                        thirdCardScaleEnd: 0.96,
                         onCardChange: (index) {
-                          setState(() {
-                            currentCardIndex = index;
-                          });
+                          context.read<DashBoardCubit>().changeCardIndex(index);
                         },
                         shouldStartCardCollectionAnimation:
-                            _shouldPlayAnimation,
+                            state.shouldPlayAnimation,
                         onCardCollectionAnimationComplete: (value) {
-                          setState(() {
-                            _shouldPlayAnimation = value;
-                          });
+                          context.read<DashBoardCubit>().setAnimationStatus(
+                            value,
+                          );
                         },
                         cardBuilder: (context, index, visibleIndex) {
                           final card = state.cards[index];
@@ -114,7 +98,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                   ),
                 ),
                 const SizedBox(height: 30),
-                ListViewActions(),
+                // Actions list
+                const ListViewActions(),
               ],
             ),
           ),

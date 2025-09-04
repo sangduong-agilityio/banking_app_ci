@@ -21,12 +21,15 @@ scripts:
   analyze:
     run: melos exec -- puro flutter analyze .
     description: Run `flutter analyze` in all packages.
-
-  # Run the main app
-  run:app:
-    run: melos exec --scope="banking_app" -- puro flutter run lib/main.dart
+  # Generation i18n file
+  dev:generate:i18n:
+    run: melos exec --scope="banking_app" -- "puro flutter pub run intl_utils:generate"
+    description: "Generation localizations"
     packageFilters:
       flutter: true
+      scope:
+        - banking_app
+
 
   # Generate DEV launcher icons
   generate:icon_launcher_dev:

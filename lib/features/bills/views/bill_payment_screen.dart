@@ -2,13 +2,13 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
+import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
 import 'package:banking_app/features/bills/models/payment_history_model.dart';
 import 'package:banking_app/features/bills/views/bill_payment_history_screen.dart';
 import 'package:banking_app/features/bills/views/bill_payment_option_screen.dart';
-import 'package:banking_app/features/bills/widgets/bill_category_card.dart';
 import 'package:flutter/material.dart';
 
 class BillPaymentScreen extends StatefulWidget {
@@ -33,9 +33,9 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BillCategoryCard(
-            billCategory: S.current.payBillElectricTitle,
-            billCategoryName: S.current.payBillElectricDescription,
+          CardCategorySelected(
+            category: S.current.payBillElectricTitle,
+            categoryName: S.current.payBillElectricDescription,
             imageUrl: BAAssets.electric(),
             onTap: () {
               Navigator.push(
@@ -49,9 +49,9 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               );
             },
           ),
-          BillCategoryCard(
-            billCategory: S.current.payBillWaterTitle,
-            billCategoryName: S.current.payBillWaterDescription,
+          CardCategorySelected(
+            category: S.current.payBillWaterTitle,
+            categoryName: S.current.payBillWaterDescription,
             imageUrl: BAAssets.water(),
             onTap: () {
               Navigator.push(
@@ -65,9 +65,9 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
               );
             },
           ),
-          BillCategoryCard(
-            billCategory: S.current.payBillInternetTitle,
-            billCategoryName: S.current.payBillInternetDescription,
+          CardCategorySelected(
+            category: S.current.payBillInternetTitle,
+            categoryName: S.current.payBillInternetDescription,
             imageUrl: BAAssets.internet(),
             onTap: () {
               Navigator.push(

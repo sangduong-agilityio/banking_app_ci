@@ -59,11 +59,6 @@ class S {
     return Intl.message('Home', name: 'homeTitle', desc: '', args: []);
   }
 
-  /// `Search`
-  String get searchTitle {
-    return Intl.message('Search', name: 'searchTitle', desc: '', args: []);
-  }
-
   /// `Message`
   String get messageTitle {
     return Intl.message('Message', name: 'messageTitle', desc: '', args: []);
@@ -344,13 +339,13 @@ class S {
     );
   }
 
-  /// `Good Morning \n`
-  String get homegreetingTitle {
+  /// `Good Morning,\n{type}!`
+  String homeGreetingTitle(String type) {
     return Intl.message(
-      'Good Morning \n',
-      name: 'homegreetingTitle',
+      'Good Morning,\n$type!',
+      name: 'homeGreetingTitle',
       desc: '',
-      args: [],
+      args: [type],
     );
   }
 
@@ -419,6 +414,176 @@ class S {
     return Intl.message(
       'Transaction \nReport',
       name: 'homeTransactionReportTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get searchTitle {
+    return Intl.message('Search', name: 'searchTitle', desc: '', args: []);
+  }
+
+  /// `Branch`
+  String get searchBranchSelectedTitle {
+    return Intl.message(
+      'Branch',
+      name: 'searchBranchSelectedTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interest rate`
+  String get searchInterestRateTitle {
+    return Intl.message(
+      'Interest rate',
+      name: 'searchInterestRateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exchange rate`
+  String get searchExchangeRateTitle {
+    return Intl.message(
+      'Exchange rate',
+      name: 'searchExchangeRateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exchange`
+  String get searchExchangeTitle {
+    return Intl.message(
+      'Exchange',
+      name: 'searchExchangeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interest kind`
+  String get searchInterestKindTitle {
+    return Intl.message(
+      'Interest kind',
+      name: 'searchInterestKindTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deposit`
+  String get searchDepositTitle {
+    return Intl.message(
+      'Deposit',
+      name: 'searchDepositTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rate`
+  String get searchRateTitle {
+    return Intl.message('Rate', name: 'searchRateTitle', desc: '', args: []);
+  }
+
+  /// `Country`
+  String get searchCountryTitle {
+    return Intl.message(
+      'Country',
+      name: 'searchCountryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Buy`
+  String get searchBuyTitle {
+    return Intl.message('Buy', name: 'searchBuyTitle', desc: '', args: []);
+  }
+
+  /// `Sell`
+  String get searchSellTitle {
+    return Intl.message('Sell', name: 'searchSellTitle', desc: '', args: []);
+  }
+
+  /// `:Language`
+  String get searchLanguageTitle {
+    return Intl.message(
+      ':Language',
+      name: 'searchLanguageTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From`
+  String get searchFormTitle {
+    return Intl.message('From', name: 'searchFormTitle', desc: '', args: []);
+  }
+
+  /// `To`
+  String get searchToTitle {
+    return Intl.message('To', name: 'searchToTitle', desc: '', args: []);
+  }
+
+  /// `Current Rate`
+  String get searchCurrentRateTitle {
+    return Intl.message(
+      'Current Rate',
+      name: 'searchCurrentRateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exchange`
+  String get searchExchangeButton {
+    return Intl.message(
+      'Exchange',
+      name: 'searchExchangeButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for branch`
+  String get searchBranchDescription {
+    return Intl.message(
+      'Search for branch',
+      name: 'searchBranchDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for interest rate`
+  String get searchInterestRateDescription {
+    return Intl.message(
+      'Search for interest rate',
+      name: 'searchInterestRateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for exchange rate`
+  String get searchExchangeRateDescription {
+    return Intl.message(
+      'Search for exchange rate',
+      name: 'searchExchangeRateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exchange amount of money`
+  String get searchExchangeDescription {
+    return Intl.message(
+      'Exchange amount of money',
+      name: 'searchExchangeDescription',
       desc: '',
       args: [],
     );

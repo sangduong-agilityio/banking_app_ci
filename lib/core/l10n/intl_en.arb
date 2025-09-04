@@ -5,7 +5,6 @@
     "description": "Store translations that are likely to be used only in Banking Application "
   },
   "homeTitle":"Home",
-  "searchTitle":"Search",
   "messageTitle":"Message",
   "settingTitle":"Setting",
   "validatorEmailRequired": "Email is required",
@@ -54,7 +53,15 @@
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Home feature"
   },
-  "homegreetingTitle":"Good Morning \n",
+  "homeGreetingTitle": "Good Morning,\n{type}!",
+  "@homeGreetingTitle": {
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "username"
+      }
+    }
+  },
   "homeAccountAndCardTitle":"Account and Card",
   "homeTransferTitle":"Transfer",
   "homeWithdrawTitle":"Withdraw",
@@ -62,6 +69,30 @@
   "homePayTheBillTitle":"Pay the \nbill",
   "homeCreditCardTitle":"Creadit card",
   "homeTransactionReportTitle":"Transaction \nReport",
+  "@segmentSearch": {
+    "---------------------------": "---------------------------",
+    "description": "Store translations that are likely to be used only in Search feature"
+  },
+  "searchTitle":"Search",
+  "searchBranchSelectedTitle":"Branch",
+  "searchInterestRateTitle":"Interest rate",
+  "searchExchangeRateTitle":"Exchange rate",
+  "searchExchangeTitle":"Exchange",
+  "searchInterestKindTitle":"Interest kind",
+  "searchDepositTitle":"Deposit",
+  "searchRateTitle":"Rate",
+  "searchCountryTitle":"Country",
+  "searchBuyTitle":"Buy",
+  "searchSellTitle":"Sell",
+  "searchLanguageTitle":":Language",
+  "searchFormTitle":"From",
+  "searchToTitle":"To",
+  "searchCurrentRateTitle":"Current Rate",
+  "searchExchangeButton":"Exchange",
+  "searchBranchDescription":"Search for branch",
+  "searchInterestRateDescription":"Search for interest rate",
+  "searchExchangeRateDescription":"Search for exchange rate",
+  "searchExchangeDescription":"Exchange amount of money",
   "@segmentTransactionsHistory": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Transactions history feature"

@@ -22,3 +22,16 @@ class DateTimeUtils {
     return '${months[date.month - 1]} ${date.year}';
   }
 }
+
+class CardFormatter {
+  static String maskCardNumber(String cardNumber) {
+    if (cardNumber.length < 8) return cardNumber;
+
+    final start = cardNumber.substring(0, 4);
+    final end = cardNumber.substring(cardNumber.length - 4);
+
+    const mask = '●●●● ●●●●';
+
+    return "$start $mask $end";
+  }
+}

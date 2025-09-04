@@ -7,7 +7,7 @@ import 'package:banking_app/features/auth/views/sign_up_screen.dart';
 import 'package:banking_app/features/dashboard/views/dashboard_screen.dart';
 import 'package:banking_app/features/landing/landing_screen.dart';
 import 'package:banking_app/features/message/message_screen.dart';
-import 'package:banking_app/features/search/search_screen.dart';
+import 'package:banking_app/features/search/views/search_screen.dart';
 import 'package:banking_app/features/setting/views/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
