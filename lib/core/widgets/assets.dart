@@ -266,6 +266,9 @@ class BAAssets {
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
   exchangeRate = _BAExchangeRateImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  exchangeMoney = _BAExchangeMoneyImage.new;
 }
 
 class _BAHomeImage extends StatelessWidget {
@@ -754,6 +757,23 @@ class _BAExchangeRateImage extends StatelessWidget {
       path: Assets.images.imgExchangeRate.path,
       width: BAResponsive.scale(context, defaultValue: width ?? 100),
       height: BAResponsive.scale(context, defaultValue: height ?? 78),
+    );
+  }
+}
+
+class _BAExchangeMoneyImage extends StatelessWidget {
+  const _BAExchangeMoneyImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgExchangeMoney.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 327),
+      height: BAResponsive.scale(context, defaultValue: height ?? 213),
     );
   }
 }

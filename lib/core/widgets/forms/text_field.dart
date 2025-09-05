@@ -27,6 +27,7 @@ class BATextField extends StatefulWidget {
     this.fillColor,
     this.isLast = false,
     this.isPassword = false,
+    this.onChanged,
   });
 
   final String? name;
@@ -48,6 +49,7 @@ class BATextField extends StatefulWidget {
   final VoidCallback? onEditingComplete;
   final Color? fillColor;
   final bool isPassword;
+  final ValueChanged<String?>? onChanged;
 
   @override
   State<BATextField> createState() => _BATextFieldState();
@@ -83,6 +85,7 @@ class _BATextFieldState extends State<BATextField> {
           enabled: widget.enabled,
           inputFormatters: widget.inputFormatters,
           textInputAction: widget.textInputAction,
+          onChanged: widget.onChanged,
           onEditingComplete:
               widget.onEditingComplete ??
               () {

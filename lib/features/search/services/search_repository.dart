@@ -1,110 +1,117 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import '../models/search_model.dart';
+import 'package:banking_app/core/api/api_client.dart';
+import 'package:banking_app/core/env/env.dart';
+import 'package:banking_app/features/search/models/currency_model.dart';
+import 'package:banking_app/features/search/models/exchange_model.dart';
+import 'package:banking_app/features/search/models/exchange_rate_model.dart';
+import 'package:banking_app/features/search/models/interest_rate_model.dart';
 
-class SearchRepository {
-  static const String _baseUrl = "https://api.exchangerate-api.com/v4/latest";
+abstract class SearchRepository {
+  Future<ExchangeModel> exchange({
+    required String fromCurrency,
+    required String toCurrency,
+    required double fromAmount,
+  });
+  Future<List<ExchangeRateModel>> fetchExchangeRates();
+  Future<List<InterestRateModel>> fetchInterestRates();
+  Future<List<CurrencyModel>> fetchCurrencies();
 
-  Future<List<ExchangeRate>> fetchExchangeRates(String baseCurrency) async {
-    try {
-      final response = await http.get(Uri.parse("$_baseUrl/$baseCurrency"));
+  Future<double> convertCurrency({
+    required String fromCurrency,
+    required String toCurrency,
+    required double amount,
+  });
+}
 
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final Map<String, dynamic> rates = data['rates'];
+class SearchRepositoryImplement implements SearchRepository {
+  final BankingApiClient _client;
 
-        Map<String, Map<String, String>> currencies = {
-          'VND': {'country': 'Vietnam', 'flag': '🇻🇳'},
-          'EUR': {'country': 'European Union', 'flag': '🇪🇺'},
-          'GBP': {'country': 'United Kingdom', 'flag': '🇬🇧'},
-          'JPY': {'country': 'Japan', 'flag': '🇯🇵'},
-          'CNY': {'country': 'China', 'flag': '🇨🇳'},
-          'KRW': {'country': 'South Korea', 'flag': '🇰🇷'},
-          'RUB': {'country': 'Russia', 'flag': '🇷🇺'},
-          'CAD': {'country': 'Canada', 'flag': '🇨🇦'},
-          'AUD': {'country': 'Australia', 'flag': '🇦🇺'},
-          'SGD': {'country': 'Singapore', 'flag': '🇸🇬'},
-        };
+  SearchRepositoryImplement({required BankingApiClient client})
+    : _client = client;
 
-        List<ExchangeRate> exchangeRates = [];
-        currencies.forEach((code, info) {
-          if (rates[code] != null) {
-            final rate = rates[code].toDouble();
-            exchangeRates.add(
-              ExchangeRate.fromApi(code, info['country']!, info['flag']!, rate),
-            );
-          }
-        });
-
-        return exchangeRates;
-      } else {
-        throw Exception("Failed to load exchange rates");
-      }
-    } catch (e) {
-      print("Error: $e");
-      return [];
-    }
+  @override
+  Future<List<ExchangeRateModel>> fetchExchangeRates() async {
+    String apiUrl = '${Env.endPoint}exchange_rates';
+    final response = await _client.get(
+      apiUrl,
+      queryParams: {'select': 'country,flag,buy,sell,code'},
+    );
+    final jsonData = response.data;
+    final exchangeRates = (jsonData as List)
+        .map((json) => ExchangeRateModel.fromJson(json))
+        .toList();
+    return exchangeRates;
   }
 
-  /// Convert currency
+  @override
+  Future<List<InterestRateModel>> fetchInterestRates() async {
+    String apiUrl = '${Env.endPoint}interest_rates';
+    final response = await _client.get(
+      apiUrl,
+      queryParams: {'select': 'id,type,period,rate'},
+    );
+    final jsonData = response.data;
+
+    final interestRates = (jsonData as List)
+        .map((json) => InterestRateModel.fromJson(json))
+        .toList();
+
+    return interestRates;
+  }
+
+  @override
+  Future<ExchangeModel> exchange({
+    required String fromCurrency,
+    required String toCurrency,
+    required double fromAmount,
+  }) async {
+    final apiUrl = '${Env.endPoint}exchange';
+
+    final response = await _client.get(
+      apiUrl,
+      queryParams: {
+        'select': 'from,to,rate',
+        'from': 'eq.$fromCurrency',
+        'to': 'eq.$toCurrency',
+      },
+    );
+
+    final jsonData = (response.data as List).first;
+    final rate = double.parse(jsonData['rate'].toString());
+    final toAmount = fromAmount * rate;
+
+    return ExchangeModel(
+      fromCurrency: fromCurrency,
+      toCurrency: toCurrency,
+      fromAmount: fromAmount,
+      toAmount: toAmount,
+      exchangeRate: rate,
+    );
+  }
+
+  @override
+  Future<List<CurrencyModel>> fetchCurrencies() async {
+    String apiUrl = '${Env.endPoint}currencies';
+    final response = await _client.get(
+      apiUrl,
+      queryParams: {'select': 'code,name'},
+    );
+    final jsonData = response.data;
+    return (jsonData as List)
+        .map((json) => CurrencyModel.fromJson(json))
+        .toList();
+  }
+
+  @override
   Future<double> convertCurrency({
     required String fromCurrency,
     required String toCurrency,
     required double amount,
   }) async {
-    try {
-      final response = await http.get(Uri.parse("$_baseUrl/$fromCurrency"));
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final rate = (data['rates'][toCurrency] ?? 1).toDouble();
-        return amount * rate;
-      } else {
-        throw Exception("Failed to convert currency");
-      }
-    } catch (e) {
-      print("Error: $e");
-      return 0;
-    }
-  }
-
-  Future<List<InterestRate>> fetchInterestRates() async {
-    await Future.delayed(Duration(milliseconds: 500));
-    return [
-      InterestRate(type: "Individual customers", period: "1m", rate: "4.50%"),
-      InterestRate(type: "Individual customers", period: "2m", rate: "4.75%"),
-      InterestRate(type: "Individual customers", period: "12m", rate: "5.00%"),
-      InterestRate(type: "Corporate customers", period: "1m", rate: "3.50%"),
-      InterestRate(type: "Corporate customers", period: "2m", rate: "3.75%"),
-      InterestRate(type: "Corporate customers", period: "12m", rate: "4.00%"),
-    ];
-  }
-
-  Future<SearchModel> fetchSearchData(String baseCurrency) async {
-    final exchangeRates = await fetchExchangeRates(baseCurrency);
-    final interestRates = await fetchInterestRates();
-
-    // dummy transactions
-    final transactions = [
-      ExchangeTransaction(
-        fromCurrency: "USD",
-        toCurrency: "VND",
-        fromAmount: 100,
-        toAmount: 2430000,
-        time: DateTime.now().subtract(Duration(hours: 2)),
-      ),
-      ExchangeTransaction(
-        fromCurrency: "EUR",
-        toCurrency: "USD",
-        fromAmount: 50,
-        toAmount: 59,
-        time: DateTime.now().subtract(Duration(days: 1)),
-      ),
-    ];
-
-    return SearchModel(
-      exchangeRates: exchangeRates,
-      transactions: transactions,
-      interestRates: interestRates,
+    final exchangeResult = await exchange(
+      fromCurrency: fromCurrency,
+      toCurrency: toCurrency,
+      fromAmount: amount,
     );
+    return exchangeResult.exchangeRate;
   }
 }
