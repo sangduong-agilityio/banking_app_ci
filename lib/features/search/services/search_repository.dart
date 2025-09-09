@@ -33,7 +33,7 @@ class SearchRepositoryImplement implements SearchRepository {
     String apiUrl = '${Env.endPoint}exchange_rates';
     final response = await _client.get(
       apiUrl,
-      queryParams: {'select': 'country,flag,buy,sell,code'},
+      queryParams: {'select': 'country,flag,buy,sell'},
     );
     final jsonData = response.data;
     final exchangeRates = (jsonData as List)
@@ -84,7 +84,7 @@ class SearchRepositoryImplement implements SearchRepository {
       toCurrency: toCurrency,
       fromAmount: fromAmount,
       toAmount: toAmount,
-      exchangeRate: rate,
+      rate: rate,
     );
   }
 
@@ -112,6 +112,6 @@ class SearchRepositoryImplement implements SearchRepository {
       toCurrency: toCurrency,
       fromAmount: amount,
     );
-    return exchangeResult.exchangeRate;
+    return exchangeResult.toAmount;
   }
 }

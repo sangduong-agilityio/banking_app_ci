@@ -1,3 +1,4 @@
+import 'package:banking_app/core/utils/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'search_event.dart';
 import 'search_state.dart';
@@ -41,11 +42,9 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     emit(state.copyWith(status: const SearchStatus.loading()));
     try {
       final exchangeRates = await repo.fetchExchangeRates();
-      final currencies = await repo.fetchCurrencies();
       emit(
         state.copyWith(
           exchangeRates: exchangeRates,
-          currencies: currencies,
           status: const SearchStatus.success(),
         ),
       );
@@ -58,10 +57,12 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     ExchangeInitializeEvt event,
     Emitter<SearchState> emit,
   ) async {
+    final currencies = await repo.fetchCurrencies();
     emit(
       state.copyWith(
         fromCurrency: event.fromCurrency,
         toCurrency: event.toCurrency,
+        currencies: currencies,
       ),
     );
 
@@ -80,80 +81,106 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
           exchangeRate: 1.0,
         ),
       );
+      _recalculateAmounts(emit, 1.0);
       return;
     }
 
-    emit(state.copyWith(status: const SearchStatus.loading()));
-
     try {
-      final exchangeResult = await repo.exchange(
+      final rate = await repo.convertCurrency(
         fromCurrency: event.fromCurrency,
         toCurrency: event.toCurrency,
-        fromAmount: 1.0,
+        amount: 1.0,
       );
 
       emit(
         state.copyWith(
           fromCurrency: event.fromCurrency,
           toCurrency: event.toCurrency,
-          exchangeRate: exchangeResult.exchangeRate,
-          status: const SearchStatus.success(),
+          exchangeRate: rate,
         ),
       );
+
+      _recalculateAmounts(emit, rate);
     } catch (e) {
-      try {
-        final rate = state.exchangeRates?.firstWhere(
-          (e) => e.country.toUpperCase() == event.toCurrency.toUpperCase(),
-          orElse: () => throw Exception('Rate not found'),
-        );
+      final fallbackRate = DefaultRates.getRate(
+        event.fromCurrency,
+        event.toCurrency,
+      );
 
-        final exchangeRate = double.tryParse(rate!.buy) ?? 1.0;
+      emit(
+        state.copyWith(
+          fromCurrency: event.fromCurrency,
+          toCurrency: event.toCurrency,
+          exchangeRate: fallbackRate,
+        ),
+      );
 
-        emit(
-          state.copyWith(
-            fromCurrency: event.fromCurrency,
-            toCurrency: event.toCurrency,
-            exchangeRate: exchangeRate,
-            status: const SearchStatus.success(),
-          ),
-        );
-      } catch (_) {
-        emit(state.copyWith(status: const SearchStatus.failure()));
-      }
+      _recalculateAmounts(emit, fallbackRate ?? 0);
+    }
+  }
+
+  void _recalculateAmounts(Emitter<SearchState> emit, double rate) {
+    if (rate <= 0) return;
+
+    final currentFromAmount = state.fromAmount;
+    final currentToAmount = state.toAmount;
+
+    if (currentFromAmount != null && currentFromAmount > 0) {
+      final newToAmount = double.parse(
+        (currentFromAmount * rate).toStringAsFixed(2),
+      );
+      emit(state.copyWith(toAmount: newToAmount));
+    } else if (currentToAmount != null && currentToAmount > 0) {
+      final newFromAmount = double.parse(
+        (currentToAmount / rate).toStringAsFixed(2),
+      );
+      emit(state.copyWith(fromAmount: newFromAmount));
     }
   }
 
   void _onConvertCurrency(ConvertCurrencyEvt event, Emitter<SearchState> emit) {
-    if (state.exchangeRate == null || state.exchangeRate == 0) return;
+    final rate = state.exchangeRate;
+    if (rate == null || rate <= 0) return;
 
-    final converted = event.amount * state.exchangeRate!;
-    emit(
-      state.copyWith(
-        fromAmount: event.amount.toString(),
-        toAmount: _formatAmount(converted),
-      ),
-    );
+    if (event.isFromAmount) {
+      final toAmount = event.amount > 0 ? event.amount * rate : null;
+      emit(state.copyWith(fromAmount: event.amount, toAmount: toAmount));
+    } else {
+      final fromAmount = event.amount > 0 ? event.amount / rate : null;
+      emit(state.copyWith(fromAmount: fromAmount, toAmount: event.amount));
+    }
   }
 
   void _onSwapCurrencies(SwapCurrenciesEvt event, Emitter<SearchState> emit) {
     if (state.fromCurrency == null || state.toCurrency == null) return;
 
+    final newFromCurrency = state.toCurrency!;
+    final newToCurrency = state.fromCurrency!;
+
+    final newFromAmount = state.toAmount;
+    final newToAmount = state.fromAmount;
+
     final newExchangeRate =
-        state.exchangeRate == null || state.exchangeRate == 0
-        ? 0.0
-        : 1 / state.exchangeRate!;
+        state.exchangeRate != null && state.exchangeRate! > 0
+        ? 1 / state.exchangeRate!
+        : state.exchangeRate;
 
     emit(
       state.copyWith(
-        fromCurrency: state.toCurrency,
-        toCurrency: state.fromCurrency,
-        fromAmount: state.toAmount,
-        toAmount: state.fromAmount,
+        fromCurrency: newFromCurrency,
+        toCurrency: newToCurrency,
+        fromAmount: newFromAmount,
+        toAmount: newToAmount,
         exchangeRate: newExchangeRate,
       ),
     );
 
-    add(ExchangeRateChangedEvt(state.toCurrency!, state.fromCurrency!));
+    if (newFromAmount != null && newFromAmount > 0 && newExchangeRate != null) {
+      final recalculatedToAmount = double.parse(
+        (newFromAmount * newExchangeRate).toStringAsFixed(2),
+      );
+      emit(state.copyWith(toAmount: recalculatedToAmount));
+    }
   }
 
   void _onSelectCurrency(SelectCurrencyEvt event, Emitter<SearchState> emit) {
@@ -175,14 +202,6 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
 
     if (newFromCurrency != null && newToCurrency != null) {
       add(ExchangeRateChangedEvt(newFromCurrency, newToCurrency));
-    }
-  }
-
-  String _formatAmount(double amount) {
-    if (amount >= 1000) {
-      return amount.toStringAsFixed(0);
-    } else {
-      return amount.toStringAsFixed(2);
     }
   }
 }

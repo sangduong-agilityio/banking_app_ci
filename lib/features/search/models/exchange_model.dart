@@ -10,7 +10,7 @@ class ExchangeModel with _$ExchangeModel {
     required String toCurrency,
     required double fromAmount,
     required double toAmount,
-    required double exchangeRate,
+    required double rate,
   }) = _ExchangeModel;
   factory ExchangeModel.fromJson(Map<String, dynamic> json) =>
       _$ExchangeModelFromJson(json);

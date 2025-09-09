@@ -35,3 +35,15 @@ class CardFormatter {
     return "$start $mask $end";
   }
 }
+
+class AmountFormatter {
+  static String formatAmount(double amount) {
+    if (amount % 1 == 0) {
+      return amount.toInt().toString();
+    } else if (amount >= 1000) {
+      return amount.toStringAsFixed(0);
+    } else {
+      return amount.toStringAsFixed(2);
+    }
+  }
+}

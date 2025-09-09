@@ -10,7 +10,6 @@ class ExchangeRateModel with _$ExchangeRateModel {
     required String flag,
     required String buy,
     required String sell,
-    required String code,
   }) = _ExchangeRate;
   factory ExchangeRateModel.fromJson(Map<String, dynamic> json) =>
       _$ExchangeRateModelFromJson(json);

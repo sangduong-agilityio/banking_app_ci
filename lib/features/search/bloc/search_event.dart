@@ -33,11 +33,11 @@ class ExchangeRateChangedEvt extends SearchEvt {
 
 class ConvertCurrencyEvt extends SearchEvt {
   final double amount;
-
-  const ConvertCurrencyEvt(this.amount);
+  final bool isFromAmount;
+  const ConvertCurrencyEvt(this.amount, {this.isFromAmount = true});
 
   @override
-  List<Object?> get props => [amount];
+  List<Object?> get props => [amount, isFromAmount];
 }
 
 class SwapCurrenciesEvt extends SearchEvt {}

@@ -23,8 +23,8 @@ class SearchState extends Equatable {
   final List<ExchangeRateModel>? exchangeRates;
   final String? fromCurrency;
   final String? toCurrency;
-  final String? fromAmount;
-  final String? toAmount;
+  final double? fromAmount;
+  final double? toAmount;
   final List<InterestRateModel>? interestRates;
   final List<CurrencyModel>? currencies;
   final double? exchangeRate;
@@ -34,8 +34,8 @@ class SearchState extends Equatable {
     List<ExchangeRateModel>? exchangeRates,
     String? fromCurrency,
     String? toCurrency,
-    String? fromAmount,
-    String? toAmount,
+    double? fromAmount,
+    double? toAmount,
     List<InterestRateModel>? interestRates,
     List<CurrencyModel>? currencies,
     double? exchangeRate,

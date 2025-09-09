@@ -83,6 +83,7 @@ class ExchangeBox extends StatelessWidget {
   final CurrencyCard toCard;
   final Widget swapButton;
   final String? exchangeRate;
+  final bool isButtonEnabled;
 
   const ExchangeBox({
     super.key,
@@ -90,6 +91,7 @@ class ExchangeBox extends StatelessWidget {
     required this.toCard,
     required this.swapButton,
     this.exchangeRate,
+    required this.isButtonEnabled,
   });
 
   @override
@@ -133,6 +135,7 @@ class ExchangeBox extends StatelessWidget {
           ],
           const SizedBox(height: 32),
           BAElevatedButton(
+            isDisabled: !isButtonEnabled,
             padding: EdgeInsets.zero,
             text: S.current.searchExchangeButton,
             onPressed: () {},
