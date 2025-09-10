@@ -127,12 +127,16 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pay water bill this month",
     ),
     "payBillWaterTitle": MessageLookupByLibrary.simpleMessage("Water bill"),
+    "searchAmoutTitle": MessageLookupByLibrary.simpleMessage("Amount"),
     "searchBranchDescription": MessageLookupByLibrary.simpleMessage(
       "Search for branch",
     ),
     "searchBranchSelectedTitle": MessageLookupByLibrary.simpleMessage("Branch"),
     "searchBuyTitle": MessageLookupByLibrary.simpleMessage("Buy"),
     "searchCountryTitle": MessageLookupByLibrary.simpleMessage("Country"),
+    "searchCurrentRateCalculatorTitle": MessageLookupByLibrary.simpleMessage(
+      "Current rate",
+    ),
     "searchCurrentRateTitle": MessageLookupByLibrary.simpleMessage(
       "Current Rate",
     ),
@@ -160,6 +164,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchLanguageTitle": MessageLookupByLibrary.simpleMessage(":Language"),
     "searchRateTitle": MessageLookupByLibrary.simpleMessage("Rate"),
+    "searchSelectedCurrencyTitle": MessageLookupByLibrary.simpleMessage(
+      "Select the currency",
+    ),
     "searchSellTitle": MessageLookupByLibrary.simpleMessage("Sell"),
     "searchTitle": MessageLookupByLibrary.simpleMessage("Search"),
     "searchToTitle": MessageLookupByLibrary.simpleMessage("To"),

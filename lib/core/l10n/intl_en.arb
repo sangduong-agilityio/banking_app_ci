@@ -93,6 +93,9 @@
   "searchInterestRateDescription":"Search for interest rate",
   "searchExchangeRateDescription":"Search for exchange rate",
   "searchExchangeDescription":"Exchange amount of money",
+  "searchCurrentRateCalculatorTitle":"Current rate",
+  "searchAmoutTitle":"Amount",
+  "searchSelectedCurrencyTitle":"Select the currency",
   "@segmentTransactionsHistory": {
     "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Transactions history feature"

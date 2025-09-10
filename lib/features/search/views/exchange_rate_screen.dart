@@ -62,16 +62,13 @@ class ExchangeRateScreen extends StatelessWidget {
                           flex: columns[0].flex,
                           child: Row(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: Image.network(
-                                  rate.flag,
-                                  width: 24,
-                                  height: 16,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) =>
-                                      const Icon(Icons.flag),
-                                ),
+                              Image.network(
+                                rate.flag,
+                                width: 40,
+                                height: 30,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) =>
+                                    const Icon(Icons.flag),
                               ),
                               const SizedBox(width: 8),
                               Text(

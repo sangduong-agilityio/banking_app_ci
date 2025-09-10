@@ -12,8 +12,8 @@ class InterestRateInitializeEvt extends SearchEvt {}
 class ExchangeRateInitializeEvt extends SearchEvt {}
 
 class ExchangeInitializeEvt extends SearchEvt {
-  final String fromCurrency;
-  final String toCurrency;
+  final String? fromCurrency;
+  final String? toCurrency;
 
   const ExchangeInitializeEvt(this.fromCurrency, this.toCurrency);
 

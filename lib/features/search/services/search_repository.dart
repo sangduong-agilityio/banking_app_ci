@@ -69,14 +69,15 @@ class SearchRepositoryImplement implements SearchRepository {
     final response = await _client.get(
       apiUrl,
       queryParams: {
-        'select': 'from,to,rate',
-        'from': 'eq.$fromCurrency',
-        'to': 'eq.$toCurrency',
+        'select': 'from_currency,to_currency,from_amount,to_amount,rate',
+        'from_currency': 'eq.$fromCurrency',
+        'to_currency': 'eq.$toCurrency',
+        'limit': '1',
       },
     );
 
     final jsonData = (response.data as List).first;
-    final rate = double.parse(jsonData['rate'].toString());
+    final rate = double.tryParse(jsonData['rate'].toString()) ?? 0;
     final toAmount = fromAmount * rate;
 
     return ExchangeModel(

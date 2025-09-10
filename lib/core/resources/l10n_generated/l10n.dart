@@ -589,6 +589,31 @@ class S {
     );
   }
 
+  /// `Current rate`
+  String get searchCurrentRateCalculatorTitle {
+    return Intl.message(
+      'Current rate',
+      name: 'searchCurrentRateCalculatorTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get searchAmoutTitle {
+    return Intl.message('Amount', name: 'searchAmoutTitle', desc: '', args: []);
+  }
+
+  /// `Select the currency`
+  String get searchSelectedCurrencyTitle {
+    return Intl.message(
+      'Select the currency',
+      name: 'searchSelectedCurrencyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Recent Transactions`
   String get transactionsHistoryTitle {
     return Intl.message(

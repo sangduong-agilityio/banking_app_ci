@@ -1,18 +1,22 @@
 class DefaultRates {
-  static final Map<String, Map<String, double>> rates = {
-    'USD': {
-      'VND': 24300,
-      'EUR': 0.85,
-      'GBP': 0.75,
-      'JPY': 149,
-      'CNY': 7.3,
-      'KRW': 1330,
-    },
-    'VND': {'USD': 0.000041, 'EUR': 0.000035, 'GBP': 0.000031},
-    'EUR': {'USD': 1.18, 'VND': 28600, 'GBP': 0.88},
+  static final Map<String, double> baseRates = {
+    'USD': 1.0,
+    'VND': 24300,
+    'EUR': 0.92,
+    'GBP': 0.79,
+    'JPY': 147.0,
+    'CNY': 7.3,
+    'KRW': 1330,
+    'SGD': 1.34,
+    'CAD': 1.36,
+    'AUD': 1.52,
   };
 
   static double? getRate(String from, String to) {
-    return rates[from]?[to];
+    final fromRate = baseRates[from];
+    final toRate = baseRates[to];
+    if (fromRate == null || toRate == null) return null;
+
+    return toRate / fromRate;
   }
 }

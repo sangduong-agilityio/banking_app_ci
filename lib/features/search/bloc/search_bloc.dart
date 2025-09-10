@@ -1,3 +1,4 @@
+import 'package:banking_app/core/utils/currency.dart';
 import 'package:banking_app/core/utils/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'search_event.dart';
@@ -17,6 +18,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
 
   final SearchRepository repo;
 
+  /// Initialize and fetch interest rates
   Future<void> _onInitializeInterestRate(
     InterestRateInitializeEvt event,
     Emitter<SearchState> emit,
@@ -35,6 +37,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
+  /// Fetch list of exchange rates
   Future<void> _onInitializeExchangeRate(
     ExchangeRateInitializeEvt event,
     Emitter<SearchState> emit,
@@ -53,22 +56,38 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
+  /// Initialize exchange screen:
+  /// Fetch currencies
+  /// Pick default from/to currencies
   Future<void> _onInitializeExchange(
     ExchangeInitializeEvt event,
     Emitter<SearchState> emit,
   ) async {
-    final currencies = await repo.fetchCurrencies();
-    emit(
-      state.copyWith(
-        fromCurrency: event.fromCurrency,
-        toCurrency: event.toCurrency,
-        currencies: currencies,
-      ),
-    );
+    emit(state.copyWith(status: const SearchStatus.loading()));
+    try {
+      final currencies = await repo.fetchCurrencies();
+      final defaultFrom = currencies.isNotEmpty ? currencies.first.code : null;
+      final defaultTo = currencies.length > 1 ? currencies[1].code : null;
 
-    add(ExchangeRateChangedEvt(event.fromCurrency, event.toCurrency));
+      emit(
+        state.copyWith(
+          currencies: currencies,
+          fromCurrency: defaultFrom,
+          toCurrency: defaultTo,
+          status: const SearchStatus.success(),
+        ),
+      );
+
+      if (defaultFrom != null && defaultTo != null) {
+        add(ExchangeRateChangedEvt(defaultFrom, defaultTo));
+      }
+    } catch (_) {
+      emit(state.copyWith(status: const SearchStatus.failure()));
+    }
   }
 
+  /// Fetch exchange rate when user changes
+  /// "from currency" or "to currency"
   Future<void> _onExchangeRateChanged(
     ExchangeRateChangedEvt event,
     Emitter<SearchState> emit,
@@ -101,7 +120,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       );
 
       _recalculateAmounts(emit, rate);
-    } catch (e) {
+    } catch (_) {
       final fallbackRate = DefaultRates.getRate(
         event.fromCurrency,
         event.toCurrency,
@@ -119,70 +138,64 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
+  /// Recalculate amounts based on the current exchange rate
   void _recalculateAmounts(Emitter<SearchState> emit, double rate) {
-    if (rate <= 0) return;
+    final newToAmount = CurrencyUtils.convertFromTo(state.fromAmount, rate);
+    final newFromAmount = CurrencyUtils.convertToFrom(state.toAmount, rate);
 
-    final currentFromAmount = state.fromAmount;
-    final currentToAmount = state.toAmount;
-
-    if (currentFromAmount != null && currentFromAmount > 0) {
-      final newToAmount = double.parse(
-        (currentFromAmount * rate).toStringAsFixed(2),
-      );
+    if (newToAmount != null) {
       emit(state.copyWith(toAmount: newToAmount));
-    } else if (currentToAmount != null && currentToAmount > 0) {
-      final newFromAmount = double.parse(
-        (currentToAmount / rate).toStringAsFixed(2),
-      );
+    } else if (newFromAmount != null) {
       emit(state.copyWith(fromAmount: newFromAmount));
     }
   }
 
+  /// Handle user input for converting currencies
   void _onConvertCurrency(ConvertCurrencyEvt event, Emitter<SearchState> emit) {
     final rate = state.exchangeRate;
     if (rate == null || rate <= 0) return;
 
     if (event.isFromAmount) {
-      final toAmount = event.amount > 0 ? event.amount * rate : null;
+      final toAmount = CurrencyUtils.convertFromTo(event.amount, rate);
       emit(state.copyWith(fromAmount: event.amount, toAmount: toAmount));
     } else {
-      final fromAmount = event.amount > 0 ? event.amount / rate : null;
+      final fromAmount = CurrencyUtils.convertToFrom(event.amount, rate);
       emit(state.copyWith(fromAmount: fromAmount, toAmount: event.amount));
     }
   }
 
+  /// Swap "from" and "to" currencies
   void _onSwapCurrencies(SwapCurrenciesEvt event, Emitter<SearchState> emit) {
-    if (state.fromCurrency == null || state.toCurrency == null) return;
-
-    final newFromCurrency = state.toCurrency!;
-    final newToCurrency = state.fromCurrency!;
-
-    final newFromAmount = state.toAmount;
-    final newToAmount = state.fromAmount;
-
-    final newExchangeRate =
-        state.exchangeRate != null && state.exchangeRate! > 0
-        ? 1 / state.exchangeRate!
-        : state.exchangeRate;
+    final swapped = CurrencyUtils.swap(
+      fromCurrency: state.fromCurrency,
+      toCurrency: state.toCurrency,
+      fromAmount: state.fromAmount,
+      toAmount: state.toAmount,
+      exchangeRate: state.exchangeRate,
+    );
 
     emit(
       state.copyWith(
-        fromCurrency: newFromCurrency,
-        toCurrency: newToCurrency,
-        fromAmount: newFromAmount,
-        toAmount: newToAmount,
-        exchangeRate: newExchangeRate,
+        fromCurrency: swapped.fromCurrency,
+        toCurrency: swapped.toCurrency,
+        fromAmount: swapped.fromAmount,
+        toAmount: swapped.toAmount,
+        exchangeRate: swapped.exchangeRate,
       ),
     );
 
-    if (newFromAmount != null && newFromAmount > 0 && newExchangeRate != null) {
-      final recalculatedToAmount = double.parse(
-        (newFromAmount * newExchangeRate).toStringAsFixed(2),
+    if (swapped.fromAmount != null &&
+        swapped.fromAmount! > 0 &&
+        swapped.exchangeRate != null) {
+      final recalculatedToAmount = CurrencyUtils.convertFromTo(
+        swapped.fromAmount,
+        swapped.exchangeRate ?? 0,
       );
       emit(state.copyWith(toAmount: recalculatedToAmount));
     }
   }
 
+  /// Handle selecting currency (from or to)
   void _onSelectCurrency(SelectCurrencyEvt event, Emitter<SearchState> emit) {
     final newFromCurrency = event.isFromCurrency
         ? event.currency
