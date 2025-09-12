@@ -103,7 +103,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
   }
 
   void _updateController(TextEditingController controller, double? amount) {
-    final newText = amount != null ? AmountFormatter.formatAmount(amount) : '';
+    final newText = amount != null ? FormatterUtils.formatAmount(amount) : '';
 
     if (controller.text == newText) return;
 

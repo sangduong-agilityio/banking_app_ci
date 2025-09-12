@@ -30,6 +30,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(type) => "${type} fee";
 
+  static String m5(type) => "Available balance: ${type}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "accountCardHolderTitle": MessageLookupByLibrary.simpleMessage(
@@ -256,8 +258,44 @@ class MessageLookup extends MessageLookupByLibrary {
     "transactionsHistoryTitle": MessageLookupByLibrary.simpleMessage(
       "Recent Transactions",
     ),
+    "transferAccountSelected": MessageLookupByLibrary.simpleMessage(
+      "Select Account",
+    ),
+    "transferAmountLabel": MessageLookupByLibrary.simpleMessage("Amount"),
+    "transferAnotherBankTitle": MessageLookupByLibrary.simpleMessage(
+      "Transfer to\nanother bank",
+    ),
+    "transferAvailableBalanceTitle": m5,
+    "transferCardNumberLabel": MessageLookupByLibrary.simpleMessage(
+      "Card number",
+    ),
+    "transferChooseBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
+      "Choose beneficiary",
+    ),
+    "transferChooseTransactionTitle": MessageLookupByLibrary.simpleMessage(
+      "Choose transaction",
+    ),
+    "transferConfirmButton": MessageLookupByLibrary.simpleMessage("Confirm"),
+    "transferContentLabel": MessageLookupByLibrary.simpleMessage("Content"),
+    "transferFindBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
+      "Find Beneficiary",
+    ),
     "transferMoneyTitle": MessageLookupByLibrary.simpleMessage(
       "Tranfer money to",
+    ),
+    "transferNameLabel": MessageLookupByLibrary.simpleMessage("Name"),
+    "transferSameBankTitle": MessageLookupByLibrary.simpleMessage(
+      "Transfer to\nthe same bank",
+    ),
+    "transferSaveBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
+      "Save to beneficiary directory",
+    ),
+    "transferSelectedAccountHint": MessageLookupByLibrary.simpleMessage(
+      "Choose account / card",
+    ),
+    "transferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
+    "transferViaCardNumberTitle": MessageLookupByLibrary.simpleMessage(
+      "Transfer via\ncard number",
     ),
     "validatorConfirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
       "Confirm Password is required",

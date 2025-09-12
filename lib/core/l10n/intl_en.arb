@@ -192,6 +192,34 @@
       }
     }
   },
+ "@segmentTransfer": {
+      "---------------------------": "---------------------------",
+      "description": "Store translations that are likely to be used only in Transfer feature"
+    },
+ "transferTitle":"Transfer",
+ "transferAccountSelected":"Select Account",
+ "transferSelectedAccountHint":"Choose account / card",
+ "transferViaCardNumberTitle":"Transfer via\ncard number",
+ "transferSameBankTitle":"Transfer to\nthe same bank",
+ "transferAnotherBankTitle":"Transfer to\nanother bank",
+ "transferChooseTransactionTitle":"Choose transaction",
+ "transferChooseBeneficiaryTitle":"Choose beneficiary",
+ "transferFindBeneficiaryTitle":"Find Beneficiary",
+ "transferAvailableBalanceTitle": "Available balance: {type}",
+ "transferNameLabel":"Name",
+ "transferCardNumberLabel":"Card number",
+ "transferSaveBeneficiaryTitle":"Save to beneficiary directory",
+ "transferConfirmButton":"Confirm",
+ "transferAmountLabel":"Amount",
+ "transferContentLabel":"Content",
+  "@transferAvailableBalanceTitle": {
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "amount"
+      }
+    }
+  },
  "@segmentSetting": {
       "---------------------------": "---------------------------",
       "description": "Store translations that are likely to be used only in Setting feature"

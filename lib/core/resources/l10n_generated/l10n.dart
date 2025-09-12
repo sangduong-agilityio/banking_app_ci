@@ -1054,6 +1054,156 @@ class S {
     );
   }
 
+  /// `Transfer`
+  String get transferTitle {
+    return Intl.message('Transfer', name: 'transferTitle', desc: '', args: []);
+  }
+
+  /// `Select Account`
+  String get transferAccountSelected {
+    return Intl.message(
+      'Select Account',
+      name: 'transferAccountSelected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose account / card`
+  String get transferSelectedAccountHint {
+    return Intl.message(
+      'Choose account / card',
+      name: 'transferSelectedAccountHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer via\ncard number`
+  String get transferViaCardNumberTitle {
+    return Intl.message(
+      'Transfer via\ncard number',
+      name: 'transferViaCardNumberTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer to\nthe same bank`
+  String get transferSameBankTitle {
+    return Intl.message(
+      'Transfer to\nthe same bank',
+      name: 'transferSameBankTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer to\nanother bank`
+  String get transferAnotherBankTitle {
+    return Intl.message(
+      'Transfer to\nanother bank',
+      name: 'transferAnotherBankTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose transaction`
+  String get transferChooseTransactionTitle {
+    return Intl.message(
+      'Choose transaction',
+      name: 'transferChooseTransactionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose beneficiary`
+  String get transferChooseBeneficiaryTitle {
+    return Intl.message(
+      'Choose beneficiary',
+      name: 'transferChooseBeneficiaryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Find Beneficiary`
+  String get transferFindBeneficiaryTitle {
+    return Intl.message(
+      'Find Beneficiary',
+      name: 'transferFindBeneficiaryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Available balance: {type}`
+  String transferAvailableBalanceTitle(String type) {
+    return Intl.message(
+      'Available balance: $type',
+      name: 'transferAvailableBalanceTitle',
+      desc: '',
+      args: [type],
+    );
+  }
+
+  /// `Name`
+  String get transferNameLabel {
+    return Intl.message('Name', name: 'transferNameLabel', desc: '', args: []);
+  }
+
+  /// `Card number`
+  String get transferCardNumberLabel {
+    return Intl.message(
+      'Card number',
+      name: 'transferCardNumberLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save to beneficiary directory`
+  String get transferSaveBeneficiaryTitle {
+    return Intl.message(
+      'Save to beneficiary directory',
+      name: 'transferSaveBeneficiaryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get transferConfirmButton {
+    return Intl.message(
+      'Confirm',
+      name: 'transferConfirmButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Amount`
+  String get transferAmountLabel {
+    return Intl.message(
+      'Amount',
+      name: 'transferAmountLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Content`
+  String get transferContentLabel {
+    return Intl.message(
+      'Content',
+      name: 'transferContentLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get settingPasswordTitle {
     return Intl.message(

@@ -130,13 +130,13 @@ class ListViewHistory extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    DateTimeUtils.formatMonthYear(history.paymentDate),
+                    FormatterUtils.formatMonthYear(history.paymentDate),
                     style: context.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   Text(
-                    DateTimeUtils.formatDate(history.paymentDate),
+                    FormatterUtils.formatDate(history.paymentDate),
                     style: context.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),

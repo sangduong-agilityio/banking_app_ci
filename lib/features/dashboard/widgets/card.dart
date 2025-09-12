@@ -827,7 +827,7 @@ class _CreditCardState extends State<CreditCard>
                         ),
                         SizedBox(height: 11),
                         Text(
-                          CardFormatter.maskCardNumber(widget.data.cardNumber),
+                          FormatterUtils.maskCardNumber(widget.data.cardNumber),
                           style: context.titleMedium?.copyWith(
                             color: context.colorScheme.onPrimary,
                           ),

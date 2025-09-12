@@ -83,7 +83,7 @@ class TransferState extends Equatable {
       content: content ?? this.content,
       transactionFee: transactionFee ?? this.transactionFee,
       saveToDirectory: saveToDirectory ?? this.saveToDirectory,
-      errorMessage: errorMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
       transactionId: transactionId ?? this.transactionId,
       transaction: transaction ?? this.transaction,
     );

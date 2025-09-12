@@ -1,3 +1,4 @@
+import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class TransactionCard extends StatelessWidget {
@@ -25,20 +26,9 @@ class TransactionCard extends StatelessWidget {
         padding: padding,
         decoration: BoxDecoration(
           color: isSelected
-              ? Theme.of(context).colorScheme.secondary
+              ? context.colorScheme.secondary
               : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(borderRadius),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withOpacity(0.3),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ]
-              : [],
         ),
         child: child,
       ),

@@ -1,3 +1,4 @@
+import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -79,10 +80,7 @@ class _BASelectionSheetState<T> extends State<BASelectionSheet<T>> {
             padding: EdgeInsets.all(24),
             child: Row(
               children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+                Text(widget.title, style: context.displaySmall),
                 Spacer(),
                 IconButton(
                   onPressed: () => Navigator.pop(context),

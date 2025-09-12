@@ -43,18 +43,20 @@ class AddNewBeneficiaryEvt extends TransferEvt {
 }
 
 class UpdateTransferFormEvt extends TransferEvt {
-  final String? recipientName;
+  final String? name;
   final String? cardNumber;
   final double? amount;
   final String? content;
   final bool? saveToDirectory;
+  final Bank? bank;
 
   const UpdateTransferFormEvt({
     this.amount,
     this.content,
-    this.recipientName,
+    this.name,
     this.saveToDirectory,
     this.cardNumber,
+    this.bank,
   });
 
   @override
@@ -63,8 +65,19 @@ class UpdateTransferFormEvt extends TransferEvt {
     content,
     saveToDirectory,
     cardNumber,
-    content,
+    bank,
+    name,
   ];
+}
+
+class FillTransferDetailsEvt extends TransferEvt {
+  final double amount;
+  final String content;
+
+  const FillTransferDetailsEvt({required this.amount, required this.content});
+
+  @override
+  List<Object> get props => [amount, content];
 }
 
 class CalculateTransactionFeeEvt extends TransferEvt {}

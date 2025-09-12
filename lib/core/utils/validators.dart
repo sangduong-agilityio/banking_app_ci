@@ -78,6 +78,47 @@ mixin InputValidationMixin {
 
     return null;
   }
+
+  static String? validateRequired(String? value, String fieldName) {
+    if (value == null || value.trim().isEmpty) {
+      return "$fieldName is required";
+    }
+    return null;
+  }
+
+  static String? validateCardNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Card number is required";
+    }
+
+    final cleanValue = value.replaceAll(' ', '');
+    if (cleanValue.length < 10) {
+      return "Card number must be 10 digits";
+    }
+
+    return null;
+  }
+
+  static String? validateAmount(String? value, double? availableBalance) {
+    if (value == null || value.isEmpty) {
+      return "Amount is required";
+    }
+
+    final amount = double.tryParse(value);
+    if (amount == null || amount <= 0) {
+      return "Please enter a valid amount";
+    }
+
+    if (amount < 0.01) {
+      return "Minimum amount is \$0.01";
+    }
+
+    if (availableBalance != null && amount > availableBalance) {
+      return "Insufficient balance";
+    }
+
+    return null;
+  }
 }
 
 class RegExpValidator {
