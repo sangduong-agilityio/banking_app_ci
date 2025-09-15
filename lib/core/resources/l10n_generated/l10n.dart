@@ -69,6 +69,16 @@ class S {
     return Intl.message('Setting', name: 'settingTitle', desc: '', args: []);
   }
 
+  /// `No items found`
+  String get noItemsFoundTitle {
+    return Intl.message(
+      'No items found',
+      name: 'noItemsFoundTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email is required`
   String get validatorEmailRequired {
     return Intl.message(
@@ -624,66 +634,6 @@ class S {
     );
   }
 
-  /// `Tranfer money to`
-  String get transferMoneyTitle {
-    return Intl.message(
-      'Tranfer money to',
-      name: 'transferMoneyTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `No fee`
-  String get tranfersMoneyNoFeeTitle {
-    return Intl.message(
-      'No fee',
-      name: 'tranfersMoneyNoFeeTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select your account`
-  String get tranfersMoneySelectAccount {
-    return Intl.message(
-      'Select your account',
-      name: 'tranfersMoneySelectAccount',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Send`
-  String get tranfersMoneySendButton {
-    return Intl.message(
-      'Send',
-      name: 'tranfersMoneySendButton',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Close`
-  String get tranfersMoneyCloseButton {
-    return Intl.message(
-      'Close',
-      name: 'tranfersMoneyCloseButton',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View Recepit`
-  String get tranfersMoneyViewReceipt {
-    return Intl.message(
-      'View Recepit',
-      name: 'tranfersMoneyViewReceipt',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Account`
   String get accountTitle {
     return Intl.message('Account', name: 'accountTitle', desc: '', args: []);
@@ -1199,6 +1149,16 @@ class S {
     return Intl.message(
       'Content',
       name: 'transferContentLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose beneficiary bank`
+  String get transferSelectBeneficiary {
+    return Intl.message(
+      'Choose beneficiary bank',
+      name: 'transferSelectBeneficiary',
       desc: '',
       args: [],
     );

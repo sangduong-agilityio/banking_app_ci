@@ -28,6 +28,7 @@ class BATextField extends StatefulWidget {
     this.isLast = false,
     this.isPassword = false,
     this.onChanged,
+    this.hintTextStyle,
   });
 
   final String? name;
@@ -50,6 +51,7 @@ class BATextField extends StatefulWidget {
   final Color? fillColor;
   final bool isPassword;
   final ValueChanged<String?>? onChanged;
+  final TextStyle? hintTextStyle;
 
   @override
   State<BATextField> createState() => _BATextFieldState();
@@ -99,9 +101,11 @@ class _BATextFieldState extends State<BATextField> {
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             hintText: widget.hint,
-            hintStyle: context.titleSmall?.copyWith(
-              color: context.colorScheme.onTertiary,
-            ),
+            hintStyle:
+                widget.hintTextStyle ??
+                context.titleSmall?.copyWith(
+                  color: context.colorScheme.onTertiary,
+                ),
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? IconButton(

@@ -3,7 +3,6 @@ import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
-import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyCard extends StatelessWidget {
@@ -143,106 +142,6 @@ class ExchangeBox extends StatelessWidget {
             onPressed: () {},
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CurrencySelector extends StatelessWidget {
-  final String title;
-  final List<CurrencyModel> currencies;
-  final String selectedCurrency;
-  final Function(String) onCurrencySelected;
-
-  const CurrencySelector({
-    super.key,
-    required this.title,
-    required this.currencies,
-    required this.selectedCurrency,
-    required this.onCurrencySelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.7,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              children: [
-                Text(
-                  title,
-                  style: context.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-            Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: currencies.length,
-                itemBuilder: (context, index) {
-                  final currency = currencies[index];
-                  final isSelected = currency.code == selectedCurrency;
-                  return InkWell(
-                    onTap: () => onCurrencySelected(currency.code),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: currency.code,
-                                    style: context.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: isSelected
-                                          ? context.colorScheme.secondary
-                                          : context.colorScheme.onSurface
-                                                .withOpacity(0.7),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: " ( ${currency.name} )",
-                                    style: context.titleMedium?.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      color: isSelected
-                                          ? context.colorScheme.secondary
-                                          : context.colorScheme.onSurface
-                                                .withOpacity(0.6),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          if (isSelected)
-                            Icon(
-                              Icons.check,
-                              color: context.colorScheme.secondary,
-                            ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

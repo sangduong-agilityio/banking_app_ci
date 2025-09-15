@@ -1,14 +1,12 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/core/widgets/bottom_sheet.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transfer/bloc/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/bloc/transfer_event.dart';
 import 'package:banking_app/features/transfer/bloc/transfer_state.dart';
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/widgets/account_section.dart';
 import 'package:banking_app/features/transfer/widgets/beneficiary_selection.dart';
 import 'package:banking_app/features/transfer/widgets/transaction_selection.dart';
@@ -71,10 +69,7 @@ class _TransferScreenState extends State<TransferScreen> {
                       TransactionTypeSelection(state: state),
                       SizedBox(height: 32),
                       // Beneficiary Selection
-                      BeneficiarySelection(
-                        state: state,
-                        showBeneficiaryDialog: _showBeneficiaryDialog,
-                      ),
+                      BeneficiarySelection(state: state),
                       SizedBox(height: 32),
                       // Transfer Form Section
                       TransferFormSection(),
@@ -86,28 +81,6 @@ class _TransferScreenState extends State<TransferScreen> {
             },
           ),
         ),
-      ),
-    );
-  }
-
-  void _showBeneficiaryDialog(List<Bank> banks) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) => BASelectionSheet<Bank>(
-        title: "Choose Beneficiary Bank",
-        items: banks,
-        enableSearch: true,
-        searchFilter: (bank, query) =>
-            bank.name.toLowerCase().contains(query.toLowerCase()),
-        itemBuilder: (context, bank) => ListTile(
-          leading: Icon(Icons.account_balance),
-          title: Text(bank.name),
-          subtitle: Text(bank.code),
-          trailing: Icon(Icons.arrow_forward_ios, size: 16),
-        ),
-        onItemSelected: (bank) {},
       ),
     );
   }

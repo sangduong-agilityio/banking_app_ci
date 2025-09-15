@@ -21,8 +21,6 @@ class AccountSection extends StatelessWidget {
     return BlocSelector<TransferBloc, TransferState, Account?>(
       selector: (state) => state.selectedAccount,
       builder: (context, selectedAccount) {
-        final maskedNumber = selectedAccount?.maskedNumber ?? "";
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,10 +28,12 @@ class AccountSection extends StatelessWidget {
               onTap: () => _showAccountSelector(context),
               child: AbsorbPointer(
                 child: BATextField(
-                  controller: TextEditingController(text: maskedNumber),
+                  controller: TextEditingController(
+                    text: selectedAccount?.maskedNumber ?? '',
+                  ),
                   hint: S.current.transferSelectedAccountHint,
                   suffixIcon: Icon(
-                    Icons.keyboard_arrow_down,
+                    Icons.keyboard_arrow_down_rounded,
                     color: Colors.grey[600],
                     size: 20,
                   ),

@@ -4,11 +4,13 @@ import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/formatters.dart';
 import 'package:banking_app/core/widgets/assets.dart';
+import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/search/bloc/search_bloc.dart';
 import 'package:banking_app/features/search/bloc/search_event.dart';
 import 'package:banking_app/features/search/bloc/search_state.dart';
+import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/widgets/curreny_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,20 +79,19 @@ class _ExchangeScreenState extends State<ExchangeScreen>
       context: context,
       barrierDismissible: true,
       builder: (dialogContext) {
-        return Dialog(
-          child: CurrencySelector(
-            title: S.current.searchSelectedCurrencyTitle,
-            currencies: state.currencies ?? [],
-            selectedCurrency: isFromCurrency
-                ? state.fromCurrency ?? ''
-                : state.toCurrency ?? '',
-            onCurrencySelected: (currency) {
-              context.read<SearchBloc>().add(
-                SelectCurrencyEvt(isFromCurrency, currency),
-              );
-              Navigator.pop(dialogContext);
-            },
-          ),
+        return BASelectorDialog<CurrencyModel>(
+          title: S.current.searchSelectedCurrencyTitle,
+          items: state.currencies ?? [],
+          selectedValue: isFromCurrency
+              ? (state.fromCurrency ?? '')
+              : (state.toCurrency ?? ''),
+          value: (c) => c.code,
+          label: (c) => "${c.code} (${c.name})",
+          enableSearch: false,
+          enableDivider: false,
+          onSelected: (currency) {
+            bloc.add(SelectCurrencyEvt(isFromCurrency, currency.code));
+          },
         );
       },
     );
@@ -98,7 +99,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
 
   Future<void> _swapCurrencies(BuildContext context) async {
     await _swapAnimationController.forward();
-    context.read<SearchBloc>().add(SwapCurrenciesEvt());
+    if (context.mounted) context.read<SearchBloc>().add(SwapCurrenciesEvt());
     await _swapAnimationController.reverse();
   }
 

@@ -75,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "landingTitle": MessageLookupByLibrary.simpleMessage("Jane Cooper"),
     "messageTitle": MessageLookupByLibrary.simpleMessage("Message"),
+    "noItemsFoundTitle": MessageLookupByLibrary.simpleMessage("No items found"),
     "payBillAddressTitle": MessageLookupByLibrary.simpleMessage("Address"),
     "payBillAllTitle": MessageLookupByLibrary.simpleMessage("All the Bills"),
     "payBillAmountTitle": MessageLookupByLibrary.simpleMessage("Amount"),
@@ -246,15 +247,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enter your user name",
     ),
     "signUpWelcomeTitle": MessageLookupByLibrary.simpleMessage("Welcome to us"),
-    "tranfersMoneyCloseButton": MessageLookupByLibrary.simpleMessage("Close"),
-    "tranfersMoneyNoFeeTitle": MessageLookupByLibrary.simpleMessage("No fee"),
-    "tranfersMoneySelectAccount": MessageLookupByLibrary.simpleMessage(
-      "Select your account",
-    ),
-    "tranfersMoneySendButton": MessageLookupByLibrary.simpleMessage("Send"),
-    "tranfersMoneyViewReceipt": MessageLookupByLibrary.simpleMessage(
-      "View Recepit",
-    ),
     "transactionsHistoryTitle": MessageLookupByLibrary.simpleMessage(
       "Recent Transactions",
     ),
@@ -280,15 +272,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferFindBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Find Beneficiary",
     ),
-    "transferMoneyTitle": MessageLookupByLibrary.simpleMessage(
-      "Tranfer money to",
-    ),
     "transferNameLabel": MessageLookupByLibrary.simpleMessage("Name"),
     "transferSameBankTitle": MessageLookupByLibrary.simpleMessage(
       "Transfer to\nthe same bank",
     ),
     "transferSaveBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Save to beneficiary directory",
+    ),
+    "transferSelectBeneficiary": MessageLookupByLibrary.simpleMessage(
+      "Choose beneficiary bank",
     ),
     "transferSelectedAccountHint": MessageLookupByLibrary.simpleMessage(
       "Choose account / card",

@@ -7,6 +7,7 @@
   "homeTitle":"Home",
   "messageTitle":"Message",
   "settingTitle":"Setting",
+  "noItemsFoundTitle":"No items found",
   "validatorEmailRequired": "Email is required",
   "validatorEmailWrongFormat": "Email is invalid format",
   "validatorNameRequired": "Name is required",
@@ -101,20 +102,6 @@
     "description": "Store translations that are likely to be used only in Transactions history feature"
   },
   "transactionsHistoryTitle":"Recent Transactions",
-  "@segmentTransferMoney": {
-    "---------------------------": "---------------------------",
-    "description": "Store translations that are likely to be used only in Transfer Money feature"
-  },
-  "transferMoneyTitle":"Tranfer money to",
-  "tranfersMoneyNoFeeTitle":"No fee",
-  "tranfersMoneySelectAccount":"Select your account",
-  "tranfersMoneySendButton":"Send",
-  "tranfersMoneyCloseButton":"Close",
-  "tranfersMoneyViewReceipt":"View Recepit",
-  "@segmentAccount": {
-    "---------------------------": "---------------------------",
-    "description": "Store translations that are likely to be used only in Account feature"
-  },
   "accountTitle":"Account",
   "accountSaveButton":"Save Changes",
   "accountCardHolderTitle":"Card Holder Name",
@@ -212,6 +199,7 @@
  "transferConfirmButton":"Confirm",
  "transferAmountLabel":"Amount",
  "transferContentLabel":"Content",
+ "transferSelectBeneficiary":"Choose beneficiary bank",
   "@transferAvailableBalanceTitle": {
     "placeholders": {
       "type": {
