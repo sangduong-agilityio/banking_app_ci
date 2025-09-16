@@ -179,10 +179,10 @@ class S {
     );
   }
 
-  /// `Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,`
+  /// `Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,`
   String get landingDescription {
     return Intl.message(
-      'Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,',
+      'Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,',
       name: 'landingDescription',
       desc: '',
       args: [],
@@ -284,20 +284,20 @@ class S {
     );
   }
 
-  /// `By creating an account your aggree \nto our `
+  /// `By creating an account your agree \nto our `
   String get signUpTermAndConditions {
     return Intl.message(
-      'By creating an account your aggree \nto our ',
+      'By creating an account your agree \nto our ',
       name: 'signUpTermAndConditions',
       desc: '',
       args: [],
     );
   }
 
-  /// `Term and Condtions`
+  /// `Term and Conditions`
   String get signUpTermAndConditionButton {
     return Intl.message(
-      'Term and Condtions',
+      'Term and Conditions',
       name: 'signUpTermAndConditionButton',
       desc: '',
       args: [],
@@ -409,10 +409,10 @@ class S {
     );
   }
 
-  /// `Creadit card`
+  /// `Credit card`
   String get homeCreditCardTitle {
     return Intl.message(
-      'Creadit card',
+      'Credit card',
       name: 'homeCreditCardTitle',
       desc: '',
       args: [],
@@ -519,10 +519,10 @@ class S {
     return Intl.message('Sell', name: 'searchSellTitle', desc: '', args: []);
   }
 
-  /// `:Language`
+  /// `Language`
   String get searchLanguageTitle {
     return Intl.message(
-      ':Language',
+      'Language',
       name: 'searchLanguageTitle',
       desc: '',
       args: [],
@@ -634,86 +634,6 @@ class S {
     );
   }
 
-  /// `Account`
-  String get accountTitle {
-    return Intl.message('Account', name: 'accountTitle', desc: '', args: []);
-  }
-
-  /// `Save Changes`
-  String get accountSaveButton {
-    return Intl.message(
-      'Save Changes',
-      name: 'accountSaveButton',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Card Holder Name`
-  String get accountCardHolderTitle {
-    return Intl.message(
-      'Card Holder Name',
-      name: 'accountCardHolderTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Expiry date`
-  String get accountExpiryDateTitle {
-    return Intl.message(
-      'Expiry date',
-      name: 'accountExpiryDateTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `DETAIL INFORMATION`
-  String get accountDetailInfoTitle {
-    return Intl.message(
-      'DETAIL INFORMATION',
-      name: 'accountDetailInfoTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Name`
-  String get accountNameLabel {
-    return Intl.message('Name', name: 'accountNameLabel', desc: '', args: []);
-  }
-
-  /// `Phone Number`
-  String get accountPhoneNumberLabel {
-    return Intl.message(
-      'Phone Number',
-      name: 'accountPhoneNumberLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `E-mail`
-  String get accountEmailLabel {
-    return Intl.message(
-      'E-mail',
-      name: 'accountEmailLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Home Address`
-  String get accountHomeAddressLabel {
-    return Intl.message(
-      'Home Address',
-      name: 'accountHomeAddressLabel',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Pay the bill`
   String get payBillTitle {
     return Intl.message(
@@ -754,10 +674,10 @@ class S {
     );
   }
 
-  /// `You 've pay your {type} bill!`
+  /// `You've pay your {type} bill!`
   String payBillTracsactionTitle(String type) {
     return Intl.message(
-      'You \'ve pay your $type bill!',
+      'You\'ve pay your $type bill!',
       name: 'payBillTracsactionTitle',
       desc: '',
       args: [type],
@@ -954,10 +874,10 @@ class S {
     );
   }
 
-  /// `Type {type} bill code `
+  /// `Type {type} bill code`
   String payBillTypeLabel(String type) {
     return Intl.message(
-      'Type $type bill code ',
+      'Type $type bill code',
       name: 'payBillTypeLabel',
       desc: '',
       args: [type],
@@ -1224,6 +1144,36 @@ class S {
     );
   }
 
+  /// `You will be returned to the login screen`
+  String get settingLogoutContent {
+    return Intl.message(
+      'You will be returned to the login screen',
+      name: 'settingLogoutContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log out`
+  String get settingLogoutLogoutButton {
+    return Intl.message(
+      'Log out',
+      name: 'settingLogoutLogoutButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get settingCancelButton {
+    return Intl.message(
+      'Cancel',
+      name: 'settingCancelButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Recent password`
   String get settingRecentPasswordLabel {
     return Intl.message(
@@ -1264,31 +1214,81 @@ class S {
     );
   }
 
-  /// `You will be returned to the login screen`
-  String get settingLogoutContent {
+  /// `Account`
+  String get accountTitle {
+    return Intl.message('Account', name: 'accountTitle', desc: '', args: []);
+  }
+
+  /// `Save Changes`
+  String get accountSaveButton {
     return Intl.message(
-      'You will be returned to the login screen',
-      name: 'settingLogoutContent',
+      'Save Changes',
+      name: 'accountSaveButton',
       desc: '',
       args: [],
     );
   }
 
-  /// `Log out`
-  String get settingLogoutLogoutButton {
+  /// `Card Holder Name`
+  String get accountCardHolderTitle {
     return Intl.message(
-      'Log out',
-      name: 'settingLogoutLogoutButton',
+      'Card Holder Name',
+      name: 'accountCardHolderTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Cancel`
-  String get settingCancelButton {
+  /// `Expiry date`
+  String get accountExpiryDateTitle {
     return Intl.message(
-      'Cancel',
-      name: 'settingCancelButton',
+      'Expiry date',
+      name: 'accountExpiryDateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DETAIL INFORMATION`
+  String get accountDetailInfoTitle {
+    return Intl.message(
+      'DETAIL INFORMATION',
+      name: 'accountDetailInfoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Name`
+  String get accountNameLabel {
+    return Intl.message('Name', name: 'accountNameLabel', desc: '', args: []);
+  }
+
+  /// `Phone Number`
+  String get accountPhoneNumberLabel {
+    return Intl.message(
+      'Phone Number',
+      name: 'accountPhoneNumberLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `E-mail`
+  String get accountEmailLabel {
+    return Intl.message(
+      'E-mail',
+      name: 'accountEmailLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Home Address`
+  String get accountHomeAddressLabel {
+    return Intl.message(
+      'Home Address',
+      name: 'accountHomeAddressLabel',
       desc: '',
       args: [],
     );

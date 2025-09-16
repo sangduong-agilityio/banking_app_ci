@@ -5,9 +5,9 @@ import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/table.dart';
-import 'package:banking_app/features/search/bloc/search_bloc.dart';
-import 'package:banking_app/features/search/bloc/search_event.dart';
-import 'package:banking_app/features/search/bloc/search_state.dart';
+import 'package:banking_app/features/search/states/search_bloc.dart';
+import 'package:banking_app/features/search/states/search_event.dart';
+import 'package:banking_app/features/search/states/search_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

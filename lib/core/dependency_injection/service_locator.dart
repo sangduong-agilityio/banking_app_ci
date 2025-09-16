@@ -1,12 +1,14 @@
 import 'package:banking_app/core/api/api_client.dart';
 import 'package:banking_app/core/env/env.dart';
-import 'package:banking_app/features/auth/bloc/auth_bloc.dart';
-import 'package:banking_app/features/auth/services/auth_repository.dart';
-import 'package:banking_app/features/dashboard/bloc/dashboard_cubit.dart';
-import 'package:banking_app/features/dashboard/services/dashboard_repository.dart';
-import 'package:banking_app/features/search/bloc/search_bloc.dart';
-import 'package:banking_app/features/search/services/search_repository.dart';
-import 'package:banking_app/features/setting/bloc/setting_cubit.dart';
+import 'package:banking_app/features/auth/states/auth_bloc.dart';
+import 'package:banking_app/features/auth/repositories/auth_repository.dart';
+import 'package:banking_app/features/home/repositories/home_repository.dart';
+import 'package:banking_app/features/home/states/home_cubit.dart';
+import 'package:banking_app/features/search/states/search_bloc.dart';
+import 'package:banking_app/features/search/repositories/search_repository.dart';
+import 'package:banking_app/features/setting/states/setting_cubit.dart';
+import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,11 +24,15 @@ class AppLocators {
     locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImplement(client: Supabase.instance.client),
     );
-    locator.registerLazySingleton<DashboardRepository>(
+    locator.registerLazySingleton<HomeRepository>(
       () => DashboardRepositoryImplement(client: Supabase.instance.client),
     );
     locator.registerLazySingleton<SearchRepository>(
       () => SearchRepositoryImplement(client: apiClient),
+    );
+
+    locator.registerLazySingleton<TransferRepository>(
+      () => TransferRepositoryImpl(baseUrl: Env.endPoint),
     );
 
     locator.registerFactory<SettingCubit>(
@@ -36,12 +42,16 @@ class AppLocators {
     locator.registerFactory<AuthBloc>(
       () => AuthBloc(repo: locator<AuthRepository>()),
     );
-    locator.registerFactory<DashBoardCubit>(
-      () => DashBoardCubit(repo: locator<DashboardRepository>()),
+    locator.registerFactory<HomeCubit>(
+      () => HomeCubit(repo: locator<HomeRepository>()),
     );
 
     locator.registerFactory<SearchBloc>(
       () => SearchBloc(repo: locator<SearchRepository>()),
+    );
+
+    locator.registerFactory<TransferBloc>(
+      () => TransferBloc(repo: locator<TransferRepository>()),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/transfer/bloc/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/bloc/transfer_event.dart';
-import 'package:banking_app/features/transfer/bloc/transfer_state.dart';
+import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/states/transfer_event.dart';
+import 'package:banking_app/features/transfer/states/transfer_state.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/widgets/transaction_card.dart';
 import 'package:flutter/material.dart';

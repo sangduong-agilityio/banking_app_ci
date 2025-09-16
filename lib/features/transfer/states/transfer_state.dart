@@ -20,6 +20,8 @@ class TransferState extends Equatable {
     this.errorMessage,
     this.transactionId,
     this.transaction,
+    this.searchQuery = '',
+    this.filteredBeneficiaries = const [],
   });
 
   final TransferStatus status;
@@ -36,6 +38,47 @@ class TransferState extends Equatable {
   final String? errorMessage;
   final String? transactionId;
   final Transaction? transaction;
+  final String searchQuery;
+  final List<Beneficiary> filteredBeneficiaries;
+
+  TransferState copyWith({
+    TransferStatus? status,
+    List<Account>? accounts,
+    List<Beneficiary>? beneficiaries,
+    List<Bank>? banks,
+    Account? selectedAccount,
+    TransferType? selectedTransferType,
+    Beneficiary? selectedBeneficiary,
+    double? amount,
+    String? content,
+    double? transactionFee,
+    bool? saveToDirectory,
+    String? errorMessage,
+    String? transactionId,
+    Transaction? transaction,
+    String? searchQuery,
+    List<Beneficiary>? filteredBeneficiaries,
+  }) {
+    return TransferState(
+      status: status ?? this.status,
+      accounts: accounts ?? this.accounts,
+      beneficiaries: beneficiaries ?? this.beneficiaries,
+      banks: banks ?? this.banks,
+      selectedAccount: selectedAccount ?? this.selectedAccount,
+      selectedTransferType: selectedTransferType ?? this.selectedTransferType,
+      selectedBeneficiary: selectedBeneficiary ?? this.selectedBeneficiary,
+      amount: amount ?? this.amount,
+      content: content ?? this.content,
+      transactionFee: transactionFee ?? this.transactionFee,
+      saveToDirectory: saveToDirectory ?? this.saveToDirectory,
+      errorMessage: errorMessage ?? this.errorMessage,
+      transactionId: transactionId ?? this.transactionId,
+      transaction: transaction ?? this.transaction,
+      searchQuery: searchQuery ?? this.searchQuery,
+      filteredBeneficiaries:
+          filteredBeneficiaries ?? this.filteredBeneficiaries,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -53,41 +96,9 @@ class TransferState extends Equatable {
     errorMessage,
     transactionId,
     transaction,
+    searchQuery,
+    filteredBeneficiaries,
   ];
-
-  TransferState copyWith({
-    TransferStatus? status,
-    List<Account>? accounts,
-    List<Beneficiary>? beneficiaries,
-    List<Bank>? banks,
-    Account? selectedAccount,
-    TransferType? selectedTransferType,
-    Beneficiary? selectedBeneficiary,
-    double? amount,
-    String? content,
-    double? transactionFee,
-    bool? saveToDirectory,
-    String? errorMessage,
-    String? transactionId,
-    Transaction? transaction,
-  }) {
-    return TransferState(
-      status: status ?? this.status,
-      accounts: accounts ?? this.accounts,
-      beneficiaries: beneficiaries ?? this.beneficiaries,
-      banks: banks ?? this.banks,
-      selectedAccount: selectedAccount ?? this.selectedAccount,
-      selectedTransferType: selectedTransferType ?? this.selectedTransferType,
-      selectedBeneficiary: selectedBeneficiary ?? this.selectedBeneficiary,
-      amount: amount ?? this.amount,
-      content: content ?? this.content,
-      transactionFee: transactionFee ?? this.transactionFee,
-      saveToDirectory: saveToDirectory ?? this.saveToDirectory,
-      errorMessage: errorMessage ?? this.errorMessage,
-      transactionId: transactionId ?? this.transactionId,
-      transaction: transaction ?? this.transaction,
-    );
-  }
 }
 
 @freezed

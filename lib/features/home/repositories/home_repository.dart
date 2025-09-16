@@ -1,13 +1,13 @@
-import 'package:banking_app/features/dashboard/models/card_model.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-abstract class DashboardRepository {
+abstract class HomeRepository {
   Future<UserModel?> fetchCurrentUser();
   Future<List<CardModel>> fetchCards();
 }
 
-class DashboardRepositoryImplement implements DashboardRepository {
+class DashboardRepositoryImplement implements HomeRepository {
   final SupabaseClient _client;
 
   DashboardRepositoryImplement({required SupabaseClient client})

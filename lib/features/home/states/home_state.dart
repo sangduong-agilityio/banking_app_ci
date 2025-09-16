@@ -1,13 +1,13 @@
-import 'package:banking_app/features/dashboard/models/card_model.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'dashboard_state.freezed.dart';
+part 'home_state.freezed.dart';
 
-class DashBoardState extends Equatable {
-  const DashBoardState({
-    this.status = const DashBoardStatus.initial(),
+class HomeState extends Equatable {
+  const HomeState({
+    this.status = const HomeStatus.initial(),
     this.user,
     this.errorMessage,
     this.cards = const [],
@@ -15,22 +15,22 @@ class DashBoardState extends Equatable {
     this.shouldPlayAnimation = false,
   });
 
-  final DashBoardStatus status;
+  final HomeStatus status;
   final UserModel? user;
   final List<CardModel> cards;
   final String? errorMessage;
   final int currentCardIndex;
   final bool shouldPlayAnimation;
 
-  DashBoardState copyWith({
-    DashBoardStatus? status,
+  HomeState copyWith({
+    HomeStatus? status,
     UserModel? user,
     String? errorMessage,
     List<CardModel>? cards,
     int? currentCardIndex,
     bool? shouldPlayAnimation,
   }) {
-    return DashBoardState(
+    return HomeState(
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       user: user ?? this.user,
@@ -52,9 +52,9 @@ class DashBoardState extends Equatable {
 }
 
 @freezed
-sealed class DashBoardStatus with _$DashBoardStatus {
-  const factory DashBoardStatus.initial() = DashBoardStatusInitial;
-  const factory DashBoardStatus.loading() = DashBoardStatusLoading;
-  const factory DashBoardStatus.success() = DashBoardStatusSuccess;
-  const factory DashBoardStatus.failure() = DashBoardStatusFailure;
+sealed class HomeStatus with _$HomeStatus {
+  const factory HomeStatus.initial() = HomeStatusInitial;
+  const factory HomeStatus.loading() = HomeStatusLoading;
+  const factory HomeStatus.success() = HomeStatusSuccess;
+  const factory HomeStatus.failure() = HomeStatusFailure;
 }

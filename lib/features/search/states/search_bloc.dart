@@ -3,7 +3,7 @@ import 'package:banking_app/core/utils/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'search_event.dart';
 import 'search_state.dart';
-import '../services/search_repository.dart';
+import '../repositories/search_repository.dart';
 
 class SearchBloc extends Bloc<SearchEvt, SearchState> {
   SearchBloc({required this.repo}) : super(const SearchState()) {

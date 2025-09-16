@@ -10,6 +10,19 @@ abstract class TransferEvt extends Equatable {
 
 class TransferInitializeEvt extends TransferEvt {}
 
+class BeneficiariesInitializeEvt extends TransferEvt {
+  final List<Beneficiary> beneficiaries;
+  final List<Bank> banks;
+
+  const BeneficiariesInitializeEvt({
+    required this.beneficiaries,
+    required this.banks,
+  });
+
+  @override
+  List<Object?> get props => [beneficiaries, banks];
+}
+
 class SelectAccountEvt extends TransferEvt {
   final Account account;
   const SelectAccountEvt(this.account);
@@ -99,3 +112,11 @@ class AuthenticateWithFaceIdEvt extends TransferEvt {}
 class ConfirmTransferEvt extends TransferEvt {}
 
 class ResetTransferEvt extends TransferEvt {}
+
+class SearchBeneficiaryEvt extends TransferEvt {
+  final String query;
+  const SearchBeneficiaryEvt(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}

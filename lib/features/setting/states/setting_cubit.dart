@@ -1,5 +1,5 @@
-import 'package:banking_app/features/auth/services/auth_repository.dart';
-import 'package:banking_app/features/setting/bloc/setting_state.dart';
+import 'package:banking_app/features/auth/repositories/auth_repository.dart';
+import 'package:banking_app/features/setting/states/setting_state.dart';
 import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

@@ -1,6 +1,6 @@
-import 'package:banking_app/features/auth/bloc/auth_event.dart';
-import 'package:banking_app/features/auth/bloc/auth_state.dart';
-import 'package:banking_app/features/auth/services/auth_repository.dart';
+import 'package:banking_app/features/auth/states/auth_event.dart';
+import 'package:banking_app/features/auth/states/auth_state.dart';
+import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvt, AuthState> {

@@ -1,13 +1,13 @@
 {
   "@@locale": "en",
   "@segmentBankingApp": {
-    "---------------------------": "---------------------------",
-    "description": "Store translations that are likely to be used only in Banking Application "
+    "description": "Store translations that are likely to be used only in Banking Application"
   },
-  "homeTitle":"Home",
-  "messageTitle":"Message",
-  "settingTitle":"Setting",
-  "noItemsFoundTitle":"No items found",
+  "homeTitle": "Home",
+  "messageTitle": "Message",
+  "settingTitle": "Setting",
+  "noItemsFoundTitle": "No items found",
+
   "validatorEmailRequired": "Email is required",
   "validatorEmailWrongFormat": "Email is invalid format",
   "validatorNameRequired": "Name is required",
@@ -17,214 +17,187 @@
   "validatorPasswordWrongFormat": "Password is least one uppercase, lowercase letter",
   "validatorConfirmPasswordRequired": "Confirm Password is required",
   "validatorConfirmedPasswordNotMatch": "Password and confirm password not match",
+
   "@segmentLanding": {
-    "---------------------------": "---------------------------",
-    "description": "Store translations that are likely to be used only in Landing feature "
+    "description": "Store translations that are likely to be used only in Landing feature"
   },
   "landingTitle": "Jane Cooper",
-  "landingDescription":"Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,",
+  "landingDescription": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,",
+
   "@segmentSignIn": {
-      "---------------------------": "---------------------------",
-      "description": "Store translations that are likely to be used only in Sign In feature "
-    },
-  "signInTitle":"Sign in",
-  "signInWelcomeTitle":"Welcome Back",
-  "signInEmailHint":"Enter your email address",
-  "signInPassowrdHint":"Enter your password",
-  "signInDescription":"Hello there, sign in to continue",
+    "description": "Store translations that are likely to be used only in Sign In feature"
+  },
+  "signInTitle": "Sign in",
+  "signInWelcomeTitle": "Welcome Back",
+  "signInEmailHint": "Enter your email address",
+  "signInPassowrdHint": "Enter your password",
+  "signInDescription": "Hello there, sign in to continue",
   "signInForgotPassword": "Forgot your password?",
   "signInSignUpPrompt": "Don't have an account? ",
   "signInButton": "Sign in",
-   "@segmentSignUp": {
-    "---------------------------": "---------------------------",
+
+  "@segmentSignUp": {
     "description": "Store translations that are likely to be used only in SignUp feature"
   },
-  "signUpTitle":"Sign up",
+  "signUpTitle": "Sign up",
   "signUpWelcomeTitle": "Welcome to us",
-  "signUpDescription":"Hello there, create New account",
-  "signUpTermAndConditions":"By creating an account your aggree \nto our ",
-  "signUpTermAndConditionButton":"Term and Condtions",
-  "signUpButton":"Sign up",
-  "signUpAlreadyAcccount":"Have an account? ",
-  "signInButton":"Sign in",
-  "signUpUsername":"Enter your user name",
-  "signUpEmailHint":"Enter your email address",
-  "signUpPassowrdHint":"Enter your password",
+  "signUpDescription": "Hello there, create New account",
+  "signUpTermAndConditions": "By creating an account your agree \nto our ",
+  "signUpTermAndConditionButton": "Term and Conditions",
+  "signUpButton": "Sign up",
+  "signUpAlreadyAcccount": "Have an account? ",
+  "signUpUsername": "Enter your user name",
+  "signUpEmailHint": "Enter your email address",
+  "signUpPassowrdHint": "Enter your password",
+
   "@segmentHome": {
-    "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Home feature"
   },
   "homeGreetingTitle": "Good Morning,\n{type}!",
   "@homeGreetingTitle": {
     "placeholders": {
-      "type": {
-        "type": "String",
-        "example": "username"
-      }
+      "type": { "type": "String", "example": "username" }
     }
   },
-  "homeAccountAndCardTitle":"Account and Card",
-  "homeTransferTitle":"Transfer",
-  "homeWithdrawTitle":"Withdraw",
-  "homeMobileRechargeTitle":"Mobile recharge",
-  "homePayTheBillTitle":"Pay the \nbill",
-  "homeCreditCardTitle":"Creadit card",
-  "homeTransactionReportTitle":"Transaction \nReport",
+  "homeAccountAndCardTitle": "Account and Card",
+  "homeTransferTitle": "Transfer",
+  "homeWithdrawTitle": "Withdraw",
+  "homeMobileRechargeTitle": "Mobile recharge",
+  "homePayTheBillTitle": "Pay the \nbill",
+  "homeCreditCardTitle": "Credit card",
+  "homeTransactionReportTitle": "Transaction \nReport",
+
   "@segmentSearch": {
-    "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Search feature"
   },
-  "searchTitle":"Search",
-  "searchBranchSelectedTitle":"Branch",
-  "searchInterestRateTitle":"Interest rate",
-  "searchExchangeRateTitle":"Exchange rate",
-  "searchExchangeTitle":"Exchange",
-  "searchInterestKindTitle":"Interest kind",
-  "searchDepositTitle":"Deposit",
-  "searchRateTitle":"Rate",
-  "searchCountryTitle":"Country",
-  "searchBuyTitle":"Buy",
-  "searchSellTitle":"Sell",
-  "searchLanguageTitle":":Language",
-  "searchFormTitle":"From",
-  "searchToTitle":"To",
-  "searchCurrentRateTitle":"Current Rate",
-  "searchExchangeButton":"Exchange",
-  "searchBranchDescription":"Search for branch",
-  "searchInterestRateDescription":"Search for interest rate",
-  "searchExchangeRateDescription":"Search for exchange rate",
-  "searchExchangeDescription":"Exchange amount of money",
-  "searchCurrentRateCalculatorTitle":"Current rate",
-  "searchAmoutTitle":"Amount",
-  "searchSelectedCurrencyTitle":"Select the currency",
+  "searchTitle": "Search",
+  "searchBranchSelectedTitle": "Branch",
+  "searchInterestRateTitle": "Interest rate",
+  "searchExchangeRateTitle": "Exchange rate",
+  "searchExchangeTitle": "Exchange",
+  "searchInterestKindTitle": "Interest kind",
+  "searchDepositTitle": "Deposit",
+  "searchRateTitle": "Rate",
+  "searchCountryTitle": "Country",
+  "searchBuyTitle": "Buy",
+  "searchSellTitle": "Sell",
+  "searchLanguageTitle": "Language",
+  "searchFormTitle": "From",
+  "searchToTitle": "To",
+  "searchCurrentRateTitle": "Current Rate",
+  "searchExchangeButton": "Exchange",
+  "searchBranchDescription": "Search for branch",
+  "searchInterestRateDescription": "Search for interest rate",
+  "searchExchangeRateDescription": "Search for exchange rate",
+  "searchExchangeDescription": "Exchange amount of money",
+  "searchCurrentRateCalculatorTitle": "Current rate",
+  "searchAmoutTitle": "Amount",
+  "searchSelectedCurrencyTitle": "Select the currency",
+
   "@segmentTransactionsHistory": {
-    "---------------------------": "---------------------------",
     "description": "Store translations that are likely to be used only in Transactions history feature"
   },
-  "transactionsHistoryTitle":"Recent Transactions",
-  "accountTitle":"Account",
-  "accountSaveButton":"Save Changes",
-  "accountCardHolderTitle":"Card Holder Name",
-  "accountExpiryDateTitle":"Expiry date",
-  "accountDetailInfoTitle":"DETAIL INFORMATION",
-  "accountNameLabel":"Name",
-  "accountPhoneNumberLabel":"Phone Number",
-  "accountEmailLabel":"E-mail",
-  "accountHomeAddressLabel":"Home Address",
+  "transactionsHistoryTitle": "Recent Transactions",
+
   "@segmentPaybill": {
-      "---------------------------": "---------------------------",
-      "description": "Store translations that are likely to be used only in Pay bill feature"
-    },
-  "payBillTitle":"Pay the bill",
-  "payBillButton":"Pay the bill",
-  "payBillConfirmButton":"Confirm",
-  "payBillTransactionSuccess":"Transaction successfully!",
-  "payBillTracsactionTitle": "You 've pay your {type} bill!",
+    "description": "Store translations that are likely to be used only in Pay bill feature"
+  },
+  "payBillTitle": "Pay the bill",
+  "payBillButton": "Pay the bill",
+  "payBillConfirmButton": "Confirm",
+  "payBillTransactionSuccess": "Transaction successfully!",
+  "payBillTracsactionTitle": "You've pay your {type} bill!",
   "@payBillTracsactionTitle": {
-    "placeholders": {
-      "type": {
-        "type": "String",
-        "example": "internet"
-      }
-    }
+    "placeholders": { "type": { "type": "String", "example": "internet" } }
   },
-  "payBillElectricTitle":"Electric bill",
-  "payBillElectricDescription":"Pay electric bill this month",
-  "payBillWaterTitle":"Water bill",
-  "payBillWaterDescription":"Pay water bill this month",
-  "payBillInternetTitle":"Internet bill",
-  "payBillInternetDescription":"Pay internet bill this month",
-  "payBillCheckHistoryTitle":"Check Payment history",
-  "payBillAllTitle":"All the Bills",
-  "payBillNameTitle":"Name",
-  "payBillAddressTitle":"Address",
-  "payBillPhoneNumberTitle":"Phone number",
-  "payBillCodeTitle":"Code",
-  "payBillFormTitle":"From",
-  "payBillToTitle":"To",
-  "payBillHistoryTitle":"Payment history",
-  "payBillStatusTitle":"Status",
-  "payBillAmountTitle":"Amount",
-  "payBillChooseCompanyHint":"Choose Company",
-  "payBillCodeHint":"Bill Code",
-  "payBillDescription":"Please enter the correct bill code to check information.",
-  "payBillCheckButton":"Check",
-  "payBillTypeLabel":"Type {type} bill code ",
+  "payBillElectricTitle": "Electric bill",
+  "payBillElectricDescription": "Pay electric bill this month",
+  "payBillWaterTitle": "Water bill",
+  "payBillWaterDescription": "Pay water bill this month",
+  "payBillInternetTitle": "Internet bill",
+  "payBillInternetDescription": "Pay internet bill this month",
+  "payBillCheckHistoryTitle": "Check Payment history",
+  "payBillAllTitle": "All the Bills",
+  "payBillNameTitle": "Name",
+  "payBillAddressTitle": "Address",
+  "payBillPhoneNumberTitle": "Phone number",
+  "payBillCodeTitle": "Code",
+  "payBillFormTitle": "From",
+  "payBillToTitle": "To",
+  "payBillHistoryTitle": "Payment history",
+  "payBillStatusTitle": "Status",
+  "payBillAmountTitle": "Amount",
+  "payBillChooseCompanyHint": "Choose Company",
+  "payBillCodeHint": "Bill Code",
+  "payBillDescription": "Please enter the correct bill code to check information.",
+  "payBillCheckButton": "Check",
+  "payBillTypeLabel": "Type {type} bill code",
   "@payBillTypeLabel": {
-    "placeholders": {
-      "type": {
-        "type": "String",
-        "example": "internet"
-      }
-    }
+    "placeholders": { "type": { "type": "String", "example": "internet" } }
   },
-  "payBillCompanyTitle":"Company",
+  "payBillCompanyTitle": "Company",
   "payBillTypeTitle": "{type} fee",
   "@payBillTypeTitle": {
-    "placeholders": {
-      "type": {
-        "type": "String",
-        "example": "internet"
-      }
-    }
+    "placeholders": { "type": { "type": "String", "example": "internet" } }
   },
-  "payBillTaxTitle":"Tax",
-  "payBillTotalTitle":"Total",
+  "payBillTaxTitle": "Tax",
+  "payBillTotalTitle": "Total",
   "payBillTypeCategory": "Pay {type} bill this month",
   "@payBillTypeCategory": {
-    "placeholders": {
-      "type": {
-        "type": "String",
-        "example": "internet"
-      }
-    }
+    "placeholders": { "type": { "type": "String", "example": "internet" } }
   },
- "@segmentTransfer": {
-      "---------------------------": "---------------------------",
-      "description": "Store translations that are likely to be used only in Transfer feature"
-    },
- "transferTitle":"Transfer",
- "transferAccountSelected":"Select Account",
- "transferSelectedAccountHint":"Choose account / card",
- "transferViaCardNumberTitle":"Transfer via\ncard number",
- "transferSameBankTitle":"Transfer to\nthe same bank",
- "transferAnotherBankTitle":"Transfer to\nanother bank",
- "transferChooseTransactionTitle":"Choose transaction",
- "transferChooseBeneficiaryTitle":"Choose beneficiary",
- "transferFindBeneficiaryTitle":"Find Beneficiary",
- "transferAvailableBalanceTitle": "Available balance: {type}",
- "transferNameLabel":"Name",
- "transferCardNumberLabel":"Card number",
- "transferSaveBeneficiaryTitle":"Save to beneficiary directory",
- "transferConfirmButton":"Confirm",
- "transferAmountLabel":"Amount",
- "transferContentLabel":"Content",
- "transferSelectBeneficiary":"Choose beneficiary bank",
+
+  "@segmentTransfer": {
+    "description": "Store translations that are likely to be used only in Transfer feature"
+  },
+  "transferTitle": "Transfer",
+  "transferAccountSelected": "Select Account",
+  "transferSelectedAccountHint": "Choose account / card",
+  "transferViaCardNumberTitle": "Transfer via\ncard number",
+  "transferSameBankTitle": "Transfer to\nthe same bank",
+  "transferAnotherBankTitle": "Transfer to\nanother bank",
+  "transferChooseTransactionTitle": "Choose transaction",
+  "transferChooseBeneficiaryTitle": "Choose beneficiary",
+  "transferFindBeneficiaryTitle": "Find Beneficiary",
+  "transferAvailableBalanceTitle": "Available balance: {type}",
   "@transferAvailableBalanceTitle": {
-    "placeholders": {
-      "type": {
-        "type": "String",
-        "example": "amount"
-      }
-    }
+    "placeholders": { "type": { "type": "String", "example": "amount" } }
   },
- "@segmentSetting": {
-      "---------------------------": "---------------------------",
-      "description": "Store translations that are likely to be used only in Setting feature"
-    },
-  "settingTitle":"Setting",
-  "settingPasswordTitle":"Password",
-  "settingLanguaguesTitle":"Languages",
-  "settingAppInformationTitle":"App information",
-  "settingCustomerCareTitle":"Customer care",
-  "settingChangePasswordTitle":"Change password",
-  "settingLogoutTitle":"Log out",
-  "settingRecentPasswordLabel":"Recent password",
-  "settingNewPasswordLabel":"New password",
-  "settingConfirmPasswordLabel":"Confirm password",
-  "settingChangePasswordButton":"Change password",
-  "settingLogoutTitle":"Log out?",
-  "settingLogoutContent":"You will be returned to the login screen",
-  "settingLogoutLogoutButton":"Log out",
-  "settingCancelButton":"Cancel"
+  "transferNameLabel": "Name",
+  "transferCardNumberLabel": "Card number",
+  "transferSaveBeneficiaryTitle": "Save to beneficiary directory",
+  "transferConfirmButton": "Confirm",
+  "transferAmountLabel": "Amount",
+  "transferContentLabel": "Content",
+  "transferSelectBeneficiary": "Choose beneficiary bank",
+
+  "@segmentSetting": {
+    "description": "Store translations that are likely to be used only in Setting feature"
+  },
+  "settingPasswordTitle": "Password",
+  "settingLanguaguesTitle": "Languages",
+  "settingAppInformationTitle": "App information",
+  "settingCustomerCareTitle": "Customer care",
+  "settingChangePasswordTitle": "Change password",
+  "settingLogoutTitle": "Log out?",
+  "settingLogoutContent": "You will be returned to the login screen",
+  "settingLogoutLogoutButton": "Log out",
+  "settingCancelButton": "Cancel",
+  "settingRecentPasswordLabel": "Recent password",
+  "settingNewPasswordLabel": "New password",
+  "settingConfirmPasswordLabel": "Confirm password",
+  "settingChangePasswordButton": "Change password",
+
+  "@segmentAccount": {
+    "description": "Store translations that are likely to be used only in Account feature"
+  },
+  "accountTitle": "Account",
+  "accountSaveButton": "Save Changes",
+  "accountCardHolderTitle": "Card Holder Name",
+  "accountExpiryDateTitle": "Expiry date",
+  "accountDetailInfoTitle": "DETAIL INFORMATION",
+  "accountNameLabel": "Name",
+  "accountPhoneNumberLabel": "Phone Number",
+  "accountEmailLabel": "E-mail",
+  "accountHomeAddressLabel": "Home Address"
 }

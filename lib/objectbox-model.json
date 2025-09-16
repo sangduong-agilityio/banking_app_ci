@@ -83,75 +83,6 @@
       "relations": []
     },
     {
-      "id": "2:4433085704878281940",
-      "lastPropertyId": "12:687916640048976613",
-      "name": "ContactEntity",
-      "properties": [
-        {
-          "id": "1:1378729348937441570",
-          "name": "id",
-          "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "2:527370477234636538",
-          "name": "contactId",
-          "type": 9
-        },
-        {
-          "id": "3:928151798097899200",
-          "name": "userId",
-          "type": 9
-        },
-        {
-          "id": "4:7672237918753853582",
-          "name": "name",
-          "type": 9
-        },
-        {
-          "id": "5:6706086076574457131",
-          "name": "email",
-          "type": 9
-        },
-        {
-          "id": "6:6614579036621213831",
-          "name": "phoneNumber",
-          "type": 9
-        },
-        {
-          "id": "7:2135726839672695579",
-          "name": "accountNumber",
-          "type": 9
-        },
-        {
-          "id": "8:7289733161369859614",
-          "name": "imageUrl",
-          "type": 9
-        },
-        {
-          "id": "9:3910509082422923801",
-          "name": "lastTransactionAmount",
-          "type": 9
-        },
-        {
-          "id": "10:8360428217703994760",
-          "name": "isFavorite",
-          "type": 1
-        },
-        {
-          "id": "11:2578413513858333211",
-          "name": "createdAt",
-          "type": 12
-        },
-        {
-          "id": "12:687916640048976613",
-          "name": "lastContactedAt",
-          "type": 12
-        }
-      ],
-      "relations": []
-    },
-    {
       "id": "3:8322807401258153021",
       "lastPropertyId": "9:5900947589384037243",
       "name": "PaymentHistoryEntity",
@@ -360,9 +291,24 @@
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
+  "retiredEntityUids": [
+    4433085704878281940
+  ],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    1378729348937441570,
+    527370477234636538,
+    928151798097899200,
+    7672237918753853582,
+    6706086076574457131,
+    6614579036621213831,
+    2135726839672695579,
+    7289733161369859614,
+    3910509082422923801,
+    8360428217703994760,
+    2578413513858333211,
+    687916640048976613
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

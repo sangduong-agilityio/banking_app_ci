@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
-import 'package:banking_app/features/transfer/services/transfer_repository.dart';
+import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
 
 import 'transfer_event.dart';
 import 'transfer_state.dart';
@@ -9,12 +9,13 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
   final TransferRepository repo;
 
   TransferBloc({required this.repo}) : super(const TransferState()) {
-    on<TransferInitializeEvt>(_onLoadInitialData);
+    on<TransferInitializeEvt>(_onTransferInitilize);
     on<SelectAccountEvt>(_onSelectAccount);
     on<SelectTransferTypeEvt>(_onSelectTransferType);
     on<SelectBeneficiaryEvt>(_onSelectBeneficiary);
     on<AddNewBeneficiaryEvt>(_onAddNewBeneficiary);
     on<UpdateTransferFormEvt>(_onUpdateTransferForm);
+    on<FillTransferDetailsEvt>(_onFillTransferDetails);
     on<CalculateTransactionFeeEvt>(_onCalculateTransactionFee);
     on<InitiateTransfer>(_onInitiateTransfer);
     on<VerifyOTPEvt>(_onVerifyOTP);
@@ -22,9 +23,11 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     on<AuthenticateWithFaceIdEvt>(_onAuthenticateWithFaceId);
     on<ConfirmTransferEvt>(_onConfirmTransfer);
     on<ResetTransferEvt>(_onResetTransfer);
+    on<BeneficiariesInitializeEvt>(_onBeneficiaresInitialize);
+    on<SearchBeneficiaryEvt>(_onSearchBeneficiaries);
   }
 
-  Future<void> _onLoadInitialData(
+  Future<void> _onTransferInitilize(
     TransferInitializeEvt event,
     Emitter<TransferState> emit,
   ) async {
@@ -41,7 +44,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
           accounts: accounts,
           beneficiaries: beneficiaries,
           banks: banks,
-          selectedAccount: accounts.isNotEmpty ? accounts.first : null,
+          selectedAccount: null,
         ),
       );
     } catch (e) {
@@ -49,6 +52,34 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
         state.copyWith(
           status: const TransferStatus.failure(),
           errorMessage: 'Failed to load initial data: ${e.toString()}',
+        ),
+      );
+    }
+  }
+
+  Future<void> _onBeneficiaresInitialize(
+    BeneficiariesInitializeEvt event,
+    Emitter<TransferState> emit,
+  ) async {
+    emit(state.copyWith(status: const TransferStatus.loading()));
+
+    try {
+      final beneficiaries = await repo.getBeneficiaries();
+      final banks = await repo.getBanks();
+
+      emit(
+        state.copyWith(
+          status: const TransferStatus.success(),
+          beneficiaries: beneficiaries,
+          banks: banks,
+          filteredBeneficiaries: beneficiaries,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: e.toString(),
         ),
       );
     }
@@ -63,12 +94,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) {
     emit(state.copyWith(selectedTransferType: event.transferType));
-
-    if (state.amount != null &&
-        state.selectedAccount != null &&
-        state.selectedBeneficiary != null) {
-      add(CalculateTransactionFeeEvt());
-    }
+    _recalculateFeeIfNeeded();
   }
 
   void _onSelectBeneficiary(
@@ -76,6 +102,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) {
     emit(state.copyWith(selectedBeneficiary: event.beneficiary));
+    _recalculateFeeIfNeeded();
   }
 
   Future<void> _onAddNewBeneficiary(
@@ -110,15 +137,27 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
       state.copyWith(
         amount: event.amount ?? state.amount,
         content: event.content ?? state.content,
+        banks: event.bank != null && !state.banks.contains(event.bank)
+            ? [...state.banks, event.bank!]
+            : state.banks,
         saveToDirectory: event.saveToDirectory ?? state.saveToDirectory,
       ),
     );
 
-    if (event.amount != null &&
-        state.selectedAccount != null &&
-        state.selectedBeneficiary != null) {
-      add(CalculateTransactionFeeEvt());
+    if (event.amount != null) {
+      _recalculateFeeIfNeeded();
     }
+  }
+
+  // Add the missing handler for FillTransferDetailsEvent
+  void _onFillTransferDetails(
+    FillTransferDetailsEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(amount: event.amount, content: event.content));
+
+    // Calculate fee immediately
+    add(CalculateTransactionFeeEvt());
   }
 
   Future<void> _onCalculateTransactionFee(
@@ -155,10 +194,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     InitiateTransfer event,
     Emitter<TransferState> emit,
   ) async {
-    if (state.selectedAccount == null ||
-        state.selectedBeneficiary == null ||
-        state.amount == null ||
-        state.content == null) {
+    if (!_validateTransferData()) {
       emit(state.copyWith(errorMessage: 'Please fill all required fields'));
       return;
     }
@@ -199,7 +235,10 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     try {
-      final isVerified = await repo.verifyOTP("transactionId", event.otpCode);
+      final isVerified = await repo.verifyOTP(
+        state.transactionId ?? "",
+        event.otpCode,
+      );
 
       if (isVerified) {
         add(ConfirmTransferEvt());
@@ -289,7 +328,9 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     emit(
       state.copyWith(
         status: const TransferStatus.initial(),
-        selectedAccount: null,
+        selectedAccount: state.accounts.isNotEmpty
+            ? state.accounts.first
+            : null,
         selectedTransferType: TransferType.cardNumber,
         selectedBeneficiary: null,
         amount: null,
@@ -298,7 +339,48 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
         saveToDirectory: false,
         errorMessage: null,
         transactionId: null,
+        transaction: null,
       ),
+    );
+  }
+
+  // Helper methods
+  bool _validateTransferData() {
+    return state.selectedAccount != null &&
+        state.selectedBeneficiary != null &&
+        state.amount != null &&
+        state.amount! > 0 &&
+        state.content != null &&
+        state.content!.isNotEmpty &&
+        state.amount! <= state.selectedAccount!.availableBalance;
+  }
+
+  void _recalculateFeeIfNeeded() {
+    if (state.selectedAccount != null &&
+        state.selectedBeneficiary != null &&
+        state.amount != null &&
+        state.amount! > 0) {
+      add(CalculateTransactionFeeEvt());
+    }
+  }
+
+  void _onSearchBeneficiaries(
+    SearchBeneficiaryEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    final query = event.query.trim().toLowerCase();
+    final filtered = query.isEmpty
+        ? state.beneficiaries
+        : state.beneficiaries
+              .where(
+                (b) =>
+                    b.name.toLowerCase().contains(query) ||
+                    b.accountNumber.contains(query),
+              )
+              .toList();
+
+    emit(
+      state.copyWith(searchQuery: event.query, filteredBeneficiaries: filtered),
     );
   }
 }

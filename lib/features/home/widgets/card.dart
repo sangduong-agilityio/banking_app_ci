@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/utils/formatters.dart';
-import 'package:banking_app/features/dashboard/models/card_model.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

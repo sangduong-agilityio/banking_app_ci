@@ -14,6 +14,7 @@ class BAScaffold extends StatelessWidget {
     this.resizeToAvoidBottomInset,
     this.brightness,
     this.onPopInvokedWithResult,
+    this.floatingActionButton,
     super.key,
   });
 
@@ -27,6 +28,7 @@ class BAScaffold extends StatelessWidget {
   final bool? resizeToAvoidBottomInset;
   final Brightness? brightness;
   final PopInvokedWithResultCallback<dynamic>? onPopInvokedWithResult;
+  final Widget? floatingActionButton;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class BAScaffold extends StatelessWidget {
           resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? true,
           persistentFooterButtons: persistentFooterButtons,
           bottomNavigationBar: bottomNavigationBar,
+          floatingActionButton: floatingActionButton,
         ),
       ),
     );

@@ -3,23 +3,22 @@ import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/features/dashboard/bloc/dashboard_cubit.dart';
-import 'package:banking_app/features/dashboard/bloc/dashboard_state.dart';
-import 'package:banking_app/features/dashboard/models/card_model.dart';
-import 'package:banking_app/features/dashboard/widgets/list_view_actions.dart';
-import 'package:banking_app/features/dashboard/widgets/card.dart';
+import 'package:banking_app/features/home/states/home_cubit.dart';
+import 'package:banking_app/features/home/states/home_state.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
+import 'package:banking_app/features/home/widgets/list_view_actions.dart';
+import 'package:banking_app/features/home/widgets/card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DashBoardScreen extends StatefulWidget {
-  const DashBoardScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<DashBoardScreen> createState() => _DashBoardScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _DashBoardScreenState extends State<DashBoardScreen>
-    with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late AnimationController _fadeController;
 
   @override
@@ -40,7 +39,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => locator<DashBoardCubit>()..fetchDashboardData(),
+      create: (_) => locator<HomeCubit>()..fetchHomeData(),
       child: BAScaffold(
         backgroundColor: context.colorScheme.onPrimary,
         body: SafeArea(
@@ -51,7 +50,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    BlocBuilder<DashBoardCubit, DashBoardState>(
+                    BlocBuilder<HomeCubit, HomeState>(
                       buildWhen: (previous, current) =>
                           previous.user != current.user,
                       builder: (context, state) {
@@ -69,21 +68,19 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                 Container(
                   margin: const EdgeInsets.only(top: 20),
                   height: 220,
-                  child: BlocBuilder<DashBoardCubit, DashBoardState>(
+                  child: BlocBuilder<HomeCubit, HomeState>(
                     buildWhen: (previous, current) =>
                         previous.cards != current.cards,
                     builder: (context, state) {
                       return CardsSwiperWidget<CardModel>(
                         cardData: state.cards,
                         onCardChange: (index) {
-                          context.read<DashBoardCubit>().changeCardIndex(index);
+                          context.read<HomeCubit>().changeCardIndex(index);
                         },
                         shouldStartCardCollectionAnimation:
                             state.shouldPlayAnimation,
                         onCardCollectionAnimationComplete: (value) {
-                          context.read<DashBoardCubit>().setAnimationStatus(
-                            value,
-                          );
+                          context.read<HomeCubit>().setAnimationStatus(value);
                         },
                         cardBuilder: (context, index, visibleIndex) {
                           final card = state.cards[index];

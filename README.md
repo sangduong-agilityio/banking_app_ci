@@ -12,7 +12,7 @@ and iOS applications.
 ## Design
 
 This is the design of the app:
-[Figma Design Link](https://www.figma.com/design/oIm4TAgD2uIB00Xdq9Nqr6/Banking---E-Money-MBanking---E-Money-Management-App-%7CDigital-%7C-Finance-Mobile-Banking--Community-?node-id=0-1&p=f&t=ybZ47hmoEjAjvwjB-0)
+[Figma Design Link](https://www.figma.com/design/KpEEAF0zp2rMWBP8oxplBI/Untitled?t=SSkNVOJHFQZMf8d3-0)
 
 ## Team Structure
 
@@ -23,9 +23,9 @@ This is the design of the app:
 **Timeline:**
 
 - Reading Phase: 10 days
-- Practice Phase: 15 days
-- **Start Date:** [To be updated based on practice start]
-- **End Date:** [To be updated based on start date + timeline]
+- Practice Phase: 10 days
+- **Start Date:** 16/9/2025
+- **End Date:** 29/9/2025
 
 ## Tech Stack
 
@@ -53,78 +53,62 @@ This is the design of the app:
 
 ## Learning Objectives
 
-### Architecture & Project Organization
+### Architecture & Organization
 
-- Research and compare different architectural patterns (MVC, MVVM, Clean
-  Architecture)
-- Organize project structure based on selected architecture
-- Feature-first architecture implementation
-
-### Advanced Flutter Concepts
+- Select and apply Clean or Feature-First Architecture
+- Organize project modules around core flows (Transfer, Bill Payment, Account, Reports, Utilities)
 
 #### Supabase Data Table Organization
 
-- Proper data table organization on Supabase
-- Design normalized database schema for banking operations
-- Implement proper relationships between tables
-- Optimize queries and data access patterns
+- Design normalized schema for banking
+- Define relations, indexes, and optimize queries
 
 #### Dependency Injection (DI)
 
-- Research and learn DI organization for Flutter projects
-- Implement dependency injection with GetIt
-- Create proper service locator patterns
-- Manage dependencies across different layers
+- Use GetIt with service locator
+- Manage dependencies per feature/layer
 
-#### Cache Management Implementation
+#### Caching & Offline Support
 
-- Apply proper cached management strategies using flutter_cache_manager package
-- Offline-first architecture design
-- Handle network connectivity changes
-- Offline data storage and conflict resolution
+- Cache transaction history, exchange rates, and beneficiary lists
+- Implement offline-first for transaction drafts & bill payments
 
 #### Error Handling and Custom Exceptions
 
-- Design comprehensive error handling system
-- Create custom exception classes for different scenarios
-- Implement proper error propagation through layers
-- User-friendly error messaging and recovery
+- Define custom exceptions for banking flows (transfer failed, invalid OTP, insufficient funds)
+
+#### Transaction Security
+
+- Integrate biometrics (Touch ID, Face ID) to confirm sensitive actions
+- Provide OTP fallback when biometrics fail or unavailable
 
 #### State Management with BLoC
 
-- Deep dive into BLoC architecture, naming conventions, and event/state flow
-- Practice with asynchronous API calls and error handling
-- Learn how to manage application state efficiently across multiple widgets
+- Apply feature-based BLoC for authentication, transfer, bill payment, account management,settings
+- Handle async API calls, validation, and error propagation gracefully
 
 #### Performance Optimization
 
-- Implement memory management best practices
-- Performance profiling and optimization techniques
-- Widget lifecycle optimization
-- Resource management and disposal
+- Optimize widget rendering for transaction history and charts
+- Profile memory usage when switching between multiple flows
 
 #### App Lifecycle Handling
 
-- Comprehensive understanding of Flutter app lifecycle states
-- Implement proper lifecycle event handling
-- Demo different lifecycle scenarios and responses
+- Handle session timeout, background/foreground transitions securely
 
 #### Testing & Code Quality
 
-- Research widget testing best practices
-- Write comprehensive widget tests
-- Code organization and naming conventions
-- Documentation and code comments
+- Unit tests for services (transfer, bill payment).
+- Widget tests for transaction confirmation flow and OTP/biometric validation
+- Golden tests for consistent UI screens (Transfer, Bill, Reports)
 
 ## Features Scope
-
-### Core Features
 
 - **Landing Page** - Welcome and app introduction
 - **Sign In** - User authentication with email/password
 - **Sign Up** - User registration with validation
-- **Forgot Password** - Password recovery flow
 - **Home Dashboard** - Account overview with quick actions
+- **Search** - User registration with validation
 - **Transaction History** - Complete transaction records with filtering
 - **Transfer Money** - P2P and bank transfers
 - **Pay Bills** - Utility bills and service payments
@@ -162,9 +146,9 @@ lib/
 │   │   ├── models/
 │   │   │   ├── user_model.dart
 │   │   │   └── auth_request.dart
-│   │   ├── services/
+│   │   ├── repositories/
 │   │   │   └── auth_repository.dart
-│   │   ├── bloc/
+│   │   ├── states/
 │   │   │   ├── auth_bloc.dart
 │   │   │   ├── auth_event.dart
 │   │   │   └── auth_state.dart
@@ -176,79 +160,101 @@ lib/
 │   │   └── widgets/
 │   │       ├── auth_form.dart
 │   │       └── auth_header.dart
-│   ├── dashboard/
+│   ├── home/
 │   │   ├── models/
 │   │   │   ├── account_model.dart
 │   │   │   └── quick_action_model.dart
-│   │   ├── services/
-│   │   │   └── dashboard_repository.dart
-│   │   ├── bloc/
-│   │   │   ├── dashboard_bloc.dart
-│   │   │   ├── dashboard_event.dart
-│   │   │   └── dashboard_state.dart
+│   │   ├── repositories/
+│   │   │   └── home_repository.dart
+│   │   ├── states/
+│   │   │   ├── home_bloc.dart
+│   │   │   ├── home_event.dart
+│   │   │   └── home_state.dart
 │   │   ├── views/
 │   │   │   └── home_screen.dart
 │   │   └── widgets/
 │   │       ├── welcome_section.dart
 │   │       ├── account_card.dart
 │   │       └── quick_actions_grid.dart
+│   ├── search/
+│   │   ├── models/
+│   │   │   └── search_model.dart
+│   │   ├── repositories/
+│   │   │   └── search_repository.dart
+│   │   ├── states/
+│   │   │   ├── search_bloc.dart
+│   │   │   ├── search_event.dart
+│   │   │   └── search_state.dart
+│   │   ├── views/
+│   │   │   └── search_screen.dart
+│   │   └── widgets/
+│   │       └── currency_card.dart
+│   ├── account/
+│   │   ├── models/
+│   │   │   └── account_model.dart
+│   │   ├── repositories/
+│   │   │   └── account_repository.dart
+│   │   ├── states/
+│   │   │   ├── account_bloc.dart
+│   │   │   ├── account_event.dart
+│   │   │   └── account_state.dart
+│   │   ├── views/
+│   │   │   └── account_screen.dart
+│   │   └── widgets/
+│   │       └── account_card.dart
 │   ├── transactions/
 │   │   ├── models/
 │   │   │   └── transaction_model.dart
-│   │   ├── services/
+│   │   ├── repositories/
 │   │   │   └── transaction_repository.dart
-│   │   ├── bloc/
+│   │   ├── states/
 │   │   │   ├── transaction_bloc.dart
 │   │   │   ├── transaction_event.dart
 │   │   │   └── transaction_state.dart
-│   │   ├── view/
+│   │   ├── views/
 │   │   │   └── transaction_history_screen.dart
 │   │   └── widgets/
 │   │       └── transaction_item.dart
 │   ├── transfer/
 │   │   ├── models/
-│   │   │   ├── contact_model.dart
-│   │   │   └── transfer_model.dart
-│   │   ├── services/
+│   │   │   ├── transfer_model.dart
+│   │   ├── repositories/
 │   │   │   └── transfer_repository.dart
-│   │   ├── bloc/
+│   │   ├── states/
 │   │   │   ├── transfer_bloc.dart
 │   │   │   ├── transfer_event.dart
 │   │   │   └── transfer_state.dart
-│   │   ├── view/
-│   │   │   ├── contact_selection_screen.dart
-│   │   │   ├── transfer_amount_screen.dart
-│   │   │   └── transfer_success_screen.dart
+│   │   ├── views/
+│   │   │   ├── transfer_screen.dart
 │   │   └── widgets/
 │   │       ├── contact_item.dart
 │   │       └── amount_input.dart
 │   ├── bills/
 │   │   ├── models/
 │   │   │   └── bill_model.dart
-│   │   ├── services/
+│   │   ├── repositories/
 │   │   │   └── bill_repository.dart
-│   │   ├── bloc/
+│   │   ├── states/
 │   │   │   ├── bill_bloc.dart
 │   │   │   ├── bill_event.dart
 │   │   │   └── bill_state.dart
 │   │   ├── views/
-│   │   │   ├── bill_categories_screen.dart
 │   │   │   └── bill_payment_screen.dart
 │   │   └── widgets/
-│   │       └── bill_category_card.dart
-│   └── profile/
+│   │       └── bill_detail_card.dart
+│   └── setting/
 │       ├── models/
-│       │   └── profile_model.dart
-│       ├── services/
-│       │   └── profile_repository.dart
-│       ├── bloc/
-│       │   ├── profile_bloc.dart
-│       │   ├── profile_event.dart
-│       │   └── profile_state.dart
+│       │   └── user_model.dart
+│       ├── repositories/
+│       │   └── setting_repository.dart
+│       ├── states/
+│       │   ├── setting_bloc.dart
+│       │   ├── setting_event.dart
+│       │   └── setting_state.dart
 │       ├── views/
-│       │   └── account_screen.dart
+│       │   └── setting_screen.dart
 │       └── widgets/
-│           └── profile_card.dart
+│           └── card_detail.dart
 ```
 
 ## Development Roadmap

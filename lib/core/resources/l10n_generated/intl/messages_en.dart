@@ -22,11 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m0(type) => "Good Morning,\n${type}!";
 
-  static String m1(type) => "You \'ve pay your ${type} bill!";
+  static String m1(type) => "You\'ve pay your ${type} bill!";
 
   static String m2(type) => "Pay ${type} bill this month";
 
-  static String m3(type) => "Type ${type} bill code ";
+  static String m3(type) => "Type ${type} bill code";
 
   static String m4(type) => "${type} fee";
 
@@ -56,7 +56,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeAccountAndCardTitle": MessageLookupByLibrary.simpleMessage(
       "Account and Card",
     ),
-    "homeCreditCardTitle": MessageLookupByLibrary.simpleMessage("Creadit card"),
+    "homeCreditCardTitle": MessageLookupByLibrary.simpleMessage("Credit card"),
     "homeGreetingTitle": m0,
     "homeMobileRechargeTitle": MessageLookupByLibrary.simpleMessage(
       "Mobile recharge",
@@ -71,7 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeTransferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
     "homeWithdrawTitle": MessageLookupByLibrary.simpleMessage("Withdraw"),
     "landingDescription": MessageLookupByLibrary.simpleMessage(
-      "Ut enim ad minima veniam, quis nostrum exercitat ionem ullam corporis suscipit laboriosam,",
+      "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,",
     ),
     "landingTitle": MessageLookupByLibrary.simpleMessage("Jane Cooper"),
     "messageTitle": MessageLookupByLibrary.simpleMessage("Message"),
@@ -165,7 +165,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchInterestRateTitle": MessageLookupByLibrary.simpleMessage(
       "Interest rate",
     ),
-    "searchLanguageTitle": MessageLookupByLibrary.simpleMessage(":Language"),
+    "searchLanguageTitle": MessageLookupByLibrary.simpleMessage("Language"),
     "searchRateTitle": MessageLookupByLibrary.simpleMessage("Rate"),
     "searchSelectedCurrencyTitle": MessageLookupByLibrary.simpleMessage(
       "Select the currency",
@@ -237,10 +237,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enter your password",
     ),
     "signUpTermAndConditionButton": MessageLookupByLibrary.simpleMessage(
-      "Term and Condtions",
+      "Term and Conditions",
     ),
     "signUpTermAndConditions": MessageLookupByLibrary.simpleMessage(
-      "By creating an account your aggree \nto our ",
+      "By creating an account your agree \nto our ",
     ),
     "signUpTitle": MessageLookupByLibrary.simpleMessage("Sign up"),
     "signUpUsername": MessageLookupByLibrary.simpleMessage(

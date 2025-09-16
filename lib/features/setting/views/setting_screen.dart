@@ -7,10 +7,9 @@ import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/features/auth/services/auth_repository.dart';
-import 'package:banking_app/features/setting/bloc/setting_cubit.dart';
-import 'package:banking_app/features/setting/bloc/setting_state.dart';
-import 'package:banking_app/features/setting/views/password_change_screen.dart';
+import 'package:banking_app/features/auth/repositories/auth_repository.dart';
+import 'package:banking_app/features/setting/states/setting_cubit.dart';
+import 'package:banking_app/features/setting/states/setting_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -58,14 +57,7 @@ class SettingScreen extends StatelessWidget {
                     ),
                   ),
                   SettingOption(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PasswordChangeScreen(),
-                        ),
-                      );
-                    },
+                    onTap: () {},
                     title: S.current.settingPasswordTitle,
                   ),
                   SettingOption(

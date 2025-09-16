@@ -1,6 +1,8 @@
 // models/transfer_models.dart
 
-class Account {
+import 'package:equatable/equatable.dart';
+
+class Account extends Equatable {
   final String id;
   final String number;
   final String maskedNumber;
@@ -28,19 +30,27 @@ class Account {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'number': number,
-      'maskedNumber': maskedNumber,
-      'type': type,
-      'availableBalance': availableBalance,
-      'isActive': isActive,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'number': number,
+    'maskedNumber': maskedNumber,
+    'type': type,
+    'availableBalance': availableBalance,
+    'isActive': isActive,
+  };
+
+  @override
+  List<Object?> get props => [
+    id,
+    number,
+    maskedNumber,
+    type,
+    availableBalance,
+    isActive,
+  ];
 }
 
-class Beneficiary {
+class Beneficiary extends Equatable {
   final String id;
   final String name;
   final String accountNumber;
@@ -71,17 +81,15 @@ class Beneficiary {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'accountNumber': accountNumber,
-      'avatarUrl': avatarUrl,
-      'bank': bank?.toJson(),
-      'branch': branch,
-      'isFavorite': isFavorite,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'accountNumber': accountNumber,
+    'avatarUrl': avatarUrl,
+    'bank': bank?.toJson(),
+    'branch': branch,
+    'isFavorite': isFavorite,
+  };
 
   Beneficiary copyWith({
     String? id,
@@ -102,9 +110,20 @@ class Beneficiary {
       isFavorite: isFavorite ?? this.isFavorite,
     );
   }
+
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    accountNumber,
+    avatarUrl,
+    bank,
+    branch,
+    isFavorite,
+  ];
 }
 
-class Bank {
+class Bank extends Equatable {
   final String id;
   final String name;
   final String code;
@@ -126,9 +145,15 @@ class Bank {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'code': code, 'logoUrl': logoUrl};
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'code': code,
+    'logoUrl': logoUrl,
+  };
+
+  @override
+  List<Object?> get props => [id, name, code, logoUrl];
 }
 
 enum TransferType { cardNumber, sameBank, otherBank }
