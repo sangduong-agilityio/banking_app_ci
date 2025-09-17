@@ -272,6 +272,15 @@ class BAAssets {
 
   static Widget Function({double? width, double? height, BoxFit? boxfit}) swap =
       _BASwapImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  fingerprint = _BAFingerprintImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  beneficiary = _BABeneficiaryImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  saveOnline = _BASaveOnlineImage.new;
 }
 
 class _BAHomeImage extends StatelessWidget {
@@ -543,6 +552,40 @@ class _BAMobileBankingImage extends StatelessWidget {
   }
 }
 
+class _BASaveOnlineImage extends StatelessWidget {
+  const _BASaveOnlineImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgPig.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
+class _BABeneficiaryImage extends StatelessWidget {
+  const _BABeneficiaryImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgContacts.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 28),
+      height: BAResponsive.scale(context, defaultValue: height ?? 28),
+    );
+  }
+}
+
 class _BAPigImage extends StatelessWidget {
   const _BAPigImage({this.width, this.height, this.boxfit});
   final double? height;
@@ -692,6 +735,23 @@ class _BAInternetImage extends StatelessWidget {
       path: Assets.images.imgInternet.path,
       width: BAResponsive.scale(context, defaultValue: width ?? 90),
       height: BAResponsive.scale(context, defaultValue: height ?? 80),
+    );
+  }
+}
+
+class _BAFingerprintImage extends StatelessWidget {
+  const _BAFingerprintImage({this.width, this.height, this.boxfit});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      path: Assets.images.imgFingerprint.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 64),
+      height: BAResponsive.scale(context, defaultValue: height ?? 64),
     );
   }
 }

@@ -7,6 +7,7 @@
   "messageTitle": "Message",
   "settingTitle": "Setting",
   "noItemsFoundTitle": "No items found",
+  "pageNotSupportedYet":"This page is not supported yet!",
 
   "validatorEmailRequired": "Email is required",
   "validatorEmailWrongFormat": "Email is invalid format",
@@ -53,7 +54,7 @@
   "@segmentHome": {
     "description": "Store translations that are likely to be used only in Home feature"
   },
-  "homeGreetingTitle": "Good Morning,\n{type}!",
+  "homeGreetingTitle": "Hi, {type}",
   "@homeGreetingTitle": {
     "placeholders": {
       "type": { "type": "String", "example": "username" }
@@ -66,6 +67,8 @@
   "homePayTheBillTitle": "Pay the \nbill",
   "homeCreditCardTitle": "Credit card",
   "homeTransactionReportTitle": "Transaction \nReport",
+  "homeSaveOnlineTitle":"Save Online",
+  "homeBeneficiaryTitle":"Beneficiary",
 
   "@segmentSearch": {
     "description": "Store translations that are likely to be used only in Search feature"

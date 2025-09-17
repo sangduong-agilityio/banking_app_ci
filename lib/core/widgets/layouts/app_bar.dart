@@ -16,6 +16,8 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBack;
   final double? fontSize;
   final EdgeInsetsGeometry? padding;
+  final String? profileImage;
+  final TextStyle? style;
 
   const BAAppBar({
     super.key,
@@ -29,6 +31,8 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.iconColor,
     this.onBack,
     this.padding,
+    this.profileImage,
+    this.style,
   });
 
   @override
@@ -36,16 +40,19 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: padding ?? const EdgeInsets.symmetric(horizontal: 16),
       child: AppBar(
+        actions: actions,
         backgroundColor: backgroundColor,
         elevation: 0,
         centerTitle: alignment == BAAppBarAlignment.center,
         titleSpacing: alignment == BAAppBarAlignment.left ? 0 : null,
         title: Text(
           title,
-          style: context.headlineSmall?.copyWith(
-            color: titleColor ?? context.colorScheme.onSurface,
-            fontSize: fontSize ?? 20,
-          ),
+          style:
+              style ??
+              context.headlineSmall?.copyWith(
+                color: titleColor ?? context.colorScheme.onSurface,
+                fontSize: fontSize ?? 20,
+              ),
         ),
         leading: showBackButton
             ? IconButton(
@@ -53,8 +60,15 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: iconColor ?? Colors.black,
                 onPressed: onBack ?? () => context.pop(),
               )
-            : null,
-        actions: actions,
+            : Padding(
+                padding: const EdgeInsets.all(4),
+                child: CircleAvatar(
+                  radius: 16,
+                  backgroundImage: profileImage != null
+                      ? NetworkImage(profileImage ?? '')
+                      : const AssetImage('') as ImageProvider,
+                ),
+              ),
       ),
     );
   }

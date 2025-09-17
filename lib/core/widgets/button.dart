@@ -1,4 +1,3 @@
-import 'package:banking_app/app/themes/app_colors.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
@@ -32,29 +31,24 @@ class _BAElevatedButtonState extends State<BAElevatedButton> {
       padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 30),
       width: widget.width ?? double.infinity,
       height: widget.height ?? 44,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: widget.isDisabled ? null : BAAppColors.primaryGradient,
-          color: widget.isDisabled ? context.colorScheme.outlineVariant : null,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: ElevatedButton(
-          onPressed: widget.isDisabled ? null : widget.onPressed,
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
+      child: ElevatedButton(
+        onPressed: widget.isDisabled ? null : widget.onPressed,
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+          elevation: 0,
+          backgroundColor: widget.isDisabled
+              ? context.colorScheme.outlineVariant
+              : context.colorScheme.secondary,
+          shadowColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: Text(
-            widget.text,
-            style: context.bodyLarge?.copyWith(
-              color: context.colorScheme.onPrimary,
-              fontWeight: FontWeight.w600,
-            ),
+        ),
+        child: Text(
+          widget.text,
+          style: context.bodyLarge?.copyWith(
+            color: context.colorScheme.onPrimary,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

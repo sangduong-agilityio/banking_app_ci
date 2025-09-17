@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class CardAction extends StatelessWidget {
   final Widget icon;
-  final String label;
+  final String title;
   final VoidCallback? onTap;
   const CardAction({
     super.key,
     required this.icon,
-    required this.label,
+    required this.title,
     this.onTap,
   });
 
@@ -31,9 +31,9 @@ class CardAction extends StatelessWidget {
             icon,
             SizedBox(height: 12),
             Text(
-              label,
+              title,
               textAlign: TextAlign.center,
-              style: context.labelMedium,
+              style: context.titleMedium,
             ),
           ],
         ),

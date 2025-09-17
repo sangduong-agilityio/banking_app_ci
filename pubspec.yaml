@@ -78,6 +78,8 @@ dependencies:
 
   local_auth: ^2.3.0
 
+  flutter_secure_storage: ^9.2.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -107,7 +109,7 @@ dev_dependencies:
 
   # Used for generating union types and data classes
   freezed: ^2.5.2
-  
+
 flutter:
   uses-material-design: true
   generate: true
