@@ -1214,6 +1214,16 @@ class S {
     );
   }
 
+  /// `Touch ID`
+  String get settingTouchIdLabel {
+    return Intl.message(
+      'Touch ID',
+      name: 'settingTouchIdLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Account`
   String get accountTitle {
     return Intl.message('Account', name: 'accountTitle', desc: '', args: []);
@@ -1289,6 +1299,56 @@ class S {
     return Intl.message(
       'Home Address',
       name: 'accountHomeAddressLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login failed. Please check your email and password.`
+  String get authErrorLoginFailed {
+    return Intl.message(
+      'Login failed. Please check your email and password.',
+      name: 'authErrorLoginFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Biometric authentication is not enabled.`
+  String get authErrorBiometricNotEnabled {
+    return Intl.message(
+      'Biometric authentication is not enabled.',
+      name: 'authErrorBiometricNotEnabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Biometric authentication failed.`
+  String get authErrorBiometricFailed {
+    return Intl.message(
+      'Biometric authentication failed.',
+      name: 'authErrorBiometricFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No saved credentials found for biometric login.`
+  String get authErrorNoSavedCredentials {
+    return Intl.message(
+      'No saved credentials found for biometric login.',
+      name: 'authErrorNoSavedCredentials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unknown error occurred. Please try again.`
+  String get authErrorUnknown {
+    return Intl.message(
+      'An unknown error occurred. Please try again.',
+      name: 'authErrorUnknown',
       desc: '',
       args: [],
     );

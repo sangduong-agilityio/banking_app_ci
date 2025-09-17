@@ -1,3 +1,4 @@
+// Updated auth_state.dart
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,6 +14,9 @@ class AuthState extends Equatable {
     this.isTermsAccepted = false,
     this.errorMessage,
     this.sessionToken,
+    this.isBiometricAvailable = false,
+    this.isBiometricEnabled = false,
+    this.hasSavedBiometricCredentials = false,
   });
 
   final AuthStatus status;
@@ -23,6 +27,9 @@ class AuthState extends Equatable {
   final bool isTermsAccepted;
   final String? errorMessage;
   final String? sessionToken;
+  final bool isBiometricAvailable;
+  final bool isBiometricEnabled;
+  final bool hasSavedBiometricCredentials;
 
   AuthState copyWith({
     AuthStatus? status,
@@ -33,6 +40,9 @@ class AuthState extends Equatable {
     bool? isTermsAccepted,
     String? sessionToken,
     String? errorMessage,
+    bool? isBiometricAvailable,
+    bool? isBiometricEnabled,
+    bool? hasSavedBiometricCredentials,
   }) {
     return AuthState(
       status: status ?? this.status,
@@ -43,6 +53,10 @@ class AuthState extends Equatable {
       isTermsAccepted: isTermsAccepted ?? this.isTermsAccepted,
       errorMessage: errorMessage ?? this.errorMessage,
       sessionToken: sessionToken ?? this.sessionToken,
+      isBiometricAvailable: isBiometricAvailable ?? this.isBiometricAvailable,
+      isBiometricEnabled: isBiometricEnabled ?? this.isBiometricEnabled,
+      hasSavedBiometricCredentials:
+          hasSavedBiometricCredentials ?? this.hasSavedBiometricCredentials,
     );
   }
 
@@ -56,6 +70,9 @@ class AuthState extends Equatable {
     isTermsAccepted,
     errorMessage,
     sessionToken,
+    isBiometricAvailable,
+    isBiometricEnabled,
+    hasSavedBiometricCredentials,
   ];
 }
 

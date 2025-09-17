@@ -7,11 +7,10 @@ abstract class HomeRepository {
   Future<List<CardModel>> fetchCards();
 }
 
-class DashboardRepositoryImplement implements HomeRepository {
+class HomeRepositoryImpl implements HomeRepository {
   final SupabaseClient _client;
 
-  DashboardRepositoryImplement({required SupabaseClient client})
-    : _client = client;
+  HomeRepositoryImpl({required SupabaseClient client}) : _client = client;
 
   @override
   Future<UserModel?> fetchCurrentUser() async {

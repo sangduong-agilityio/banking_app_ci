@@ -1,7 +1,7 @@
-import 'package:banking_app/app/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:banking_app/app/router/app_router.dart';
 
 class RouterGuard {
   static Future<String?> authGuard(
@@ -9,27 +9,18 @@ class RouterGuard {
     GoRouterState state,
   ) async {
     final prefs = await SharedPreferences.getInstance();
-    final sessionToken = prefs.getString('session_token');
-    final isLoggedIn = sessionToken != null;
+    final token = prefs.getString('session_token');
 
-    // Public routes that don't require authentication
-    final publicRoutes = [
-      BAPaths.landing.path,
-      BAPaths.signIn.path,
-      BAPaths.signUp.path,
-    ];
+    final isLoggingIn =
+        state.matchedLocation == BAPaths.signIn.path ||
+        state.matchedLocation == BAPaths.signUp.path ||
+        state.matchedLocation == BAPaths.landing.path;
 
-    final currentPath = state.uri.toString();
-
-    // If logged in and trying to access landing/signin, redirect to home
-    if (isLoggedIn &&
-        (currentPath == BAPaths.landing.path ||
-            currentPath == BAPaths.signIn.path)) {
-      return BAPaths.home.path;
+    if (token == null && !isLoggingIn) {
+      return BAPaths.signIn.path;
     }
 
-    // If not logged in and trying to access protected route, redirect to landing
-    if (!isLoggedIn && !publicRoutes.contains(currentPath)) {
+    if (token != null && isLoggingIn) {
       return BAPaths.home.path;
     }
 

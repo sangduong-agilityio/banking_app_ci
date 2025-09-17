@@ -6,6 +6,7 @@ import 'package:banking_app/features/auth/views/sign_in_screen.dart';
 import 'package:banking_app/features/auth/views/sign_up_screen.dart';
 import 'package:banking_app/features/home/views/home_screen.dart';
 import 'package:banking_app/features/landing/landing_screen.dart';
+import 'package:banking_app/features/message/message_screen.dart';
 import 'package:banking_app/features/search/views/search_screen.dart';
 import 'package:banking_app/features/setting/views/setting_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,17 +14,15 @@ import 'package:go_router/go_router.dart';
 
 class BAAppRouter {
   static final rootNavigatorKey = GlobalKey<NavigatorState>();
+  static final homeNavigatorKey = GlobalKey<NavigatorState>();
+  static final searchNavigatorKey = GlobalKey<NavigatorState>();
+  static final messageNavigatorKey = GlobalKey<NavigatorState>();
+  static final settingNavigatorKey = GlobalKey<NavigatorState>();
 
   static final router = GoRouter(
     initialLocation: BAPaths.landing.path,
     navigatorKey: rootNavigatorKey,
-    routes: _getRoutes(),
-    errorBuilder: (context, state) => const NotFoundScreen(),
-    redirect: (context, state) => RouterGuard.authGuard(context, state),
-  );
-
-  static List<RouteBase> _getRoutes() {
-    return [
+    routes: [
       GoRoute(
         path: BAPaths.landing.path,
         name: BAPaths.landing.name,
@@ -34,7 +33,7 @@ class BAAppRouter {
         path: BAPaths.signIn.path,
         name: BAPaths.signIn.name,
         pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: SignInScreen()),
+            MaterialPage(key: state.pageKey, child: const SignInScreen()),
       ),
       GoRoute(
         path: BAPaths.signUp.path,
@@ -58,17 +57,17 @@ class BAAppRouter {
         },
         branches: [
           StatefulShellBranch(
-            navigatorKey: GlobalKey<NavigatorState>(),
+            navigatorKey: homeNavigatorKey,
             routes: [
               GoRoute(
                 path: BAPaths.home.path,
                 name: BAPaths.home.name,
-                builder: (context, state) => HomeScreen(),
+                builder: (context, state) => const HomeScreen(),
               ),
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: GlobalKey<NavigatorState>(),
+            navigatorKey: searchNavigatorKey,
             routes: [
               GoRoute(
                 path: BAPaths.search.path,
@@ -78,7 +77,17 @@ class BAAppRouter {
             ],
           ),
           StatefulShellBranch(
-            navigatorKey: GlobalKey<NavigatorState>(),
+            navigatorKey: messageNavigatorKey,
+            routes: [
+              GoRoute(
+                path: BAPaths.message.path,
+                name: BAPaths.message.name,
+                builder: (context, state) => const MessageScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: settingNavigatorKey,
             routes: [
               GoRoute(
                 path: BAPaths.setting.path,
@@ -89,8 +98,10 @@ class BAAppRouter {
           ),
         ],
       ),
-    ];
-  }
+    ],
+    redirect: (context, state) => RouterGuard.authGuard(context, state),
+    errorBuilder: (context, state) => const NotFoundScreen(),
+  );
 }
 
 enum BAPaths {
@@ -99,6 +110,7 @@ enum BAPaths {
   signUp(name: 'signUp', path: '/signup'),
   home(name: 'home', path: '/home'),
   search(name: 'search', path: '/search'),
+  message(name: 'message', path: '/message'),
   setting(name: 'setting', path: '/setting');
 
   const BAPaths({required this.name, required this.path});
