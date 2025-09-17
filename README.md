@@ -108,7 +108,7 @@ This is the design of the app:
 - **Sign In** - User authentication with email/password
 - **Sign Up** - User registration with validation
 - **Home Dashboard** - Account overview with quick actions
-- **Search** - User registration with validation
+- **Search** - Search with exchange currency
 - **Transaction History** - Complete transaction records with filtering
 - **Transfer Money** - P2P and bank transfers
 - **Pay Bills** - Utility bills and service payments
@@ -264,7 +264,6 @@ lib/
 - [] **Authentication Flow**
   - Sign In Screen + BLoC + Supabase
   - Sign Up Screen + BLoC + Supabase
-  - Forgot Password functionality
 - [] **Dashboard & Navigation**
   - Home Screen + BLoC + API integration
   - Navigation system with bottom navigation
@@ -308,10 +307,10 @@ lib/
 5. **Run the application:**
    ```bash
    # Standard run
-   flutter run ./tradly-app/lib/main.dart
+   flutter run ./banking-app/lib/main.dart
 
    # With Device Preview
-   flutter run ./tradly-app/lib/main_device_preview.dart
+   flutter run ./banking-app/lib/main_device_preview.dart
    ```
 
 ## Key Features Implementation

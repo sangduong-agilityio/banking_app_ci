@@ -53,6 +53,21 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "accountSaveButton": MessageLookupByLibrary.simpleMessage("Save Changes"),
     "accountTitle": MessageLookupByLibrary.simpleMessage("Account"),
+    "authErrorBiometricFailed": MessageLookupByLibrary.simpleMessage(
+      "Biometric authentication failed.",
+    ),
+    "authErrorBiometricNotEnabled": MessageLookupByLibrary.simpleMessage(
+      "Biometric authentication is not enabled.",
+    ),
+    "authErrorLoginFailed": MessageLookupByLibrary.simpleMessage(
+      "Login failed. Please check your email and password.",
+    ),
+    "authErrorNoSavedCredentials": MessageLookupByLibrary.simpleMessage(
+      "No saved credentials found for biometric login.",
+    ),
+    "authErrorUnknown": MessageLookupByLibrary.simpleMessage(
+      "An unknown error occurred. Please try again.",
+    ),
     "homeAccountAndCardTitle": MessageLookupByLibrary.simpleMessage(
       "Account and Card",
     ),
@@ -205,6 +220,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Recent password",
     ),
     "settingTitle": MessageLookupByLibrary.simpleMessage("Setting"),
+    "settingTouchIdLabel": MessageLookupByLibrary.simpleMessage("Touch ID"),
     "signInButton": MessageLookupByLibrary.simpleMessage("Sign in"),
     "signInDescription": MessageLookupByLibrary.simpleMessage(
       "Hello there, sign in to continue",

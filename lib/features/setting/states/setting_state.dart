@@ -9,26 +9,46 @@ final class SettingState extends Equatable {
     this.user,
     this.status = const SettingStatus.initial(),
     this.errorMessage,
+    this.isBiometricEnabled = false,
+    this.hasSavedBiometricCredentials = false,
+    this.isBiometricAvailable = false,
   });
 
   final UserModel? user;
   final SettingStatus status;
   final String? errorMessage;
+  final bool isBiometricEnabled;
+  final bool isBiometricAvailable;
+  final bool hasSavedBiometricCredentials;
 
   SettingState copyWith({
     UserModel? user,
     SettingStatus? status,
     String? errorMessage,
+    bool? isBiometricEnabled,
+    bool? isBiometricAvailable,
+    bool? hasSavedBiometricCredentials,
   }) {
     return SettingState(
       user: user ?? this.user,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      isBiometricEnabled: isBiometricEnabled ?? this.isBiometricEnabled,
+      isBiometricAvailable: isBiometricAvailable ?? this.isBiometricAvailable,
+      hasSavedBiometricCredentials:
+          hasSavedBiometricCredentials ?? this.hasSavedBiometricCredentials,
     );
   }
 
   @override
-  List<Object?> get props => [user, status, errorMessage];
+  List<Object?> get props => [
+    user,
+    status,
+    errorMessage,
+    isBiometricEnabled,
+    hasSavedBiometricCredentials,
+    isBiometricAvailable,
+  ];
 }
 
 @freezed

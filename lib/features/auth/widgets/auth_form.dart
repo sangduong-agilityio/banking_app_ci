@@ -64,121 +64,103 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            color: context.colorScheme.onPrimary,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title ?? '',
+            style: context.displaySmall?.copyWith(
+              color: context.colorScheme.secondary,
             ),
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 20),
+          const SizedBox(height: 4),
+          Text(
+            widget.description ?? '',
+            style: context.labelMedium?.copyWith(
+              color: context.colorScheme.onInverseSurface,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 20),
+          const AnimatedDot(),
+          FormBuilder(
+            key: formKey,
+            onChanged: _onFormChanged,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.title ?? '',
-                  style: context.displaySmall?.copyWith(
-                    color: context.colorScheme.secondary,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  widget.description ?? '',
-                  style: context.labelMedium?.copyWith(
-                    color: context.colorScheme.onInverseSurface,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const AnimatedDot(),
-                FormBuilder(
-                  key: formKey,
-                  onChanged: _onFormChanged,
-                  child: Column(
-                    children: [
-                      for (
-                        int i = 0;
-                        i < (widget.textFields ?? []).length;
-                        i++
-                      ) ...[
-                        (widget.textFields ?? [])[i],
-                        if (i != (widget.textFields ?? []).length - 1)
-                          const SizedBox(height: 20),
-                      ],
-                    ],
-                  ),
-                ),
-
-                if (widget.extra != null) ...[
-                  const SizedBox(height: 12),
-                  widget.extra ?? const SizedBox(),
+                for (int i = 0; i < (widget.textFields ?? []).length; i++) ...[
+                  (widget.textFields ?? [])[i],
+                  if (i != (widget.textFields ?? []).length - 1)
+                    const SizedBox(height: 20),
                 ],
-
-                if (widget.showTerms) ...[
-                  const SizedBox(height: 15),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => widget.onTermsChanged?.call(
-                          !widget.isTermsAccepted,
-                        ),
-                        child: Icon(
-                          widget.isTermsAccepted
-                              ? Icons.check_box
-                              : Icons.check_box_outline_blank,
-                          color: widget.isTermsAccepted
-                              ? context.colorScheme.secondary
-                              : context.colorScheme.onTertiary,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: S.current.signUpTermAndConditions,
-                            style: context.bodySmall?.copyWith(
-                              color: context.colorScheme.scrim,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: S.current.signUpTermAndConditionButton,
-                                style: context.bodySmall?.copyWith(
-                                  color: context.colorScheme.secondary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => context.pop(),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-                const SizedBox(height: 20),
-                BAElevatedButton(
-                  padding: EdgeInsets.zero,
-                  isDisabled: !_allFieldsValid || !widget.isSubmitEnabled,
-                  text: widget.submitText ?? '',
-                  onPressed: widget.onSubmit,
-                ),
-
-                if (widget.footer != null) ...[
-                  const SizedBox(height: 14),
-                  Center(child: widget.footer ?? const SizedBox()),
-                ],
-
-                SizedBox(height: widget.height?.height ?? 20),
               ],
             ),
           ),
-        ),
+
+          if (widget.extra != null) ...[
+            const SizedBox(height: 12),
+            widget.extra ?? const SizedBox(),
+          ],
+
+          if (widget.showTerms) ...[
+            const SizedBox(height: 15),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () =>
+                      widget.onTermsChanged?.call(!widget.isTermsAccepted),
+                  child: Icon(
+                    widget.isTermsAccepted
+                        ? Icons.check_box
+                        : Icons.check_box_outline_blank,
+                    color: widget.isTermsAccepted
+                        ? context.colorScheme.secondary
+                        : context.colorScheme.onTertiary,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      text: S.current.signUpTermAndConditions,
+                      style: context.bodySmall?.copyWith(
+                        color: context.colorScheme.scrim,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: S.current.signUpTermAndConditionButton,
+                          style: context.bodySmall?.copyWith(
+                            color: context.colorScheme.secondary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => context.pop(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          const SizedBox(height: 20),
+          BAElevatedButton(
+            padding: EdgeInsets.zero,
+            isDisabled: !_allFieldsValid || !widget.isSubmitEnabled,
+            text: widget.submitText ?? '',
+            onPressed: widget.onSubmit,
+          ),
+
+          if (widget.footer != null) ...[
+            const SizedBox(height: 14),
+            Center(child: widget.footer ?? const SizedBox()),
+          ],
+
+          SizedBox(height: widget.height?.height ?? 20),
+        ],
       ),
     );
   }

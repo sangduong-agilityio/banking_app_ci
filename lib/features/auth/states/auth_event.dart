@@ -28,6 +28,20 @@ class SignInButtonPressedEvt extends AuthEvt {
   List<Object?> get props => [];
 }
 
+class SignInWithBiometricEvt extends AuthEvt {
+  const SignInWithBiometricEvt();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class CheckBiometricAvailabilityEvt extends AuthEvt {
+  const CheckBiometricAvailabilityEvt();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class SignUpFormValidateChangedEvt extends AuthEvt {
   const SignUpFormValidateChangedEvt({
     required this.isValidate,

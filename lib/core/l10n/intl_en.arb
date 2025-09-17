@@ -187,6 +187,7 @@
   "settingNewPasswordLabel": "New password",
   "settingConfirmPasswordLabel": "Confirm password",
   "settingChangePasswordButton": "Change password",
+  "settingTouchIdLabel":"Touch ID",
 
   "@segmentAccount": {
     "description": "Store translations that are likely to be used only in Account feature"
@@ -199,5 +200,14 @@
   "accountNameLabel": "Name",
   "accountPhoneNumberLabel": "Phone Number",
   "accountEmailLabel": "E-mail",
-  "accountHomeAddressLabel": "Home Address"
+  "accountHomeAddressLabel": "Home Address",
+
+  "@segmentAuthErrors": {
+  "description": "Store translations for authentication and biometric error messages"
+  },
+  "authErrorLoginFailed": "Login failed. Please check your email and password.",
+  "authErrorBiometricNotEnabled": "Biometric authentication is not enabled.",
+  "authErrorBiometricFailed": "Biometric authentication failed.",
+  "authErrorNoSavedCredentials": "No saved credentials found for biometric login.",
+  "authErrorUnknown": "An unknown error occurred. Please try again."
 }
