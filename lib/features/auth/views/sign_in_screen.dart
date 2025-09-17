@@ -1,6 +1,7 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/utils/pref_keys.dart';
 import 'package:banking_app/core/utils/validators.dart';
+import 'package:banking_app/core/widgets/assets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -184,7 +185,12 @@ class SignInBody extends StatelessWidget {
                 extra: Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      BASnackBar.showNotSupported(
+                        context,
+                        S.current.pageNotSupportedYet,
+                      );
+                    },
                     child: Text(
                       S.current.signInForgotPassword,
                       style: context.bodySmall,
@@ -200,14 +206,9 @@ class SignInBody extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: GestureDetector(
                           onTap: onBiometricPressed,
-                          child: Icon(
-                            Icons.fingerprint,
-                            color: context.colorScheme.secondary,
-                            size: 64,
-                          ),
+                          child: BAAssets.fingerprint(),
                         ),
                       ),
-                    const SizedBox(height: 16),
                     RichText(
                       text: TextSpan(
                         text: S.current.signInSignUpPrompt,

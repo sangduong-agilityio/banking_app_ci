@@ -15,14 +15,14 @@ class AnimatedDot extends StatelessWidget {
             AnimatedFloatingDot(
               color: context.colorScheme.secondary,
               size: 10,
-              left: 130,
+              left: 110,
               top: 10,
               delay: 0,
             ),
             AnimatedFloatingDot(
               color: context.colorScheme.surfaceTint,
               size: 10,
-              left: 70,
+              left: 60,
               top: 60,
               delay: 500,
             ),
@@ -30,14 +30,14 @@ class AnimatedDot extends StatelessWidget {
             AnimatedFloatingDot(
               color: context.colorScheme.tertiary,
               size: 10,
-              right: 90,
+              right: 80,
               top: 130,
               delay: 2000,
             ),
             AnimatedFloatingDot(
               color: context.colorScheme.error,
               size: 18,
-              right: 80,
+              right: 70,
               top: 40,
               delay: 1500,
             ),

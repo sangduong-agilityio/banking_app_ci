@@ -79,6 +79,16 @@ class S {
     );
   }
 
+  /// `This page is not supported yet!`
+  String get pageNotSupportedYet {
+    return Intl.message(
+      'This page is not supported yet!',
+      name: 'pageNotSupportedYet',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Email is required`
   String get validatorEmailRequired {
     return Intl.message(
@@ -349,10 +359,10 @@ class S {
     );
   }
 
-  /// `Good Morning,\n{type}!`
+  /// `Hi, {type}`
   String homeGreetingTitle(String type) {
     return Intl.message(
-      'Good Morning,\n$type!',
+      'Hi, $type',
       name: 'homeGreetingTitle',
       desc: '',
       args: [type],
@@ -424,6 +434,26 @@ class S {
     return Intl.message(
       'Transaction \nReport',
       name: 'homeTransactionReportTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save Online`
+  String get homeSaveOnlineTitle {
+    return Intl.message(
+      'Save Online',
+      name: 'homeSaveOnlineTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beneficiary`
+  String get homeBeneficiaryTitle {
+    return Intl.message(
+      'Beneficiary',
+      name: 'homeBeneficiaryTitle',
       desc: '',
       args: [],
     );

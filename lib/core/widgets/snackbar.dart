@@ -19,6 +19,21 @@ class BASnackBar {
     );
   }
 
+  static void showNotSupported(
+    BuildContext context,
+    String message, {
+    VoidCallback? onRetry,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      _buildSnackbar(
+        context,
+        message,
+        context.colorScheme.inverseSurface,
+        onRetry,
+      ),
+    );
+  }
+
   static buildSuccessSnackbar(
     BuildContext context,
     String message, {
@@ -46,10 +61,12 @@ class BASnackBar {
           ? SnackBarAction(label: '', onPressed: onRetry)
           : null,
       backgroundColor: colorBackground,
-      content: Text(
-        message,
-        style: context.textTheme.bodyLarge?.copyWith(
-          color: context.colorScheme.onPrimary,
+      content: Center(
+        child: Text(
+          message,
+          style: context.textTheme.bodyLarge?.copyWith(
+            color: context.colorScheme.onPrimary,
+          ),
         ),
       ),
     );

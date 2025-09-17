@@ -20,7 +20,7 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(type) => "Good Morning,\n${type}!";
+  static String m0(type) => "Hi, ${type}";
 
   static String m1(type) => "You\'ve pay your ${type} bill!";
 
@@ -71,6 +71,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeAccountAndCardTitle": MessageLookupByLibrary.simpleMessage(
       "Account and Card",
     ),
+    "homeBeneficiaryTitle": MessageLookupByLibrary.simpleMessage("Beneficiary"),
     "homeCreditCardTitle": MessageLookupByLibrary.simpleMessage("Credit card"),
     "homeGreetingTitle": m0,
     "homeMobileRechargeTitle": MessageLookupByLibrary.simpleMessage(
@@ -79,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "homePayTheBillTitle": MessageLookupByLibrary.simpleMessage(
       "Pay the \nbill",
     ),
+    "homeSaveOnlineTitle": MessageLookupByLibrary.simpleMessage("Save Online"),
     "homeTitle": MessageLookupByLibrary.simpleMessage("Home"),
     "homeTransactionReportTitle": MessageLookupByLibrary.simpleMessage(
       "Transaction \nReport",
@@ -91,6 +93,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "landingTitle": MessageLookupByLibrary.simpleMessage("Jane Cooper"),
     "messageTitle": MessageLookupByLibrary.simpleMessage("Message"),
     "noItemsFoundTitle": MessageLookupByLibrary.simpleMessage("No items found"),
+    "pageNotSupportedYet": MessageLookupByLibrary.simpleMessage(
+      "This page is not supported yet!",
+    ),
     "payBillAddressTitle": MessageLookupByLibrary.simpleMessage("Address"),
     "payBillAllTitle": MessageLookupByLibrary.simpleMessage("All the Bills"),
     "payBillAmountTitle": MessageLookupByLibrary.simpleMessage("Amount"),
