@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => locator<HomeCubit>()..fetchHomeData(),
+      create: (_) => locator<HomeCubit>()..homeInitialize(),
       child: BAScaffold(
         body: Container(
           color: context.colorScheme.secondary,
@@ -88,7 +88,6 @@ class HomeContent extends StatelessWidget {
               children: const [
                 SizedBox(height: 20),
                 CreditCardsSwiper(),
-                SizedBox(height: 30),
                 ListViewActions(),
               ],
             ),

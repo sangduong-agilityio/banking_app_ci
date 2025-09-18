@@ -1,6 +1,7 @@
 import 'package:banking_app/core/api/api_client.dart';
 import 'package:banking_app/core/env/env.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
+import 'package:banking_app/features/account/states/account_and_card_cubit.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/states/auth_bloc.dart';
 import 'package:banking_app/features/home/repositories/home_repository.dart';
@@ -58,6 +59,9 @@ class AppLocators {
     );
     locator.registerFactory<HomeCubit>(
       () => HomeCubit(repo: locator<HomeRepository>()),
+    );
+    locator.registerFactory<AccountAndCardCubit>(
+      () => AccountAndCardCubit(repo: locator<HomeRepository>()),
     );
 
     locator.registerFactory<SearchBloc>(

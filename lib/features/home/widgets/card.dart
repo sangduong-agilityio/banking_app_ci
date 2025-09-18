@@ -837,7 +837,7 @@ class _CreditCardState extends State<CreditCard>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '\$${widget.data.balance}',
+                              '\$${widget.data.availableBalance}',
                               style: context.headlineMedium?.copyWith(
                                 color: context.colorScheme.onPrimary,
                               ),

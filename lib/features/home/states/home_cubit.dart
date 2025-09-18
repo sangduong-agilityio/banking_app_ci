@@ -7,7 +7,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   final HomeRepository repo;
 
-  Future<void> fetchHomeData() async {
+  Future<void> homeInitialize() async {
     emit(state.copyWith(status: const HomeStatus.loading()));
     try {
       final user = await repo.fetchCurrentUser();

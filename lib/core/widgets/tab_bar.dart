@@ -1,4 +1,3 @@
-import 'package:banking_app/app/themes/app_colors.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +34,7 @@ class BATabBar extends StatelessWidget {
         child: TabBar(
           controller: controller,
           indicator: BoxDecoration(
-            gradient: BAAppColors.primaryGradient,
+            color: context.colorScheme.secondary,
             borderRadius: BorderRadius.circular(borderRadius ?? 16),
           ),
           indicatorColor: context.colorScheme.error,

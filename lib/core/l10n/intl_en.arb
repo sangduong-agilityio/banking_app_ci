@@ -195,16 +195,26 @@
   "@segmentAccount": {
     "description": "Store translations that are likely to be used only in Account feature"
   },
-  "accountTitle": "Account",
-  "accountSaveButton": "Save Changes",
-  "accountCardHolderTitle": "Card Holder Name",
-  "accountExpiryDateTitle": "Expiry date",
-  "accountDetailInfoTitle": "DETAIL INFORMATION",
-  "accountNameLabel": "Name",
-  "accountPhoneNumberLabel": "Phone Number",
-  "accountEmailLabel": "E-mail",
-  "accountHomeAddressLabel": "Home Address",
-
+  "accountTitle":"Account",
+  "accountCardTitle":"Card",
+  "accountManagementTitle":"Management",
+  "accountAndCardTitle": "Account and Card",
+  "accountAddCardButton":"Add card",
+  "accountAvailableBalanceTitle": "Available balance",
+  "accountBranchTitle": "Branch",
+  "accountFromDateTitle": "Form",
+  "accountToDateTitle": "To",
+  "accountTermTitle": "Time deposit",
+  "accountInterestRateTitle": "Interest rate",
+  "accountDeleteCardTitle":"Delete Card",
+  "accountContentTitle":"Are you sure you want to delete this card?",
+  "accountCancelTitle":"Cancel",
+  "accountDeleteTitle":"Delete",
+  "accountNameTitle":"Name",
+  "accountCardNumberTitle":"Card number",
+  "accountValidFromTitle":"Valid from",
+  "accountGoodThruTitle":"Good thru",
+  
   "@segmentAuthErrors": {
   "description": "Store translations for authentication and biometric error messages"
   },

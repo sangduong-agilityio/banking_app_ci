@@ -4,9 +4,9 @@ import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/formatters.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
+import 'package:banking_app/core/widgets/tab_bar.dart';
 import 'package:banking_app/features/bills/models/bill_model.dart';
 import 'package:banking_app/features/bills/models/payment_history_model.dart';
-import 'package:banking_app/features/bills/widgets/tab_bar.dart';
 import 'package:flutter/material.dart';
 
 class PaymentHistoryScreen extends StatefulWidget {
