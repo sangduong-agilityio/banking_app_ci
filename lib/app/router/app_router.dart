@@ -2,13 +2,20 @@ import 'package:banking_app/app/router/router_guard.dart';
 import 'package:banking_app/core/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
+import 'package:banking_app/features/account/views/account_and_card_screen.dart';
 import 'package:banking_app/features/auth/views/sign_in_screen.dart';
 import 'package:banking_app/features/auth/views/sign_up_screen.dart';
+import 'package:banking_app/features/bills/views/bill_payment_screen.dart';
 import 'package:banking_app/features/home/views/home_screen.dart';
 import 'package:banking_app/features/landing/landing_screen.dart';
 import 'package:banking_app/features/message/message_screen.dart';
+import 'package:banking_app/features/search/views/exchange_rate_screen.dart';
+import 'package:banking_app/features/search/views/exchange_screen.dart';
+import 'package:banking_app/features/search/views/interest_rate_screen.dart';
 import 'package:banking_app/features/search/views/search_screen.dart';
 import 'package:banking_app/features/setting/views/setting_screen.dart';
+import 'package:banking_app/features/transactions/views/transaction_history_screen.dart';
+import 'package:banking_app/features/transfer/views/transfer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -57,12 +64,39 @@ class BAAppRouter {
         },
         branches: [
           StatefulShellBranch(
-            navigatorKey: homeNavigatorKey,
             routes: [
               GoRoute(
                 path: BAPaths.home.path,
                 name: BAPaths.home.name,
                 builder: (context, state) => const HomeScreen(),
+                routes: [
+                  GoRoute(
+                    path: BAPaths.account.path,
+                    name: BAPaths.account.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const AccountAndCardScreen(),
+                  ),
+                  GoRoute(
+                    path: BAPaths.transfer.path,
+                    name: BAPaths.transfer.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const TransferScreen(),
+                  ),
+                  GoRoute(
+                    path: BAPaths.payBill.path,
+                    name: BAPaths.payBill.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) =>
+                        const BillPaymentScreen(bills: []),
+                  ),
+                  GoRoute(
+                    path: BAPaths.transactionReport.path,
+                    name: BAPaths.transactionReport.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) =>
+                        const TransactionReportScreen(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -73,6 +107,26 @@ class BAAppRouter {
                 path: BAPaths.search.path,
                 name: BAPaths.search.name,
                 builder: (context, state) => const SearchScreen(),
+                routes: [
+                  GoRoute(
+                    path: BAPaths.interestRate.path,
+                    name: BAPaths.interestRate.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const InterestRateScreen(),
+                  ),
+                  GoRoute(
+                    path: BAPaths.exchangeRate.path,
+                    name: BAPaths.exchangeRate.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const ExchangeRateScreen(),
+                  ),
+                  GoRoute(
+                    path: BAPaths.exchange.path,
+                    name: BAPaths.exchange.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const ExchangeScreen(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -109,7 +163,14 @@ enum BAPaths {
   signIn(name: 'signIn', path: '/signin'),
   signUp(name: 'signUp', path: '/signup'),
   home(name: 'home', path: '/home'),
+  account(name: 'account', path: '/account'),
+  transfer(name: 'transfer', path: '/transfer'),
+  payBill(name: 'payBill', path: '/payBill'),
+  transactionReport(name: 'transactionReport', path: '/transactionReport'),
   search(name: 'search', path: '/search'),
+  interestRate(name: 'interestRate', path: '/interestRate'),
+  exchangeRate(name: 'exchangeRate', path: '/exchangeRate'),
+  exchange(name: 'exchange', path: '/exchange'),
   message(name: 'message', path: '/message'),
   setting(name: 'setting', path: '/setting');
 

@@ -1259,76 +1259,166 @@ class S {
     return Intl.message('Account', name: 'accountTitle', desc: '', args: []);
   }
 
-  /// `Save Changes`
-  String get accountSaveButton {
+  /// `Card`
+  String get accountCardTitle {
+    return Intl.message('Card', name: 'accountCardTitle', desc: '', args: []);
+  }
+
+  /// `Management`
+  String get accountManagementTitle {
     return Intl.message(
-      'Save Changes',
-      name: 'accountSaveButton',
+      'Management',
+      name: 'accountManagementTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Card Holder Name`
-  String get accountCardHolderTitle {
+  /// `Account and Card`
+  String get accountAndCardTitle {
     return Intl.message(
-      'Card Holder Name',
-      name: 'accountCardHolderTitle',
+      'Account and Card',
+      name: 'accountAndCardTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Expiry date`
-  String get accountExpiryDateTitle {
+  /// `Add card`
+  String get accountAddCardButton {
     return Intl.message(
-      'Expiry date',
-      name: 'accountExpiryDateTitle',
+      'Add card',
+      name: 'accountAddCardButton',
       desc: '',
       args: [],
     );
   }
 
-  /// `DETAIL INFORMATION`
-  String get accountDetailInfoTitle {
+  /// `Available balance`
+  String get accountAvailableBalanceTitle {
     return Intl.message(
-      'DETAIL INFORMATION',
-      name: 'accountDetailInfoTitle',
+      'Available balance',
+      name: 'accountAvailableBalanceTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Branch`
+  String get accountBranchTitle {
+    return Intl.message(
+      'Branch',
+      name: 'accountBranchTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Form`
+  String get accountFromDateTitle {
+    return Intl.message(
+      'Form',
+      name: 'accountFromDateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `To`
+  String get accountToDateTitle {
+    return Intl.message('To', name: 'accountToDateTitle', desc: '', args: []);
+  }
+
+  /// `Time deposit`
+  String get accountTermTitle {
+    return Intl.message(
+      'Time deposit',
+      name: 'accountTermTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interest rate`
+  String get accountInterestRateTitle {
+    return Intl.message(
+      'Interest rate',
+      name: 'accountInterestRateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete Card`
+  String get accountDeleteCardTitle {
+    return Intl.message(
+      'Delete Card',
+      name: 'accountDeleteCardTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to delete this card?`
+  String get accountContentTitle {
+    return Intl.message(
+      'Are you sure you want to delete this card?',
+      name: 'accountContentTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get accountCancelTitle {
+    return Intl.message(
+      'Cancel',
+      name: 'accountCancelTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get accountDeleteTitle {
+    return Intl.message(
+      'Delete',
+      name: 'accountDeleteTitle',
       desc: '',
       args: [],
     );
   }
 
   /// `Name`
-  String get accountNameLabel {
-    return Intl.message('Name', name: 'accountNameLabel', desc: '', args: []);
+  String get accountNameTitle {
+    return Intl.message('Name', name: 'accountNameTitle', desc: '', args: []);
   }
 
-  /// `Phone Number`
-  String get accountPhoneNumberLabel {
+  /// `Card number`
+  String get accountCardNumberTitle {
     return Intl.message(
-      'Phone Number',
-      name: 'accountPhoneNumberLabel',
+      'Card number',
+      name: 'accountCardNumberTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `E-mail`
-  String get accountEmailLabel {
+  /// `Valid from`
+  String get accountValidFromTitle {
     return Intl.message(
-      'E-mail',
-      name: 'accountEmailLabel',
+      'Valid from',
+      name: 'accountValidFromTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Home Address`
-  String get accountHomeAddressLabel {
+  /// `Good thru`
+  String get accountGoodThruTitle {
     return Intl.message(
-      'Home Address',
-      name: 'accountHomeAddressLabel',
+      'Good thru',
+      name: 'accountGoodThruTitle',
       desc: '',
       args: [],
     );

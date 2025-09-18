@@ -1,3 +1,4 @@
+import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -5,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 abstract class HomeRepository {
   Future<UserModel?> fetchCurrentUser();
   Future<List<CardModel>> fetchCards();
+  Future<List<AccountModel>> fetchAccounts();
 }
 
 class HomeRepositoryImpl implements HomeRepository {
@@ -42,6 +44,24 @@ class HomeRepositoryImpl implements HomeRepository {
 
     return (response as List<dynamic>)
         .map((json) => CardModel.fromJson(json))
+        .toList();
+  }
+
+  @override
+  Future<List<AccountModel>> fetchAccounts() async {
+    final currentUser = _client.auth.currentUser;
+
+    if (currentUser == null) {
+      throw Exception('User is not logged in');
+    }
+
+    final response = await _client
+        .from('accounts')
+        .select()
+        .eq('user_id', currentUser.id);
+    print('Accounts response: $response');
+    return (response as List)
+        .map((json) => AccountModel.fromJson(json as Map<String, dynamic>))
         .toList();
   }
 }

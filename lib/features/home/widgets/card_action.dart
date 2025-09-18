@@ -33,7 +33,10 @@ class CardAction extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: context.titleMedium,
+              style: context.bodySmall?.copyWith(
+                color: context.colorScheme.inverseSurface,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),

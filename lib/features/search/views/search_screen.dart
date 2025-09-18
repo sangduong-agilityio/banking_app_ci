@@ -1,13 +1,12 @@
+import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/features/search/views/exchange_rate_screen.dart';
-import 'package:banking_app/features/search/views/exchange_screen.dart';
-import 'package:banking_app/features/search/views/interest_rate_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -34,10 +33,7 @@ class SearchScreen extends StatelessWidget {
             categoryName: S.current.searchInterestRateDescription,
             imageUrl: BAAssets.interest(),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => InterestRateScreen()),
-              );
+              context.goNamed(BAPaths.interestRate.name);
             },
           ),
           CardCategorySelected(
@@ -45,10 +41,7 @@ class SearchScreen extends StatelessWidget {
             categoryName: S.current.searchExchangeRateDescription,
             imageUrl: BAAssets.exchangeRate(),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ExchangeRateScreen()),
-              );
+              context.goNamed(BAPaths.exchangeRate.name);
             },
           ),
           CardCategorySelected(
@@ -56,10 +49,7 @@ class SearchScreen extends StatelessWidget {
             categoryName: S.current.searchExchangeDescription,
             imageUrl: BAAssets.exchange(),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ExchangeScreen()),
-              );
+              context.goNamed(BAPaths.exchange.name);
             },
           ),
         ],

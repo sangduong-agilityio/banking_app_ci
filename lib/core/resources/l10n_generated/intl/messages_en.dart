@@ -34,25 +34,39 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-    "accountCardHolderTitle": MessageLookupByLibrary.simpleMessage(
-      "Card Holder Name",
+    "accountAddCardButton": MessageLookupByLibrary.simpleMessage("Add card"),
+    "accountAndCardTitle": MessageLookupByLibrary.simpleMessage(
+      "Account and Card",
     ),
-    "accountDetailInfoTitle": MessageLookupByLibrary.simpleMessage(
-      "DETAIL INFORMATION",
+    "accountAvailableBalanceTitle": MessageLookupByLibrary.simpleMessage(
+      "Available balance",
     ),
-    "accountEmailLabel": MessageLookupByLibrary.simpleMessage("E-mail"),
-    "accountExpiryDateTitle": MessageLookupByLibrary.simpleMessage(
-      "Expiry date",
+    "accountBranchTitle": MessageLookupByLibrary.simpleMessage("Branch"),
+    "accountCancelTitle": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "accountCardNumberTitle": MessageLookupByLibrary.simpleMessage(
+      "Card number",
     ),
-    "accountHomeAddressLabel": MessageLookupByLibrary.simpleMessage(
-      "Home Address",
+    "accountCardTitle": MessageLookupByLibrary.simpleMessage("Card"),
+    "accountContentTitle": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to delete this card?",
     ),
-    "accountNameLabel": MessageLookupByLibrary.simpleMessage("Name"),
-    "accountPhoneNumberLabel": MessageLookupByLibrary.simpleMessage(
-      "Phone Number",
+    "accountDeleteCardTitle": MessageLookupByLibrary.simpleMessage(
+      "Delete Card",
     ),
-    "accountSaveButton": MessageLookupByLibrary.simpleMessage("Save Changes"),
+    "accountDeleteTitle": MessageLookupByLibrary.simpleMessage("Delete"),
+    "accountFromDateTitle": MessageLookupByLibrary.simpleMessage("Form"),
+    "accountGoodThruTitle": MessageLookupByLibrary.simpleMessage("Good thru"),
+    "accountInterestRateTitle": MessageLookupByLibrary.simpleMessage(
+      "Interest rate",
+    ),
+    "accountManagementTitle": MessageLookupByLibrary.simpleMessage(
+      "Management",
+    ),
+    "accountNameTitle": MessageLookupByLibrary.simpleMessage("Name"),
+    "accountTermTitle": MessageLookupByLibrary.simpleMessage("Time deposit"),
     "accountTitle": MessageLookupByLibrary.simpleMessage("Account"),
+    "accountToDateTitle": MessageLookupByLibrary.simpleMessage("To"),
+    "accountValidFromTitle": MessageLookupByLibrary.simpleMessage("Valid from"),
     "authErrorBiometricFailed": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication failed.",
     ),
