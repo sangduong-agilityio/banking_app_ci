@@ -1,4 +1,5 @@
 import 'package:banking_app/core/extensions/context_extensions.dart';
+import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:flutter/material.dart';
 
 class TransactionCard extends StatelessWidget {
@@ -7,6 +8,7 @@ class TransactionCard extends StatelessWidget {
   final VoidCallback? onTap;
   final EdgeInsetsGeometry padding;
   final double borderRadius;
+  final TransferType type;
 
   const TransactionCard({
     super.key,
@@ -15,6 +17,7 @@ class TransactionCard extends StatelessWidget {
     this.onTap,
     this.padding = const EdgeInsets.all(16),
     this.borderRadius = 15,
+    required this.type,
   });
 
   @override
@@ -25,13 +28,23 @@ class TransactionCard extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: padding,
         decoration: BoxDecoration(
-          color: isSelected
-              ? context.colorScheme.secondary
-              : Colors.grey.shade200,
+          color: _getBackgroundColor(context),
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: child,
       ),
     );
+  }
+
+  Color _getBackgroundColor(BuildContext context) {
+    if (!isSelected) return context.colorScheme.onTertiary;
+    switch (type) {
+      case TransferType.cardNumber:
+        return context.colorScheme.secondary;
+      case TransferType.sameBank:
+        return context.colorScheme.tertiary;
+      case TransferType.otherBank:
+        return context.colorScheme.inversePrimary;
+    }
   }
 }

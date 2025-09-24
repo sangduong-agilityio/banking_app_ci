@@ -7,7 +7,7 @@ import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';
-import 'package:banking_app/features/transfer/widgets/account_section.dart';
+import 'package:banking_app/features/transfer/widgets/account_and_card_selection.dart';
 import 'package:banking_app/features/transfer/widgets/beneficiary_selection.dart';
 import 'package:banking_app/features/transfer/widgets/transaction_selection.dart';
 import 'package:banking_app/features/transfer/widgets/transfer_form_section.dart';
@@ -63,17 +63,20 @@ class _TransferScreenState extends State<TransferScreen> {
                     children: [
                       SizedBox(height: 24),
                       // Account Selection
-                      AccountSection(accounts: state.accounts),
+                      AccountOrCardSelection(
+                        accounts: state.accounts,
+                        cards: state.cards,
+                      ),
                       SizedBox(height: 32),
                       // Transaction Type Selection
-                      TransactionTypeSelection(state: state),
+                      TransactionTypeSelection(),
                       SizedBox(height: 32),
                       // Beneficiary Selection
                       BeneficiarySelection(state: state),
                       SizedBox(height: 32),
                       // Transfer Form Section
                       TransferFormSection(),
-                      SizedBox(height: 20),
+                      SizedBox(height: 40),
                     ],
                   ),
                 ),

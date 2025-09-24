@@ -40,7 +40,7 @@ class AppLocators {
     );
 
     locator.registerLazySingleton<TransferRepository>(
-      () => TransferRepositoryImpl(baseUrl: Env.endPoint),
+      () => TransferRepositoryImpl(client: Supabase.instance.client),
     );
 
     /// Blocs / Cubits
@@ -69,7 +69,10 @@ class AppLocators {
     );
 
     locator.registerFactory<TransferBloc>(
-      () => TransferBloc(repo: locator<TransferRepository>()),
+      () => TransferBloc(
+        transferRepo: locator<TransferRepository>(),
+        biometricService: locator<BiometricService>(),
+      ),
     );
   }
 }

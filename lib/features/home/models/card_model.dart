@@ -32,6 +32,7 @@ class CardModel with _$CardModel {
     @JsonKey(name: 'valid_from') String? validFrom,
     @JsonKey(name: 'good_thru') String? goodThru,
     @JsonKey(name: 'available_balance') double? availableBalance,
+    @JsonKey(name: 'bank_id') required String bankId,
   }) = _CardModel;
 
   factory CardModel.fromJson(Map<String, dynamic> json) =>

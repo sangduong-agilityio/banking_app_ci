@@ -71,6 +71,7 @@ class BASelectorDialog<T> extends StatefulWidget {
   final bool enableDivider;
   final bool Function(T, String)? searchFilter;
   final void Function(T) onSelected;
+  final void Function(String)? onSearchChanged;
 
   const BASelectorDialog({
     super.key,
@@ -83,6 +84,7 @@ class BASelectorDialog<T> extends StatefulWidget {
     this.enableSearch = true,
     this.enableDivider = true,
     this.searchFilter,
+    this.onSearchChanged,
   });
 
   @override
@@ -107,82 +109,94 @@ class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
               .toList()
         : widget.items;
 
-    return Dialog(
-      insetPadding: const EdgeInsets.all(16),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.8,
-          minWidth: MediaQuery.of(context).size.width * 0.7,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.title,
-                      style: context.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              // Search field
-              if (widget.enableSearch)
-                BATextField(
-                  hint: S.current.searchTitle,
-                  hintTextStyle: context.titleSmall?.copyWith(
-                    color: context.colorScheme.onTertiary,
-                  ),
-                  prefixIcon: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: Center(
-                      child: BAAssets.search(color: context.colorScheme.scrim),
-                    ),
-                  ),
-                  onChanged: (value) => setState(() => _query = value ?? ''),
-                ),
-
-              if (widget.enableSearch) const SizedBox(height: 16),
-              // List items
-              Expanded(
-                child: filteredItems.isEmpty
-                    ? Center(child: Text(S.current.noItemsFoundTitle))
-                    : widget.enableDivider
-                    ? ListView.separated(
-                        itemCount: filteredItems.length,
-                        separatorBuilder: (_, __) => Divider(
-                          height: 1,
-                          thickness: 0.5,
-                          color: Colors.grey.withOpacity(0.4),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Dialog(
+        insetPadding: const EdgeInsets.all(16),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.8,
+            minWidth: MediaQuery.of(context).size.width * 0.7,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        widget.title,
+                        style: context.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
-                        itemBuilder: (context, index) {
-                          final item = filteredItems[index];
-                          final isSelected =
-                              widget.value(item) == widget.selectedValue;
-                          return _buildListTile(context, item, isSelected);
-                        },
-                      )
-                    : ListView.builder(
-                        itemCount: filteredItems.length,
-                        itemBuilder: (context, index) {
-                          final item = filteredItems[index];
-                          final isSelected =
-                              widget.value(item) == widget.selectedValue;
-                          return _buildListTile(context, item, isSelected);
-                        },
                       ),
-              ),
-            ],
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Search field
+                if (widget.enableSearch)
+                  BATextField(
+                    hint: S.current.searchTitle,
+                    hintTextStyle: context.titleSmall?.copyWith(
+                      color: context.colorScheme.onTertiary,
+                    ),
+                    prefixIcon: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: Center(
+                        child: BAAssets.search(
+                          color: context.colorScheme.scrim,
+                        ),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() => _query = value ?? '');
+                      if (widget.onSearchChanged != null) {
+                        widget.onSearchChanged!(value ?? '');
+                      }
+                    },
+                  ),
+
+                if (widget.enableSearch) const SizedBox(height: 16),
+                // List items
+                Expanded(
+                  child: filteredItems.isEmpty
+                      ? Center(child: Text(S.current.noItemsFoundTitle))
+                      : widget.enableDivider
+                      ? ListView.separated(
+                          itemCount: filteredItems.length,
+                          separatorBuilder: (_, __) => Divider(
+                            height: 1,
+                            thickness: 0.5,
+                            color: Colors.grey.withOpacity(0.4),
+                          ),
+                          itemBuilder: (context, index) {
+                            final item = filteredItems[index];
+                            final itemValue = widget.value(item);
+                            final isSelected =
+                                itemValue == widget.selectedValue;
+                            return _buildListTile(context, item, isSelected);
+                          },
+                        )
+                      : ListView.builder(
+                          itemCount: filteredItems.length,
+                          itemBuilder: (context, index) {
+                            final item = filteredItems[index];
+                            final itemValue = widget.value(item);
+                            final isSelected =
+                                itemValue == widget.selectedValue;
+                            return _buildListTile(context, item, isSelected);
+                          },
+                        ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -206,7 +220,6 @@ class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
           : null,
       onTap: () {
         widget.onSelected(item);
-        Navigator.of(context).pop();
       },
     );
   }

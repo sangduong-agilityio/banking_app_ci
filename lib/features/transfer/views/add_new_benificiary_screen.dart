@@ -1,22 +1,29 @@
+import 'dart:io';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/utils/validators.dart';
+import 'package:banking_app/core/widgets/button.dart';
+import 'package:banking_app/core/widgets/dialog.dart';
+import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
+import 'package:banking_app/features/transfer/models/bank_model.dart';
+import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
+import 'package:banking_app/features/transfer/models/branch_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
-import 'package:banking_app/features/transfer/widgets/transaction_card.dart';
 import 'package:banking_app/features/transfer/widgets/transaction_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class AddNewBeneficiaryScreen extends StatefulWidget {
-  final List<Bank> banks;
-  final Function(Beneficiary) onBeneficiaryAdded;
+class AddNewBeneficiaryScreen extends StatelessWidget {
+  final List<BankModel> banks;
+  final Function(BeneficiaryModel) onBeneficiaryAdded;
 
   const AddNewBeneficiaryScreen({
     super.key,
@@ -24,447 +31,329 @@ class AddNewBeneficiaryScreen extends StatefulWidget {
     required this.onBeneficiaryAdded,
   });
 
+  Future<void> _pickImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null && context.mounted) {
+      context.read<TransferBloc>().add(
+        UpdateTransferDetailsEvt(avatarUrl: pickedFile.path),
+      );
+    }
+  }
+
   @override
-  State<AddNewBeneficiaryScreen> createState() =>
-      _AddNewBeneficiaryScreenState();
+  Widget build(BuildContext context) {
+    return LoaderOverlay(
+      child: BAScaffold(
+        appBar: BAAppBar(
+          title: S.current.transferAddNewBeneficiaryTitle,
+          alignment: BAAppBarAlignment.left,
+          titleColor: context.colorScheme.scrim,
+          iconColor: context.colorScheme.scrim,
+        ),
+        body: BlocConsumer<TransferBloc, TransferState>(
+          listener: (context, state) {
+            state.status.maybeWhen(
+              loading: () => context.loaderOverlay.show(),
+              success: () {
+                if (context.mounted) context.loaderOverlay.hide();
+              },
+              failure: () {
+                context.loaderOverlay.hide();
+                BASnackBar.buildErrorSnackbar(
+                  context,
+                  state.errorMessage ?? '',
+                );
+              },
+              orElse: () => context.loaderOverlay.hide(),
+            );
+          },
+          builder: (context, state) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
+                child: Column(
+                  children: [
+                    BeneficiaryProfile(onPickImage: () => _pickImage(context)),
+                    const SizedBox(height: 24),
+                    const TransactionTypeSelection(),
+                    const SizedBox(height: 24),
+                    AddBeneficiaryForm(
+                      banks: banks,
+                      onSaved: (beneficiary) {
+                        context.read<TransferBloc>().add(
+                          AddNewBeneficiaryEvt(beneficiary),
+                        );
+                        onBeneficiaryAdded(beneficiary);
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
 
-class _AddNewBeneficiaryScreenState extends State<AddNewBeneficiaryScreen> {
+class BeneficiaryProfile extends StatelessWidget {
+  final VoidCallback onPickImage;
+
+  const BeneficiaryProfile({super.key, required this.onPickImage});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TransferBloc, TransferState>(
+      builder: (context, state) {
+        final hasAvatar = state.avatarUrl != null;
+
+        return Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 60,
+                  backgroundColor: context.colorScheme.outlineVariant,
+                  backgroundImage: hasAvatar
+                      ? FileImage(File(state.avatarUrl ?? ''))
+                      : null,
+                  child: !hasAvatar
+                      ? Icon(
+                          Icons.person,
+                          size: 60,
+                          color: context.colorScheme.onPrimary,
+                        )
+                      : null,
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 3,
+                  child: GestureDetector(
+                    onTap: onPickImage,
+                    child: CircleAvatar(
+                      radius: 15,
+                      backgroundColor: context.colorScheme.secondary,
+                      child: Icon(
+                        hasAvatar ? Icons.edit : Icons.add,
+                        size: 18,
+                        color: context.colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              state.name ?? S.current.transferAddNewBeneficiaryNameTitle,
+              style: context.titleMedium?.copyWith(
+                color: context.colorScheme.secondary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class AddBeneficiaryForm extends StatefulWidget {
+  final List<BankModel> banks;
+  final void Function(BeneficiaryModel) onSaved;
+
+  const AddBeneficiaryForm({
+    super.key,
+    required this.banks,
+    required this.onSaved,
+  });
+
+  @override
+  State<AddBeneficiaryForm> createState() => _AddBeneficiaryFormState();
+}
+
+class _AddBeneficiaryFormState extends State<AddBeneficiaryForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _accountNumberController = TextEditingController();
-
-  Bank? _selectedBank;
-  String? _selectedBranch;
-  bool _isLoading = false;
-
-  final List<String> _branches = [
-    'New York',
-    'Los Angeles',
-    'Chicago',
-    'Houston',
-    'Miami',
-  ];
+  final _cardController = TextEditingController();
+  final _bankController = TextEditingController();
+  final _branchController = TextEditingController();
 
   @override
   void dispose() {
     _nameController.dispose();
-    _accountNumberController.dispose();
+    _cardController.dispose();
+    _bankController.dispose();
+    _branchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final transactionTypes = [
-      TransactionTypeItem(
-        title: S.current.transferViaCardNumberTitle,
-        icon: Icons.credit_card_rounded,
-        type: TransferType.cardNumber,
-      ),
-      TransactionTypeItem(
-        title: S.current.transferSameBankTitle,
-        icon: Icons.account_balance_rounded,
-        type: TransferType.sameBank,
-      ),
-      TransactionTypeItem(
-        title: S.current.transferAnotherBankTitle,
-        icon: Icons.account_balance_wallet_rounded,
-        type: TransferType.otherBank,
-      ),
-    ];
-    return BAScaffold(
-      appBar: BAAppBar(
-        title: "Add New",
-        alignment: BAAppBarAlignment.left,
-        titleColor: context.colorScheme.scrim,
-        iconColor: context.colorScheme.scrim,
-      ),
-      body: BlocConsumer<TransferBloc, TransferState>(
-        listener: (context, state) {
-          state.status.maybeWhen(
-            loading: () => context.loaderOverlay.show(),
-            success: () {
-              if (context.mounted) context.loaderOverlay.hide();
-            },
-            failure: () {
-              context.loaderOverlay.hide();
-              BASnackBar.buildErrorSnackbar(context, state.errorMessage ?? '');
-            },
-            orElse: () => context.loaderOverlay.hide(),
-          );
-        },
-        builder: (context, state) => Column(
-          children: [
-            Center(child: _buildUserSection(context)),
-            const SizedBox(height: 24),
-            SizedBox(
-              height: 110,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                itemCount: transactionTypes.length,
-                itemBuilder: (context, index) {
-                  final item = transactionTypes[index];
-                  final isSelected = state.selectedTransferType == item.type;
-
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      right: index < transactionTypes.length - 1 ? 12 : 0,
-                    ),
-                    child: TransactionCard(
-                      isSelected: isSelected,
-                      onTap: () {
-                        context.read<TransferBloc>().add(
-                          SelectTransferTypeEvt(item.type),
-                        );
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            item.icon,
-                            color: context.colorScheme.onPrimary,
-                            size: 28,
-                          ),
-                          const SizedBox(height: 11),
-                          Text(
-                            item.title,
-                            style: context.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: context.colorScheme.onPrimary,
-                            ),
-                          ),
-                        ],
+    return BlocBuilder<TransferBloc, TransferState>(
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: context.colorScheme.onPrimary,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () =>
+                      _showBankSelector(state.banks, state.selectedBank),
+                  child: AbsorbPointer(
+                    child: BATextField(
+                      name: S.current.transferChooseBankLabel,
+                      hint: S.current.transferChooseBankLabel,
+                      controller: _bankController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      suffixIcon: const Icon(
+                        Icons.keyboard_arrow_right,
+                        size: 20,
                       ),
+                      validator: (value) =>
+                          InputValidationMixin.validateRequired(
+                            value,
+                            S.current.transferChooseBankLabel,
+                          ),
                     ),
-                  );
-                },
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildBankingDetailsSection(context),
-                      const SizedBox(height: 24),
-                      _buildConfirmButton(context),
-                    ],
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUserSection(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: context.colorScheme.primaryContainer,
-            border: Border.all(color: context.colorScheme.primary, width: 2),
-          ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Icon(
-                Icons.person,
-                size: 40,
-                color: context.colorScheme.onPrimaryContainer,
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: context.colorScheme.primary,
-                  ),
-                  child: Icon(
-                    Icons.edit,
-                    size: 12,
-                    color: context.colorScheme.onPrimary,
+                const SizedBox(height: 24),
+                GestureDetector(
+                  onTap: state.selectedBank == null
+                      ? null
+                      : () {
+                          final filteredBranches = state.branches
+                              .where((b) => b.bankId == state.selectedBank?.id)
+                              .toList();
+                          _showBranchSelector(
+                            filteredBranches,
+                            state.selectedBranch,
+                          );
+                        },
+                  child: AbsorbPointer(
+                    child: BATextField(
+                      name: S.current.transferChooseBranchLabel,
+                      hint: S.current.transferChooseBranchLabel,
+                      controller: _branchController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      suffixIcon: const Icon(Icons.keyboard_arrow_right),
+                      validator: (value) =>
+                          InputValidationMixin.validateRequired(
+                            value,
+                            S.current.transferChooseBranchLabel,
+                          ),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          _nameController.text.isNotEmpty
-              ? _nameController.text
-              : 'Push Puttichai',
-          style: context.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: context.colorScheme.secondary,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBankingDetailsSection(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildBankSelector(context),
-          const SizedBox(height: 16),
-          _buildBranchSelector(context),
-          const SizedBox(height: 16),
-          _buildTextField(
-            context: context,
-            label: 'Transaction name',
-            controller: _nameController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter beneficiary name';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildTextField(
-            context: context,
-            label: 'Card number',
-            controller: _accountNumberController,
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter card/account number';
-              }
-              if (value.length < 10) {
-                return 'Card number must be at least 10 digits';
-              }
-              return null;
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBankSelector(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Choose bank',
-          style: context.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-            color: context.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 8),
-        DropdownButtonFormField<Bank>(
-          value: _selectedBank,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-          ),
-          hint: const Text('Select bank'),
-          items: widget.banks.map((bank) {
-            return DropdownMenuItem<Bank>(value: bank, child: Text(bank.name));
-          }).toList(),
-          onChanged: (Bank? bank) {
-            setState(() {
-              _selectedBank = bank;
-              _selectedBranch = null;
-            });
-          },
-          validator: (value) {
-            if (value == null) {
-              return 'Please select a bank';
-            }
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBranchSelector(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Choose branch',
-          style: context.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-            color: context.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 8),
-        DropdownButtonFormField<String>(
-          value: _selectedBranch,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-          ),
-          hint: const Text('Select branch'),
-          items: _branches.map((branch) {
-            return DropdownMenuItem<String>(value: branch, child: Text(branch));
-          }).toList(),
-          onChanged: _selectedBank == null
-              ? null
-              : (String? branch) {
-                  setState(() {
-                    _selectedBranch = branch;
-                  });
-                },
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please select a branch';
-            }
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTextField({
-    required BuildContext context,
-    required String label,
-    required TextEditingController controller,
-    TextInputType? keyboardType,
-    String? Function(String?)? validator,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: context.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-            color: context.colorScheme.onSurfaceVariant,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-          ),
-          validator: validator,
-          onChanged: (value) {
-            if (controller == _nameController) {
-              setState(() {}); // Rebuild to update display name
-            }
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildConfirmButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      height: 48,
-      child: ElevatedButton(
-        onPressed: _isLoading ? null : _handleConfirm,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: context.colorScheme.primary,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: _isLoading
-            ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                const SizedBox(height: 16),
+                BATextField(
+                  name: S.current.transferAddNewBeneficiaryLabel,
+                  hint: S.current.transferAddNewBeneficiaryLabel,
+                  controller: _nameController,
+                  onChanged: (value) {
+                    context.read<TransferBloc>().add(
+                      UpdateTransferDetailsEvt(name: value),
+                    );
+                  },
+                  validator: (value) => InputValidationMixin.validateRequired(
+                    value,
+                    S.current.transferAddNewBeneficiaryLabel,
+                  ),
                 ),
-              )
-            : const Text(
-                'Confirm',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-      ),
-    );
-  }
+                const SizedBox(height: 16),
+                BATextField(
+                  name: S.current.transferCardNumberLabel,
+                  hint: S.current.transferCardNumberLabel,
+                  controller: _cardController,
+                  validator: InputValidationMixin.validateCardNumber,
+                ),
+                const SizedBox(height: 24),
+                BAElevatedButton(
+                  padding: EdgeInsets.zero,
+                  text: S.current.transferSaveDirectoryButton,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final bloc = context.read<TransferBloc>();
 
-  void _handleConfirm() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+                      final newBeneficiary = BeneficiaryModel(
+                        id: '',
+                        name: _nameController.text,
+                        accountNumber: _cardController.text,
+                        bankId: bloc.state.selectedBank?.id,
+                        branch: bloc.state.selectedBranch?.name,
+                        avatarUrl: bloc.state.avatarUrl,
+                      );
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      // Create new beneficiary
-      final newBeneficiary = Beneficiary(
-        id: DateTime.now().millisecondsSinceEpoch.toString(), // Temporary ID
-        name: _nameController.text.trim(),
-        accountNumber: _accountNumberController.text.trim(),
-        bank: _selectedBank,
-        branch: _selectedBranch,
-        isFavorite: false,
-      );
-
-      // Simulate API call delay
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      widget.onBeneficiaryAdded(newBeneficiary);
-
-      if (mounted) {
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${newBeneficiary.name} added successfully'),
-            backgroundColor: Colors.green,
+                      bloc.add(AddNewBeneficiaryEvt(newBeneficiary));
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to add beneficiary: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
+      },
+    );
+  }
+
+  void _showBankSelector(List<BankModel> banks, BankModel? selectedBank) {
+    showDialog(
+      context: context,
+      builder: (_) => BASelectorDialog<BankModel>(
+        title: S.current.transferChooseBankLabel,
+        items: banks,
+        selectedValue: selectedBank?.id ?? '',
+        value: (b) => b.id,
+        label: (b) => b.name,
+        onSelected: (bank) {
+          _bankController.text = bank.name;
+          _branchController.clear();
+          context.read<TransferBloc>().add(SelectBankEvt(bank));
+          Navigator.pop(context);
+        },
+      ),
+    );
+  }
+
+  void _showBranchSelector(
+    List<BranchModel> branches,
+    BranchModel? selectedBranch,
+  ) {
+    showDialog(
+      context: context,
+      builder: (_) => BASelectorDialog<BranchModel>(
+        title: S.current.transferChooseBranchLabel,
+        items: branches,
+        selectedValue: selectedBranch?.id ?? '',
+        value: (b) => b.id,
+        label: (b) => b.name,
+        onSelected: (branch) {
+          _branchController.text = branch.name;
+          context.read<TransferBloc>().add(SelectBranchEvt(branch));
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 }

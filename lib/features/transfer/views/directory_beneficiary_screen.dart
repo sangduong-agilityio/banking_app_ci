@@ -1,166 +1,188 @@
 import 'package:banking_app/app/themes/app_theme.dart';
-import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
-import 'package:banking_app/core/widgets/forms/text_field.dart';
+import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/utils/beneficiary_utils.dart';
+import 'package:banking_app/core/widgets/assets.dart';
+import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/core/widgets/snackbar.dart';
+import 'package:banking_app/features/transfer/models/bank_model.dart';
+import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
+import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/views/add_new_benificiary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 class DirectoryBeneficiaryScreen extends StatelessWidget {
-  final List<Beneficiary> beneficiaries;
-  final List<Bank> banks;
-  final Function(Beneficiary) onBeneficiarySelected;
+  final List<BankModel> banks;
 
-  const DirectoryBeneficiaryScreen({
-    super.key,
-    required this.beneficiaries,
-    required this.banks,
-    required this.onBeneficiarySelected,
-  });
+  const DirectoryBeneficiaryScreen({super.key, required this.banks});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => locator<TransferBloc>()
-        ..add(
-          BeneficiariesInitializeEvt(
-            beneficiaries: beneficiaries,
-            banks: banks,
-          ),
-        ),
-      child: LoaderOverlay(
-        child: BAScaffold(
-          appBar: BAAppBar(
-            title: "Beneficiary",
-            alignment: BAAppBarAlignment.left,
-            titleColor: context.colorScheme.scrim,
-            iconColor: context.colorScheme.scrim,
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 16),
-                child: IconButton(
-                  onPressed: () => _buildSearchField(context),
-                  icon: const Icon(Icons.search),
-                  color: context.colorScheme.scrim,
-                ),
-              ),
-            ],
-          ),
-          body: BlocListener<TransferBloc, TransferState>(
-            listener: (context, state) {
-              state.status.maybeWhen(
-                loading: () => context.loaderOverlay.show(),
-                success: () {
-                  if (context.mounted) context.loaderOverlay.hide();
+    return LoaderOverlay(
+      child: BAScaffold(
+        appBar: BAAppBar(
+          title: S.current.transferBeneficiaryTitle,
+          alignment: BAAppBarAlignment.left,
+          titleColor: context.colorScheme.scrim,
+          iconColor: context.colorScheme.scrim,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: IconButton(
+                onPressed: () {
+                  final state = context.read<TransferBloc>().state;
+                  _showBeneficiarySelector(context, state.selectedBeneficiary, (
+                    b,
+                  ) {
+                    context.read<TransferBloc>().add(SelectBeneficiaryEvt(b));
+                    Navigator.pop(context);
+                  });
                 },
-                failure: () {
-                  context.loaderOverlay.hide();
-                  BASnackBar.buildErrorSnackbar(
-                    context,
-                    state.errorMessage ?? '',
-                  );
-                },
-                orElse: () => context.loaderOverlay.hide(),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 24),
-                  Expanded(
-                    child: BlocBuilder<TransferBloc, TransferState>(
-                      builder: (context, state) {
-                        final viaCard = state.filteredBeneficiaries
-                            .take(2)
-                            .toList();
-                        final sameBank = state.filteredBeneficiaries
-                            .where((b) => b.bank?.id == banks.first.id)
-                            .toList();
-                        final diffBank = state.filteredBeneficiaries
-                            .where((b) => b.bank?.id != banks.first.id)
-                            .toList();
-
-                        return SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _listTransferSection(
-                                context,
-                                "Transfer via card number",
-                                viaCard,
-                              ),
-                              const SizedBox(height: 24),
-                              _listTransferSection(
-                                context,
-                                "Transfer to the same bank",
-                                sameBank,
-                              ),
-                              const SizedBox(height: 24),
-                              _listTransferSection(
-                                context,
-                                "Transfer to another bank",
-                                diffBank,
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                icon: const Icon(Icons.search),
+                color: context.colorScheme.scrim,
               ),
             ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: BlocBuilder<TransferBloc, TransferState>(
+            builder: (context, state) {
+              final userAccount = state.selectedAccount;
+              if (userAccount == null) {
+                return Center(child: BAAssets.empty(width: 300, height: 300));
+              }
+
+              final effectiveBeneficiaries =
+                  state.beneficiariesFiltered.isNotEmpty
+                  ? state.beneficiariesFiltered
+                  : state.beneficiaries;
+
+              final viaCard = effectiveBeneficiaries
+                  .where(
+                    (b) =>
+                        getTransferType(b, userAccount) ==
+                        TransferType.cardNumber,
+                  )
+                  .toList();
+
+              final sameBank = effectiveBeneficiaries
+                  .where(
+                    (b) =>
+                        getTransferType(b, userAccount) ==
+                        TransferType.sameBank,
+                  )
+                  .toList();
+
+              final diffBank = effectiveBeneficiaries
+                  .where(
+                    (b) =>
+                        getTransferType(b, userAccount) ==
+                        TransferType.otherBank,
+                  )
+                  .toList();
+
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (viaCard.isNotEmpty)
+                      _listTransferSection(
+                        context,
+                        S.current.transferViaCardNumberTitle,
+                        viaCard,
+                      ),
+                    if (sameBank.isNotEmpty) const SizedBox(height: 24),
+                    if (sameBank.isNotEmpty)
+                      _listTransferSection(
+                        context,
+                        S.current.transferSameBankTitle,
+                        sameBank,
+                      ),
+                    if (diffBank.isNotEmpty) const SizedBox(height: 24),
+                    if (diffBank.isNotEmpty)
+                      _listTransferSection(
+                        context,
+                        S.current.transferAnotherBankTitle,
+                        diffBank,
+                      ),
+                  ],
+                ),
+              );
+            },
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => AddNewBeneficiaryScreen(
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: context.read<TransferBloc>(),
+                  child: AddNewBeneficiaryScreen(
                     banks: banks,
                     onBeneficiaryAdded: (b) {
-                      onBeneficiarySelected(b);
-                      Navigator.pop(context);
+                      context.read<TransferBloc>().add(AddNewBeneficiaryEvt(b));
                     },
                   ),
                 ),
-              );
-            },
-            shape: const CircleBorder(),
-            backgroundColor: context.colorScheme.secondary,
-            child: const Icon(Icons.add),
-          ),
+              ),
+            );
+          },
+          shape: const CircleBorder(),
+          backgroundColor: context.colorScheme.secondary,
+          child: const Icon(Icons.add),
         ),
       ),
     );
   }
 
-  Widget _buildSearchField(BuildContext context) {
-    return BATextField(
-      hint: 'Search by name or card number',
-      onChanged: (query) {
-        context.read<TransferBloc>().add(SearchBeneficiaryEvt(query ?? ''));
-      },
+  void _showBeneficiarySelector(
+    BuildContext context,
+    BeneficiaryModel? selectedBeneficiary,
+    void Function(BeneficiaryModel) onSelected,
+  ) {
+    final transferBloc = context.read<TransferBloc>();
+
+    showDialog(
+      context: context,
+      builder: (_) => BlocBuilder<TransferBloc, TransferState>(
+        bloc: transferBloc,
+        builder: (context, state) {
+          final items = state.beneficiariesFiltered.isNotEmpty
+              ? state.beneficiariesFiltered
+              : state.beneficiaries;
+
+          return BASelectorDialog<BeneficiaryModel>(
+            title: S.current.transferSelectBeneficiary,
+            items: items,
+            selectedValue: selectedBeneficiary?.id,
+            value: (b) => b.id ?? '',
+            label: (b) => "${b.name} • ${b.accountNumber}",
+            onSelected: (b) {
+              onSelected(b);
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            onSearchChanged: (query) {
+              transferBloc.add(SearchBeneficiaryEvt(query));
+            },
+          );
+        },
+      ),
     );
   }
 
   Widget _listTransferSection(
     BuildContext context,
     String title,
-    List<Beneficiary> beneficiaries,
+    List<BeneficiaryModel> beneficiaries,
   ) {
-    if (beneficiaries.isEmpty) return const SizedBox.shrink();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -190,7 +212,6 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
                     beneficiary: e.value,
                     onTap: (b) {
                       context.read<TransferBloc>().add(SelectBeneficiaryEvt(b));
-                      onBeneficiarySelected(b);
                       Navigator.pop(context);
                     },
                     showDivider: e.key < beneficiaries.length - 1,
@@ -205,8 +226,8 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
 }
 
 class BeneficiaryTile extends StatelessWidget {
-  final Beneficiary beneficiary;
-  final void Function(Beneficiary) onTap;
+  final BeneficiaryModel beneficiary;
+  final void Function(BeneficiaryModel) onTap;
   final bool showDivider;
 
   const BeneficiaryTile({
@@ -223,31 +244,22 @@ class BeneficiaryTile extends StatelessWidget {
         ListTile(
           leading: CircleAvatar(
             radius: 24,
-            backgroundImage: beneficiary.avatarUrl != null
-                ? NetworkImage(beneficiary.avatarUrl ?? '')
+            backgroundImage: (beneficiary.avatarUrl?.isNotEmpty ?? false)
+                ? NetworkImage(beneficiary.avatarUrl!)
+                : null,
+            child: (beneficiary.avatarUrl?.isEmpty ?? true)
+                ? Icon(Icons.person, color: context.colorScheme.onPrimary)
                 : null,
           ),
           title: Text(
             beneficiary.name,
             style: context.titleMedium?.copyWith(fontWeight: FontWeight.w500),
           ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                beneficiary.accountNumber,
-                style: context.bodySmall?.copyWith(
-                  color: context.colorScheme.inverseSurface,
-                ),
-              ),
-              if (beneficiary.bank != null)
-                Text(
-                  beneficiary.bank?.name ?? '',
-                  style: context.bodySmall?.copyWith(
-                    color: context.colorScheme.inverseSurface,
-                  ),
-                ),
-            ],
+          subtitle: Text(
+            beneficiary.accountNumber,
+            style: context.bodySmall?.copyWith(
+              color: context.colorScheme.inverseSurface,
+            ),
           ),
           onTap: () => onTap(beneficiary),
         ),

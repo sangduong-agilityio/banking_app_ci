@@ -17,7 +17,7 @@ class AppPalette {
     error: BAAppColors.error,
     onError: BAAppColors.white,
     errorContainer: Color(0xFFFFEDED),
-    onErrorContainer: BAAppColors.error,
+    onErrorContainer: BAAppColors.warning,
     surface: BAAppColors.surface,
     onSurface: BAAppColors.textPrimary,
     onSurfaceVariant: BAAppColors.infoLight,
