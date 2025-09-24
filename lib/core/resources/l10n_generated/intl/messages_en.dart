@@ -288,31 +288,94 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferAccountSelected": MessageLookupByLibrary.simpleMessage(
       "Select Account",
     ),
+    "transferAddNewBeneficiaryLabel": MessageLookupByLibrary.simpleMessage(
+      "Beneficiary Name",
+    ),
+    "transferAddNewBeneficiaryNameTitle": MessageLookupByLibrary.simpleMessage(
+      "Please add beneficiary name",
+    ),
+    "transferAddNewBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
+      "Add New",
+    ),
     "transferAmountLabel": MessageLookupByLibrary.simpleMessage("Amount"),
     "transferAnotherBankTitle": MessageLookupByLibrary.simpleMessage(
-      "Transfer to\nanother bank",
+      "Transfer to another bank",
     ),
     "transferAvailableBalanceTitle": m5,
+    "transferBeneficiaryBank": MessageLookupByLibrary.simpleMessage(
+      "Beneficiary bank",
+    ),
+    "transferBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
+      "Beneficiary",
+    ),
+    "transferBiometricAuthenticationTitle":
+        MessageLookupByLibrary.simpleMessage(
+          "Use biometric authentication instead",
+        ),
     "transferCardNumberLabel": MessageLookupByLibrary.simpleMessage(
       "Card number",
     ),
+    "transferChooseBankLabel": MessageLookupByLibrary.simpleMessage(
+      "Choose bank",
+    ),
     "transferChooseBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Choose beneficiary",
+    ),
+    "transferChooseBranchLabel": MessageLookupByLibrary.simpleMessage(
+      "Choose branch",
     ),
     "transferChooseTransactionTitle": MessageLookupByLibrary.simpleMessage(
       "Choose transaction",
     ),
     "transferConfirmButton": MessageLookupByLibrary.simpleMessage("Confirm"),
+    "transferConfirmTitle": MessageLookupByLibrary.simpleMessage("Confirm"),
+    "transferConfirmTransaction": MessageLookupByLibrary.simpleMessage(
+      "Confirm transaction information",
+    ),
     "transferContentLabel": MessageLookupByLibrary.simpleMessage("Content"),
+    "transferEnterOtpCodeTitle": MessageLookupByLibrary.simpleMessage(
+      "Please enter the OTP code",
+    ),
+    "transferErrorAuthenticationRequired": MessageLookupByLibrary.simpleMessage(
+      "Please complete authentication before confirming transfer.",
+    ),
+    "transferErrorBiometricFailed": MessageLookupByLibrary.simpleMessage(
+      "Biometric authentication failed",
+    ),
+    "transferErrorBiometricUnavailable": MessageLookupByLibrary.simpleMessage(
+      "Biometric login not available",
+    ),
+    "transferErrorCalculateFee": MessageLookupByLibrary.simpleMessage(
+      "Failed to calculate transaction fee",
+    ),
+    "transferErrorNoPendingTransaction": MessageLookupByLibrary.simpleMessage(
+      "No pending transfer found to confirm.",
+    ),
+    "transferErrorOtpInvalid": MessageLookupByLibrary.simpleMessage(
+      "Invalid OTP. Please try again",
+    ),
+    "transferErrorTransferFailed": MessageLookupByLibrary.simpleMessage(
+      "Transfer failed. Please try again.",
+    ),
     "transferFindBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Find Beneficiary",
     ),
+    "transferFormLabel": MessageLookupByLibrary.simpleMessage("Form"),
+    "transferGetOtpButton": MessageLookupByLibrary.simpleMessage("Get OTP"),
+    "transferGetOtpTransactionTitle": MessageLookupByLibrary.simpleMessage(
+      "Get OTP to verify transaction",
+    ),
     "transferNameLabel": MessageLookupByLibrary.simpleMessage("Name"),
+    "transferOtpLabel": MessageLookupByLibrary.simpleMessage("OTP"),
+    "transferResendButton": MessageLookupByLibrary.simpleMessage("Resend"),
     "transferSameBankTitle": MessageLookupByLibrary.simpleMessage(
-      "Transfer to\nthe same bank",
+      "Transfer to the same bank",
     ),
     "transferSaveBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Save to beneficiary directory",
+    ),
+    "transferSaveDirectoryButton": MessageLookupByLibrary.simpleMessage(
+      "Save to directory",
     ),
     "transferSelectBeneficiary": MessageLookupByLibrary.simpleMessage(
       "Choose beneficiary bank",
@@ -320,9 +383,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferSelectedAccountHint": MessageLookupByLibrary.simpleMessage(
       "Choose account / card",
     ),
+    "transferSendOtpToEmailTitle": MessageLookupByLibrary.simpleMessage(
+      "OTP has been sent to your email. Please check your inbox",
+    ),
+    "transferSuccessDescription": MessageLookupByLibrary.simpleMessage(
+      "You have successfully transferred \n",
+    ),
+    "transferSuccessTitle": MessageLookupByLibrary.simpleMessage(
+      "Transfer successful!",
+    ),
     "transferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
+    "transferToLabel": MessageLookupByLibrary.simpleMessage("To"),
+    "transferTransactionFeeLabel": MessageLookupByLibrary.simpleMessage(
+      "Transaction fee",
+    ),
     "transferViaCardNumberTitle": MessageLookupByLibrary.simpleMessage(
-      "Transfer via\ncard number",
+      "Transfer via card number",
     ),
     "validatorConfirmPasswordRequired": MessageLookupByLibrary.simpleMessage(
       "Confirm Password is required",

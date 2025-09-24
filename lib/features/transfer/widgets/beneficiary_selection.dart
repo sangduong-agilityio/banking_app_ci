@@ -1,11 +1,12 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/core/widgets/dialog.dart';
+import 'package:banking_app/features/transfer/models/bank_model.dart';
+import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
+import 'package:banking_app/features/transfer/views/add_new_benificiary_screen.dart';
 import 'package:banking_app/features/transfer/views/directory_beneficiary_screen.dart';
 import 'package:banking_app/features/transfer/widgets/beneficiary_card.dart';
 import 'package:flutter/material.dart';
@@ -13,51 +14,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BeneficiarySelection extends StatelessWidget {
   final TransferState state;
+  final Function(String)? onNameChanged;
+  final Function(String)? onCardNumberChanged;
 
-  const BeneficiarySelection({super.key, required this.state});
+  const BeneficiarySelection({
+    super.key,
+    required this.state,
+    this.onNameChanged,
+    this.onCardNumberChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              S.current.transferChooseBeneficiaryTitle,
-              style: context.bodySmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: context.colorScheme.inverseSurface,
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => DirectoryBeneficiaryScreen(
-                      beneficiaries: state.beneficiaries,
-                      banks: state.banks,
-                      onBeneficiarySelected: (value) {
-                        context.read<TransferBloc>().add(
-                          SelectBeneficiaryEvt(value),
-                        );
-                      },
-                    ),
-                  ),
-                );
-              },
-              child: Text(
-                S.current.transferFindBeneficiaryTitle,
-                style: context.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: context.colorScheme.secondary,
-                ),
-              ),
-            ),
-          ],
-        ),
+        _BeneficiarySelectionHeader(banks: state.banks),
+        const SizedBox(height: 8),
         SizedBox(
           height: 120,
           child: ListView.separated(
@@ -66,79 +39,136 @@ class BeneficiarySelection extends StatelessWidget {
             separatorBuilder: (_, __) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
               if (index == 0) {
-                return _buildAddCard(context, context.colorScheme);
+                return _AddBeneficiaryCard(banks: state.banks);
               }
               final beneficiary = state.beneficiaries[index - 1];
               final isSelected =
                   state.selectedBeneficiary?.id == beneficiary.id;
-              return _buildBeneficiaryCard(context, beneficiary, isSelected);
+              return _BeneficiaryCardItem(
+                beneficiary: beneficiary,
+                isSelected: isSelected,
+                onNameChanged: onNameChanged,
+                onCardNumberChanged: onCardNumberChanged,
+              );
             },
           ),
         ),
       ],
     );
   }
+}
 
-  Widget _buildAddCard(BuildContext context, ColorScheme colorScheme) {
+class _BeneficiarySelectionHeader extends StatelessWidget {
+  final List<BankModel> banks;
+
+  const _BeneficiarySelectionHeader({required this.banks});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          S.current.transferChooseBeneficiaryTitle,
+          style: context.bodySmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: context.colorScheme.inverseSurface,
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: context.read<TransferBloc>(),
+                  child: DirectoryBeneficiaryScreen(banks: banks),
+                ),
+              ),
+            );
+          },
+          child: Text(
+            S.current.transferFindBeneficiaryTitle,
+            style: context.bodySmall?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: context.colorScheme.secondary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _AddBeneficiaryCard extends StatelessWidget {
+  final List<BankModel> banks;
+
+  const _AddBeneficiaryCard({required this.banks});
+
+  @override
+  Widget build(BuildContext context) {
     return BeneficiaryCard(
-      onTap: () => _showBeneficiarySelector(
-        context,
-        state.banks,
-        state.selectedBeneficiary?.bank,
-      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => BlocProvider.value(
+              value: context.read<TransferBloc>(),
+              child: AddNewBeneficiaryScreen(
+                banks: banks,
+                onBeneficiaryAdded: (b) {
+                  context.read<TransferBloc>().add(AddNewBeneficiaryEvt(b));
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+        );
+      },
       child: Center(
         child: CircleAvatar(
           radius: 28,
-          backgroundColor: colorScheme.outlineVariant,
-          child: Icon(Icons.add, color: colorScheme.onPrimary),
+          backgroundColor: context.colorScheme.outlineVariant,
+          child: Icon(Icons.add, color: context.colorScheme.onPrimary),
         ),
       ),
     );
   }
+}
 
-  Widget _buildBeneficiaryCard(
-    BuildContext context,
-    Beneficiary beneficiary,
-    bool isSelected,
-  ) {
+class _BeneficiaryCardItem extends StatelessWidget {
+  final BeneficiaryModel beneficiary;
+  final bool isSelected;
+  final Function(String)? onNameChanged;
+  final Function(String)? onCardNumberChanged;
+
+  const _BeneficiaryCardItem({
+    required this.beneficiary,
+    required this.isSelected,
+    this.onNameChanged,
+    this.onCardNumberChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return BeneficiaryCard(
       isSelected: isSelected,
       onTap: () {
         context.read<TransferBloc>().add(SelectBeneficiaryEvt(beneficiary));
+        onNameChanged?.call(beneficiary.name);
+        onCardNumberChanged?.call(beneficiary.accountNumber);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 28,
-            backgroundImage: beneficiary.avatarUrl != null
-                ? NetworkImage(beneficiary.avatarUrl!)
-                : null,
-            backgroundColor: isSelected
-                ? context.colorScheme.secondary
-                : context.colorScheme.outlineVariant,
-            child: beneficiary.avatarUrl == null
-                ? Text(
-                    beneficiary.name.isNotEmpty
-                        ? beneficiary.name[0].toUpperCase()
-                        : '',
-                    style: TextStyle(
-                      color: isSelected
-                          ? context.colorScheme.onPrimary
-                          : context.colorScheme.scrim,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  )
-                : null,
-          ),
+          BeneficiaryAvatar(avatarUrl: beneficiary.avatarUrl),
           const SizedBox(height: 8),
           Text(
             beneficiary.name,
             style: context.bodyMedium?.copyWith(
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               color: isSelected
-                  ? context.colorScheme.secondary
+                  ? context.colorScheme.onPrimary
                   : context.colorScheme.scrim,
             ),
             maxLines: 1,
@@ -148,22 +178,23 @@ class BeneficiarySelection extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _showBeneficiarySelector(
-    BuildContext context,
-    List<Bank> banks,
-    Bank? selectedBank,
-  ) {
-    showDialog(
-      context: context,
-      builder: (_) => BASelectorDialog<Bank>(
-        title: S.current.transferSelectBeneficiary,
-        items: banks,
-        selectedValue: selectedBank != null ? selectedBank.id : '',
-        value: (b) => b.id,
-        label: (b) => "${b.name} ",
-        onSelected: (id) {},
-      ),
+class BeneficiaryAvatar extends StatelessWidget {
+  final String? avatarUrl;
+
+  const BeneficiaryAvatar({super.key, this.avatarUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 30,
+      backgroundImage: (avatarUrl?.isNotEmpty ?? false)
+          ? NetworkImage(avatarUrl ?? '')
+          : null,
+      child: (avatarUrl?.isEmpty ?? true)
+          ? Icon(Icons.person, color: context.colorScheme.onPrimary)
+          : null,
     );
   }
 }

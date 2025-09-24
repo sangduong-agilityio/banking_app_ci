@@ -959,6 +959,36 @@ class S {
     return Intl.message('Transfer', name: 'transferTitle', desc: '', args: []);
   }
 
+  /// `Add New`
+  String get transferAddNewBeneficiaryTitle {
+    return Intl.message(
+      'Add New',
+      name: 'transferAddNewBeneficiaryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please add beneficiary name`
+  String get transferAddNewBeneficiaryNameTitle {
+    return Intl.message(
+      'Please add beneficiary name',
+      name: 'transferAddNewBeneficiaryNameTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beneficiary`
+  String get transferBeneficiaryTitle {
+    return Intl.message(
+      'Beneficiary',
+      name: 'transferBeneficiaryTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Select Account`
   String get transferAccountSelected {
     return Intl.message(
@@ -979,30 +1009,30 @@ class S {
     );
   }
 
-  /// `Transfer via\ncard number`
+  /// `Transfer via card number`
   String get transferViaCardNumberTitle {
     return Intl.message(
-      'Transfer via\ncard number',
+      'Transfer via card number',
       name: 'transferViaCardNumberTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Transfer to\nthe same bank`
+  /// `Transfer to the same bank`
   String get transferSameBankTitle {
     return Intl.message(
-      'Transfer to\nthe same bank',
+      'Transfer to the same bank',
       name: 'transferSameBankTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `Transfer to\nanother bank`
+  /// `Transfer to another bank`
   String get transferAnotherBankTitle {
     return Intl.message(
-      'Transfer to\nanother bank',
+      'Transfer to another bank',
       name: 'transferAnotherBankTitle',
       desc: '',
       args: [],
@@ -1049,9 +1079,29 @@ class S {
     );
   }
 
+  /// `Save to directory`
+  String get transferSaveDirectoryButton {
+    return Intl.message(
+      'Save to directory',
+      name: 'transferSaveDirectoryButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Name`
   String get transferNameLabel {
     return Intl.message('Name', name: 'transferNameLabel', desc: '', args: []);
+  }
+
+  /// `Resend`
+  String get transferResendButton {
+    return Intl.message(
+      'Resend',
+      name: 'transferResendButton',
+      desc: '',
+      args: [],
+    );
   }
 
   /// `Card number`
@@ -1059,6 +1109,16 @@ class S {
     return Intl.message(
       'Card number',
       name: 'transferCardNumberLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beneficiary Name`
+  String get transferAddNewBeneficiaryLabel {
+    return Intl.message(
+      'Beneficiary Name',
+      name: 'transferAddNewBeneficiaryLabel',
       desc: '',
       args: [],
     );
@@ -1084,6 +1144,16 @@ class S {
     );
   }
 
+  /// `Confirm`
+  String get transferConfirmTitle {
+    return Intl.message(
+      'Confirm',
+      name: 'transferConfirmTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Amount`
   String get transferAmountLabel {
     return Intl.message(
@@ -1104,11 +1174,146 @@ class S {
     );
   }
 
+  /// `Choose bank`
+  String get transferChooseBankLabel {
+    return Intl.message(
+      'Choose bank',
+      name: 'transferChooseBankLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose branch`
+  String get transferChooseBranchLabel {
+    return Intl.message(
+      'Choose branch',
+      name: 'transferChooseBranchLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Form`
+  String get transferFormLabel {
+    return Intl.message('Form', name: 'transferFormLabel', desc: '', args: []);
+  }
+
+  /// `To`
+  String get transferToLabel {
+    return Intl.message('To', name: 'transferToLabel', desc: '', args: []);
+  }
+
+  /// `Transaction fee`
+  String get transferTransactionFeeLabel {
+    return Intl.message(
+      'Transaction fee',
+      name: 'transferTransactionFeeLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beneficiary bank`
+  String get transferBeneficiaryBank {
+    return Intl.message(
+      'Beneficiary bank',
+      name: 'transferBeneficiaryBank',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Choose beneficiary bank`
   String get transferSelectBeneficiary {
     return Intl.message(
       'Choose beneficiary bank',
       name: 'transferSelectBeneficiary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm transaction information`
+  String get transferConfirmTransaction {
+    return Intl.message(
+      'Confirm transaction information',
+      name: 'transferConfirmTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer successful!`
+  String get transferSuccessTitle {
+    return Intl.message(
+      'Transfer successful!',
+      name: 'transferSuccessTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get OTP to verify transaction`
+  String get transferGetOtpTransactionTitle {
+    return Intl.message(
+      'Get OTP to verify transaction',
+      name: 'transferGetOtpTransactionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get OTP`
+  String get transferGetOtpButton {
+    return Intl.message(
+      'Get OTP',
+      name: 'transferGetOtpButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OTP has been sent to your email. Please check your inbox`
+  String get transferSendOtpToEmailTitle {
+    return Intl.message(
+      'OTP has been sent to your email. Please check your inbox',
+      name: 'transferSendOtpToEmailTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OTP`
+  String get transferOtpLabel {
+    return Intl.message('OTP', name: 'transferOtpLabel', desc: '', args: []);
+  }
+
+  /// `Please enter the OTP code`
+  String get transferEnterOtpCodeTitle {
+    return Intl.message(
+      'Please enter the OTP code',
+      name: 'transferEnterOtpCodeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Use biometric authentication instead`
+  String get transferBiometricAuthenticationTitle {
+    return Intl.message(
+      'Use biometric authentication instead',
+      name: 'transferBiometricAuthenticationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have successfully transferred \n`
+  String get transferSuccessDescription {
+    return Intl.message(
+      'You have successfully transferred \n',
+      name: 'transferSuccessDescription',
       desc: '',
       args: [],
     );
@@ -1469,6 +1674,76 @@ class S {
     return Intl.message(
       'An unknown error occurred. Please try again.',
       name: 'authErrorUnknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No pending transfer found to confirm.`
+  String get transferErrorNoPendingTransaction {
+    return Intl.message(
+      'No pending transfer found to confirm.',
+      name: 'transferErrorNoPendingTransaction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid OTP. Please try again`
+  String get transferErrorOtpInvalid {
+    return Intl.message(
+      'Invalid OTP. Please try again',
+      name: 'transferErrorOtpInvalid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Biometric login not available`
+  String get transferErrorBiometricUnavailable {
+    return Intl.message(
+      'Biometric login not available',
+      name: 'transferErrorBiometricUnavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Biometric authentication failed`
+  String get transferErrorBiometricFailed {
+    return Intl.message(
+      'Biometric authentication failed',
+      name: 'transferErrorBiometricFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to calculate transaction fee`
+  String get transferErrorCalculateFee {
+    return Intl.message(
+      'Failed to calculate transaction fee',
+      name: 'transferErrorCalculateFee',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer failed. Please try again.`
+  String get transferErrorTransferFailed {
+    return Intl.message(
+      'Transfer failed. Please try again.',
+      name: 'transferErrorTransferFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please complete authentication before confirming transfer.`
+  String get transferErrorAuthenticationRequired {
+    return Intl.message(
+      'Please complete authentication before confirming transfer.',
+      name: 'transferErrorAuthenticationRequired',
       desc: '',
       args: [],
     );

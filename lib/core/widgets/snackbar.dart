@@ -43,7 +43,7 @@ class BASnackBar {
       _buildSnackbar(
         context,
         message,
-        context.colorScheme.outlineVariant,
+        context.colorScheme.surfaceTint,
         onRetry ?? () {},
       ),
     );

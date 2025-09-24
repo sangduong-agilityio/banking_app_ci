@@ -1,5 +1,11 @@
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:equatable/equatable.dart';
+
+import 'package:banking_app/features/home/models/account_model.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
+import 'package:banking_app/features/transfer/models/bank_model.dart';
+import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
+import 'package:banking_app/features/transfer/models/branch_model.dart';
+import 'package:banking_app/features/transfer/models/transfer_model.dart';
 
 abstract class TransferEvt extends Equatable {
   const TransferEvt();
@@ -11,66 +17,88 @@ abstract class TransferEvt extends Equatable {
 class TransferInitializeEvt extends TransferEvt {}
 
 class BeneficiariesInitializeEvt extends TransferEvt {
-  final List<Beneficiary> beneficiaries;
-  final List<Bank> banks;
-
   const BeneficiariesInitializeEvt({
     required this.beneficiaries,
     required this.banks,
   });
 
+  final List<BeneficiaryModel> beneficiaries;
+  final List<BankModel> banks;
+
   @override
   List<Object?> get props => [beneficiaries, banks];
 }
 
+class ResetTransferEvt extends TransferEvt {}
+
 class SelectAccountEvt extends TransferEvt {
-  final Account account;
   const SelectAccountEvt(this.account);
+  final AccountModel account;
 
   @override
   List<Object> get props => [account];
 }
 
+class SelectCardEvt extends TransferEvt {
+  const SelectCardEvt(this.card);
+  final CardModel card;
+
+  @override
+  List<Object> get props => [card];
+}
+
 class SelectTransferTypeEvt extends TransferEvt {
-  final TransferType transferType;
   const SelectTransferTypeEvt(this.transferType);
+  final TransferType transferType;
 
   @override
   List<Object> get props => [transferType];
 }
 
 class SelectBeneficiaryEvt extends TransferEvt {
-  final Beneficiary beneficiary;
   const SelectBeneficiaryEvt(this.beneficiary);
+  final BeneficiaryModel beneficiary;
 
   @override
   List<Object> get props => [beneficiary];
 }
 
-class AddNewBeneficiaryEvt extends TransferEvt {
-  final Beneficiary beneficiary;
-  const AddNewBeneficiaryEvt(this.beneficiary);
+class SelectBankEvt extends TransferEvt {
+  const SelectBankEvt(this.bank);
+  final BankModel bank;
 
   @override
-  List<Object> get props => [beneficiary];
+  List<Object> get props => [bank];
 }
 
-class UpdateTransferFormEvt extends TransferEvt {
-  final String? name;
-  final String? cardNumber;
-  final double? amount;
-  final String? content;
-  final bool? saveToDirectory;
-  final Bank? bank;
+class SelectBranchEvt extends TransferEvt {
+  const SelectBranchEvt(this.branch);
+  final BranchModel branch;
 
-  const UpdateTransferFormEvt({
+  @override
+  List<Object> get props => [branch];
+}
+
+class UpdateTransferDetailsEvt extends TransferEvt {
+  const UpdateTransferDetailsEvt({
     this.amount,
     this.content,
     this.name,
     this.saveToDirectory,
     this.cardNumber,
     this.bank,
+    this.branch,
+    this.avatarUrl,
   });
+
+  final String? name;
+  final String? cardNumber;
+  final double? amount;
+  final String? content;
+  final bool? saveToDirectory;
+  final BankModel? bank;
+  final BranchModel? branch;
+  final String? avatarUrl;
 
   @override
   List<Object?> get props => [
@@ -80,6 +108,8 @@ class UpdateTransferFormEvt extends TransferEvt {
     cardNumber,
     bank,
     name,
+    avatarUrl,
+    branch,
   ];
 }
 
@@ -93,25 +123,13 @@ class FillTransferDetailsEvt extends TransferEvt {
   List<Object> get props => [amount, content];
 }
 
-class CalculateTransactionFeeEvt extends TransferEvt {}
-
-class InitiateTransfer extends TransferEvt {}
-
-class VerifyOTPEvt extends TransferEvt {
-  final String otpCode;
-  const VerifyOTPEvt(this.otpCode);
+class AddNewBeneficiaryEvt extends TransferEvt {
+  const AddNewBeneficiaryEvt(this.beneficiary);
+  final BeneficiaryModel beneficiary;
 
   @override
-  List<Object> get props => [otpCode];
+  List<Object> get props => [beneficiary];
 }
-
-class AuthenticateWithBiometricsEvt extends TransferEvt {}
-
-class AuthenticateWithFaceIdEvt extends TransferEvt {}
-
-class ConfirmTransferEvt extends TransferEvt {}
-
-class ResetTransferEvt extends TransferEvt {}
 
 class SearchBeneficiaryEvt extends TransferEvt {
   final String query;
@@ -119,4 +137,40 @@ class SearchBeneficiaryEvt extends TransferEvt {
 
   @override
   List<Object?> get props => [query];
+}
+
+class CalculateTransactionFeeEvt extends TransferEvt {}
+
+class ConfirmTransferEvt extends TransferEvt {
+  const ConfirmTransferEvt({this.beneficiary});
+  final BeneficiaryModel? beneficiary;
+
+  @override
+  List<Object?> get props => [beneficiary];
+}
+
+class SendOtpEvt extends TransferEvt {
+  const SendOtpEvt({required this.transferId});
+
+  final String transferId;
+  @override
+  List<Object?> get props => [transferId];
+}
+
+class ConfirmTransferWithOtpEvt extends TransferEvt {
+  const ConfirmTransferWithOtpEvt({
+    required this.otpCode,
+    required this.transferId,
+  });
+  final String otpCode;
+  final String transferId;
+  @override
+  List<Object?> get props => [otpCode, transferId];
+}
+
+class ConfirmWithBiometricEvt extends TransferEvt {
+  const ConfirmWithBiometricEvt();
+
+  @override
+  List<Object?> get props => [];
 }

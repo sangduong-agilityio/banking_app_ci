@@ -1,78 +1,233 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
+import 'package:banking_app/features/transactions/models/transaction_model.dart';
+import 'package:banking_app/core/services/biometric_service.dart';
 
 import 'transfer_event.dart';
 import 'transfer_state.dart';
 
 class TransferBloc extends Bloc<TransferEvt, TransferState> {
-  final TransferRepository repo;
+  final TransferRepository transferRepo;
+  final BiometricService biometricService;
 
-  TransferBloc({required this.repo}) : super(const TransferState()) {
-    on<TransferInitializeEvt>(_onTransferInitilize);
+  TransferBloc({required this.transferRepo, required this.biometricService})
+    : super(const TransferState(status: TransferStatus.initial())) {
+    on<TransferInitializeEvt>(_onTransferInitialize);
+    on<BeneficiariesInitializeEvt>(_onBeneficiariesInitialize);
     on<SelectAccountEvt>(_onSelectAccount);
+    on<SelectCardEvt>(_onSelectCard);
     on<SelectTransferTypeEvt>(_onSelectTransferType);
     on<SelectBeneficiaryEvt>(_onSelectBeneficiary);
+    on<SelectBankEvt>(_onSelectBank);
+    on<SelectBranchEvt>(_onSelectBranch);
     on<AddNewBeneficiaryEvt>(_onAddNewBeneficiary);
-    on<UpdateTransferFormEvt>(_onUpdateTransferForm);
+    on<UpdateTransferDetailsEvt>(_onUpdateTransferForm);
     on<FillTransferDetailsEvt>(_onFillTransferDetails);
-    on<CalculateTransactionFeeEvt>(_onCalculateTransactionFee);
-    on<InitiateTransfer>(_onInitiateTransfer);
-    on<VerifyOTPEvt>(_onVerifyOTP);
-    on<AuthenticateWithBiometricsEvt>(_onAuthenticateWithBiometrics);
-    on<AuthenticateWithFaceIdEvt>(_onAuthenticateWithFaceId);
-    on<ConfirmTransferEvt>(_onConfirmTransfer);
-    on<ResetTransferEvt>(_onResetTransfer);
-    on<BeneficiariesInitializeEvt>(_onBeneficiaresInitialize);
     on<SearchBeneficiaryEvt>(_onSearchBeneficiaries);
+    on<CalculateTransactionFeeEvt>(_onCalculateTransactionFee);
+    on<ConfirmTransferEvt>(_onConfirmTransfer);
+    on<SendOtpEvt>(_onSendOtp);
+    on<ConfirmTransferWithOtpEvt>(_onConfirmTransferWithOtp);
+    on<ConfirmWithBiometricEvt>(_onConfirmWithBiometric);
   }
 
-  Future<void> _onTransferInitilize(
+  /// Load initial data: beneficiaries, banks, branches, accounts, cards
+  /// Also checks biometric availability
+  Future<void> _onTransferInitialize(
     TransferInitializeEvt event,
     Emitter<TransferState> emit,
   ) async {
-    emit(state.copyWith(status: const TransferStatus.loading()));
-
+    emit(state.copyWith(status: const TransferStatusLoading()));
     try {
-      final accounts = await repo.getUserAccounts();
-      final beneficiaries = await repo.getBeneficiaries();
-      final banks = await repo.getBanks();
+      final beneficiaries = await transferRepo.fetchBeneficiaries();
+      final banks = await transferRepo.fetchBanks();
+      final branches = await transferRepo.fetchBranchs();
+      final accounts = await transferRepo.fetchAccounts();
+      final cards = await transferRepo.fetchCards();
+      final biometricAvailable = await biometricService.canCheckBiometrics();
+      final biometricEnabled = await biometricService.isBiometricEnabled();
 
+      /// Emit loaded data
       emit(
         state.copyWith(
-          status: const TransferStatus.success(),
-          accounts: accounts,
+          status: const TransferStatus.initial(),
           beneficiaries: beneficiaries,
           banks: banks,
-          selectedAccount: null,
+          branches: branches,
+          beneficiariesFiltered: beneficiaries,
+          accounts: accounts,
+          cards: cards,
+          biometricAvailable: biometricAvailable,
+          biometricEnabled: biometricEnabled,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          status: const TransferStatus.failure(),
+          status: const TransferStatus.initial(),
           errorMessage: 'Failed to load initial data: ${e.toString()}',
         ),
       );
     }
   }
 
-  Future<void> _onBeneficiaresInitialize(
+  /// Initialize beneficiaries from event
+  Future<void> _onBeneficiariesInitialize(
     BeneficiariesInitializeEvt event,
     Emitter<TransferState> emit,
   ) async {
+    emit(
+      state.copyWith(
+        beneficiaries: event.beneficiaries,
+        banks: event.banks,
+        beneficiariesFiltered: event.beneficiaries,
+      ),
+    );
+  }
+
+  /// Select account
+  void _onSelectAccount(SelectAccountEvt event, Emitter<TransferState> emit) {
+    emit(state.copyWith(selectedAccount: event.account, clearCard: true));
+    _recalculateFeeIfNeeded();
+  }
+
+  /// Select card
+  void _onSelectCard(SelectCardEvt event, Emitter<TransferState> emit) {
+    emit(state.copyWith(selectedCard: event.card, clearAccount: true));
+    _recalculateFeeIfNeeded();
+  }
+
+  /// Select transfer type
+  void _onSelectTransferType(
+    SelectTransferTypeEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(selectedTransferType: event.transferType));
+    _recalculateFeeIfNeeded();
+  }
+
+  /// Select beneficiary
+  void _onSelectBeneficiary(
+    SelectBeneficiaryEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(selectedBeneficiary: event.beneficiary));
+    _recalculateFeeIfNeeded();
+  }
+
+  /// Select bank
+  void _onSelectBank(SelectBankEvt event, Emitter<TransferState> emit) {
+    emit(state.copyWith(selectedBank: event.bank, selectedBranch: null));
+  }
+
+  /// Select branch
+  void _onSelectBranch(SelectBranchEvt event, Emitter<TransferState> emit) {
+    emit(state.copyWith(selectedBranch: event.branch));
+  }
+
+  /// Add new beneficiary
+  Future<void> _onAddNewBeneficiary(
+    AddNewBeneficiaryEvt event,
+    Emitter<TransferState> emit,
+  ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
-
     try {
-      final beneficiaries = await repo.getBeneficiaries();
-      final banks = await repo.getBanks();
-
+      final result = await transferRepo.addNewBeneficiary(event.beneficiary);
       emit(
         state.copyWith(
           status: const TransferStatus.success(),
-          beneficiaries: beneficiaries,
-          banks: banks,
-          filteredBeneficiaries: beneficiaries,
+          newBeneficiary: result,
+        ),
+      );
+    } catch (_) {
+      emit(state.copyWith(status: const TransferStatus.failure()));
+    }
+  }
+
+  /// Update transfer form
+  void _onUpdateTransferForm(
+    UpdateTransferDetailsEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        amount: event.amount ?? state.amount,
+        content: event.content ?? state.content,
+        saveToDirectory: event.saveToDirectory ?? state.saveToDirectory,
+        selectedBank: event.bank ?? state.selectedBank,
+        selectedBranch: event.branch ?? state.selectedBranch,
+        name: event.name ?? state.name,
+        avatarUrl: event.avatarUrl ?? state.avatarUrl,
+      ),
+    );
+    if (event.amount != null) _recalculateFeeIfNeeded();
+  }
+
+  /// Fill transfer details
+  void _onFillTransferDetails(
+    FillTransferDetailsEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(amount: event.amount, content: event.content));
+    _recalculateFeeIfNeeded();
+  }
+
+  /// Search beneficiaries
+  void _onSearchBeneficiaries(
+    SearchBeneficiaryEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    final query = event.query.trim().toLowerCase();
+
+    if (query.isEmpty) {
+      emit(
+        state.copyWith(
+          searchQuery: '',
+          beneficiariesFiltered: state.beneficiaries,
+        ),
+      );
+      return;
+    }
+
+    final filtered = state.beneficiaries.where((b) {
+      final name = b.name.toLowerCase();
+      final account = b.accountNumber.toLowerCase();
+      final bankName = b.bankName?.toLowerCase() ?? '';
+      final branch = b.branch?.toLowerCase() ?? '';
+      return name.contains(query) ||
+          account.contains(query) ||
+          bankName.contains(query) ||
+          branch.contains(query);
+    }).toList();
+
+    emit(
+      state.copyWith(searchQuery: event.query, beneficiariesFiltered: filtered),
+    );
+  }
+
+  /// Calculate transaction fee
+  Future<void> _onCalculateTransactionFee(
+    CalculateTransactionFeeEvt event,
+    Emitter<TransferState> emit,
+  ) async {
+    emit(state.copyWith(status: const TransferStatus.loading()));
+    try {
+      final request = TransferModel(
+        fromAccount: state.selectedAccount,
+        fromCard: state.selectedCard,
+        toBeneficiary: state.selectedBeneficiary,
+        amount: state.amount,
+        transactionFee: 0,
+        content: state.content ?? '',
+        transferType: state.selectedTransferType,
+      );
+
+      final fee = await transferRepo.calculateFee(request);
+      emit(
+        state.copyWith(
+          transactionFee: fee.fee,
+          status: const TransferStatus.initial(),
         ),
       );
     } catch (e) {
@@ -85,166 +240,113 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     }
   }
 
-  void _onSelectAccount(SelectAccountEvt event, Emitter<TransferState> emit) {
-    emit(state.copyWith(selectedAccount: event.account));
-  }
-
-  void _onSelectTransferType(
-    SelectTransferTypeEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    emit(state.copyWith(selectedTransferType: event.transferType));
-    _recalculateFeeIfNeeded();
-  }
-
-  void _onSelectBeneficiary(
-    SelectBeneficiaryEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    emit(state.copyWith(selectedBeneficiary: event.beneficiary));
-    _recalculateFeeIfNeeded();
-  }
-
-  Future<void> _onAddNewBeneficiary(
-    AddNewBeneficiaryEvt event,
+  /// Confirm transfer
+  Future<void> _onConfirmTransfer(
+    ConfirmTransferEvt event,
     Emitter<TransferState> emit,
   ) async {
-    try {
-      final newBeneficiary = await repo.addBeneficiary(event.beneficiary);
-      final updated = [...state.beneficiaries, newBeneficiary];
-
-      emit(
-        state.copyWith(
-          beneficiaries: updated,
-          selectedBeneficiary: newBeneficiary,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: 'Failed to add beneficiary: ${e.toString()}',
-        ),
-      );
-    }
-  }
-
-  void _onUpdateTransferForm(
-    UpdateTransferFormEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        amount: event.amount ?? state.amount,
-        content: event.content ?? state.content,
-        banks: event.bank != null && !state.banks.contains(event.bank)
-            ? [...state.banks, event.bank!]
-            : state.banks,
-        saveToDirectory: event.saveToDirectory ?? state.saveToDirectory,
-      ),
-    );
-
-    if (event.amount != null) {
-      _recalculateFeeIfNeeded();
-    }
-  }
-
-  // Add the missing handler for FillTransferDetailsEvent
-  void _onFillTransferDetails(
-    FillTransferDetailsEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    emit(state.copyWith(amount: event.amount, content: event.content));
-
-    // Calculate fee immediately
-    add(CalculateTransactionFeeEvt());
-  }
-
-  Future<void> _onCalculateTransactionFee(
-    CalculateTransactionFeeEvt event,
-    Emitter<TransferState> emit,
-  ) async {
-    try {
-      if (state.selectedAccount != null &&
-          state.selectedBeneficiary != null &&
-          state.amount != null) {
-        final request = TransferRequest(
-          fromAccount: state.selectedAccount!,
-          toBeneficiary: state.selectedBeneficiary!,
-          amount: state.amount!,
-          transactionFee: 0.0,
-          content: state.content ?? '',
-          transferType: state.selectedTransferType,
-        );
-
-        final fee = await repo.calculateTransactionFee(request);
-        emit(state.copyWith(transactionFee: fee));
-      }
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: 'Failed to calculate fee: ${e.toString()}',
-        ),
-      );
-    }
-  }
-
-  Future<void> _onInitiateTransfer(
-    InitiateTransfer event,
-    Emitter<TransferState> emit,
-  ) async {
-    if (!_validateTransferData()) {
-      emit(state.copyWith(errorMessage: 'Please fill all required fields'));
-      return;
-    }
-
     emit(state.copyWith(status: const TransferStatus.loading()));
 
     try {
-      final request = TransferRequest(
-        fromAccount: state.selectedAccount!,
-        toBeneficiary: state.selectedBeneficiary!,
-        amount: state.amount!,
+      final transferRequest = TransferModel(
+        fromAccount: state.selectedAccount,
+        fromCard: state.selectedCard,
+        toBeneficiary: state.selectedBeneficiary,
+        amount: state.amount ?? 0,
         transactionFee: state.transactionFee,
-        content: state.content!,
+        content: state.content ?? '',
         transferType: state.selectedTransferType,
-        saveToDirectory: state.saveToDirectory,
       );
 
-      final transactionId = await repo.initiateTransfer(request);
+      final result = await transferRepo.initiateTransfer(transferRequest);
+
+      /// Check null & transferId
+      if (result.transferId.isEmpty) {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.failure(),
+            errorMessage:
+                'Transfer initiation failed: invalid response from server.',
+          ),
+        );
+        return;
+      }
 
       emit(
         state.copyWith(
-          status: const TransferStatus.success(),
-          transactionId: transactionId,
+          status: const TransferStatus.initial(),
+          transferId: result.transferId,
+          otpSent: false,
+          transaction: TransactionModel(
+            id: result.transferId,
+            userId:
+                state.selectedAccount?.userId ??
+                state.selectedCard?.userId ??
+                '',
+            amount: state.amount ?? 0,
+            type: state.selectedTransferType,
+          ),
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatusFailure(),
+          errorMessage:
+              'Cannot initiate transfer. Please try again. (${e.toString()})',
+        ),
+      );
+    }
+  }
+
+  /// Send OTP
+  Future<void> _onSendOtp(SendOtpEvt event, Emitter<TransferState> emit) async {
+    emit(state.copyWith(status: const TransferStatus.loading()));
+    try {
+      await transferRepo.sendOtpEmail(event.transferId);
+      emit(
+        state.copyWith(
+          otpSent: true,
+          status: const TransferStatus.awaitingOtp(),
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'Failed to initiate transfer: ${e.toString()}',
+          errorMessage: e.toString(),
         ),
       );
     }
   }
 
-  Future<void> _onVerifyOTP(
-    VerifyOTPEvt event,
+  /// Confirm transfer with OTP
+  Future<void> _onConfirmTransferWithOtp(
+    ConfirmTransferWithOtpEvt event,
     Emitter<TransferState> emit,
   ) async {
+    emit(state.copyWith(status: const TransferStatus.loading()));
+
     try {
-      final isVerified = await repo.verifyOTP(
-        state.transactionId ?? "",
+      final isValid = await transferRepo.verifyOTP(
+        state.transferId ?? '',
         event.otpCode,
       );
 
-      if (isVerified) {
-        add(ConfirmTransferEvt());
+      if (isValid) {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.awaitingBiometric(),
+            otpSent: false,
+            errorMessage: null,
+          ),
+        );
       } else {
         emit(
-          state.copyWith(errorMessage: 'Invalid OTP code. Please try again.'),
+          state.copyWith(
+            status: const TransferStatus.failure(),
+            errorMessage: 'Invalid OTP code.',
+          ),
         );
       }
     } catch (e) {
@@ -257,130 +359,63 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     }
   }
 
-  Future<void> _onAuthenticateWithBiometrics(
-    AuthenticateWithBiometricsEvt event,
-    Emitter<TransferState> emit,
-  ) async {
-    try {
-      final isAuth = await repo.authenticateWithBiometrics();
-      if (isAuth) {
-        add(ConfirmTransferEvt());
-      } else {
-        emit(state.copyWith(errorMessage: 'Biometric authentication failed'));
-      }
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: 'Biometric authentication error: ${e.toString()}',
-        ),
-      );
-    }
-  }
-
-  Future<void> _onAuthenticateWithFaceId(
-    AuthenticateWithFaceIdEvt event,
-    Emitter<TransferState> emit,
-  ) async {
-    try {
-      final isAuth = await repo.authenticateWithFaceId();
-      if (isAuth) {
-        add(ConfirmTransferEvt());
-      } else {
-        emit(state.copyWith(errorMessage: 'Face ID authentication failed'));
-      }
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: 'Face ID authentication error: ${e.toString()}',
-        ),
-      );
-    }
-  }
-
-  Future<void> _onConfirmTransfer(
-    ConfirmTransferEvt event,
+  /// Confirm with biometric
+  Future<void> _onConfirmWithBiometric(
+    ConfirmWithBiometricEvt event,
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
     try {
-      final transaction = await repo.confirmTransfer(state.transactionId!);
+      final canAuth = await biometricService.authenticate();
 
-      emit(
-        state.copyWith(
-          status: const TransferStatus.success(),
-          transaction: transaction,
-        ),
+      if (!canAuth) {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.failure(),
+            errorMessage: 'Biometric authentication failed.',
+          ),
+        );
+        return;
+      }
+
+      final result = await transferRepo.confirmTransfer(
+        state.transferId ?? '',
+        '',
       );
+
+      if (result) {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.success(),
+            errorMessage: null,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.failure(),
+            errorMessage: 'Transfer confirmation failed.',
+          ),
+        );
+      }
     } catch (e) {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'Failed to confirm transfer: ${e.toString()}',
+          errorMessage: 'Biometric confirm error: ${e.toString()}',
         ),
       );
     }
   }
 
-  void _onResetTransfer(ResetTransferEvt event, Emitter<TransferState> emit) {
-    emit(
-      state.copyWith(
-        status: const TransferStatus.initial(),
-        selectedAccount: state.accounts.isNotEmpty
-            ? state.accounts.first
-            : null,
-        selectedTransferType: TransferType.cardNumber,
-        selectedBeneficiary: null,
-        amount: null,
-        content: null,
-        transactionFee: 0.0,
-        saveToDirectory: false,
-        errorMessage: null,
-        transactionId: null,
-        transaction: null,
-      ),
-    );
-  }
-
-  // Helper methods
-  bool _validateTransferData() {
-    return state.selectedAccount != null &&
-        state.selectedBeneficiary != null &&
-        state.amount != null &&
-        state.amount! > 0 &&
-        state.content != null &&
-        state.content!.isNotEmpty &&
-        state.amount! <= state.selectedAccount!.availableBalance;
-  }
-
+  /// Recalculate fee
   void _recalculateFeeIfNeeded() {
-    if (state.selectedAccount != null &&
+    if ((state.selectedAccount != null || state.selectedCard != null) &&
         state.selectedBeneficiary != null &&
         state.amount != null &&
         state.amount! > 0) {
       add(CalculateTransactionFeeEvt());
     }
-  }
-
-  void _onSearchBeneficiaries(
-    SearchBeneficiaryEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    final query = event.query.trim().toLowerCase();
-    final filtered = query.isEmpty
-        ? state.beneficiaries
-        : state.beneficiaries
-              .where(
-                (b) =>
-                    b.name.toLowerCase().contains(query) ||
-                    b.accountNumber.contains(query),
-              )
-              .toList();
-
-    emit(
-      state.copyWith(searchQuery: event.query, filteredBeneficiaries: filtered),
-    );
   }
 }

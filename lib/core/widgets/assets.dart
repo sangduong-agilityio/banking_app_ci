@@ -238,9 +238,6 @@ class BAAssets {
   wallet = _BAWalletImage.new;
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-  success = _BASuccessImage.new;
-
-  static Widget Function({double? width, double? height, BoxFit? boxfit})
   empty = _BAEmptyImage.new;
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
@@ -281,6 +278,9 @@ class BAAssets {
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
   saveOnline = _BASaveOnlineImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  transferSuccess = _BATransferSuccessImage.new;
 }
 
 class _BAHomeImage extends StatelessWidget {
@@ -654,8 +654,8 @@ class _BAWalletImage extends StatelessWidget {
   }
 }
 
-class _BASuccessImage extends StatelessWidget {
-  const _BASuccessImage({this.width, this.height, this.boxfit});
+class _BATransferSuccessImage extends StatelessWidget {
+  const _BATransferSuccessImage({this.width, this.height, this.boxfit});
   final double? height;
   final double? width;
   final BoxFit? boxfit;
@@ -664,9 +664,9 @@ class _BASuccessImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BAAssetImage(
       boxFit: boxfit,
-      path: Assets.images.imgSuccess.path,
-      width: BAResponsive.scale(context, defaultValue: width ?? 140),
-      height: BAResponsive.scale(context, defaultValue: height ?? 140),
+      path: Assets.images.imgTransferSuccess.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 342),
+      height: BAResponsive.scale(context, defaultValue: height ?? 188),
     );
   }
 }

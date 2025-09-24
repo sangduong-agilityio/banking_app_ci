@@ -23,7 +23,7 @@ class BAAppColors {
   static const Color textDisabled = Color(0xFFCBCBCB);
 
   // Status Colors
-  static const Color success = Color(0xFF52D5BA);
+  static const Color success = Colors.green;
   static const Color warning = Color(0xFFF59E0B);
   static const Color error = Color(0xFFEF4444);
   static const Color info = Color(0xFF0890FE);

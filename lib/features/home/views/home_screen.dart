@@ -44,6 +44,7 @@ class GreetingAppBar extends StatelessWidget {
       buildWhen: (previous, current) => previous.user != current.user,
       builder: (context, state) {
         return BAAppBar(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           title: '${S.current.homeGreetingTitle(state.user?.username ?? '')} ',
           alignment: BAAppBarAlignment.left,
           profileImage: state.user?.profileImage,

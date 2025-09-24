@@ -24,13 +24,13 @@ class FormatterUtils {
     return '${months[date.month - 1]} ${date.year}';
   }
 
-  /// Mask card number: "1234 ●●●● ●●●● 5678"
+  /// Mask card number: "1234 **** **** 5678"
   static String maskCardNumber(String cardNumber) {
     if (cardNumber.length < 8) return cardNumber;
 
     final start = cardNumber.substring(0, 4);
     final end = cardNumber.substring(cardNumber.length - 4);
-    const mask = '●●●● ●●●●';
+    const mask = '**** ****';
 
     return "$start $mask $end";
   }

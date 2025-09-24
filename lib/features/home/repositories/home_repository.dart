@@ -59,7 +59,6 @@ class HomeRepositoryImpl implements HomeRepository {
         .from('accounts')
         .select()
         .eq('user_id', currentUser.id);
-    print('Accounts response: $response');
     return (response as List)
         .map((json) => AccountModel.fromJson(json as Map<String, dynamic>))
         .toList();

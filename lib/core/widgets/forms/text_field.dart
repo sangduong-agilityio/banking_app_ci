@@ -19,16 +19,17 @@ class BATextField extends StatefulWidget {
     this.validator,
     this.maxLines = 1,
     this.enabled = true,
+    this.readOnly = false,
     this.inputFormatters,
     this.textInputAction = TextInputAction.next,
     this.focusNode,
     this.controller,
     this.onEditingComplete,
     this.fillColor,
-    this.isLast = false,
     this.isPassword = false,
     this.onChanged,
     this.hintTextStyle,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
   });
 
   final String? name;
@@ -42,16 +43,17 @@ class BATextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final int? maxLines;
   final bool enabled;
+  final bool readOnly;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputAction? textInputAction;
   final FocusNode? focusNode;
   final TextEditingController? controller;
-  final bool isLast;
   final VoidCallback? onEditingComplete;
   final Color? fillColor;
   final bool isPassword;
   final ValueChanged<String?>? onChanged;
   final TextStyle? hintTextStyle;
+  final AutovalidateMode autovalidateMode;
 
   @override
   State<BATextField> createState() => _BATextFieldState();
@@ -59,32 +61,38 @@ class BATextField extends StatefulWidget {
 
 class _BATextFieldState extends State<BATextField> {
   bool _textInvisible = true;
+  final _iconFocusNode = FocusNode(skipTraversal: true);
+
+  @override
+  void dispose() {
+    _iconFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _togglePasswordVisibility() {
+    setState(() => _textInvisible = !_textInvisible);
+  }
 
   @override
   Widget build(BuildContext context) {
-    void togglePasswordVisibility() {
-      setState(() {
-        _textInvisible = !_textInvisible;
-      });
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label != null) ...[
-          Text(widget.label ?? '', style: context.titleSmall),
+          Text(widget.label!, style: context.titleSmall),
           const SizedBox(height: 8),
         ],
         FormBuilderTextField(
           name: widget.name ?? '',
           cursorColor: context.colorScheme.primary,
           keyboardType: widget.keyboardType,
-          obscureText: widget.isPassword ? _textInvisible : false,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
+          obscureText: widget.isPassword ? _textInvisible : widget.obscureText,
+          autovalidateMode: widget.autovalidateMode,
           maxLines: widget.maxLines,
           focusNode: widget.focusNode,
           controller: widget.controller,
           enabled: widget.enabled,
+          readOnly: widget.readOnly,
           inputFormatters: widget.inputFormatters,
           textInputAction: widget.textInputAction,
           onChanged: widget.onChanged,
@@ -109,7 +117,7 @@ class _BATextFieldState extends State<BATextField> {
             prefixIcon: widget.prefixIcon,
             suffixIcon: widget.isPassword
                 ? IconButton(
-                    focusNode: FocusNode(skipTraversal: true),
+                    focusNode: _iconFocusNode,
                     icon: Icon(
                       _textInvisible
                           ? Icons.visibility_off_rounded
@@ -119,16 +127,21 @@ class _BATextFieldState extends State<BATextField> {
                           : BAAppColors.textDisabled,
                       size: 24,
                     ),
-                    onPressed: togglePasswordVisibility,
+                    onPressed: _togglePasswordVisibility,
                   )
-                : widget.suffixIcon,
+                : (widget.suffixIcon != null
+                      ? GestureDetector(
+                          onTap: widget.onSuffixIconTap,
+                          child: widget.suffixIcon,
+                        )
+                      : null),
             filled: true,
             fillColor:
                 widget.fillColor ??
                 (widget.enabled
                     ? context.colorScheme.onPrimary
                     : BAAppColors.textDisabled),
-            errorStyle: TextStyle(
+            errorStyle: const TextStyle(
               color: BAAppColors.error,
               fontSize: 12,
               height: 1.2,
@@ -136,23 +149,26 @@ class _BATextFieldState extends State<BATextField> {
             errorMaxLines: 2,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: BAAppColors.textDisabled),
+              borderSide: const BorderSide(color: BAAppColors.textDisabled),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: BAAppColors.textDisabled),
+              borderSide: const BorderSide(color: BAAppColors.textDisabled),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: BAAppColors.borderFocus, width: 2),
+              borderSide: const BorderSide(
+                color: BAAppColors.borderFocus,
+                width: 2,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: BAAppColors.error),
+              borderSide: const BorderSide(color: BAAppColors.error),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: BAAppColors.error, width: 2),
+              borderSide: const BorderSide(color: BAAppColors.error, width: 2),
             ),
           ),
         ),

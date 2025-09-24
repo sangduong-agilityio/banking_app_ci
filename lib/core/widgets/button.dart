@@ -48,7 +48,6 @@ class _BAElevatedButtonState extends State<BAElevatedButton> {
           widget.text,
           style: context.bodyLarge?.copyWith(
             color: context.colorScheme.onPrimary,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ),
