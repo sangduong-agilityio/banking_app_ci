@@ -63,9 +63,22 @@ class _TransferScreenState extends State<TransferScreen> {
                     children: [
                       SizedBox(height: 24),
                       // Account Selection
-                      AccountOrCardSelection(
+                      AccountOrCardSelector(
                         accounts: state.accounts,
                         cards: state.cards,
+                        selectedAccount: state.selectedAccount,
+                        selectedCard: state.selectedCard,
+                        onSelected: (account, card) {
+                          if (account != null) {
+                            context.read<TransferBloc>().add(
+                              SelectAccountEvt(account),
+                            );
+                          } else if (card != null) {
+                            context.read<TransferBloc>().add(
+                              SelectCardEvt(card),
+                            );
+                          }
+                        },
                       ),
                       SizedBox(height: 32),
                       // Transaction Type Selection
