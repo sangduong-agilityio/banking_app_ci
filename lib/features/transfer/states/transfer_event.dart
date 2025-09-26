@@ -1,3 +1,4 @@
+import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:banking_app/features/home/models/account_model.dart';
@@ -5,7 +6,6 @@ import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/models/branch_model.dart';
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
 
 abstract class TransferEvt extends Equatable {
   const TransferEvt();
@@ -28,8 +28,6 @@ class BeneficiariesInitializeEvt extends TransferEvt {
   @override
   List<Object?> get props => [beneficiaries, banks];
 }
-
-class ResetTransferEvt extends TransferEvt {}
 
 class SelectAccountEvt extends TransferEvt {
   const SelectAccountEvt(this.account);

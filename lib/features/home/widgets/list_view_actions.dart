@@ -2,7 +2,7 @@ import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
-import 'package:banking_app/features/bills/models/bill_model.dart';
+import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
 import 'package:banking_app/features/home/widgets/card_action.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 class ListViewActions extends StatelessWidget {
   const ListViewActions({super.key, this.bills});
 
-  final List<BillModel>? bills;
+  final List<BillPaymentModel>? bills;
   @override
   Widget build(BuildContext context) {
     return GridView.count(

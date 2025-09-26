@@ -40,7 +40,7 @@ class HomeRepositoryImpl implements HomeRepository {
     final response = await _client
         .from('cards')
         .select()
-        .eq('user_id', currentUser?.id ?? 0);
+        .eq('user_id', currentUser?.id ?? '');
 
     return (response as List<dynamic>)
         .map((json) => CardModel.fromJson(json))

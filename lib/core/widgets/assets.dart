@@ -247,7 +247,19 @@ class BAAssets {
   water = _BAWaterImage.new;
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
+  waterBill = _BAWaterBillImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
   internet = _BAInternetImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  internetBill = _BAInternetBillImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  transferMoneyBill = _BATransferMoneyBillImage.new;
+
+  static Widget Function({double? width, double? height, BoxFit? boxfit})
+  electricBill = _BAElectricBillImage.new;
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
   transactionSuccess = _BATransactionSuccessImage.new;
@@ -339,6 +351,101 @@ class _BASearchImage extends StatelessWidget {
       width: BAResponsive.scale(context, defaultValue: width ?? 20),
       height: BAResponsive.scale(context, defaultValue: height ?? 20),
       color: color ?? context.colorScheme.inverseSurface,
+    );
+  }
+}
+
+class _BAWaterBillImage extends StatelessWidget {
+  const _BAWaterBillImage({this.width, this.height, this.boxfit, this.color});
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
+      path: Assets.icons.icWater.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 20),
+      height: BAResponsive.scale(context, defaultValue: height ?? 20),
+      color: color ?? context.colorScheme.onPrimary,
+    );
+  }
+}
+
+class _BATransferMoneyBillImage extends StatelessWidget {
+  const _BATransferMoneyBillImage({
+    this.width,
+    this.height,
+    this.boxfit,
+    this.color,
+  });
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
+      path: Assets.icons.icTransferMoney.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 20),
+      height: BAResponsive.scale(context, defaultValue: height ?? 20),
+      color: color ?? context.colorScheme.onPrimary,
+    );
+  }
+}
+
+class _BAElectricBillImage extends StatelessWidget {
+  const _BAElectricBillImage({
+    this.width,
+    this.height,
+    this.boxfit,
+    this.color,
+  });
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
+      path: Assets.icons.icElectric.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 20),
+      height: BAResponsive.scale(context, defaultValue: height ?? 20),
+      color: color ?? context.colorScheme.onPrimary,
+    );
+  }
+}
+
+class _BAInternetBillImage extends StatelessWidget {
+  const _BAInternetBillImage({
+    this.width,
+    this.height,
+    this.boxfit,
+    this.color,
+  });
+  final double? height;
+  final double? width;
+  final BoxFit? boxfit;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return BAAssetImage(
+      boxFit: boxfit,
+      type: ImageLoaderType.assetSVG,
+      path: Assets.icons.icInternet.path,
+      width: BAResponsive.scale(context, defaultValue: width ?? 20),
+      height: BAResponsive.scale(context, defaultValue: height ?? 20),
+      color: color ?? context.colorScheme.onPrimary,
     );
   }
 }

@@ -97,11 +97,6 @@
   "searchAmoutTitle": "Amount",
   "searchSelectedCurrencyTitle": "Select the currency",
 
-  "@segmentTransactionsHistory": {
-    "description": "Store translations that are likely to be used only in Transactions history feature"
-  },
-  "transactionsHistoryTitle": "Recent Transactions",
-
   "@segmentPaybill": {
     "description": "Store translations that are likely to be used only in Pay bill feature"
   },
@@ -214,6 +209,15 @@
   "settingChangePasswordButton": "Change password",
   "settingTouchIdLabel":"Touch ID",
 
+  "@segmentTransactionReport": {
+    "description": "Store translations that are likely to be used only in Transaction Report feature"
+  },
+  "transactionReportTitle":"Transaction report",
+  "transactionBalanceTitle":"Balance",
+  "transactionTodayTitle":"Today",
+  "transactionYesterdayTitle":"Yesterday",
+  "transactionRecentTitle":"Recent",
+  
   "@segmentAccount": {
     "description": "Store translations that are likely to be used only in Account feature"
   },

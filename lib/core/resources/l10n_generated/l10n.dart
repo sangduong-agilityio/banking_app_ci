@@ -654,16 +654,6 @@ class S {
     );
   }
 
-  /// `Recent Transactions`
-  String get transactionsHistoryTitle {
-    return Intl.message(
-      'Recent Transactions',
-      name: 'transactionsHistoryTitle',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Pay the bill`
   String get payBillTitle {
     return Intl.message(
@@ -1454,6 +1444,56 @@ class S {
     return Intl.message(
       'Touch ID',
       name: 'settingTouchIdLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction report`
+  String get transactionReportTitle {
+    return Intl.message(
+      'Transaction report',
+      name: 'transactionReportTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Balance`
+  String get transactionBalanceTitle {
+    return Intl.message(
+      'Balance',
+      name: 'transactionBalanceTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Today`
+  String get transactionTodayTitle {
+    return Intl.message(
+      'Today',
+      name: 'transactionTodayTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yesterday`
+  String get transactionYesterdayTitle {
+    return Intl.message(
+      'Yesterday',
+      name: 'transactionYesterdayTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recent`
+  String get transactionRecentTitle {
+    return Intl.message(
+      'Recent',
+      name: 'transactionRecentTitle',
       desc: '',
       args: [],
     );
