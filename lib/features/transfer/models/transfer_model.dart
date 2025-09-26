@@ -1,12 +1,11 @@
 import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
+import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'transfer_model.freezed.dart';
 part 'transfer_model.g.dart';
-
-enum TransferType { cardNumber, sameBank, otherBank }
 
 enum AuthMethod { otp, fingerprint, faceId }
 

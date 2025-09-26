@@ -5,7 +5,7 @@ import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/account/views/account_and_card_screen.dart';
 import 'package:banking_app/features/auth/views/sign_in_screen.dart';
 import 'package:banking_app/features/auth/views/sign_up_screen.dart';
-import 'package:banking_app/features/bills/views/bill_payment_screen.dart';
+import 'package:banking_app/features/bill_payment/views/bill_payment_screen.dart';
 import 'package:banking_app/features/home/views/home_screen.dart';
 import 'package:banking_app/features/landing/landing_screen.dart';
 import 'package:banking_app/features/message/message_screen.dart';
@@ -14,7 +14,7 @@ import 'package:banking_app/features/search/views/exchange_screen.dart';
 import 'package:banking_app/features/search/views/interest_rate_screen.dart';
 import 'package:banking_app/features/search/views/search_screen.dart';
 import 'package:banking_app/features/setting/views/setting_screen.dart';
-import 'package:banking_app/features/transactions/views/transaction_history_screen.dart';
+import 'package:banking_app/features/transactions/views/transaction_report_screen.dart';
 import 'package:banking_app/features/transfer/views/transfer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -86,15 +86,15 @@ class BAAppRouter {
                     path: BAPaths.payBill.path,
                     name: BAPaths.payBill.name,
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
-                    builder: (context, state) =>
-                        const BillPaymentScreen(bills: []),
+                    builder: (context, state) => const BillPaymentScreen(),
                   ),
                   GoRoute(
                     path: BAPaths.transactionReport.path,
                     name: BAPaths.transactionReport.name,
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
-                    builder: (context, state) =>
-                        const TransactionReportScreen(),
+                    builder: (context, state) {
+                      return TransactionReportScreen();
+                    },
                   ),
                 ],
               ),

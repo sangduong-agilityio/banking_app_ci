@@ -1,6 +1,6 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
+import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';

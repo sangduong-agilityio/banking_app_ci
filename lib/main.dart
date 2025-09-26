@@ -6,6 +6,7 @@ import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,8 @@ void main() async {
   await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseKey);
 
   await AppLocators.setupLocators();
+
+  await initializeDateFormatting('en_US', null);
 
   runApp(const BankingApp());
 }

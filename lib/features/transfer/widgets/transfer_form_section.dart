@@ -6,10 +6,10 @@ import 'package:banking_app/core/utils/validators.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
+import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/models/branch_model.dart';
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';
@@ -247,6 +247,9 @@ class _TransferFormSectionState extends State<TransferFormSection>
           const SizedBox(height: 24),
           ..._buildFormFields(state),
         ];
+      case TransferType.billPayment:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 

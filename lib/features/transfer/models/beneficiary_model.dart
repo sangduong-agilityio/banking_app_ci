@@ -1,4 +1,4 @@
-import 'package:banking_app/features/transfer/models/transfer_model.dart';
+import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'beneficiary_model.freezed.dart';

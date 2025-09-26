@@ -282,8 +282,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enter your user name",
     ),
     "signUpWelcomeTitle": MessageLookupByLibrary.simpleMessage("Welcome to us"),
-    "transactionsHistoryTitle": MessageLookupByLibrary.simpleMessage(
-      "Recent Transactions",
+    "transactionBalanceTitle": MessageLookupByLibrary.simpleMessage("Balance"),
+    "transactionRecentTitle": MessageLookupByLibrary.simpleMessage("Recent"),
+    "transactionReportTitle": MessageLookupByLibrary.simpleMessage(
+      "Transaction report",
+    ),
+    "transactionTodayTitle": MessageLookupByLibrary.simpleMessage("Today"),
+    "transactionYesterdayTitle": MessageLookupByLibrary.simpleMessage(
+      "Yesterday",
     ),
     "transferAccountSelected": MessageLookupByLibrary.simpleMessage(
       "Select Account",

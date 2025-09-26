@@ -4,11 +4,15 @@ import 'package:banking_app/core/services/biometric_service.dart';
 import 'package:banking_app/features/account/states/account_and_card_cubit.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/states/auth_bloc.dart';
+import 'package:banking_app/features/bill_payment/repositories/bill_payment_repository.dart';
+import 'package:banking_app/features/bill_payment/states/bill_payment_bloc.dart';
 import 'package:banking_app/features/home/repositories/home_repository.dart';
 import 'package:banking_app/features/home/states/home_cubit.dart';
 import 'package:banking_app/features/search/repositories/search_repository.dart';
 import 'package:banking_app/features/search/states/search_bloc.dart';
 import 'package:banking_app/features/setting/states/setting_cubit.dart';
+import 'package:banking_app/features/transactions/repositories/transaction_repository.dart';
+import 'package:banking_app/features/transactions/states/transaction_bloc.dart';
 import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -42,6 +46,12 @@ class AppLocators {
     locator.registerLazySingleton<TransferRepository>(
       () => TransferRepositoryImpl(client: Supabase.instance.client),
     );
+    locator.registerLazySingleton<BillPaymentRepository>(
+      () => BillPaymentRepositoryImpl(client: Supabase.instance.client),
+    );
+    locator.registerLazySingleton<TransactionReportRepository>(
+      () => TransactionReportRepositoryImpl(client: Supabase.instance.client),
+    );
 
     /// Blocs / Cubits
     locator.registerLazySingleton<AuthBloc>(
@@ -73,6 +83,12 @@ class AppLocators {
         transferRepo: locator<TransferRepository>(),
         biometricService: locator<BiometricService>(),
       ),
+    );
+    locator.registerFactory<BillPaymentBloc>(
+      () => BillPaymentBloc(repository: locator<BillPaymentRepository>()),
+    );
+    locator.registerLazySingleton<TransactionReportBloc>(
+      () => TransactionReportBloc(repo: locator<TransactionReportRepository>()),
     );
   }
 }

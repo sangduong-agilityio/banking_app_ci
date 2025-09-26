@@ -38,7 +38,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     TransferInitializeEvt event,
     Emitter<TransferState> emit,
   ) async {
-    emit(state.copyWith(status: const TransferStatusLoading()));
+    emit(state.copyWith(status: const TransferStatus.loading()));
     try {
       final beneficiaries = await transferRepo.fetchBeneficiaries();
       final banks = await transferRepo.fetchBanks();
