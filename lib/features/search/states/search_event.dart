@@ -51,3 +51,12 @@ class SelectCurrencyEvt extends SearchEvt {
   @override
   List<Object?> get props => [isFromCurrency, currency];
 }
+
+class ExchangeRateRefreshEvt extends SearchEvt {
+  final bool forceRefresh;
+
+  const ExchangeRateRefreshEvt({this.forceRefresh = false});
+
+  @override
+  List<Object?> get props => [forceRefresh];
+}

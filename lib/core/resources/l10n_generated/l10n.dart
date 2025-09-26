@@ -654,6 +654,26 @@ class S {
     );
   }
 
+  /// `Cached data • Updated: {type}`
+  String searchCachedDataTitle(String type) {
+    return Intl.message(
+      'Cached data • Updated: $type',
+      name: 'searchCachedDataTitle',
+      desc: '',
+      args: [type],
+    );
+  }
+
+  /// `Fresh data • Updated: {type}`
+  String searchFreshDataTitle(String type) {
+    return Intl.message(
+      'Fresh data • Updated: $type',
+      name: 'searchFreshDataTitle',
+      desc: '',
+      args: [type],
+    );
+  }
+
   /// `Pay the bill`
   String get payBillTitle {
     return Intl.message(
@@ -1664,6 +1684,16 @@ class S {
     return Intl.message(
       'Good thru',
       name: 'accountGoodThruTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to load data`
+  String get exchangeRateError {
+    return Intl.message(
+      'Failed to load data',
+      name: 'exchangeRateError',
       desc: '',
       args: [],
     );

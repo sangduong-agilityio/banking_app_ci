@@ -30,7 +30,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(type) => "${type} fee";
 
-  static String m5(type) => "Available balance: ${type}";
+  static String m5(type) => "Cached data • Updated: ${type}";
+
+  static String m6(type) => "Fresh data • Updated: ${type}";
+
+  static String m7(type) => "Available balance: ${type}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -81,6 +85,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "authErrorUnknown": MessageLookupByLibrary.simpleMessage(
       "An unknown error occurred. Please try again.",
+    ),
+    "exchangeRateError": MessageLookupByLibrary.simpleMessage(
+      "Failed to load data",
     ),
     "homeAccountAndCardTitle": MessageLookupByLibrary.simpleMessage(
       "Account and Card",
@@ -170,6 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchBranchSelectedTitle": MessageLookupByLibrary.simpleMessage("Branch"),
     "searchBuyTitle": MessageLookupByLibrary.simpleMessage("Buy"),
+    "searchCachedDataTitle": m5,
     "searchCountryTitle": MessageLookupByLibrary.simpleMessage("Country"),
     "searchCurrentRateCalculatorTitle": MessageLookupByLibrary.simpleMessage(
       "Current rate",
@@ -190,6 +198,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchExchangeTitle": MessageLookupByLibrary.simpleMessage("Exchange"),
     "searchFormTitle": MessageLookupByLibrary.simpleMessage("From"),
+    "searchFreshDataTitle": m6,
     "searchInterestKindTitle": MessageLookupByLibrary.simpleMessage(
       "Interest kind",
     ),
@@ -307,7 +316,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferAnotherBankTitle": MessageLookupByLibrary.simpleMessage(
       "Transfer to another bank",
     ),
-    "transferAvailableBalanceTitle": m5,
+    "transferAvailableBalanceTitle": m7,
     "transferBeneficiaryBank": MessageLookupByLibrary.simpleMessage(
       "Beneficiary bank",
     ),

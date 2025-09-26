@@ -1,5 +1,6 @@
 import 'package:banking_app/core/api/api_client.dart';
 import 'package:banking_app/core/env/env.dart';
+import 'package:banking_app/core/services/exchange_rate_cache_service.dart';
 import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/models/exchange_model.dart';
 import 'package:banking_app/features/search/models/exchange_rate_model.dart';
@@ -11,7 +12,12 @@ abstract class SearchRepository {
     required String toCurrency,
     required double fromAmount,
   });
-  Future<List<ExchangeRateModel>> fetchExchangeRates();
+
+  // Add parameter forceRefresh
+  Future<List<ExchangeRateModel>> fetchExchangeRates({
+    bool forceRefresh = false,
+  });
+
   Future<List<InterestRateModel>> fetchInterestRates();
   Future<List<CurrencyModel>> fetchCurrencies();
 
@@ -24,22 +30,52 @@ abstract class SearchRepository {
 
 class SearchRepositoryImplement implements SearchRepository {
   final BankingApiClient _client;
+  final ExchangeRateCacheService _cacheService;
 
-  SearchRepositoryImplement({required BankingApiClient client})
-    : _client = client;
+  SearchRepositoryImplement({
+    required BankingApiClient client,
+    required ExchangeRateCacheService cacheService,
+  }) : _client = client,
+       _cacheService = cacheService;
 
   @override
-  Future<List<ExchangeRateModel>> fetchExchangeRates() async {
-    String apiUrl = '${Env.endPoint}exchange_rates';
-    final response = await _client.get(
-      apiUrl,
-      queryParams: {'select': 'country,flag,buy,sell'},
-    );
-    final jsonData = response.data;
-    final exchangeRates = (jsonData as List)
-        .map((json) => ExchangeRateModel.fromJson(json))
-        .toList();
-    return exchangeRates;
+  Future<List<ExchangeRateModel>> fetchExchangeRates({
+    bool forceRefresh = false,
+  }) async {
+    // Check cache first if not force refreshing
+    if (!forceRefresh && _cacheService.isCacheValid()) {
+      print('Loading exchange rates from cache');
+      return _cacheService.getCachedRates();
+    }
+
+    try {
+      print('Fetching fresh exchange rates from API');
+      String apiUrl = '${Env.endPoint}exchange_rates';
+      final response = await _client.get(
+        apiUrl,
+        queryParams: {'select': 'country,flag,buy,sell'},
+      );
+
+      final jsonData = response.data;
+      final exchangeRates = (jsonData as List)
+          .map((json) => ExchangeRateModel.fromJson(json))
+          .toList();
+
+      // Save into cache
+      _cacheService.cacheRates(exchangeRates);
+      print('Exchange rates cached successfully');
+
+      return exchangeRates;
+    } catch (error) {
+      print('API error: $error');
+
+      // If API fails but cache exists, return cached data
+      if (_cacheService.hasCachedData()) {
+        print('API failed, returning cached data');
+        return _cacheService.getCachedRates();
+      }
+      rethrow;
+    }
   }
 
   @override

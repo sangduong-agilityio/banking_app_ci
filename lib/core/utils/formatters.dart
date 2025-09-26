@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class FormatterUtils {
   /// Format date as dd/MM/yyyy
   static String formatDate(DateTime? date) {
@@ -42,6 +44,21 @@ class FormatterUtils {
       return amount.toStringAsFixed(0);
     } else {
       return amount.toStringAsFixed(2);
+    }
+  }
+
+  static String formatLastUpdated(DateTime lastUpdated) {
+    final now = DateTime.now();
+    final difference = now.difference(lastUpdated);
+
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inMinutes < 60) {
+      return '${difference.inMinutes} minutes ago';
+    } else if (difference.inHours < 24) {
+      return '${difference.inHours} hours ago';
+    } else {
+      return DateFormat('dd/MM, HH:mm').format(lastUpdated);
     }
   }
 }
