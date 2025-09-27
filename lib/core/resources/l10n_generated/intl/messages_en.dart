@@ -34,7 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m6(type) => "Fresh data • Updated: ${type}";
 
-  static String m7(type) => "Available balance: ${type}";
+  static String m7(type) => "Offline rate ${type}";
+
+  static String m8(type) => "Available balance: ${type}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -178,6 +180,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchBranchSelectedTitle": MessageLookupByLibrary.simpleMessage("Branch"),
     "searchBuyTitle": MessageLookupByLibrary.simpleMessage("Buy"),
     "searchCachedDataTitle": m5,
+    "searchCancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "searchContinueButton": MessageLookupByLibrary.simpleMessage("Continue"),
     "searchCountryTitle": MessageLookupByLibrary.simpleMessage("Country"),
     "searchCurrentRateCalculatorTitle": MessageLookupByLibrary.simpleMessage(
       "Current rate",
@@ -209,13 +213,31 @@ class MessageLookup extends MessageLookupByLibrary {
       "Interest rate",
     ),
     "searchLanguageTitle": MessageLookupByLibrary.simpleMessage("Language"),
+    "searchLiveRateTitle": MessageLookupByLibrary.simpleMessage("Live rate"),
+    "searchOfflineExchangeContent": MessageLookupByLibrary.simpleMessage(
+      "The exchange rate is offline and may be outdated. Do you want to proceed with the transaction?",
+    ),
+    "searchOfflineExchangeTitle": MessageLookupByLibrary.simpleMessage(
+      "Offline Exchange",
+    ),
+    "searchOfflineRateTitle": m7,
+    "searchPerformExchangeStatusOffline": MessageLookupByLibrary.simpleMessage(
+      "Transaction completed with offline rate",
+    ),
+    "searchPerformExchangeStatusSuccess": MessageLookupByLibrary.simpleMessage(
+      "Transaction completed successfully",
+    ),
     "searchRateTitle": MessageLookupByLibrary.simpleMessage("Rate"),
+    "searchRetryButton": MessageLookupByLibrary.simpleMessage("Retry"),
     "searchSelectedCurrencyTitle": MessageLookupByLibrary.simpleMessage(
       "Select the currency",
     ),
     "searchSellTitle": MessageLookupByLibrary.simpleMessage("Sell"),
     "searchTitle": MessageLookupByLibrary.simpleMessage("Search"),
     "searchToTitle": MessageLookupByLibrary.simpleMessage("To"),
+    "searchUsingOfflineExchangeTitle": MessageLookupByLibrary.simpleMessage(
+      "Using offline exchange rate",
+    ),
     "settingAppInformationTitle": MessageLookupByLibrary.simpleMessage(
       "App information",
     ),
@@ -316,7 +338,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferAnotherBankTitle": MessageLookupByLibrary.simpleMessage(
       "Transfer to another bank",
     ),
-    "transferAvailableBalanceTitle": m7,
+    "transferAvailableBalanceTitle": m8,
     "transferBeneficiaryBank": MessageLookupByLibrary.simpleMessage(
       "Beneficiary bank",
     ),

@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:banking_app/core/services/exchange_rate_cache_service.dart';
+import 'package:banking_app/core/services/offline_exchange_service.dart';
 import 'package:banking_app/core/utils/currency.dart';
-import 'package:banking_app/core/utils/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'search_event.dart';
 import 'search_state.dart';
@@ -12,6 +11,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
   SearchBloc({
     required this.repo,
     required ExchangeRateCacheService cacheService,
+    required OfflineExchangeService offlineService,
   }) : _cacheService = cacheService,
        super(const SearchState()) {
     on<InterestRateInitializeEvt>(_onInitializeInterestRate);
@@ -28,12 +28,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
   final ExchangeRateCacheService _cacheService;
   Timer? _refreshTimer;
 
-  @override
-  Future<void> close() {
-    _refreshTimer?.cancel();
-    return super.close();
-  }
-
+  /// Initialize and fetch interest rates
   Future<void> _onInitializeInterestRate(
     InterestRateInitializeEvt event,
     Emitter<SearchState> emit,
@@ -80,6 +75,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
+  /// Refresh exchange rates, either forced or from cache
   Future<void> _onRefreshExchangeRate(
     ExchangeRateRefreshEvt event,
     Emitter<SearchState> emit,
@@ -154,6 +150,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
           fromCurrency: event.fromCurrency,
           toCurrency: event.toCurrency,
           exchangeRate: 1.0,
+          exchangeRateStatus: ExchangeRateStatus.fresh,
+          lastExchangeRateUpdate: DateTime.now(),
         ),
       );
       _recalculateAmounts(emit, 1.0);
@@ -167,17 +165,12 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
         amount: 1.0,
       );
 
-      emit(
-        state.copyWith(
-          fromCurrency: event.fromCurrency,
-          toCurrency: event.toCurrency,
-          exchangeRate: rate,
-        ),
+      final rateStatus = (repo as SearchRepositoryImplement).getRateStatus(
+        event.fromCurrency,
+        event.toCurrency,
       );
 
-      _recalculateAmounts(emit, rate);
-    } catch (_) {
-      final fallbackRate = DefaultRates.getRate(
+      final lastUpdate = (repo as SearchRepositoryImplement).getLastRateUpdate(
         event.fromCurrency,
         event.toCurrency,
       );
@@ -186,11 +179,24 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
         state.copyWith(
           fromCurrency: event.fromCurrency,
           toCurrency: event.toCurrency,
-          exchangeRate: fallbackRate,
+          exchangeRate: rate,
+          exchangeRateStatus: rateStatus,
+          lastExchangeRateUpdate: lastUpdate ?? DateTime.now(),
         ),
       );
 
-      _recalculateAmounts(emit, fallbackRate ?? 0);
+      _recalculateAmounts(emit, rate);
+    } catch (error) {
+      /// Failed to fetch exchange rate
+      emit(
+        state.copyWith(
+          fromCurrency: event.fromCurrency,
+          toCurrency: event.toCurrency,
+          exchangeRate: null,
+          exchangeRateStatus: ExchangeRateStatus.noData,
+          lastExchangeRateUpdate: null,
+        ),
+      );
     }
   }
 
@@ -209,7 +215,9 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
   /// Handle user input for converting currencies
   void _onConvertCurrency(ConvertCurrencyEvt event, Emitter<SearchState> emit) {
     final rate = state.exchangeRate;
-    if (rate == null || rate <= 0) return;
+    if (rate == null || rate <= 0) {
+      return;
+    }
 
     if (event.isFromAmount) {
       final toAmount = CurrencyUtils.convertFromTo(event.amount, rate);

@@ -2,7 +2,10 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/button.dart';
+import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
+import 'package:banking_app/features/search/states/search_state.dart';
+import 'package:banking_app/features/search/widgets/offline_rate_indicator.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyCard extends StatelessWidget {
@@ -84,6 +87,8 @@ class ExchangeBox extends StatelessWidget {
   final Widget swapButton;
   final String? exchangeRate;
   final bool isButtonEnabled;
+  final ExchangeRateStatus? rateStatus;
+  final DateTime? lastRateUpdate;
 
   const ExchangeBox({
     super.key,
@@ -92,6 +97,8 @@ class ExchangeBox extends StatelessWidget {
     required this.swapButton,
     this.exchangeRate,
     required this.isButtonEnabled,
+    this.rateStatus,
+    this.lastRateUpdate,
   });
 
   @override
@@ -119,11 +126,22 @@ class ExchangeBox extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  S.current.searchCurrentRateCalculatorTitle,
-                  style: context.titleSmall?.copyWith(
-                    color: context.colorScheme.secondary,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      S.current.searchCurrentRateCalculatorTitle,
+                      style: context.titleSmall?.copyWith(
+                        color: context.colorScheme.secondary,
+                      ),
+                    ),
+
+                    if (rateStatus != null)
+                      OfflineRateIndicator(
+                        status: rateStatus!,
+                        lastUpdate: lastRateUpdate,
+                      ),
+                  ],
                 ),
                 Text(
                   exchangeRate ?? '',
@@ -139,9 +157,47 @@ class ExchangeBox extends StatelessWidget {
             isDisabled: !isButtonEnabled,
             padding: EdgeInsets.zero,
             text: S.current.searchExchangeButton,
-            onPressed: () {},
+            onPressed: () {
+              if (rateStatus == ExchangeRateStatus.stale) {
+                _showOfflineExchangeDialog(context);
+              } else {
+                _performExchange(context);
+              }
+            },
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> _showOfflineExchangeDialog(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (ctx) => BADialog(
+        title: S.current.searchOfflineExchangeTitle,
+        content: S.current.searchOfflineExchangeContent,
+        confirmButton: S.current.searchContinueButton,
+        confirmCancel: S.current.searchCancelButton,
+        onAccept: () async {
+          Navigator.pop(context);
+          _performExchange(context);
+        },
+        onCancel: () => Navigator.pop(context),
+      ),
+    );
+  }
+
+  void _performExchange(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          rateStatus == ExchangeRateStatus.stale
+              ? S.current.searchPerformExchangeStatusOffline
+              : S.current.searchPerformExchangeStatusSuccess,
+        ),
+        backgroundColor: rateStatus == ExchangeRateStatus.stale
+            ? context.colorScheme.inversePrimary
+            : context.colorScheme.surfaceTint,
       ),
     );
   }

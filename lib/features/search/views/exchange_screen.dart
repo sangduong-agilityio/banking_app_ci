@@ -11,7 +11,7 @@ import 'package:banking_app/features/search/states/search_bloc.dart';
 import 'package:banking_app/features/search/states/search_event.dart';
 import 'package:banking_app/features/search/states/search_state.dart';
 import 'package:banking_app/features/search/models/currency_model.dart';
-import 'package:banking_app/features/search/widgets/curreny_card.dart';
+import 'package:banking_app/features/search/widgets/currency_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -142,6 +142,10 @@ class _ExchangeScreenState extends State<ExchangeScreen>
           listener: (context, state) {
             _updateController(_fromAmountController, state.fromAmount);
             _updateController(_toAmountController, state.toAmount);
+
+            if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
+              _showOfflineWarning(context);
+            }
           },
           child: BlocBuilder<SearchBloc, SearchState>(
             builder: (context, state) {
@@ -155,6 +159,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                       const SizedBox(height: 16),
                       ExchangeBox(
                         isButtonEnabled: isExchangeEnabled,
+                        rateStatus: state.exchangeRateStatus,
+                        lastRateUpdate: state.lastExchangeRateUpdate,
                         fromCard: CurrencyCard(
                           label: S.current.searchFormTitle,
                           currency: state.fromCurrency ?? '',
@@ -206,6 +212,36 @@ class _ExchangeScreenState extends State<ExchangeScreen>
               );
             },
           ),
+        ),
+      ),
+    );
+  }
+
+  void _showOfflineWarning(BuildContext context) {
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(S.current.searchUsingOfflineExchangeTitle),
+        backgroundColor: context.colorScheme.inversePrimary,
+        duration: const Duration(seconds: 2),
+        action: SnackBarAction(
+          label: S.current.searchRetryButton,
+          textColor: context.colorScheme.onPrimary,
+          onPressed: () {
+            if (!context.mounted) return;
+            final bloc = context.read<SearchBloc>();
+            if (!bloc.isClosed &&
+                bloc.state.fromCurrency != null &&
+                bloc.state.toCurrency != null) {
+              bloc.add(
+                ExchangeRateChangedEvt(
+                  bloc.state.fromCurrency ?? '',
+                  bloc.state.toCurrency ?? '',
+                ),
+              );
+            }
+          },
         ),
       ),
     );

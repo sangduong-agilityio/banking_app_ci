@@ -3,6 +3,7 @@ import 'package:banking_app/core/database/objectbox_setup.dart';
 import 'package:banking_app/core/env/env.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
 import 'package:banking_app/core/services/exchange_rate_cache_service.dart';
+import 'package:banking_app/core/services/offline_exchange_service.dart';
 import 'package:banking_app/features/account/states/account_and_card_cubit.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/states/auth_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:banking_app/features/bill_payment/repositories/bill_payment_repo
 import 'package:banking_app/features/bill_payment/states/bill_payment_bloc.dart';
 import 'package:banking_app/features/home/repositories/home_repository.dart';
 import 'package:banking_app/features/home/states/home_cubit.dart';
+import 'package:banking_app/features/search/entities/currency_rate_entity.dart';
 import 'package:banking_app/features/search/entities/exchange_rate_entity.dart';
 import 'package:banking_app/features/search/repositories/search_repository.dart';
 import 'package:banking_app/features/search/states/search_bloc.dart';
@@ -42,10 +44,17 @@ class AppLocators {
     );
 
     /// ExchangeRate cache service (needs Store)
-    locator.registerSingletonAsync<ExchangeRateCacheService>(() async {
-      final store = await locator.getAsync<Store>();
+    locator.registerSingletonWithDependencies<ExchangeRateCacheService>(() {
+      final store = locator<Store>();
       final exchangeRateBox = store.box<ExchangeRateEntity>();
       return ExchangeRateCacheService(exchangeRateBox);
+    }, dependsOn: [Store]);
+
+    /// Offline exchange service
+    locator.registerSingletonWithDependencies<OfflineExchangeService>(() {
+      final store = locator<Store>();
+      final currencyRateBox = store.box<CurrencyRateEntity>();
+      return OfflineExchangeService(currencyRateBox);
     }, dependsOn: [Store]);
 
     /// Biometric service
@@ -61,11 +70,10 @@ class AppLocators {
     );
 
     locator.registerSingletonAsync<SearchRepository>(() async {
-      final client = locator<BankingApiClient>();
-      final cacheService = await locator.getAsync<ExchangeRateCacheService>();
       return SearchRepositoryImplement(
-        client: client,
-        cacheService: cacheService,
+        client: locator<BankingApiClient>(),
+        cacheService: locator<ExchangeRateCacheService>(),
+        offlineService: locator<OfflineExchangeService>(),
       );
     }, dependsOn: [ExchangeRateCacheService]);
 
@@ -104,11 +112,22 @@ class AppLocators {
       () => AccountAndCardCubit(repo: locator<HomeRepository>()),
     );
 
-    locator.registerSingletonAsync<SearchBloc>(() async {
-      final repo = await locator.getAsync<SearchRepository>();
-      final cacheService = await locator.getAsync<ExchangeRateCacheService>();
-      return SearchBloc(repo: repo, cacheService: cacheService);
-    }, dependsOn: [SearchRepository, ExchangeRateCacheService]);
+    locator.registerSingletonAsync<SearchBloc>(
+      () async {
+        final repo = await locator.getAsync<SearchRepository>();
+        final cacheService = await locator.getAsync<ExchangeRateCacheService>();
+        return SearchBloc(
+          repo: repo,
+          cacheService: cacheService,
+          offlineService: locator<OfflineExchangeService>(),
+        );
+      },
+      dependsOn: [
+        SearchRepository,
+        ExchangeRateCacheService,
+        OfflineExchangeService,
+      ],
+    );
 
     locator.registerFactory<TransferBloc>(
       () => TransferBloc(

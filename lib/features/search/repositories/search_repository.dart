@@ -1,10 +1,12 @@
 import 'package:banking_app/core/api/api_client.dart';
 import 'package:banking_app/core/env/env.dart';
 import 'package:banking_app/core/services/exchange_rate_cache_service.dart';
+import 'package:banking_app/core/services/offline_exchange_service.dart';
 import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/models/exchange_model.dart';
 import 'package:banking_app/features/search/models/exchange_rate_model.dart';
 import 'package:banking_app/features/search/models/interest_rate_model.dart';
+import 'package:banking_app/features/search/states/search_state.dart';
 
 abstract class SearchRepository {
   Future<ExchangeModel> exchange({
@@ -13,7 +15,6 @@ abstract class SearchRepository {
     required double fromAmount,
   });
 
-  // Add parameter forceRefresh
   Future<List<ExchangeRateModel>> fetchExchangeRates({
     bool forceRefresh = false,
   });
@@ -31,25 +32,25 @@ abstract class SearchRepository {
 class SearchRepositoryImplement implements SearchRepository {
   final BankingApiClient _client;
   final ExchangeRateCacheService _cacheService;
+  final OfflineExchangeService _offlineService;
 
   SearchRepositoryImplement({
     required BankingApiClient client,
     required ExchangeRateCacheService cacheService,
+    required OfflineExchangeService offlineService,
   }) : _client = client,
-       _cacheService = cacheService;
+       _cacheService = cacheService,
+       _offlineService = offlineService;
 
   @override
   Future<List<ExchangeRateModel>> fetchExchangeRates({
     bool forceRefresh = false,
   }) async {
-    // Check cache first if not force refreshing
     if (!forceRefresh && _cacheService.isCacheValid()) {
-      print('Loading exchange rates from cache');
       return _cacheService.getCachedRates();
     }
 
     try {
-      print('Fetching fresh exchange rates from API');
       String apiUrl = '${Env.endPoint}exchange_rates';
       final response = await _client.get(
         apiUrl,
@@ -61,17 +62,10 @@ class SearchRepositoryImplement implements SearchRepository {
           .map((json) => ExchangeRateModel.fromJson(json))
           .toList();
 
-      // Save into cache
       _cacheService.cacheRates(exchangeRates);
-      print('Exchange rates cached successfully');
-
       return exchangeRates;
-    } catch (error) {
-      print('API error: $error');
-
-      // If API fails but cache exists, return cached data
+    } catch (_) {
       if (_cacheService.hasCachedData()) {
-        print('API failed, returning cached data');
         return _cacheService.getCachedRates();
       }
       rethrow;
@@ -87,11 +81,9 @@ class SearchRepositoryImplement implements SearchRepository {
     );
     final jsonData = response.data;
 
-    final interestRates = (jsonData as List)
+    return (jsonData as List)
         .map((json) => InterestRateModel.fromJson(json))
         .toList();
-
-    return interestRates;
   }
 
   @override
@@ -144,11 +136,40 @@ class SearchRepositoryImplement implements SearchRepository {
     required String toCurrency,
     required double amount,
   }) async {
-    final exchangeResult = await exchange(
-      fromCurrency: fromCurrency,
-      toCurrency: toCurrency,
-      fromAmount: amount,
-    );
-    return exchangeResult.toAmount;
+    if (fromCurrency == toCurrency) {
+      return amount;
+    }
+
+    try {
+      final exchangeResult = await exchange(
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+        fromAmount: 1.0,
+      );
+
+      _offlineService.cacheRate(fromCurrency, toCurrency, exchangeResult.rate);
+      return amount * exchangeResult.rate;
+    } catch (_) {
+      final cachedRate = _offlineService.getCachedRate(
+        fromCurrency,
+        toCurrency,
+      );
+
+      if (cachedRate != null) {
+        return amount * cachedRate;
+      }
+
+      throw Exception(
+        'No available exchange rate for $fromCurrency -> $toCurrency',
+      );
+    }
+  }
+
+  ExchangeRateStatus getRateStatus(String fromCurrency, String toCurrency) {
+    return _offlineService.getRateStatus(fromCurrency, toCurrency);
+  }
+
+  DateTime? getLastRateUpdate(String fromCurrency, String toCurrency) {
+    return _offlineService.getLastUpdated(fromCurrency, toCurrency);
   }
 }

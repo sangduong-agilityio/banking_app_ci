@@ -96,6 +96,24 @@
   "searchCurrentRateCalculatorTitle": "Current rate",
   "searchAmoutTitle": "Amount",
   "searchSelectedCurrencyTitle": "Select the currency",
+  "searchOfflineExchangeTitle":"Offline Exchange",
+  "searchOfflineExchangeContent":"The exchange rate is offline and may be outdated. Do you want to proceed with the transaction?",
+  "searchCancelButton":"Cancel",
+  "searchContinueButton":"Continue",
+  "searchPerformExchangeStatusOffline":"Transaction completed with offline rate",
+  "searchPerformExchangeStatusSuccess":"Transaction completed successfully",
+  "searchLiveRateTitle":"Live rate",
+  "searchUsingOfflineExchangeTitle":"Using offline exchange rate",
+  "searchRetryButton":"Retry",
+  "searchOfflineRateTitle": "Offline rate {type}",
+    "@searchOfflineRateTitle": {
+      "placeholders": {
+        "type": {
+          "type": "String",
+          "example": "10 minutes ago"
+        }
+      }
+    },
   "searchCachedDataTitle": "Cached data • Updated: {type}",
     "@searchCachedDataTitle": {
       "placeholders": {
