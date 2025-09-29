@@ -41,9 +41,43 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "7:4391323864615032553",
+      "lastPropertyId": "5:7549795877178743334",
+      "name": "CurrencyRateEntity",
+      "properties": [
+        {
+          "id": "1:969070574824881547",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7228780907936608379",
+          "name": "fromCurrency",
+          "type": 9
+        },
+        {
+          "id": "3:2953267985280647180",
+          "name": "toCurrency",
+          "type": 9
+        },
+        {
+          "id": "4:4121165881853167369",
+          "name": "rate",
+          "type": 8
+        },
+        {
+          "id": "5:7549795877178743334",
+          "name": "lastUpdated",
+          "type": 10
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "6:4199681259904104890",
+  "lastEntityId": "7:4391323864615032553",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

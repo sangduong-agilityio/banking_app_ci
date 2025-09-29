@@ -654,6 +654,101 @@ class S {
     );
   }
 
+  /// `Offline Exchange`
+  String get searchOfflineExchangeTitle {
+    return Intl.message(
+      'Offline Exchange',
+      name: 'searchOfflineExchangeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The exchange rate is offline and may be outdated. Do you want to proceed with the transaction?`
+  String get searchOfflineExchangeContent {
+    return Intl.message(
+      'The exchange rate is offline and may be outdated. Do you want to proceed with the transaction?',
+      name: 'searchOfflineExchangeContent',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel`
+  String get searchCancelButton {
+    return Intl.message(
+      'Cancel',
+      name: 'searchCancelButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get searchContinueButton {
+    return Intl.message(
+      'Continue',
+      name: 'searchContinueButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction completed with offline rate`
+  String get searchPerformExchangeStatusOffline {
+    return Intl.message(
+      'Transaction completed with offline rate',
+      name: 'searchPerformExchangeStatusOffline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transaction completed successfully`
+  String get searchPerformExchangeStatusSuccess {
+    return Intl.message(
+      'Transaction completed successfully',
+      name: 'searchPerformExchangeStatusSuccess',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Live rate`
+  String get searchLiveRateTitle {
+    return Intl.message(
+      'Live rate',
+      name: 'searchLiveRateTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Using offline exchange rate`
+  String get searchUsingOfflineExchangeTitle {
+    return Intl.message(
+      'Using offline exchange rate',
+      name: 'searchUsingOfflineExchangeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Retry`
+  String get searchRetryButton {
+    return Intl.message('Retry', name: 'searchRetryButton', desc: '', args: []);
+  }
+
+  /// `Offline rate {type}`
+  String searchOfflineRateTitle(String type) {
+    return Intl.message(
+      'Offline rate $type',
+      name: 'searchOfflineRateTitle',
+      desc: '',
+      args: [type],
+    );
+  }
+
   /// `Cached data • Updated: {type}`
   String searchCachedDataTitle(String type) {
     return Intl.message(

@@ -19,6 +19,8 @@ class SearchState extends Equatable {
     this.exchangeRate,
     this.lastUpdated,
     this.isFromCache = false,
+    this.exchangeRateStatus = ExchangeRateStatus.noData,
+    this.lastExchangeRateUpdate,
   });
 
   final SearchStatus status;
@@ -32,7 +34,8 @@ class SearchState extends Equatable {
   final double? exchangeRate;
   final DateTime? lastUpdated;
   final bool isFromCache;
-
+  final ExchangeRateStatus exchangeRateStatus;
+  final DateTime? lastExchangeRateUpdate;
   SearchState copyWith({
     SearchStatus? status,
     List<ExchangeRateModel>? exchangeRates,
@@ -45,6 +48,8 @@ class SearchState extends Equatable {
     double? exchangeRate,
     DateTime? lastUpdated,
     bool? isFromCache,
+    ExchangeRateStatus? exchangeRateStatus,
+    DateTime? lastExchangeRateUpdate,
   }) {
     return SearchState(
       status: status ?? this.status,
@@ -58,6 +63,9 @@ class SearchState extends Equatable {
       exchangeRate: exchangeRate ?? this.exchangeRate,
       lastUpdated: lastUpdated ?? this.lastUpdated,
       isFromCache: isFromCache ?? this.isFromCache,
+      exchangeRateStatus: exchangeRateStatus ?? this.exchangeRateStatus,
+      lastExchangeRateUpdate:
+          lastExchangeRateUpdate ?? this.lastExchangeRateUpdate,
     );
   }
 
@@ -74,7 +82,27 @@ class SearchState extends Equatable {
     exchangeRate,
     lastUpdated,
     isFromCache,
+    exchangeRateStatus,
+    lastExchangeRateUpdate,
   ];
+}
+
+enum ExchangeRateStatus { fresh, stale, noData }
+
+extension ExchangeRateStatusExtension on ExchangeRateStatus {
+  String get displayName {
+    switch (this) {
+      case ExchangeRateStatus.fresh:
+        return 'Live rate';
+      case ExchangeRateStatus.stale:
+        return 'Offline rate';
+      case ExchangeRateStatus.noData:
+        return 'No rate';
+    }
+  }
+
+  bool get isOffline => this == ExchangeRateStatus.stale;
+  bool get hasData => this != ExchangeRateStatus.noData;
 }
 
 @freezed
