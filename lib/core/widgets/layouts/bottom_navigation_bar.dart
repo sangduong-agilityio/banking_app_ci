@@ -1,4 +1,3 @@
-import 'package:banking_app/app/themes/app_colors.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
@@ -46,7 +45,7 @@ class BABottomNavigationBar extends StatelessWidget {
                 ),
                 decoration: isSelected
                     ? BoxDecoration(
-                        gradient: BAAppColors.primaryGradient,
+                        color: context.colorScheme.secondary,
                         borderRadius: BorderRadius.circular(20),
                       )
                     : null,

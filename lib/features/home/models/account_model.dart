@@ -6,16 +6,16 @@ part 'account_model.g.dart';
 @freezed
 class AccountModel with _$AccountModel {
   const factory AccountModel({
-    @JsonKey(name: 'user_id') required String userId,
-    @JsonKey(name: 'id') required String id,
-    @JsonKey(name: 'account_number') required String accountNumber,
-    @JsonKey(name: 'available_balance') required double availableBalance,
+    required String userId,
+    required String id,
+    required String accountNumber,
+    required double availableBalance,
     required String branch,
-    @JsonKey(name: 'account_type') required String accountType,
-    @JsonKey(name: 'from_date') DateTime? fromDate,
-    @JsonKey(name: 'to_date') DateTime? toDate,
-    @JsonKey(name: 'interest_rate') double? interestRate,
-    @JsonKey(name: 'bank_id') required String bankId,
+    required String accountType,
+    DateTime? fromDate,
+    DateTime? toDate,
+    double? interestRate,
+    required String bankId,
     String? term,
   }) = _AccountModel;
 

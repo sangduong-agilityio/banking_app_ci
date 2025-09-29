@@ -5,6 +5,7 @@ import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
 import 'package:banking_app/core/utils/pref_keys.dart';
+import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
@@ -57,10 +58,7 @@ class SettingScreen extends StatelessWidget {
               return Column(
                 children: [
                   const SizedBox(height: 20),
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(user?.profileImage ?? ''),
-                  ),
+                  BAProfileImage(url: user?.profileImage, size: 100),
                   const SizedBox(height: 15),
                   Text(
                     user?.username ?? '',

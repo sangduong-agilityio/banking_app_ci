@@ -17,7 +17,6 @@ class ObjectBoxManager {
       _store = await openStore(directory: dbDir);
       return _store!;
     } catch (e) {
-      print('Error initializing ObjectBox: $e');
       rethrow;
     }
   }

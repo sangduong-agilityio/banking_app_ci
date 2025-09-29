@@ -15,21 +15,20 @@ enum TransactionCategory { transfer, electric, water, internet }
 class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
     required String id,
-
-    @JsonKey(name: 'user_id') required String userId,
+    required String userId,
     required TransferType type,
     required double amount,
-    @JsonKey(name: 'from_account_id') String? fromAccount,
-    @JsonKey(name: 'from_card_id') String? fromCardId,
-    @JsonKey(name: 'to_beneficiary_id') String? toBeneficiary,
-    @JsonKey(name: 'recipient_name') String? recipientName,
-    @JsonKey(name: 'recipient_account') String? recipientAccount,
+    String? fromAccount,
+    String? fromCardId,
+    String? toBeneficiary,
+    String? recipientName,
+    String? recipientAccount,
     String? description,
     @Default(TransactionStatus.pending) TransactionStatus status,
-    @JsonKey(name: 'transaction_fee') double? transactionFee,
-    @JsonKey(name: 'reference_number') String? referenceNumber,
-    @JsonKey(name: 'created_at') DateTime? createdAt,
-    @JsonKey(name: 'completed_at') DateTime? completedAt,
+    double? transactionFee,
+    String? referenceNumber,
+    DateTime? createdAt,
+    DateTime? completedAt,
 
     TransactionCategory? category,
   }) = _TransactionModel;

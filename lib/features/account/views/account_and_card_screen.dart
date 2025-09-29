@@ -1,5 +1,6 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/tab_bar.dart';
@@ -143,12 +144,7 @@ class AccountListSection extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 32),
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(
-                      state.user?.profileImage ?? '',
-                    ),
-                  ),
+                  BAProfileImage(url: state.user?.profileImage, size: 100),
                   SizedBox(height: 12),
                   Text(
                     state.user?.username ?? '',

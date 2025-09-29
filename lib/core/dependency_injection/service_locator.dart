@@ -140,7 +140,7 @@ class AppLocators {
       () => BillPaymentBloc(repository: locator<BillPaymentRepository>()),
     );
 
-    locator.registerLazySingleton<TransactionReportBloc>(
+    locator.registerFactory<TransactionReportBloc>(
       () => TransactionReportBloc(repo: locator<TransactionReportRepository>()),
     );
   }

@@ -28,7 +28,7 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
     final response = await _client
         .from('cards')
         .select()
-        .eq('user_id', currentUser?.id ?? '');
+        .eq('userId', currentUser?.id ?? '');
 
     return (response as List<dynamic>)
         .map((json) => CardModel.fromJson(json))
@@ -38,28 +38,25 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
   @override
   Future<TransactionReportModel> fetchTransactionReports({int? offset}) async {
     final currentUser = _client.auth.currentUser;
-    if (currentUser == null) throw Exception('User not authenticated');
 
     final recentDate = DateTime.now().subtract(const Duration(days: 90));
 
-    // Transactions
     final recentResponse = await _client
         .from('transactions')
         .select()
-        .eq('user_id', currentUser.id)
-        .gte('created_at', recentDate.toIso8601String())
-        .order('created_at', ascending: false);
+        .eq('userId', currentUser?.id ?? '')
+        .gte('createdAt', recentDate.toIso8601String())
+        .order('createdAt', ascending: false);
 
     final recentTransactions = (recentResponse as List<dynamic>)
         .map((json) => TransactionModel.fromJson(json))
         .toList();
 
-    // Balance history
     final balanceResponse = await _client
         .from('balance_history')
         .select()
-        .eq('user_id', currentUser.id)
-        .order('recorded_at', ascending: false)
+        .eq('userId', currentUser?.id ?? '')
+        .order('recordedAt', ascending: false)
         .limit(12);
 
     final balanceHistory = (balanceResponse as List<dynamic>)
@@ -104,13 +101,12 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
     required int offset,
   }) async {
     final currentUser = _client.auth.currentUser;
-    if (currentUser == null) throw Exception('User not authenticated');
 
     final response = await _client
         .from('transactions')
         .select()
-        .eq('user_id', currentUser.id)
-        .order('created_at', ascending: false)
+        .eq('userId', currentUser?.id ?? '')
+        .order('createdAt', ascending: false)
         .range(offset, offset + 19);
 
     return (response as List<dynamic>)
@@ -126,12 +122,12 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
   }) async {
     final now = DateTime.now();
     await _client.from('balance_history').insert({
-      'user_id': userId,
-      'account_id': accountId,
-      'ending_balance': balance,
+      'userId': userId,
+      'accountId': accountId,
+      'endingBalance': balance,
       'year': now.year,
       'month': now.month,
-      'recorded_at': now.toIso8601String(),
+      'recordedAt': now.toIso8601String(),
     });
   }
 

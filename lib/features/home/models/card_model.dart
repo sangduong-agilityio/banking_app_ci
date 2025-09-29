@@ -24,15 +24,15 @@ class CardTypeConverter implements JsonConverter<CardType?, String?> {
 class CardModel with _$CardModel {
   const factory CardModel({
     required String id,
-    @JsonKey(name: 'user_id') required String userId,
-    @JsonKey(name: 'card_number') required String cardNumber,
-    @JsonKey(name: 'card_holder_name') required String cardHolderName,
-    @JsonKey(name: 'card_tier') required String cardTier,
-    @CardTypeConverter() @JsonKey(name: 'card_type') CardType? cardType,
-    @JsonKey(name: 'valid_from') String? validFrom,
-    @JsonKey(name: 'good_thru') String? goodThru,
-    @JsonKey(name: 'available_balance') double? availableBalance,
-    @JsonKey(name: 'bank_id') required String bankId,
+    required String userId,
+    required String cardNumber,
+    required String cardHolderName,
+    required String cardTier,
+    @Default(CardType.visa) CardType? cardType,
+    String? validFrom,
+    String? goodThru,
+    double? availableBalance,
+    required String bankId,
   }) = _CardModel;
 
   factory CardModel.fromJson(Map<String, dynamic> json) =>

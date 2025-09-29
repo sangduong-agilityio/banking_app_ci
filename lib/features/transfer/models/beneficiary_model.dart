@@ -9,11 +9,11 @@ class BeneficiaryModel with _$BeneficiaryModel {
   const factory BeneficiaryModel({
     required String? id,
     required String name,
-    @JsonKey(name: 'account_number') required String accountNumber,
-    @JsonKey(name: 'bank_id') String? bankId,
+    required String accountNumber,
+    String? bankId,
     String? bankName,
     String? branch,
-    @JsonKey(name: 'avatar_url') String? avatarUrl,
+    String? avatarUrl,
     TransferType? transferType,
   }) = _BeneficiaryModel;
 

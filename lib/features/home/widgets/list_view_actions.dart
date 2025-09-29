@@ -14,6 +14,7 @@ class ListViewActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       crossAxisCount: 3,
       crossAxisSpacing: 16,
@@ -76,7 +77,7 @@ class ListViewActions extends StatelessWidget {
           },
         ),
         CardAction(
-          icon: BAAssets.beneficiary(),
+          icon: BAAssets.contacts(),
           title: S.current.homeBeneficiaryTitle,
           onTap: () {
             BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
