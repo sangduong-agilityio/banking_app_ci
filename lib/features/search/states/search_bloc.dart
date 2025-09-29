@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:banking_app/core/services/exchange_rate_cache_service.dart';
 import 'package:banking_app/core/utils/currency.dart';
 import 'package:banking_app/core/utils/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,9 +9,14 @@ import 'search_state.dart';
 import '../repositories/search_repository.dart';
 
 class SearchBloc extends Bloc<SearchEvt, SearchState> {
-  SearchBloc({required this.repo}) : super(const SearchState()) {
+  SearchBloc({
+    required this.repo,
+    required ExchangeRateCacheService cacheService,
+  }) : _cacheService = cacheService,
+       super(const SearchState()) {
     on<InterestRateInitializeEvt>(_onInitializeInterestRate);
     on<ExchangeRateInitializeEvt>(_onInitializeExchangeRate);
+    on<ExchangeRateRefreshEvt>(_onRefreshExchangeRate);
     on<ExchangeInitializeEvt>(_onInitializeExchange);
     on<ExchangeRateChangedEvt>(_onExchangeRateChanged);
     on<ConvertCurrencyEvt>(_onConvertCurrency);
@@ -17,8 +25,15 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
   }
 
   final SearchRepository repo;
+  final ExchangeRateCacheService _cacheService;
+  Timer? _refreshTimer;
 
-  /// Initialize and fetch interest rates
+  @override
+  Future<void> close() {
+    _refreshTimer?.cancel();
+    return super.close();
+  }
+
   Future<void> _onInitializeInterestRate(
     InterestRateInitializeEvt event,
     Emitter<SearchState> emit,
@@ -37,22 +52,63 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
-  /// Fetch list of exchange rates
+  /// Initialize and fetch interest rates
   Future<void> _onInitializeExchangeRate(
     ExchangeRateInitializeEvt event,
     Emitter<SearchState> emit,
   ) async {
     emit(state.copyWith(status: const SearchStatus.loading()));
+
     try {
+      final isFromCache = _cacheService.isCacheValid();
       final exchangeRates = await repo.fetchExchangeRates();
+      final lastUpdated = _cacheService.getLastUpdatedTime();
+
       emit(
         state.copyWith(
           exchangeRates: exchangeRates,
+          lastUpdated: lastUpdated,
+          isFromCache: isFromCache,
+          status: const SearchStatus.success(),
+        ),
+      );
+
+      /// Start auto-refresh timer
+      _startAutoRefreshTimer();
+    } catch (_) {
+      emit(state.copyWith(status: const SearchStatus.failure()));
+    }
+  }
+
+  Future<void> _onRefreshExchangeRate(
+    ExchangeRateRefreshEvt event,
+    Emitter<SearchState> emit,
+  ) async {
+    if (!event.forceRefresh && state.exchangeRates != null) {
+    } else {
+      emit(state.copyWith(status: const SearchStatus.loading()));
+    }
+
+    try {
+      final exchangeRates = await repo.fetchExchangeRates(
+        forceRefresh: event.forceRefresh,
+      );
+      final lastUpdated = _cacheService.getLastUpdatedTime();
+
+      emit(
+        state.copyWith(
+          exchangeRates: exchangeRates,
+          lastUpdated: lastUpdated,
+          isFromCache: false,
           status: const SearchStatus.success(),
         ),
       );
     } catch (_) {
-      emit(state.copyWith(status: const SearchStatus.failure()));
+      if (state.exchangeRates != null) {
+        emit(state.copyWith(status: const SearchStatus.success()));
+      } else {
+        emit(state.copyWith(status: const SearchStatus.failure()));
+      }
     }
   }
 
@@ -216,5 +272,14 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     if (newFromCurrency != null && newToCurrency != null) {
       add(ExchangeRateChangedEvt(newFromCurrency, newToCurrency));
     }
+  }
+
+  void _startAutoRefreshTimer() {
+    _refreshTimer?.cancel();
+    _refreshTimer = Timer.periodic(const Duration(minutes: 5), (_) {
+      if (!isClosed) {
+        add(const ExchangeRateRefreshEvt());
+      }
+    });
   }
 }

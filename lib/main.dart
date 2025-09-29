@@ -11,10 +11,16 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize Supabase
   await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseKey);
 
+  // Setup service locators
   await AppLocators.setupLocators();
 
+  // Wait until all async singletons are ready
+  await locator.allReady();
+
+  // Setup intl date formatting
   await initializeDateFormatting('en_US', null);
 
   runApp(const BankingApp());

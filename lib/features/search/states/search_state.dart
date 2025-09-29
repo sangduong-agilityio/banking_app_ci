@@ -17,6 +17,8 @@ class SearchState extends Equatable {
     this.interestRates,
     this.currencies,
     this.exchangeRate,
+    this.lastUpdated,
+    this.isFromCache = false,
   });
 
   final SearchStatus status;
@@ -28,6 +30,8 @@ class SearchState extends Equatable {
   final List<InterestRateModel>? interestRates;
   final List<CurrencyModel>? currencies;
   final double? exchangeRate;
+  final DateTime? lastUpdated;
+  final bool isFromCache;
 
   SearchState copyWith({
     SearchStatus? status,
@@ -39,6 +43,8 @@ class SearchState extends Equatable {
     List<InterestRateModel>? interestRates,
     List<CurrencyModel>? currencies,
     double? exchangeRate,
+    DateTime? lastUpdated,
+    bool? isFromCache,
   }) {
     return SearchState(
       status: status ?? this.status,
@@ -50,6 +56,8 @@ class SearchState extends Equatable {
       interestRates: interestRates ?? this.interestRates,
       currencies: currencies ?? this.currencies,
       exchangeRate: exchangeRate ?? this.exchangeRate,
+      lastUpdated: lastUpdated ?? this.lastUpdated,
+      isFromCache: isFromCache ?? this.isFromCache,
     );
   }
 
@@ -64,6 +72,8 @@ class SearchState extends Equatable {
     interestRates,
     currencies,
     exchangeRate,
+    lastUpdated,
+    isFromCache,
   ];
 }
 

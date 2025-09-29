@@ -96,6 +96,24 @@
   "searchCurrentRateCalculatorTitle": "Current rate",
   "searchAmoutTitle": "Amount",
   "searchSelectedCurrencyTitle": "Select the currency",
+  "searchCachedDataTitle": "Cached data • Updated: {type}",
+    "@searchCachedDataTitle": {
+      "placeholders": {
+        "type": {
+          "type": "String",
+          "example": "10 minutes ago"
+        }
+      }
+    },
+    "searchFreshDataTitle": "Fresh data • Updated: {type}",
+    "@searchFreshDataTitle": {
+      "placeholders": {
+        "type": {
+          "type": "String",
+          "example": "10 minutes ago"
+        }
+      }
+    },
 
   "@segmentPaybill": {
     "description": "Store translations that are likely to be used only in Pay bill feature"
@@ -244,6 +262,7 @@
   "@segmentAuthErrors": {
   "description": "Store translations for authentication and biometric error messages"
   },
+  "exchangeRateError":"Failed to load data",
   "authErrorLoginFailed": "Login failed. Please check your email and password.",
   "authErrorBiometricNotEnabled": "Biometric authentication is not enabled.",
   "authErrorBiometricFailed": "Biometric authentication failed.",
