@@ -40,7 +40,7 @@ class HomeRepositoryImpl implements HomeRepository {
     final response = await _client
         .from('cards')
         .select()
-        .eq('user_id', currentUser?.id ?? '');
+        .eq('userId', currentUser?.id ?? '');
 
     return (response as List<dynamic>)
         .map((json) => CardModel.fromJson(json))
@@ -58,7 +58,7 @@ class HomeRepositoryImpl implements HomeRepository {
     final response = await _client
         .from('accounts')
         .select()
-        .eq('user_id', currentUser.id);
+        .eq('userId', currentUser.id);
     return (response as List)
         .map((json) => AccountModel.fromJson(json as Map<String, dynamic>))
         .toList();

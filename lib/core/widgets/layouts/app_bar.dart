@@ -1,5 +1,6 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
+import 'package:banking_app/core/widgets/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,6 +19,7 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
   final EdgeInsetsGeometry? padding;
   final String? profileImage;
   final TextStyle? style;
+  final double? titleSpacing;
 
   const BAAppBar({
     super.key,
@@ -33,6 +35,7 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.padding,
     this.profileImage,
     this.style,
+    this.titleSpacing,
   });
 
   @override
@@ -44,7 +47,8 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: backgroundColor,
         elevation: 0,
         centerTitle: alignment == BAAppBarAlignment.center,
-        titleSpacing: alignment == BAAppBarAlignment.left ? 0 : null,
+        titleSpacing:
+            titleSpacing ?? (alignment == BAAppBarAlignment.left ? 0 : null),
         title: Text(
           title,
           style:
@@ -60,15 +64,7 @@ class BAAppBar extends StatelessWidget implements PreferredSizeWidget {
                 color: iconColor ?? Colors.black,
                 onPressed: onBack ?? () => context.pop(),
               )
-            : Padding(
-                padding: const EdgeInsets.all(4),
-                child: CircleAvatar(
-                  radius: 16,
-                  backgroundImage: profileImage != null
-                      ? NetworkImage(profileImage ?? '')
-                      : const AssetImage('') as ImageProvider,
-                ),
-              ),
+            : BAProfileImage(url: profileImage, size: 32),
       ),
     );
   }

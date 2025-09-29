@@ -8,7 +8,7 @@ class BranchModel with _$BranchModel {
   const factory BranchModel({
     required String id,
     required String name,
-    @JsonKey(name: 'bank_id') required String bankId,
+    required String bankId,
     String? address,
     String? code,
   }) = _BranchModel;

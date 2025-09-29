@@ -41,7 +41,7 @@ class TransferRepositoryImpl implements TransferRepository {
     final response = await _client
         .from('accounts')
         .select()
-        .eq('user_id', currentUser?.id ?? '');
+        .eq('userId', currentUser?.id ?? '');
     return (response as List)
         .map((json) => AccountModel.fromJson(json as Map<String, dynamic>))
         .toList();
@@ -53,7 +53,7 @@ class TransferRepositoryImpl implements TransferRepository {
     final response = await _client
         .from('cards')
         .select()
-        .eq('user_id', currentUser?.id ?? '');
+        .eq('userId', currentUser?.id ?? '');
     return (response as List)
         .map((json) => CardModel.fromJson(json as Map<String, dynamic>))
         .toList();
@@ -65,7 +65,7 @@ class TransferRepositoryImpl implements TransferRepository {
     final response = await _client
         .from('beneficiaries')
         .select('*, banks(*)')
-        .eq('user_id', currentUser?.id ?? '');
+        .eq('userId', currentUser?.id ?? '');
     return (response as List)
         .map((json) => BeneficiaryModel.fromJson(json as Map<String, dynamic>))
         .toList();
@@ -93,8 +93,8 @@ class TransferRepositoryImpl implements TransferRepository {
     final response = await _client
         .from('transactions')
         .select('*, transfers(*)')
-        .eq('user_id', currentUser?.id ?? '')
-        .order('created_at', ascending: false);
+        .eq('userId', currentUser?.id ?? '')
+        .order('createdAt', ascending: false);
     return (response as List)
         .map((json) => TransactionModel.fromJson(json as Map<String, dynamic>))
         .toList();
@@ -109,12 +109,12 @@ class TransferRepositoryImpl implements TransferRepository {
     final insert = await _client
         .from('beneficiaries')
         .insert({
-          'user_id': currentUser?.id,
+          'userId': currentUser?.id,
           'name': beneficiary.name,
-          'account_number': beneficiary.accountNumber,
-          'bank_id': beneficiary.bankId,
+          'accountNumber': beneficiary.accountNumber,
+          'bankId': beneficiary.bankId,
           'branch': beneficiary.branch,
-          'avatar_url': beneficiary.avatarUrl,
+          'avatarUrl': beneficiary.avatarUrl,
         })
         .select()
         .single();
@@ -147,11 +147,11 @@ class TransferRepositoryImpl implements TransferRepository {
     try {
       // Store OTP in database
       await _client.from('transfer_otps').upsert({
-        'transfer_id': transferId,
-        'otp_code': otpCode,
-        'expires_at': expiresAt,
-        'user_id': currentUser.id,
-        'is_used': false,
+        'transferId': transferId,
+        'otpCode': otpCode,
+        'expiresAt': expiresAt,
+        'userId': currentUser.id,
+        'isUsed': false,
       });
 
       print('OTP $otpCode sent to ${currentUser.email ?? ''}');
@@ -169,16 +169,16 @@ class TransferRepositoryImpl implements TransferRepository {
     final insert = await _client
         .from('transfers')
         .insert({
-          'from_account_id': request.fromAccount?.id,
-          'from_card_id': request.fromCard?.id,
-          'to_beneficiary_id': request.toBeneficiary?.id,
+          'fromAccountId': request.fromAccount?.id,
+          'fromCardId': request.fromCard?.id,
+          'toBeneficiaryId': request.toBeneficiary?.id,
           'amount': request.amount,
-          'transaction_fee': request.transactionFee,
+          'transactionFee': request.transactionFee,
           'content': request.content,
-          'transfer_type': request.transferType.name,
-          'auth_method': request.authMethod?.name,
+          'transferType': request.transferType.name,
+          'authMethod': request.authMethod?.name,
           'status': 'pending',
-          'user_id': currentUser.id,
+          'userId': currentUser.id,
         })
         .select('id')
         .single();
@@ -198,19 +198,19 @@ class TransferRepositoryImpl implements TransferRepository {
       final response = await _client
           .from('transfer_otps')
           .select()
-          .eq('transfer_id', transferId)
-          .eq('otp_code', otpCode)
-          .eq('is_used', false)
-          .gte('expires_at', DateTime.now().toIso8601String())
+          .eq('transferId', transferId)
+          .eq('otpCode', otpCode)
+          .eq('isUsed', false)
+          .gte('expiresAt', DateTime.now().toIso8601String())
           .maybeSingle();
 
       if (response != null) {
         // Mark OTP as used
         await _client
             .from('transfer_otps')
-            .update({'is_used': true})
-            .eq('transfer_id', transferId)
-            .eq('otp_code', otpCode);
+            .update({'isUsed': true})
+            .eq('transferId', transferId)
+            .eq('otpCode', otpCode);
 
         return true;
       }
@@ -223,7 +223,6 @@ class TransferRepositoryImpl implements TransferRepository {
   @override
   Future<bool> confirmTransfer(String transferId, String otpCode) async {
     final currentUser = _client.auth.currentUser;
-    if (currentUser == null) throw Exception('User not logged in');
 
     bool success = false;
 
@@ -234,8 +233,8 @@ class TransferRepositoryImpl implements TransferRepository {
       final otpValid = await _client
           .from('transfer_otps')
           .select()
-          .eq('transfer_id', transferId)
-          .eq('is_used', true)
+          .eq('transferId', transferId)
+          .eq('isUsed', true)
           .maybeSingle();
 
       success = otpValid != null;
@@ -252,10 +251,10 @@ class TransferRepositoryImpl implements TransferRepository {
 
     // Insert transaction record
     await _client.from('transactions').insert({
-      'user_id': currentUser.id,
-      'transfer_id': transferId,
+      'userId': currentUser?.id,
+      'transferId': transferId,
       'status': success ? 'completed' : 'failed',
-      'reference_number': success
+      'referenceNumber': success
           ? DateTime.now().millisecondsSinceEpoch.toString()
           : null,
     });

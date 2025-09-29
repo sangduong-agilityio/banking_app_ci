@@ -13,6 +13,7 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
     on<SelectCardEvt>(_onSelectCard);
     on<UpdateBillDetailsEvt>(_onUpdateBillDetails);
     on<SendOtpEvt>(_onSendOtp);
+    on<PayBillEvt>(_onPayBill);
     on<ConfirmBillPaymentWithOtpEvt>(_onConfirmWithOtp);
   }
 
@@ -145,6 +146,38 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
         state.copyWith(
           status: const BillPaymentStatus.success(),
           isOtpVerified: true,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const BillPaymentStatus.failure(),
+          errorMessage: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> _onPayBill(
+    PayBillEvt event,
+    Emitter<BillPaymentState> emit,
+  ) async {
+    emit(state.copyWith(status: const BillPaymentStatus.loading()));
+    try {
+      final bill = await repository.payBill(
+        bill: event.bill,
+        fromAccountId: state.selectedAccount?.id,
+        fromCardId: state.selectedCard?.id,
+      );
+
+      await repository.sendOtpEmail(bill.id ?? '');
+
+      emit(
+        state.copyWith(
+          status: const BillPaymentStatus.awaitingOtp(),
+          otpSent: true,
+          transactionId: bill.transactionId,
+          selectedBill: bill,
         ),
       );
     } catch (e) {

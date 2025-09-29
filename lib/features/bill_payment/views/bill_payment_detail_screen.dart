@@ -132,7 +132,6 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                     height: 44,
                     text: S.current.payBillButton,
                     onPressed: () {
-                      final billId = widget.bill.id ?? '';
                       final otp = _otpController.text.trim();
 
                       if (otp.isEmpty) {
@@ -144,9 +143,12 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                       }
 
                       context.read<BillPaymentBloc>().add(
-                        ConfirmBillPaymentWithOtpEvt(
-                          billId: billId,
-                          otpCode: otp,
+                        PayBillEvt(
+                          bill: widget.bill,
+                          paymentMethodId:
+                              state.selectedAccount?.id ??
+                              state.selectedCard?.id ??
+                              '',
                         ),
                       );
                     },

@@ -214,10 +214,6 @@ class BATheme {
       // Scaffold Background Color
       scaffoldBackgroundColor: BAAppColors.background,
 
-      // Splash Color
-      splashColor: BAAppColors.primary.withOpacity(0.1),
-      highlightColor: BAAppColors.primary.withOpacity(0.05),
-
       // Visual Density
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );

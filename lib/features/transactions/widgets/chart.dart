@@ -10,9 +10,17 @@ class BABalanceChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sortedData = [...data]
+      ..sort((a, b) {
+        final yearCompare = a.year.compareTo(b.year);
+        if (yearCompare != 0) return yearCompare;
+        return a.month.compareTo(b.month);
+      });
+
     return SfCartesianChart(
       plotAreaBorderWidth: 0,
       primaryXAxis: CategoryAxis(
+        isInversed: false,
         axisLine: const AxisLine(width: 0),
         majorGridLines: const MajorGridLines(width: 0),
         labelStyle: const TextStyle(
@@ -20,6 +28,26 @@ class BABalanceChart extends StatelessWidget {
           fontSize: 14,
           color: Colors.grey,
         ),
+        axisLabelFormatter: (AxisLabelRenderDetails args) {
+          final parts = args.text.split('/');
+          final month = int.tryParse(parts.first) ?? 1;
+
+          const monthNames = [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ];
+          return ChartAxisLabel(monthNames[month - 1], args.textStyle);
+        },
       ),
       primaryYAxis: NumericAxis(
         minimum: 0,
@@ -32,11 +60,9 @@ class BABalanceChart extends StatelessWidget {
         ),
         interval: 500,
       ),
-
       series: <CartesianSeries>[
-        // Expense
         StackedColumnSeries<BalanceSummaryModel, String>(
-          dataSource: data,
+          dataSource: sortedData,
           width: barWidth,
           xValueMapper: (d, _) => "${d.month}/${d.year}",
           yValueMapper: (d, _) => d.totalExpense,
@@ -46,17 +72,15 @@ class BABalanceChart extends StatelessWidget {
             bottomRight: Radius.circular(6),
           ),
         ),
-        // Income
         StackedColumnSeries<BalanceSummaryModel, String>(
-          dataSource: data,
+          dataSource: sortedData,
           width: barWidth,
           xValueMapper: (d, _) => "${d.month}/${d.year}",
           yValueMapper: (d, _) => d.totalIncome,
           color: const Color(0xFFFBB8FF),
         ),
-        // Balance
         StackedColumnSeries<BalanceSummaryModel, String>(
-          dataSource: data,
+          dataSource: sortedData,
           width: barWidth,
           xValueMapper: (d, _) => "${d.month}/${d.year}",
           yValueMapper: (d, _) => d.endingBalance,

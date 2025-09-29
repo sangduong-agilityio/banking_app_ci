@@ -10,8 +10,7 @@ class CompanyModel with _$CompanyModel {
     required String id,
     required String name,
     String? code,
-    @JsonKey(name: 'bill_type', unknownEnumValue: BillType.electric)
-    BillType? billType,
+    @Default(BillType.electric) BillType? billType,
   }) = _CompanyModel;
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) =>

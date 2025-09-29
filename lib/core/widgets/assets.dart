@@ -964,3 +964,31 @@ class _BAExchangeMoneyImage extends StatelessWidget {
     );
   }
 }
+
+class BAProfileImage extends StatelessWidget {
+  const BAProfileImage({super.key, this.url, this.size = 50});
+
+  final String? url;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    if (url == null || url?.isEmpty == true) {
+      return _fallbackAvatar();
+    }
+
+    return CachedNetworkImage(
+      imageUrl: url ?? '',
+      imageBuilder: (context, imageProvider) =>
+          CircleAvatar(radius: size / 2, backgroundImage: imageProvider),
+      errorWidget: (context, _, __) => _fallbackAvatar(),
+    );
+  }
+
+  Widget _fallbackAvatar() {
+    return CircleAvatar(
+      radius: size / 2,
+      child: Icon(Icons.person, size: 15, color: Colors.white),
+    );
+  }
+}

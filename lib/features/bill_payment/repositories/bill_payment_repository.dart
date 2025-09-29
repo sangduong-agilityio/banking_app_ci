@@ -34,7 +34,7 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     final response = await _client
         .from('accounts')
         .select()
-        .eq('user_id', currentUser?.id ?? '');
+        .eq('userId', currentUser?.id ?? '');
     return (response as List)
         .map((json) => AccountModel.fromJson(json as Map<String, dynamic>))
         .toList();
@@ -46,7 +46,7 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     final response = await _client
         .from('cards')
         .select()
-        .eq('user_id', currentUser?.id ?? '');
+        .eq('userId', currentUser?.id ?? '');
     return (response as List)
         .map((json) => CardModel.fromJson(json as Map<String, dynamic>))
         .toList();
@@ -62,12 +62,12 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
           .from('bill_payments')
           .select('''
         *,
-        company:company_id(*),
-        fromAccount:from_account_id(*),
-        fromCard:from_card_id(*)
+        company:companyId(*),
+        fromAccount:fromAccountId(*),
+        fromCard:fromCardId(*)
       ''')
-          .eq('user_id', currentUser.id)
-          .order('created_at', ascending: false);
+          .eq('userId', currentUser.id)
+          .order('createdAt', ascending: false);
 
       return (response as List<dynamic>)
           .map(
@@ -85,7 +85,7 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       final response = await _client
           .from('companies')
           .select('*')
-          .eq('bill_type', type.name);
+          .eq('billType', type.name);
 
       return (response as List<dynamic>)
           .map((json) => CompanyModel.fromJson(json))
@@ -111,11 +111,11 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     try {
       // Store OTP in database
       await _client.from('bill_payment_otps').upsert({
-        'bill_id': billId,
-        'otp_code': otpCode,
-        'expires_at': expiresAt,
-        'user_id': currentUser.id,
-        'is_used': false,
+        'billId': billId,
+        'otpCode': otpCode,
+        'expiresAt': expiresAt,
+        'userId': currentUser.id,
+        'isUsed': false,
       });
 
       print('OTP $otpCode sent to ${currentUser.email ?? ''}');
@@ -130,19 +130,19 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       final response = await _client
           .from('bill_payment_otps')
           .select()
-          .eq('bill_id', billId)
-          .eq('otp_code', otpCode)
-          .eq('is_used', false)
-          .gte('expires_at', DateTime.now().toIso8601String())
+          .eq('billId', billId)
+          .eq('otpCode', otpCode)
+          .eq('isUsed', false)
+          .gte('expiresAt', DateTime.now().toIso8601String())
           .maybeSingle();
 
       if (response != null) {
         // Mark OTP as used
         await _client
             .from('bill_payment_otps')
-            .update({'is_used': true})
-            .eq('bill_id', billId)
-            .eq('otp_code', otpCode);
+            .update({'isUsed': true})
+            .eq('billId', billId)
+            .eq('otpCode', otpCode);
 
         return true;
       }
@@ -154,35 +154,52 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
 
   @override
   Future<bool> confirmPayTheBill(String billId, String otpCode) async {
-    final currentUser = _client.auth.currentUser;
-    if (currentUser == null) throw Exception('User not logged in');
-
     bool success = false;
 
-    if (otpCode == "BIOMETRIC_AUTH") {
-      success = true;
-    } else {
-      final otpValid = await _client
-          .from('bill_payment_otps')
-          .select()
-          .eq('bill_id', billId)
-          .eq('otp_code', otpCode)
-          .eq('is_used', false)
-          .maybeSingle();
+    try {
+      if (otpCode == "BIOMETRIC_AUTH") {
+        success = true;
+      } else {
+        final otpValid = await _client
+            .from('bill_payment_otps')
+            .select()
+            .eq('billId', billId)
+            .eq('otpCode', otpCode)
+            .eq('isUsed', false)
+            .maybeSingle();
 
-      success = otpValid != null;
+        success = otpValid != null;
+      }
+
+      if (success) {
+        final bill = await _client
+            .from('bill_payments')
+            .select('transactionId')
+            .eq('id', billId)
+            .maybeSingle();
+
+        final transactionId = bill?['transactionId'];
+
+        if (transactionId != null) {
+          // Update transaction status → completed
+          await _client
+              .from('transactions')
+              .update({'status': TransactionStatus.completed.name})
+              .eq('id', transactionId);
+        }
+
+        // Mark OTP as used
+        await _client
+            .from('bill_payment_otps')
+            .update({'isUsed': true})
+            .eq('billId', billId)
+            .eq('otpCode', otpCode);
+      }
+
+      return success;
+    } catch (e) {
+      throw Exception("Failed to confirm bill payment: $e");
     }
-
-    if (success) {
-      // Mark OTP as used
-      await _client
-          .from('bill_payment_otps')
-          .update({'is_used': true})
-          .eq('bill_id', billId)
-          .eq('otp_code', otpCode);
-    }
-
-    return success;
   }
 
   @override
@@ -192,7 +209,6 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     String? fromCardId,
   }) async {
     final currentUser = _client.auth.currentUser;
-    if (currentUser == null) throw Exception("User not authenticated");
 
     if (bill.amount == null || bill.amount! <= 0) {
       throw Exception('Invalid bill amount');
@@ -205,18 +221,18 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       final txnInsert = await _client
           .from('transactions')
           .insert({
-            'user_id': currentUser.id,
+            'userId': currentUser?.id,
             'type': TransferType.billPayment.name,
             'amount': totalAmount,
-            'from_account_id': fromAccountId,
-            'from_card_id': fromCardId,
-            'recipient_name': bill.company?.name,
-            'recipient_account': bill.billCode,
-            'transaction_fee': bill.fee ?? 0.0,
+            'fromAccountId': fromAccountId,
+            'fromCardId': fromCardId,
+            'recipientName': bill.company?.name,
+            'recipientAccount': bill.billCode,
+            'transactionFee': bill.fee ?? 0.0,
             'status': TransactionStatus.pending.name,
             'category': bill.billType?.name,
-            'reference_number': 'TXN${DateTime.now().millisecondsSinceEpoch}',
-            'created_at': DateTime.now().toIso8601String(),
+            'referenceNumber': 'TXN${DateTime.now().millisecondsSinceEpoch}',
+            'createdAt': DateTime.now().toIso8601String(),
           })
           .select()
           .single();
@@ -226,27 +242,27 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       final billInsert = await _client
           .from('bill_payments')
           .insert({
-            'user_id': currentUser.id,
-            'company_id': bill.companyId ?? bill.company?.id,
-            'bill_type': bill.billType?.name,
-            'bill_code': bill.billCode,
-            'phone_number': bill.phoneNumber,
+            'userId': currentUser?.id,
+            'companyId': bill.companyId ?? bill.company?.id,
+            'billType': bill.billType?.name,
+            'billCode': bill.billCode,
+            'phoneNumber': bill.phoneNumber,
             'address': bill.address,
             'amount': bill.amount,
             'fee': bill.fee ?? 0.0,
             'tax': bill.tax ?? 0.0,
-            'transaction_id': transactionId,
-            'from_account_id': fromAccountId,
-            'start_date': bill.startDate?.toIso8601String(),
-            'end_date': bill.endDate?.toIso8601String(),
-            'from_card_id': fromCardId,
-            'created_at': DateTime.now().toIso8601String(),
+            'transactionId': transactionId,
+            'fromAccountId': fromAccountId,
+            'startDate': bill.startDate?.toIso8601String(),
+            'endDate': bill.endDate?.toIso8601String(),
+            'fromCardId': fromCardId,
+            'createdAt': DateTime.now().toIso8601String(),
           })
           .select('''
         *,
-        company:company_id(*),
-        fromAccount:from_account_id(*),
-        fromCard:from_card_id(*)
+        company:companyId(*),
+        fromAccount:fromAccountId(*),
+        fromCard:fromCardId(*)
       ''')
           .single();
 

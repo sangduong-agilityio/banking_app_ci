@@ -13,7 +13,7 @@ enum AuthMethod { otp, fingerprint, faceId }
 class TransferModel with _$TransferModel {
   const factory TransferModel({
     String? id,
-    @JsonKey(name: 'user_id') String? userId,
+    String? userId,
     AccountModel? fromAccount,
     CardModel? fromCard,
     BeneficiaryModel? toBeneficiary,

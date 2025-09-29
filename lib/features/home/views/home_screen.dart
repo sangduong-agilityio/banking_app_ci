@@ -44,6 +44,7 @@ class GreetingAppBar extends StatelessWidget {
       buildWhen: (previous, current) => previous.user != current.user,
       builder: (context, state) {
         return BAAppBar(
+          titleSpacing: 10,
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           title: '${S.current.homeGreetingTitle(state.user?.username ?? '')} ',
           alignment: BAAppBarAlignment.left,
@@ -90,6 +91,7 @@ class HomeContent extends StatelessWidget {
                 SizedBox(height: 20),
                 CreditCardsSwiper(),
                 ListViewActions(),
+                SizedBox(height: 40),
               ],
             ),
           ),
@@ -105,10 +107,13 @@ class CreditCardsSwiper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220,
+      height: 204,
       child: BlocBuilder<HomeCubit, HomeState>(
         buildWhen: (previous, current) => previous.cards != current.cards,
         builder: (context, state) {
+          if (state.status is HomeStatusLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
           return CardsSwiperWidget<CardModel>(
             cardData: state.cards,
             onCardChange: (index) {

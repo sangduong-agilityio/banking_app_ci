@@ -37,6 +37,7 @@ class FormatterUtils {
     return "$start $mask $end";
   }
 
+  /// Format generic amount (without currency)
   static String formatAmount(double amount) {
     if (amount % 1 == 0) {
       return amount.toInt().toString();
@@ -47,6 +48,25 @@ class FormatterUtils {
     }
   }
 
+  static String formatBalance(
+    double amount, {
+    String currencyCode = 'USD',
+    String locale = 'en_US',
+    bool showDecimalAlways = true,
+  }) {
+    final format = NumberFormat.currency(
+      locale: locale,
+      symbol: '',
+      decimalDigits: showDecimalAlways ? 2 : 0,
+    );
+
+    final formatted = format.format(amount);
+
+    // Add currency code before the amount
+    return "$currencyCode $formatted";
+  }
+
+  /// Format last updated time
   static String formatLastUpdated(DateTime lastUpdated) {
     final now = DateTime.now();
     final difference = now.difference(lastUpdated);

@@ -35,22 +35,22 @@ extension BillTypeExtension on BillType {
 class BillPaymentModel with _$BillPaymentModel {
   const factory BillPaymentModel({
     String? id,
-    @JsonKey(name: 'user_id') String? userId,
-    @JsonKey(name: 'company_id') String? companyId,
-    @JsonKey(name: 'bill_type', unknownEnumValue: BillType.electric)
-    BillType? billType,
-    @JsonKey(name: 'bill_code') String? billCode,
-    @JsonKey(name: 'phone_number') String? phoneNumber,
+    String? userId,
+    String? companyId,
+    @Default(BillType.electric) BillType? billType,
+    String? billCode,
+    String? phoneNumber,
     String? address,
     double? amount,
     double? tax,
     double? fee,
-    @JsonKey(name: 'start_date') DateTime? startDate,
-    @JsonKey(name: 'end_date') DateTime? endDate,
-    @JsonKey(name: 'otp_code') String? otpCode,
-    @JsonKey(name: 'company') CompanyModel? company,
-    @JsonKey(name: 'fromAccount') AccountModel? fromAccount,
-    @JsonKey(name: 'fromCard') CardModel? fromCard,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? otpCode,
+    CompanyModel? company,
+    AccountModel? fromAccount,
+    CardModel? fromCard,
+    String? transactionId,
   }) = _BillPaymentModel;
 
   factory BillPaymentModel.fromJson(Map<String, dynamic> json) =>
