@@ -11,7 +11,7 @@ import 'package:mocktail/mocktail.dart';
 import '../mocks/mock_transfer_bloc.dart';
 import '../mocks/mock_transfer_data.dart';
 
-/// Creates initial TransferState with optional overrides
+/// Creates initial  with optional overrides
 TransferState createInitialTransferState({
   List<AccountModel>? accounts,
   List<CardModel>? cards,
@@ -32,7 +32,6 @@ TransferState createInitialTransferState({
   );
 }
 
-/// Setup mock bloc with state and default behaviors
 void setupMockBloc(MockTransferBloc mockBloc, TransferState state) {
   when(() => mockBloc.state).thenReturn(state);
   when(() => mockBloc.stream).thenAnswer((_) => Stream.value(state));
@@ -40,7 +39,6 @@ void setupMockBloc(MockTransferBloc mockBloc, TransferState state) {
   when(() => mockBloc.close()).thenAnswer((_) async {});
 }
 
-/// Register mock bloc in service locator for dependency injection
 void setupServiceLocator(MockTransferBloc mockBloc) {
   final getIt = GetIt.instance;
 
@@ -51,7 +49,6 @@ void setupServiceLocator(MockTransferBloc mockBloc) {
   getIt.registerFactory<TransferBloc>(() => mockBloc);
 }
 
-/// Cleanup service locator after tests
 void cleanupServiceLocator() {
   final getIt = GetIt.instance;
 

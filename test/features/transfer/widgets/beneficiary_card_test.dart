@@ -129,8 +129,6 @@ void main() {
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
-                  // Verify tap was registered
-                  // Note: Can't verify closure variable, just verify no errors
                   expect(find.byType(BeneficiaryCard), findsOneWidget);
                 },
               ),

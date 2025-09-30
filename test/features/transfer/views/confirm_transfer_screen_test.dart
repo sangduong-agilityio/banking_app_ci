@@ -77,7 +77,6 @@ void main() {
                 verification: (tester) async {
                   final textFields = find.byType(BATextField);
                   expect(textFields, findsWidgets);
-                  // Verify at least 5 text fields (from, to, account, fee, amount, content)
                   expect(textFields.evaluate().length, greaterThanOrEqualTo(5));
                 },
               ),
@@ -101,7 +100,7 @@ void main() {
             verifications: [
               BAFindsWidgetVerification(
                 finder: find.byType(BAElevatedButton),
-                count: 2, // Get OTP button + Confirm button
+                count: 2,
               ),
             ],
           ),
@@ -128,11 +127,8 @@ void main() {
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
-                  // Verify masked account number is displayed
                   final textFields = find.byType(BATextField);
                   expect(textFields, findsWidgets);
-
-                  // Should contain masked format
                   expect(find.textContaining('*'), findsWidgets);
                 },
               ),
@@ -184,7 +180,6 @@ void main() {
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
-                  // Should display formatted amount with $ symbol
                   expect(find.textContaining('\$100'), findsAtLeastNWidgets(1));
                 },
               ),
@@ -211,7 +206,6 @@ void main() {
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
-                  // Should display fee
                   expect(find.textContaining('2.5'), findsWidgets);
                 },
               ),
@@ -243,7 +237,6 @@ void main() {
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
-                  // Should have OTP input field in a Row with button
                   final textFields = find.byType(BATextField);
                   expect(textFields, findsWidgets);
                 },
@@ -271,8 +264,6 @@ void main() {
               BACustomInteraction(
                 action: (tester) async {
                   await tester.pump(const Duration(milliseconds: 200));
-
-                  // Scroll to make button visible
                   final scrollable = find.byType(SingleChildScrollView);
                   await tester.drag(scrollable, const Offset(0, -300));
                   await tester.pump(const Duration(milliseconds: 200));
@@ -311,8 +302,6 @@ void main() {
               BACustomInteraction(
                 action: (tester) async {
                   await tester.pump(const Duration(milliseconds: 200));
-
-                  // Scroll to button
                   final scrollable = find.byType(SingleChildScrollView);
                   await tester.drag(scrollable, const Offset(0, -300));
                   await tester.pumpAndSettle();
@@ -336,7 +325,7 @@ void main() {
               final state = createInitialTransferState().copyWith(
                 selectedBeneficiary: MockTransferData.mockBeneficiary1,
                 selectedAccount: MockTransferData.mockAccount1,
-                transferId: 'tx123',
+                transferId: 'transfer',
                 otpSent: false,
               );
               setupMockBloc(mockBloc, state);
@@ -351,21 +340,15 @@ void main() {
               BACustomInteraction(
                 action: (tester) async {
                   await tester.pump(const Duration(milliseconds: 200));
-
-                  // Find Get OTP button by text
                   final getOtpButton = find.text(
                     S.current.transferGetOtpButton,
                   );
-
-                  // Scroll until button is visible
                   await tester.dragUntilVisible(
                     getOtpButton,
                     find.byType(SingleChildScrollView),
                     const Offset(0, -100),
                   );
                   await tester.pump(const Duration(milliseconds: 200));
-
-                  // Tap button
                   await tester.tap(getOtpButton);
                   await tester.pump(const Duration(milliseconds: 200));
                 },
@@ -547,9 +530,6 @@ void main() {
                 verification: (tester) async {
                   // Verify loader is hidden when success
                   expect(find.byType(CircularProgressIndicator), findsNothing);
-
-                  // Note: Navigation test requires state transition
-                  // This test verifies the success state is reached
                 },
               ),
             ],

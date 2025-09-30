@@ -5,11 +5,8 @@ import 'package:mocktail/mocktail.dart';
 
 import 'mock_transfer_data.dart';
 
-/// Mock class for TransferBloc
 class MockTransferBloc extends Mock implements TransferBloc {}
 
-/// Setup fallback values for mocktail
-/// Call this in setUpAll() before using MockTransferBloc
 void setupTransferBlocFallbacks() {
   // Initialize event
   registerFallbackValue(TransferInitializeEvt());
