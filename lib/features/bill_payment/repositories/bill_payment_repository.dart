@@ -174,11 +174,19 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       if (success) {
         final bill = await _client
             .from('bill_payments')
-            .select('transactionId')
+            .select(
+              'transactionId, fromAccountId, fromCardId, amount, fee, tax',
+            )
             .eq('id', billId)
             .maybeSingle();
 
         final transactionId = bill?['transactionId'];
+        final double amount = ((bill?['amount'] ?? 0) as num).toDouble();
+        final double fee = ((bill?['fee'] ?? 0) as num).toDouble();
+        final double tax = ((bill?['tax'] ?? 0) as num).toDouble();
+        final double total = double.parse(
+          (amount + fee + tax).toStringAsFixed(2),
+        );
 
         if (transactionId != null) {
           // Update transaction status → completed
@@ -186,6 +194,39 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
               .from('transactions')
               .update({'status': TransactionStatus.completed.name})
               .eq('id', transactionId);
+        }
+
+        // Deduct balance from selected source
+        if (bill?['fromAccountId'] != null) {
+          final accountId = bill?['fromAccountId'] as String;
+          final acc = await _client
+              .from('accounts')
+              .select('availableBalance')
+              .eq('id', accountId)
+              .single();
+          final available = (acc['availableBalance'] as num).toDouble();
+          final newBalance = double.parse(
+            (available - total).toStringAsFixed(2),
+          );
+          await _client
+              .from('accounts')
+              .update({'availableBalance': newBalance})
+              .eq('id', accountId);
+        } else if (bill?['fromCardId'] != null) {
+          final cardId = bill?['fromCardId'] as String;
+          final card = await _client
+              .from('cards')
+              .select('availableBalance')
+              .eq('id', cardId)
+              .single();
+          final available = (card['availableBalance'] as num).toDouble();
+          final newBalance = double.parse(
+            (available - total).toStringAsFixed(2),
+          );
+          await _client
+              .from('cards')
+              .update({'availableBalance': newBalance})
+              .eq('id', cardId);
         }
 
         // Mark OTP as used
@@ -217,13 +258,39 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     final totalAmount =
         (bill.amount ?? 0.0) + (bill.tax ?? 0.0) + (bill.fee ?? 0.0);
 
+    // Insufficient funds check on the chosen source
+    if (fromAccountId == null && fromCardId == null) {
+      throw Exception('Please select a source to pay the bill');
+    }
+    if (fromAccountId != null) {
+      final acc = await _client
+          .from('accounts')
+          .select('availableBalance')
+          .eq('id', fromAccountId)
+          .single();
+      final available = (acc['availableBalance'] as num).toDouble();
+      if (available < totalAmount) {
+        throw Exception('Insufficient funds in account');
+      }
+    } else if (fromCardId != null) {
+      final card = await _client
+          .from('cards')
+          .select('availableBalance')
+          .eq('id', fromCardId)
+          .single();
+      final available = (card['availableBalance'] as num).toDouble();
+      if (available < totalAmount) {
+        throw Exception('Insufficient funds on card');
+      }
+    }
+
     try {
       final txnInsert = await _client
           .from('transactions')
           .insert({
             'userId': currentUser?.id,
-            'type': TransferType.billPayment.name,
-            'amount': totalAmount,
+            'type': TransferType.cardNumber.name,
+            'amount': -totalAmount,
             'fromAccountId': fromAccountId,
             'fromCardId': fromCardId,
             'recipientName': bill.company?.name,

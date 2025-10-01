@@ -2,13 +2,15 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/home/states/home_cubit.dart';
 import 'package:banking_app/features/home/states/home_state.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/features/home/widgets/list_view_actions.dart';
-import 'package:banking_app/features/home/widgets/card.dart';
+import 'package:banking_app/features/home/widgets/cards_swiper_widget.dart';
+import 'package:banking_app/core/widgets/shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -90,7 +92,7 @@ class HomeContent extends StatelessWidget {
               children: const [
                 SizedBox(height: 20),
                 CreditCardsSwiper(),
-                ListViewActions(),
+                HomeActionsGrid(),
                 SizedBox(height: 40),
               ],
             ),
@@ -112,8 +114,9 @@ class CreditCardsSwiper extends StatelessWidget {
         buildWhen: (previous, current) => previous.cards != current.cards,
         builder: (context, state) {
           if (state.status is HomeStatusLoading) {
-            return Center(child: CircularProgressIndicator());
+            return Row(children: const [Expanded(child: BACardSkeleton())]);
           }
+
           return CardsSwiperWidget<CardModel>(
             cardData: state.cards,
             onCardChange: (index) {
@@ -125,7 +128,7 @@ class CreditCardsSwiper extends StatelessWidget {
             },
             cardBuilder: (context, index, visibleIndex) {
               final card = state.cards[index];
-              return CreditCard(
+              return SwipeableCreditCard(
                 key: ValueKey<int>(index),
                 data: card,
                 isActive: visibleIndex == 0,
@@ -134,6 +137,23 @@ class CreditCardsSwiper extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class HomeActionsGrid extends StatelessWidget {
+  const HomeActionsGrid({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeCubit, HomeState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        if (state.status is HomeStatusLoading) {
+          return const BAGridSkeleton();
+        }
+        return const ListViewActions();
+      },
     );
   }
 }

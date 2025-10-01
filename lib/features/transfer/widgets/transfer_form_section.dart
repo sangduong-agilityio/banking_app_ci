@@ -247,9 +247,6 @@ class _TransferFormSectionState extends State<TransferFormSection>
           const SizedBox(height: 24),
           ..._buildFormFields(state),
         ];
-      case TransferType.billPayment:
-        // TODO: Handle this case.
-        throw UnimplementedError();
     }
   }
 
@@ -391,10 +388,12 @@ class TransferFormSectionBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 22),
                 BAElevatedButton(
-                  isDisabled: state.selectedAccount == null,
+                  isDisabled: !state.canConfirmTransfer,
                   padding: EdgeInsets.zero,
                   text: S.current.transferConfirmButton,
-                  onPressed: () => handleConfirm(context, state),
+                  onPressed: state.canConfirmTransfer
+                      ? () => handleConfirm(context, state)
+                      : null,
                 ),
               ],
             ),
