@@ -56,7 +56,7 @@ class BillDetailCard extends StatelessWidget {
           ),
           Divider(color: Colors.grey.shade300),
 
-          if (bills.tax! > 0)
+          if ((bills.tax ?? 0) > 0)
             _buildAmount(
               S.current.payBillTaxTitle,
               "\$${bills.tax?.toStringAsFixed(2)}",
@@ -83,8 +83,16 @@ Widget _buildInfoDetail(String label, String value) {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-        Flexible(
+        Expanded(
+          flex: 2,
+          child: Text(
+            label,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 3,
           child: Text(
             value,
             textAlign: TextAlign.right,
@@ -92,6 +100,8 @@ Widget _buildInfoDetail(String label, String value) {
               fontWeight: FontWeight.w600,
               color: Colors.black,
             ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
           ),
         ),
       ],
@@ -110,13 +120,17 @@ Widget _buildAmount(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color: isBold ? Colors.black : Colors.grey[600],
+        Expanded(
+          child: Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: isBold ? Colors.black : Colors.grey[600],
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
+        const SizedBox(width: 8),
         Text(
           value,
           style: TextStyle(
