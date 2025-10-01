@@ -30,7 +30,6 @@ scripts:
       scope:
         - banking_app
 
-
   # Generate DEV launcher icons
   generate:icon_launcher_dev:
     run: melos exec --scope="banking_app" -- puro flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons_dev.yaml
@@ -55,3 +54,33 @@ scripts:
   codegen:
     run: melos run build_runner
     description: "Generate all necessary code for development"
+
+  # Unit testing scripts
+  test:selective_unit_test:
+      run: |
+        full_coverage
+        puro flutter test --fail-fast --no-pub --coverage -r expanded
+        lcov --remove coverage/lcov.info \
+          'lib/main.dart' \
+          'lib/main_device_preview.dart' \
+          'lib/app/**' \
+          'lib/core/**' \
+          'lib/**/models/**' \
+          'lib/**/repositories/**' \
+          'lib/**/states/**' \
+          'lib/features/account/**' \
+          'lib/features/auth/**' \
+          'lib/features/home/**' \
+          'lib/features/setting/**' \
+          'lib/features/landing/**' \
+          'lib/features/message/**' \
+          'lib/features/search/entities/**' \
+          -o coverage/lcov.info
+        genhtml coverage/lcov.info --output=coverage/html
+        open coverage/html/index.html
+      description: Run Flutter unit tests and generate selective coverage report
+      packageFilters:
+        flutter: true
+        dirExists: test
+        scope:
+          - banking_app
