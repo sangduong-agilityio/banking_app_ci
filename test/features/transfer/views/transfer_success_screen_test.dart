@@ -41,7 +41,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -58,7 +61,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -79,7 +85,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -100,7 +109,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -122,7 +134,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -152,7 +167,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -182,7 +200,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -215,7 +236,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             interactions: [
@@ -249,7 +273,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -268,7 +295,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -290,7 +320,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [
@@ -320,7 +353,10 @@ void main() {
               return createTestWidgetWithBloc(
                 mockBloc: mockBloc,
                 initialState: state,
-                child: const TransferSuccessScreen(),
+                child: TransferSuccessScreen(
+                  amount: 100,
+                  beneficiaryName: 'Emma',
+                ),
               );
             },
             verifications: [

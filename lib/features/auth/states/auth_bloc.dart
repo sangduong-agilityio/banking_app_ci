@@ -4,6 +4,7 @@ import 'package:banking_app/features/auth/states/auth_state.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/security/error_sanitizer.dart';
 
 class AuthBloc extends Bloc<AuthEvt, AuthState> {
   AuthBloc({required this.repo, required this.biometricService})
@@ -66,7 +67,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
       emit(
         state.copyWith(
           status: const AuthStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }

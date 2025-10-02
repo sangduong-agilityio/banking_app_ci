@@ -1,0 +1,10 @@
+flutter_native_splash:
+  color: "#3629B7"
+  image: assets/images/img_banking.png
+  android: true
+  ios: true
+  web: false
+
+  android_12:
+    color: "#3629B7"
+    image: assets/images/img_banking.png

@@ -59,27 +59,28 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
       return;
     }
 
-    final selectedBill = state.bills.firstWhere(
-      (bill) =>
-          bill.billType == widget.billType &&
-          bill.company?.id == state.selectedCompany?.id &&
-          bill.billCode == _billCodeController.text.trim(),
-      orElse: () => state.bills.firstWhere(
+    final trimmedCode = _billCodeController.text.trim();
+
+    try {
+      final selectedBill = state.bills.firstWhere(
         (bill) =>
             bill.billType == widget.billType &&
-            bill.company?.id == state.selectedCompany?.id,
-      ),
-    );
+            bill.company?.id == state.selectedCompany?.id &&
+            bill.billCode == trimmedCode,
+      );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BlocProvider.value(
-          value: context.read<BillPaymentBloc>(),
-          child: BillPaymentDetailsScreen(bill: selectedBill),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: context.read<BillPaymentBloc>(),
+            child: BillPaymentDetailsScreen(bill: selectedBill),
+          ),
         ),
-      ),
-    );
+      );
+    } catch (_) {
+      BASnackBar.buildErrorSnackbar(context, 'Invalid bill code');
+    }
   }
 
   @override
@@ -147,9 +148,14 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                         ),
                         child: AbsorbPointer(
                           child: BATextField(
-                            controller: TextEditingController(
-                              text: selectedCompany?.name ?? '',
-                            ),
+                            controller:
+                                TextEditingController(
+                                    text: selectedCompany?.name ?? '',
+                                  )
+                                  ..selection = TextSelection.collapsed(
+                                    offset:
+                                        (selectedCompany?.name ?? '').length,
+                                  ),
                             hint: S.current.payBillChooseCompanyHint,
                             suffixIcon: const Icon(Icons.keyboard_arrow_right),
                           ),
