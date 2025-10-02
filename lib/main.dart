@@ -7,9 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:banking_app/core/monitoring/monitoring_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final monitoring = MonitoringService();
+  FlutterError.onError = (details) {
+    monitoring.recordError(
+      details.exception,
+      details.stack ?? StackTrace.current,
+      context: 'FlutterError',
+    );
+  };
 
   // Initialize Supabase
   await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseKey);

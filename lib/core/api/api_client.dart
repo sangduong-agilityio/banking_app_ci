@@ -10,16 +10,16 @@ class BankingApiClient {
 
   Future<Response> _request(
     String method, {
-    required String apiKey,
+    required String endpoint,
     dynamic data,
     Map<String, dynamic>? queryParams,
   }) async {
     try {
       final response = await _dio.request(
-        apiKey,
+        endpoint,
         data: data,
         queryParameters: queryParams,
-        options: Options(headers: {'apikey': apiKey = Env.supabaseKey}),
+        options: Options(headers: {'apikey': Env.supabaseKey}),
       );
       return response;
     } catch (e) {
@@ -28,14 +28,14 @@ class BankingApiClient {
   }
 
   Future<Response> get(String endpoint, {Map<String, dynamic>? queryParams}) =>
-      _request('GET', apiKey: endpoint, queryParams: queryParams);
+      _request('GET', endpoint: endpoint, queryParams: queryParams);
 
   Future<Response> post(String endpoint, {dynamic data}) =>
-      _request('POST', apiKey: endpoint, data: data);
+      _request('POST', endpoint: endpoint, data: data);
 
   Future<Response> patch(String endpoint, {dynamic data}) =>
-      _request('PATCH', apiKey: endpoint, data: data);
+      _request('PATCH', endpoint: endpoint, data: data);
 
   Future<Response> delete(String endpoint, {dynamic data}) =>
-      _request('DELETE', apiKey: endpoint, data: data);
+      _request('DELETE', endpoint: endpoint, data: data);
 }
