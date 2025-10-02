@@ -1,6 +1,7 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
+import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/tab_bar.dart';
@@ -9,7 +10,6 @@ import 'package:banking_app/features/account/states/account_and_card_state.dart'
 import 'package:banking_app/features/account/views/account_management_screen.dart';
 import 'package:banking_app/features/account/views/bank_card_detail_screen.dart';
 import 'package:banking_app/features/account/widgets/account_card.dart';
-import 'package:banking_app/features/home/widgets/card.dart';
 import 'package:flutter/material.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
@@ -110,7 +110,7 @@ class BankCardListSection extends StatelessWidget {
                           ),
                         );
                       },
-                      child: CreditCard(
+                      child: SwipeableCreditCard(
                         key: ValueKey(card.id),
                         data: card,
                         isActive: index == 0,

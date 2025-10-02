@@ -1,6 +1,8 @@
 import 'package:banking_app/app/themes/app_colors.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
+import 'package:banking_app/core/utils/formatters.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:flutter/material.dart';
 
 class BACard extends StatelessWidget {
@@ -199,6 +201,96 @@ class CardCategorySelected extends StatelessWidget {
                     'assets/images/bill_category.png',
                     fit: BoxFit.cover,
                   ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SwipeableCreditCard extends StatelessWidget {
+  final CardModel data;
+  final bool isActive;
+
+  const SwipeableCreditCard({
+    super.key,
+    required this.data,
+    this.isActive = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedScale(
+      scale: isActive ? 1.02 : 1.0,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+      child: _buildCardContent(context),
+    );
+  }
+
+  Widget _buildCardContent(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        height: 200,
+        decoration: BoxDecoration(
+          gradient: data.cardType?.gradient,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                data.cardHolderName,
+                style: context.displaySmall?.copyWith(
+                  color: context.colorScheme.onPrimary,
+                  fontWeight: FontWeight.w400,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 32),
+              Text(
+                data.cardTier,
+                style: context.titleSmall?.copyWith(
+                  color: context.colorScheme.onPrimary,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                FormatterUtils.maskCardNumber(data.cardNumber),
+                style: context.titleMedium?.copyWith(
+                  color: context.colorScheme.onPrimary,
+                ),
+              ),
+              SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      FormatterUtils.formatBalance(data.availableBalance ?? 0),
+                      style: context.headlineMedium?.copyWith(
+                        color: context.colorScheme.onPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    data.cardType?.displayName ?? '',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

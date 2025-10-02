@@ -47,12 +47,13 @@ class TransactionItem extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                if (subtitle?.isNotEmpty ?? false) const SizedBox(height: 2),
                 if (subtitle?.isNotEmpty ?? false)
                   Text(
                     subtitle ?? '',
                     style: context.bodyMedium?.copyWith(
                       color: context.colorScheme.inverseSurface,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
               ],

@@ -45,9 +45,6 @@ class TransactionCard extends StatelessWidget {
         return context.colorScheme.tertiary;
       case TransferType.otherBank:
         return context.colorScheme.inversePrimary;
-      case TransferType.billPayment:
-        // TODO: Handle this case.
-        throw UnimplementedError();
     }
   }
 }
