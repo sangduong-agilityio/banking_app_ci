@@ -142,10 +142,13 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
         return;
       }
 
+      final bills = await repository.fetchBills();
+
       emit(
         state.copyWith(
           status: const BillPaymentStatus.success(),
           isOtpVerified: true,
+          bills: bills,
         ),
       );
     } catch (e) {
@@ -174,10 +177,11 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
 
       emit(
         state.copyWith(
+          selectedBill: bill,
           status: const BillPaymentStatus.awaitingOtp(),
           otpSent: true,
           transactionId: bill.transactionId,
-          selectedBill: bill,
+          billId: bill.id,
         ),
       );
     } catch (e) {

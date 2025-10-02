@@ -136,17 +136,18 @@ class TransferRepositoryImpl implements TransferRepository {
     final currentUser = _client.auth.currentUser;
     if (currentUser == null) throw Exception('User not logged in');
 
-    // Generate a proper 6-digit OTP
     final random = Random();
     final otpCode = (100000 + random.nextInt(900000)).toString();
-
     final expiresAt = DateTime.now()
         .add(const Duration(minutes: 5))
         .toIso8601String();
 
     try {
-      // Store OTP in database
-      await _client.from('transfer_otps').upsert({
+      // Delete any existing OTPs for this transfer
+      await _client.from('transfer_otps').delete().eq('transferId', transferId);
+
+      // Insert new OTP
+      await _client.from('transfer_otps').insert({
         'transferId': transferId,
         'otpCode': otpCode,
         'expiresAt': expiresAt,
@@ -165,6 +166,36 @@ class TransferRepositoryImpl implements TransferRepository {
   Future<TransferResult> initiateTransfer(TransferModel request) async {
     final currentUser = _client.auth.currentUser;
     if (currentUser == null) throw Exception('User not logged in');
+
+    // Insufficient funds check
+    final double amount = (request.amount ?? 0) + (request.transactionFee ?? 0);
+    if ((request.fromAccount?.id == null && request.fromCard?.id == null) ||
+        amount <= 0) {
+      throw Exception('Invalid transfer source or amount');
+    }
+
+    // Verify source balance
+    if (request.fromAccount?.id != null) {
+      final acc = await _client
+          .from('accounts')
+          .select('availableBalance')
+          .eq('id', request.fromAccount!.id)
+          .single();
+      final available = (acc['availableBalance'] as num).toDouble();
+      if (available < amount) {
+        throw Exception('Insufficient funds in account');
+      }
+    } else if (request.fromCard?.id != null) {
+      final card = await _client
+          .from('cards')
+          .select('availableBalance')
+          .eq('id', request.fromCard!.id)
+          .single();
+      final available = (card['availableBalance'] as num).toDouble();
+      if (available < amount) {
+        throw Exception('Insufficient funds on card');
+      }
+    }
 
     final insert = await _client
         .from('transfers')
@@ -202,6 +233,8 @@ class TransferRepositoryImpl implements TransferRepository {
           .eq('otpCode', otpCode)
           .eq('isUsed', false)
           .gte('expiresAt', DateTime.now().toIso8601String())
+          .order('expiresAt', ascending: false)
+          .limit(1)
           .maybeSingle();
 
       if (response != null) {
@@ -210,8 +243,8 @@ class TransferRepositoryImpl implements TransferRepository {
             .from('transfer_otps')
             .update({'isUsed': true})
             .eq('transferId', transferId)
-            .eq('otpCode', otpCode);
-
+            .eq('otpCode', otpCode)
+            .eq('isUsed', false);
         return true;
       }
       return false;
@@ -223,7 +256,6 @@ class TransferRepositoryImpl implements TransferRepository {
   @override
   Future<bool> confirmTransfer(String transferId, String otpCode) async {
     final currentUser = _client.auth.currentUser;
-
     bool success = false;
 
     if (otpCode == "BIOMETRIC_AUTH") {
@@ -240,24 +272,80 @@ class TransferRepositoryImpl implements TransferRepository {
       success = otpValid != null;
     }
 
-    // Update transfer
+    // Update transfer status
     await _client
         .from('transfers')
         .update({
           'status': success ? 'completed' : 'failed',
-          if (success) 'completed_at': DateTime.now().toIso8601String(),
+          if (success) 'completedAt': DateTime.now().toIso8601String(),
         })
         .eq('id', transferId);
 
-    // Insert transaction record
-    await _client.from('transactions').insert({
-      'userId': currentUser?.id,
-      'transferId': transferId,
-      'status': success ? 'completed' : 'failed',
-      'referenceNumber': success
-          ? DateTime.now().millisecondsSinceEpoch.toString()
-          : null,
-    });
+    if (success) {
+      // Fetch transfer details
+      final transfer = await _client
+          .from('transfers')
+          .select('fromAccountId, fromCardId, amount, transactionFee')
+          .eq('id', transferId)
+          .single();
+
+      final double amount = ((transfer['amount'] ?? 0) as num).toDouble();
+      final double fee = ((transfer['transactionFee'] ?? 0) as num).toDouble();
+      final double total = double.parse((amount + fee).toStringAsFixed(2));
+
+      final insertedTx = await _client
+          .from('transactions')
+          .insert({
+            'userId': currentUser?.id,
+            'type': 'transfer',
+            'amount': -total,
+            'status': 'completed',
+            'referenceNumber': DateTime.now().millisecondsSinceEpoch.toString(),
+            'createdAt': DateTime.now().toIso8601String(),
+            'description': 'Transfer to beneficiary',
+          })
+          .select()
+          .single();
+
+      final transactionId = insertedTx['id'];
+
+      await _client
+          .from('transfers')
+          .update({'transactionId': transactionId})
+          .eq('id', transferId);
+
+      if (transfer['fromAccountId'] != null) {
+        final accountId = transfer['fromAccountId'] as String;
+        final acc = await _client
+            .from('accounts')
+            .select('availableBalance')
+            .eq('id', accountId)
+            .single();
+
+        final available = (acc['availableBalance'] as num).toDouble();
+        final newBalance = double.parse((available - total).toStringAsFixed(2));
+
+        await _client
+            .from('accounts')
+            .update({'availableBalance': newBalance})
+            .eq('id', accountId);
+      } else if (transfer['fromCardId'] != null) {
+        final cardId = transfer['fromCardId'] as String;
+        final card = await _client
+            .from('cards')
+            .select('availableBalance')
+            .eq('id', cardId)
+            .single();
+
+        final available = (card['availableBalance'] as num).toDouble();
+        final newBalance = double.parse((available - total).toStringAsFixed(2));
+
+        await _client
+            .from('cards')
+            .update({'availableBalance': newBalance})
+            .eq('id', cardId);
+      }
+    }
 
     return success;
   }

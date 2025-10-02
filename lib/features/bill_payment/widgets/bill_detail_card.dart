@@ -33,7 +33,10 @@ class BillDetailCard extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          _buildInfoDetail(S.current.payBillNameTitle, bills.userId ?? ''),
+          _buildInfoDetail(
+            S.current.payBillNameTitle,
+            bills.user?.username ?? '',
+          ),
           _buildInfoDetail(S.current.payBillAddressTitle, bills.address ?? ''),
           _buildInfoDetail(
             S.current.payBillPhoneNumberTitle,

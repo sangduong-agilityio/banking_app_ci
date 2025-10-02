@@ -32,10 +32,26 @@ extension BillTypeExtension on BillType {
 }
 
 @freezed
+class UserRef with _$UserRef {
+  const factory UserRef({
+    String? id,
+    String? username,
+    String? email,
+    String? phoneNumber,
+    String? homeAddress,
+    String? profileImage,
+  }) = _UserRef;
+
+  factory UserRef.fromJson(Map<String, dynamic> json) =>
+      _$UserRefFromJson(json);
+}
+
+@freezed
 class BillPaymentModel with _$BillPaymentModel {
   const factory BillPaymentModel({
     String? id,
     String? userId,
+    UserRef? user,
     String? companyId,
     @Default(BillType.electric) BillType? billType,
     String? billCode,
@@ -51,6 +67,7 @@ class BillPaymentModel with _$BillPaymentModel {
     AccountModel? fromAccount,
     CardModel? fromCard,
     String? transactionId,
+    DateTime? createdAt,
   }) = _BillPaymentModel;
 
   factory BillPaymentModel.fromJson(Map<String, dynamic> json) =>

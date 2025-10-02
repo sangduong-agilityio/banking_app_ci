@@ -44,11 +44,16 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
     final now = DateTime.now();
     final recentDate = now.subtract(const Duration(days: 90));
 
-    // Transactions in last 90 days
     final recentResponse =
         await _client
                 .from('transactions')
-                .select()
+                .select('''
+      *,
+      bill_payment:bill_payments!transactionId(
+        *,
+        company:companyId(*)
+      )
+    ''')
                 .eq('userId', _currentUser.id)
                 .gte('createdAt', recentDate.toIso8601String())
                 .order('createdAt', ascending: false)

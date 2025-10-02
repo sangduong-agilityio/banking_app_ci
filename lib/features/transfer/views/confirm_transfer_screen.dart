@@ -70,9 +70,9 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => BlocProvider.value(
-                      value: context.read<TransferBloc>(),
-                      child: const TransferSuccessScreen(),
+                    builder: (_) => TransferSuccessScreen(
+                      amount: state.amount ?? 0,
+                      beneficiaryName: state.selectedBeneficiary?.name ?? '',
                     ),
                   ),
                 );

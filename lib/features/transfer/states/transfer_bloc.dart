@@ -334,13 +334,28 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
       );
 
       if (isValid) {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.awaitingBiometric(),
-            otpSent: false,
-            errorMessage: null,
-          ),
+        // Complete the transfer after OTP verification
+        final result = await transferRepo.confirmTransfer(
+          state.transferId ?? '',
+          event.otpCode,
         );
+
+        if (result) {
+          emit(
+            state.copyWith(
+              status: const TransferStatus.success(),
+              otpSent: false,
+              errorMessage: null,
+            ),
+          );
+        } else {
+          emit(
+            state.copyWith(
+              status: const TransferStatus.failure(),
+              errorMessage: 'Transfer confirmation failed.',
+            ),
+          );
+        }
       } else {
         emit(
           state.copyWith(
@@ -379,9 +394,10 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
         return;
       }
 
+      // Complete the transfer with biometric authentication
       final result = await transferRepo.confirmTransfer(
         state.transferId ?? '',
-        '',
+        'BIOMETRIC_AUTH',
       );
 
       if (result) {

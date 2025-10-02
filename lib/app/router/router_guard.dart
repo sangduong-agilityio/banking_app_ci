@@ -13,8 +13,7 @@ class RouterGuard {
 
     final isLoggingIn =
         state.matchedLocation == BAPaths.signIn.path ||
-        state.matchedLocation == BAPaths.signUp.path ||
-        state.matchedLocation == BAPaths.landing.path;
+        state.matchedLocation == BAPaths.signUp.path;
 
     if (token == null && !isLoggingIn) {
       return BAPaths.signIn.path;
