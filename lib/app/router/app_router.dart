@@ -7,7 +7,6 @@ import 'package:banking_app/features/auth/views/sign_in_screen.dart';
 import 'package:banking_app/features/auth/views/sign_up_screen.dart';
 import 'package:banking_app/features/bill_payment/views/bill_payment_screen.dart';
 import 'package:banking_app/features/home/views/home_screen.dart';
-import 'package:banking_app/features/landing/landing_screen.dart';
 import 'package:banking_app/features/message/message_screen.dart';
 import 'package:banking_app/features/search/views/exchange_rate_screen.dart';
 import 'package:banking_app/features/search/views/exchange_screen.dart';
@@ -27,15 +26,9 @@ class BAAppRouter {
   static final settingNavigatorKey = GlobalKey<NavigatorState>();
 
   static final router = GoRouter(
-    initialLocation: BAPaths.landing.path,
+    initialLocation: BAPaths.signIn.path,
     navigatorKey: rootNavigatorKey,
     routes: [
-      GoRoute(
-        path: BAPaths.landing.path,
-        name: BAPaths.landing.name,
-        pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const LandingScreen()),
-      ),
       GoRoute(
         path: BAPaths.signIn.path,
         name: BAPaths.signIn.name,
@@ -159,7 +152,6 @@ class BAAppRouter {
 }
 
 enum BAPaths {
-  landing(name: 'landing', path: '/landing'),
   signIn(name: 'signIn', path: '/signin'),
   signUp(name: 'signUp', path: '/signup'),
   home(name: 'home', path: '/home'),

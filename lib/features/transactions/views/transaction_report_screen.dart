@@ -282,25 +282,8 @@ class TransactionHistory extends StatelessWidget {
                     : context.colorScheme.secondary,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 100),
           ],
-          if (report.recentTransactions.isNotEmpty) ...[
-            SectionHeader(title: S.current.transactionRecentTitle),
-            ...report.recentTransactions.map(
-              (transaction) => TransactionItem(
-                icon: transaction.displayIcon,
-                iconColor: transaction.displayColor,
-                title: transaction.displayTitle,
-                subtitle: transaction.displaySubtitle,
-                amount:
-                    '${transaction.amount > 0 ? '+' : ''}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
-                amountColor: transaction.amount < 0
-                    ? context.colorScheme.error
-                    : context.colorScheme.secondary,
-              ),
-            ),
-          ],
-          const SizedBox(height: 100),
         ],
       ),
     );

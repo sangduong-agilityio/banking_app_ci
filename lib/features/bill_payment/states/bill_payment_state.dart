@@ -29,6 +29,7 @@ class BillPaymentState extends Equatable {
     this.billCode,
     this.phoneNumber,
     this.otpCode,
+    this.billId,
   });
 
   final BillPaymentStatus status;
@@ -44,6 +45,7 @@ class BillPaymentState extends Equatable {
   final double? fee;
   final bool otpSent;
   final String? billCode;
+  final String? billId;
   final String? phoneNumber;
   final bool isOtpVerified;
   final String? errorMessage;
@@ -64,6 +66,7 @@ class BillPaymentState extends Equatable {
     double? amount,
     double? fee,
     bool? otpSent,
+    String? billId,
     bool? isOtpVerified,
     bool? clearAccount,
     bool? clearCard,
@@ -84,6 +87,7 @@ class BillPaymentState extends Equatable {
       amount: amount ?? this.amount,
       accounts: accounts ?? this.accounts,
       cards: cards ?? this.cards,
+      billId: billId ?? this.billId,
       fee: fee ?? this.fee,
       otpSent: otpSent ?? this.otpSent,
       isOtpVerified: isOtpVerified ?? this.isOtpVerified,
@@ -107,6 +111,7 @@ class BillPaymentState extends Equatable {
     selectedAccount,
     selectedCard,
     accounts,
+    billId,
     cards,
     amount,
     fee,
