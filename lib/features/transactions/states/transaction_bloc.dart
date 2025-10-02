@@ -22,6 +22,7 @@ class TransactionReportBloc
     try {
       final cards = await repo.fetchCards();
       final report = await repo.fetchTransactionReports();
+
       emit(
         state.copyWith(
           status: const TransactionReportStatus.success(),

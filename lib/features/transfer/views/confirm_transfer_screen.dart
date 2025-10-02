@@ -112,6 +112,7 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
                     onPressed: () {
                       final txId = state.transferId ?? '';
 
+                      // Handle biometric authentication (Touch ID/Face ID)
                       if (state.status is TransferStatusAwaitingBiometric &&
                           state.canUseBiometrics) {
                         context.read<TransferBloc>().add(
@@ -120,6 +121,7 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
                         return;
                       }
 
+                      // Handle OTP verification
                       final otp = _otpController.text.trim();
                       if (otp.isEmpty) {
                         BASnackBar.buildErrorSnackbar(

@@ -23,6 +23,7 @@ class TransferModel with _$TransferModel {
     required TransferType transferType,
     AuthMethod? authMethod,
     String? otpCode,
+    String? transactionId,
     @Default(false) bool saveToDirectory,
   }) = _TransferModel;
 

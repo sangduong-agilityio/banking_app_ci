@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/assets_generated/assets.gen.dart';
 import 'package:banking_app/core/utils/responsive.dart';
@@ -222,6 +221,7 @@ class BAAssets {
 
   static Widget Function({double? width, double? height, BoxFit? boxfit})
   fileParagraph = _BAFileParagraphImage.new;
+
   static Widget Function({double? width, double? height, BoxFit? boxfit})
   mobileBanking = _BAMobileBankingImage.new;
 
@@ -585,6 +585,7 @@ class _BAContactsImage extends StatelessWidget {
     return BAAssetImage(
       boxFit: boxfit,
       path: Assets.images.imgContacts.path,
+      color: context.colorScheme.inverseSurface,
       width: BAResponsive.scale(context, defaultValue: width ?? 28),
       height: BAResponsive.scale(context, defaultValue: height ?? 28),
     );
@@ -602,6 +603,7 @@ class _BACreditCardImage extends StatelessWidget {
     return BAAssetImage(
       boxFit: boxfit,
       path: Assets.images.imgCreditCard.path,
+      color: context.colorScheme.inverseSurface,
       width: BAResponsive.scale(context, defaultValue: width ?? 28),
       height: BAResponsive.scale(context, defaultValue: height ?? 28),
     );
@@ -619,6 +621,7 @@ class _BACreditCardInImage extends StatelessWidget {
     return BAAssetImage(
       boxFit: boxfit,
       path: Assets.images.imgCreditCardIn.path,
+      color: context.colorScheme.inverseSurface,
       width: BAResponsive.scale(context, defaultValue: width ?? 28),
       height: BAResponsive.scale(context, defaultValue: height ?? 28),
     );
@@ -653,6 +656,7 @@ class _BAMobileBankingImage extends StatelessWidget {
     return BAAssetImage(
       boxFit: boxfit,
       path: Assets.images.imgMobileBanking.path,
+      color: context.colorScheme.inverseSurface,
       width: BAResponsive.scale(context, defaultValue: width ?? 28),
       height: BAResponsive.scale(context, defaultValue: height ?? 28),
     );
@@ -670,6 +674,7 @@ class _BASaveOnlineImage extends StatelessWidget {
     return BAAssetImage(
       boxFit: boxfit,
       path: Assets.images.imgPig.path,
+      color: context.colorScheme.inverseSurface,
       width: BAResponsive.scale(context, defaultValue: width ?? 28),
       height: BAResponsive.scale(context, defaultValue: height ?? 28),
     );
