@@ -7,7 +7,7 @@ abstract class Env {
   @EnviedField(varName: 'SUPABASE_URL')
   static String supabaseUrl = _Env.supabaseUrl;
 
-  @EnviedField(varName: 'SUPABASE_KEY')
+  @EnviedField(varName: 'SUPABASE_KEY', obfuscate: true)
   static String supabaseKey = _Env.supabaseKey;
 
   @EnviedField(varName: 'SUPABASE_ENDPOINT')

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bill_payment_event.dart';
 import 'bill_payment_state.dart';
 import 'package:banking_app/features/bill_payment/repositories/bill_payment_repository.dart';
+import 'package:banking_app/core/security/error_sanitizer.dart';
 
 class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
   BillPaymentBloc({required this.repository})
@@ -43,7 +44,7 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }
@@ -114,7 +115,7 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }
@@ -155,7 +156,7 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }
@@ -188,7 +189,7 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }

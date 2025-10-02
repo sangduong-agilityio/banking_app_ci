@@ -1913,6 +1913,196 @@ class S {
       args: [],
     );
   }
+
+  /// `Invalid email or password. Please try again.`
+  String get authErrorInvalidCredentials {
+    return Intl.message(
+      'Invalid email or password. Please try again.',
+      name: 'authErrorInvalidCredentials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please check your email and confirm your account.`
+  String get authErrorEmailNotConfirmed {
+    return Intl.message(
+      'Please check your email and confirm your account.',
+      name: 'authErrorEmailNotConfirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No account found with this email address.`
+  String get authErrorUserNotFound {
+    return Intl.message(
+      'No account found with this email address.',
+      name: 'authErrorUserNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Too many failed attempts. Please try again in 15 minutes.`
+  String get authErrorTooManyAttempts {
+    return Intl.message(
+      'Too many failed attempts. Please try again in 15 minutes.',
+      name: 'authErrorTooManyAttempts',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password is too weak. Please choose a stronger password.`
+  String get authErrorWeakPassword {
+    return Intl.message(
+      'Password is too weak. Please choose a stronger password.',
+      name: 'authErrorWeakPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An account with this email already exists.`
+  String get authErrorEmailAlreadyExists {
+    return Intl.message(
+      'An account with this email already exists.',
+      name: 'authErrorEmailAlreadyExists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Authentication failed. Please try again.`
+  String get authErrorGeneric {
+    return Intl.message(
+      'Authentication failed. Please try again.',
+      name: 'authErrorGeneric',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request timed out. Please check your connection and try again.`
+  String get networkErrorTimeout {
+    return Intl.message(
+      'Request timed out. Please check your connection and try again.',
+      name: 'networkErrorTimeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please check your internet connection and try again.`
+  String get networkErrorConnection {
+    return Intl.message(
+      'Please check your internet connection and try again.',
+      name: 'networkErrorConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Security certificate error. Please contact support.`
+  String get networkErrorSecurity {
+    return Intl.message(
+      'Security certificate error. Please contact support.',
+      name: 'networkErrorSecurity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Network error occurred. Please try again.`
+  String get networkErrorGeneric {
+    return Intl.message(
+      'Network error occurred. Please try again.',
+      name: 'networkErrorGeneric',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid request. Please check your input and try again.`
+  String get httpErrorBadRequest {
+    return Intl.message(
+      'Invalid request. Please check your input and try again.',
+      name: 'httpErrorBadRequest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Session expired. Please sign in again.`
+  String get httpErrorUnauthorized {
+    return Intl.message(
+      'Session expired. Please sign in again.',
+      name: 'httpErrorUnauthorized',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Access denied. Please contact support if this persists.`
+  String get httpErrorForbidden {
+    return Intl.message(
+      'Access denied. Please contact support if this persists.',
+      name: 'httpErrorForbidden',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service not found. Please try again later.`
+  String get httpErrorNotFound {
+    return Intl.message(
+      'Service not found. Please try again later.',
+      name: 'httpErrorNotFound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Too many requests. Please wait a moment and try again.`
+  String get httpErrorTooManyRequests {
+    return Intl.message(
+      'Too many requests. Please wait a moment and try again.',
+      name: 'httpErrorTooManyRequests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Server error. Please try again later.`
+  String get httpErrorServerError {
+    return Intl.message(
+      'Server error. Please try again later.',
+      name: 'httpErrorServerError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Service temporarily unavailable. Please try again later.`
+  String get httpErrorGeneric {
+    return Intl.message(
+      'Service temporarily unavailable. Please try again later.',
+      name: 'httpErrorGeneric',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred. Please contact support if this persists.`
+  String get applicationErrorGeneric {
+    return Intl.message(
+      'An unexpected error occurred. Please contact support if this persists.',
+      name: 'applicationErrorGeneric',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

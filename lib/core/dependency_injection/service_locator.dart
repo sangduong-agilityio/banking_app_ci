@@ -2,6 +2,7 @@ import 'package:banking_app/core/api/api_client.dart';
 import 'package:banking_app/core/database/objectbox_setup.dart';
 import 'package:banking_app/core/env/env.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
+import 'package:banking_app/core/monitoring/monitoring_service.dart';
 import 'package:banking_app/core/services/exchange_rate_cache_service.dart';
 import 'package:banking_app/core/services/offline_exchange_service.dart';
 import 'package:banking_app/features/account/states/account_and_card_cubit.dart';
@@ -35,9 +36,9 @@ class AppLocators {
       return await ObjectBoxManager.getStore();
     });
 
-    await locator.isReady<Store>(); // WAIT for Store to be ready first
+    await locator.isReady<Store>();
 
-    final store = locator<Store>(); // Get store after it's ready
+    final store = locator<Store>();
 
     /// Sync registrations
     locator.registerLazySingleton(() => Supabase.instance.client);
@@ -56,6 +57,8 @@ class AppLocators {
     );
 
     locator.registerLazySingleton<BiometricService>(() => BiometricService());
+
+    locator.registerLazySingleton<MonitoringService>(() => MonitoringService());
 
     /// Repositories - SYNC
     locator.registerLazySingleton<AuthRepository>(

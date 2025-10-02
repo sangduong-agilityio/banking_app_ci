@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
+import 'package:banking_app/core/security/error_sanitizer.dart';
 import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
 
@@ -234,7 +235,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }
@@ -292,8 +293,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatusFailure(),
-          errorMessage:
-              'Cannot initiate transfer. Please try again. (${e.toString()})',
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }
@@ -314,7 +314,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
+import 'package:banking_app/core/services/biometric_capability.dart';
 
 class SettingCubit extends Cubit<SettingState> {
   SettingCubit({required this.repo, required this.biometricService})
@@ -39,6 +40,7 @@ class SettingCubit extends Cubit<SettingState> {
       final isEnabled = await biometricService.isBiometricEnabled();
       final hasSaved = await biometricService.getRefreshToken() != null;
       final isAvailable = await biometricService.canCheckBiometrics();
+      final capability = await biometricService.getBiometricCapability();
 
       emit(
         state.copyWith(
@@ -47,6 +49,7 @@ class SettingCubit extends Cubit<SettingState> {
           isBiometricEnabled: isEnabled,
           hasSavedBiometricCredentials: hasSaved,
           isBiometricAvailable: isAvailable,
+          biometricCapability: capability,
         ),
       );
     } catch (e) {
@@ -62,7 +65,21 @@ class SettingCubit extends Cubit<SettingState> {
   /// Toggle biometric authentication
   Future<void> toggleBiometric(bool enable) async {
     if (enable) {
-      final authenticated = await biometricService.authenticate();
+      final capability = await biometricService.getBiometricCapability();
+      if (!capability.isAvailable) {
+        emit(
+          state.copyWith(
+            status: const SettingStatus.failure(),
+            errorMessage:
+                'Biometric authentication is not available on this device',
+          ),
+        );
+        return;
+      }
+
+      final authenticated = await biometricService.authenticate(
+        customReason: 'Authenticate to enable ${capability.displayName}',
+      );
       if (!authenticated) return;
 
       final refreshToken = supabase.auth.currentSession?.refreshToken;
@@ -75,14 +92,27 @@ class SettingCubit extends Cubit<SettingState> {
         state.copyWith(
           isBiometricEnabled: true,
           hasSavedBiometricCredentials: true,
+          status: const SettingStatus.success(),
+        ),
+      );
+
+      // Show success message
+      emit(
+        state.copyWith(
+          status: const SettingStatus.success(),
+          errorMessage: capability.enabledMessage,
         ),
       );
     } else {
       await biometricService.disableBiometric();
+      final capability = state.biometricCapability;
+
       emit(
         state.copyWith(
           isBiometricEnabled: false,
           hasSavedBiometricCredentials: false,
+          status: const SettingStatus.success(),
+          errorMessage: capability.disabledMessage,
         ),
       );
     }

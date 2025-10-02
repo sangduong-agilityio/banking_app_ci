@@ -4,6 +4,7 @@ import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
+import 'package:banking_app/core/services/biometric_capability.dart';
 import 'package:banking_app/core/utils/pref_keys.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
@@ -73,11 +74,15 @@ class SettingScreen extends StatelessWidget {
                     onTap: () {},
                   ),
                   SettingSelection(
-                    title: S.current.settingTouchIdLabel,
-                    isEnabled: state.isBiometricEnabled,
-                    onToggle: (value) {
-                      context.read<SettingCubit>().toggleBiometric(value);
-                    },
+                    title: state.biometricCapability.settingsLabel,
+                    isEnabled:
+                        state.isBiometricEnabled &&
+                        state.biometricCapability.isAvailable,
+                    onToggle: state.biometricCapability.isAvailable
+                        ? (value) {
+                            context.read<SettingCubit>().toggleBiometric(value);
+                          }
+                        : null,
                     padding: const EdgeInsets.symmetric(vertical: 5),
                   ),
                   SettingSelection(
