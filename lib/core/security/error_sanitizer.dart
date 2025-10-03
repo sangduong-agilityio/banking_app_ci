@@ -2,6 +2,7 @@ import 'package:banking_app/core/api/failure.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ErrorSanitizer {
   /// Sanitizes errors to prevent sensitive information exposure
@@ -130,16 +131,49 @@ class ErrorSanitizer {
   }
 
   /// Logs the full error details securely for debugging
+
   static Future<void> logSecureError(
     Object error,
     StackTrace? stackTrace, {
     String? userId,
     Map<String, dynamic>? context,
+    bool isCritical = false,
   }) async {
     final sanitizedContext = _sanitizeContext(context);
 
+    // Log to Sentry with sanitized details
+    await Sentry.captureException(
+      error,
+      stackTrace: stackTrace,
+      withScope: (scope) {
+        scope.setTag('error_type', error.runtimeType.toString());
+
+        // Set severity level
+        scope.level = isCritical ? SentryLevel.fatal : SentryLevel.error;
+
+        // Add tags for filtering
+        scope.setTag('is_critical', isCritical.toString());
+        scope.setTag(
+          'environment',
+          const bool.fromEnvironment('dart.vm.product')
+              ? 'production'
+              : 'development',
+        );
+
+        if (userId != null) {
+          scope.setUser(SentryUser(id: userId));
+        }
+        if (sanitizedContext.isNotEmpty) {
+          scope.setContexts('error_context', sanitizedContext);
+        }
+      },
+    );
+
+    // Also log to console in development mode
     assert(() {
-      print('SECURE_ERROR_LOG: ${error.runtimeType}: ${error.toString()}');
+      print(
+        'SECURE_ERROR_LOG [${isCritical ? 'CRITICAL' : 'ERROR'}]: ${error.runtimeType}: ${error.toString()}',
+      );
       if (stackTrace != null) {
         print('STACK_TRACE: $stackTrace');
       }
@@ -171,7 +205,7 @@ class ErrorSanitizer {
         continue;
       }
 
-      // Sanitize values
+      // Truncate overly long string values
       final value = entry.value;
       if (value is String && value.length > 100) {
         sanitized[entry.key] = '${value.substring(0, 100)}...';

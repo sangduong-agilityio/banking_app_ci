@@ -2,7 +2,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/core/utils/validators.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
@@ -123,21 +123,24 @@ class SignUpBody extends StatelessWidget {
               BATextField(
                 controller: usernameController,
                 hint: S.current.validatorNameRequired,
-                validator: (value) =>
-                    InputValidationMixin.validUserName(value ?? ''),
+                validator: (value) => SecureInputValidator.validateSecureInput(
+                  value,
+                  fieldName: S.current.validatorNameRequired,
+                  minLength: 2,
+                  maxLength: 50,
+                  allowSpecialChars: false,
+                ),
               ),
               BATextField(
                 controller: emailController,
                 hint: S.current.signInEmailHint,
-                validator: (value) =>
-                    InputValidationMixin.validEmail(value ?? ''),
+                validator: SecureInputValidator.validateEmail,
               ),
               BATextField(
                 controller: passwordController,
                 hint: S.current.signInPassowrdHint,
                 isPassword: true,
-                validator: (value) =>
-                    InputValidationMixin.validPassword(value ?? ''),
+                validator: SecureInputValidator.validatePassword,
               ),
             ],
             onValidate: (isValid) {

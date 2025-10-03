@@ -52,7 +52,7 @@ class AccountCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  account.accountNumber,
+                  FormatterUtils.maskCardNumber(account.accountNumber),
                   style: context.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: context.colorScheme.scrim,
@@ -66,8 +66,7 @@ class AccountCard extends StatelessWidget {
               _cardInformation(
                 context,
                 label: S.current.accountAvailableBalanceTitle,
-                value:
-                    '\$${FormatterUtils.formatAmount(account.availableBalance)}',
+                value: FormatterUtils.formatBalance(account.availableBalance),
               ),
               _cardInformation(
                 context,

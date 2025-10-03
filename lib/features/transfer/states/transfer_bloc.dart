@@ -1,14 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
+import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
+import 'package:banking_app/features/transfer/models/bank_model.dart';
+import 'package:banking_app/features/transfer/models/branch_model.dart';
 import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
-import 'package:banking_app/core/security/error_sanitizer.dart';
+import 'package:banking_app/core/bloc/base_bloc.dart';
 import 'package:banking_app/features/transactions/models/transaction_model.dart';
+import 'package:banking_app/features/home/models/account_model.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
 
 import 'transfer_event.dart';
 import 'transfer_state.dart';
 
-class TransferBloc extends Bloc<TransferEvt, TransferState> {
+class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   final TransferRepository transferRepo;
   final BiometricService biometricService;
 
@@ -40,34 +45,52 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
-    try {
-      final beneficiaries = await transferRepo.fetchBeneficiaries();
-      final banks = await transferRepo.fetchBanks();
-      final branches = await transferRepo.fetchBranchs();
-      final accounts = await transferRepo.fetchAccounts();
-      final cards = await transferRepo.fetchCards();
-      final biometricAvailable = await biometricService.canCheckBiometrics();
-      final biometricEnabled = await biometricService.isBiometricEnabled();
 
-      /// Emit loaded data
+    final result = await executeWithErrorHandling(
+      () async {
+        final beneficiaries = await transferRepo.fetchBeneficiaries();
+        final banks = await transferRepo.fetchBanks();
+        final branches = await transferRepo.fetchBranchs();
+        final accounts = await transferRepo.fetchAccounts();
+        final cards = await transferRepo.fetchCards();
+        final biometricAvailable = await biometricService.canCheckBiometrics();
+        final biometricEnabled = await biometricService.isBiometricEnabled();
+
+        return {
+          'beneficiaries': beneficiaries,
+          'banks': banks,
+          'branches': branches,
+          'accounts': accounts,
+          'cards': cards,
+          'biometricAvailable': biometricAvailable,
+          'biometricEnabled': biometricEnabled,
+        };
+      },
+      operationName: 'transfer_initialize',
+      isCritical: true,
+      context: {'event_type': 'TransferInitializeEvt'},
+    );
+
+    if (result != null) {
       emit(
         state.copyWith(
           status: const TransferStatus.initial(),
-          beneficiaries: beneficiaries,
-          banks: banks,
-          branches: branches,
-          beneficiariesFiltered: beneficiaries,
-          accounts: accounts,
-          cards: cards,
-          biometricAvailable: biometricAvailable,
-          biometricEnabled: biometricEnabled,
+          beneficiaries: result['beneficiaries'] as List<BeneficiaryModel>,
+          banks: result['banks'] as List<BankModel>,
+          branches: result['branches'] as List<BranchModel>,
+          beneficiariesFiltered:
+              result['beneficiaries'] as List<BeneficiaryModel>,
+          accounts: result['accounts'] as List<AccountModel>,
+          cards: result['cards'] as List<CardModel>,
+          biometricAvailable: result['biometricAvailable'] as bool,
+          biometricEnabled: result['biometricEnabled'] as bool,
         ),
       );
-    } catch (e) {
+    } else {
       emit(
         state.copyWith(
-          status: const TransferStatus.initial(),
-          errorMessage: 'Failed to load initial data: ${e.toString()}',
+          status: const TransferStatus.failure(),
+          errorMessage: 'Failed to load initial data',
         ),
       );
     }
@@ -133,16 +156,31 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
-    try {
-      final result = await transferRepo.addNewBeneficiary(event.beneficiary);
+
+    final result = await executeWithErrorHandling(
+      () async => await transferRepo.addNewBeneficiary(event.beneficiary),
+      operationName: 'add_new_beneficiary',
+      isCritical: false,
+      context: {
+        'beneficiary_name': event.beneficiary.name,
+        'account_number': event.beneficiary.accountNumber,
+      },
+    );
+
+    if (result != null) {
       emit(
         state.copyWith(
           status: const TransferStatus.success(),
           newBeneficiary: result,
         ),
       );
-    } catch (_) {
-      emit(state.copyWith(status: const TransferStatus.failure()));
+    } else {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: 'Failed to add beneficiary',
+        ),
+      );
     }
   }
 
@@ -213,29 +251,43 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
-    try {
-      final request = TransferModel(
-        fromAccount: state.selectedAccount,
-        fromCard: state.selectedCard,
-        toBeneficiary: state.selectedBeneficiary,
-        amount: state.amount,
-        transactionFee: 0,
-        content: state.content ?? '',
-        transferType: state.selectedTransferType,
-      );
 
-      final fee = await transferRepo.calculateFee(request);
+    final result = await executeWithErrorHandling(
+      () async {
+        final request = TransferModel(
+          fromAccount: state.selectedAccount,
+          fromCard: state.selectedCard,
+          toBeneficiary: state.selectedBeneficiary,
+          amount: state.amount,
+          transactionFee: 0,
+          content: state.content ?? '',
+          transferType: state.selectedTransferType,
+        );
+
+        return await transferRepo.calculateFee(request);
+      },
+      operationName: 'calculate_transaction_fee',
+      isCritical: false,
+      context: {
+        'amount': state.amount,
+        'transfer_type': state.selectedTransferType.name,
+        'has_account': state.selectedAccount != null,
+        'has_card': state.selectedCard != null,
+      },
+    );
+
+    if (result != null) {
       emit(
         state.copyWith(
-          transactionFee: fee.fee,
+          transactionFee: result.fee,
           status: const TransferStatus.initial(),
         ),
       );
-    } catch (e) {
+    } else {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: ErrorSanitizer.sanitize(e),
+          errorMessage: 'Failed to calculate transaction fee',
         ),
       );
     }
@@ -248,19 +300,31 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    try {
-      final transferRequest = TransferModel(
-        fromAccount: state.selectedAccount,
-        fromCard: state.selectedCard,
-        toBeneficiary: state.selectedBeneficiary,
-        amount: state.amount ?? 0,
-        transactionFee: state.transactionFee,
-        content: state.content ?? '',
-        transferType: state.selectedTransferType,
-      );
+    final result = await executeWithErrorHandling(
+      () async {
+        final transferRequest = TransferModel(
+          fromAccount: state.selectedAccount,
+          fromCard: state.selectedCard,
+          toBeneficiary: state.selectedBeneficiary,
+          amount: state.amount ?? 0,
+          transactionFee: state.transactionFee,
+          content: state.content ?? '',
+          transferType: state.selectedTransferType,
+        );
 
-      final result = await transferRepo.initiateTransfer(transferRequest);
+        return await transferRepo.initiateTransfer(transferRequest);
+      },
+      operationName: 'confirm_transfer',
+      isCritical: true,
+      context: {
+        'amount': state.amount,
+        'transfer_type': state.selectedTransferType.name,
+        'has_account': state.selectedAccount != null,
+        'has_card': state.selectedCard != null,
+      },
+    );
 
+    if (result != null) {
       /// Check null & transferId
       if (result.transferId.isEmpty) {
         emit(
@@ -289,11 +353,11 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
           ),
         ),
       );
-    } catch (e) {
+    } else {
       emit(
         state.copyWith(
-          status: const TransferStatusFailure(),
-          errorMessage: ErrorSanitizer.sanitize(e),
+          status: const TransferStatus.failure(),
+          errorMessage: 'Transfer confirmation failed',
         ),
       );
     }
@@ -302,8 +366,16 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
   /// Send OTP
   Future<void> _onSendOtp(SendOtpEvt event, Emitter<TransferState> emit) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
+
     try {
-      await transferRepo.sendOtpEmail(event.transferId);
+      await executeWithErrorHandling(
+        () async => await transferRepo.sendOtpEmail(event.transferId),
+        operationName: 'send_otp',
+        isCritical: false,
+        context: {'transfer_id': event.transferId},
+      );
+
+      // OTP sending doesn't return a value, so we assume success if no exception was thrown
       emit(
         state.copyWith(
           otpSent: true,
@@ -314,7 +386,7 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: ErrorSanitizer.sanitize(e),
+          errorMessage: 'Failed to send OTP',
         ),
       );
     }
@@ -327,48 +399,46 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    try {
-      final isValid = await transferRepo.verifyOTP(
-        state.transferId ?? '',
-        event.otpCode,
-      );
-
-      if (isValid) {
-        // Complete the transfer after OTP verification
-        final result = await transferRepo.confirmTransfer(
+    final result = await executeWithErrorHandling(
+      () async {
+        final isValid = await transferRepo.verifyOTP(
           state.transferId ?? '',
           event.otpCode,
         );
 
-        if (result) {
-          emit(
-            state.copyWith(
-              status: const TransferStatus.success(),
-              otpSent: false,
-              errorMessage: null,
-            ),
+        if (isValid) {
+          // Complete the transfer after OTP verification
+          return await transferRepo.confirmTransfer(
+            state.transferId ?? '',
+            event.otpCode,
           );
         } else {
-          emit(
-            state.copyWith(
-              status: const TransferStatus.failure(),
-              errorMessage: 'Transfer confirmation failed.',
-            ),
-          );
+          throw Exception('Invalid OTP code');
         }
-      } else {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.failure(),
-            errorMessage: 'Invalid OTP code.',
-          ),
-        );
-      }
-    } catch (e) {
+      },
+      operationName: 'confirm_transfer_with_otp',
+      isCritical: true,
+      context: {
+        'transfer_id': state.transferId,
+        'has_otp': event.otpCode.isNotEmpty,
+      },
+    );
+
+    if (result != null && result == true) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.success(),
+          otpSent: false,
+          errorMessage: null,
+        ),
+      );
+    } else {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'OTP verification failed: ${e.toString()}',
+          errorMessage: result == false
+              ? 'Transfer confirmation failed'
+              : 'Invalid OTP code',
         ),
       );
     }
@@ -381,45 +451,39 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    try {
-      final canAuth = await biometricService.authenticate();
+    final result = await executeWithErrorHandling(
+      () async {
+        final canAuth = await biometricService.authenticate();
 
-      if (!canAuth) {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.failure(),
-            errorMessage: 'Biometric authentication failed.',
-          ),
+        if (!canAuth) {
+          throw Exception('Biometric authentication failed');
+        }
+
+        // Complete the transfer with biometric authentication
+        return await transferRepo.confirmTransfer(
+          state.transferId ?? '',
+          'BIOMETRIC_AUTH',
         );
-        return;
-      }
+      },
+      operationName: 'confirm_with_biometric',
+      isCritical: true,
+      context: {'transfer_id': state.transferId, 'auth_method': 'biometric'},
+    );
 
-      // Complete the transfer with biometric authentication
-      final result = await transferRepo.confirmTransfer(
-        state.transferId ?? '',
-        'BIOMETRIC_AUTH',
+    if (result != null && result == true) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.success(),
+          errorMessage: null,
+        ),
       );
-
-      if (result) {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.success(),
-            errorMessage: null,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.failure(),
-            errorMessage: 'Transfer confirmation failed.',
-          ),
-        );
-      }
-    } catch (e) {
+    } else {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'Biometric confirm error: ${e.toString()}',
+          errorMessage: result == false
+              ? 'Transfer confirmation failed'
+              : 'Biometric authentication failed',
         ),
       );
     }
@@ -433,5 +497,10 @@ class TransferBloc extends Bloc<TransferEvt, TransferState> {
         state.amount! > 0) {
       add(CalculateTransactionFeeEvt());
     }
+  }
+
+  @override
+  String? getCurrentUserId() {
+    return state.selectedAccount?.userId ?? state.selectedCard?.userId;
   }
 }

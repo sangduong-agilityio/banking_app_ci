@@ -44,7 +44,11 @@ class GreetingAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       buildWhen: (previous, current) => previous.user != current.user,
+
       builder: (context, state) {
+        if (state.status is HomeStatusLoading) {
+          return const GreetingAppBarSkeleton();
+        }
         return BAAppBar(
           titleSpacing: 10,
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),

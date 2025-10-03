@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:banking_app/core/api/failure.dart';
 import 'package:banking_app/core/env/env.dart';
-import 'package:banking_app/core/security/audit_logger.dart';
+import 'package:banking_app/core/security/error_sanitizer.dart';
+import 'package:banking_app/core/security/security_config.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:crypto/crypto.dart';
 
 class BankingApiClient {
   final Dio _dio;
@@ -12,9 +15,9 @@ class BankingApiClient {
     : _dio = Dio(
         BaseOptions(
           baseUrl: baseUrl,
-          connectTimeout: const Duration(seconds: 30),
-          receiveTimeout: const Duration(seconds: 30),
-          sendTimeout: const Duration(seconds: 30),
+          connectTimeout: SecurityConfig.networkTimeout,
+          receiveTimeout: SecurityConfig.networkTimeout,
+          sendTimeout: SecurityConfig.networkTimeout,
         ),
       ) {
     _setupSecureClient();
@@ -85,11 +88,13 @@ class BankingApiClient {
       final expectedFingerprint = _getPinnedFingerprint(host);
 
       if (expectedFingerprint.isEmpty) {
-        AuditLogger.logSuspicious(
-          userId: 'system',
-          activity: 'unpinned_certificate',
-          description: 'No pinned certificate found for host: $host',
-          metadata: {'host': host, 'fingerprint': fingerprint},
+        print('SECURITY_WARNING: No pinned certificate found for host: $host');
+        // ✅ ADD: Log warning
+        ErrorSanitizer.logSecureError(
+          Exception('Missing pinned certificate for host: $host'),
+          StackTrace.current,
+          context: {'host': host, 'fingerprint': fingerprint},
+          isCritical: false,
         );
         return true;
       }
@@ -97,32 +102,45 @@ class BankingApiClient {
       final isValid = fingerprint == expectedFingerprint;
 
       if (!isValid) {
-        AuditLogger.logSuspicious(
-          userId: 'system',
-          activity: 'certificate_mismatch',
-          description: 'SSL certificate fingerprint mismatch for host: $host',
-          metadata: {
+        print(
+          'SECURITY_ERROR: SSL certificate fingerprint mismatch for host: $host',
+        );
+
+        // ✅ ADD: Log CRITICAL security error
+        ErrorSanitizer.logSecureError(
+          Exception('Certificate pinning failed for host: $host'),
+          StackTrace.current,
+          context: {
             'host': host,
-            'expected_fingerprint': expectedFingerprint,
-            'actual_fingerprint': fingerprint,
+            'expected': expectedFingerprint,
+            'actual': fingerprint,
           },
+          isCritical: true, // Certificate mismatch = potential MITM attack
         );
       }
 
       return isValid;
     } catch (e) {
-      AuditLogger.logSuspicious(
-        userId: 'system',
-        activity: 'certificate_validation_error',
-        description: 'Error validating certificate for host: $host',
-        metadata: {'host': host, 'error': e.toString()},
+      print(
+        'SECURITY_ERROR: Error validating certificate for host: $host - $e',
       );
+
+      // ✅ ADD: Log certificate validation error
+      ErrorSanitizer.logSecureError(
+        e,
+        StackTrace.current,
+        context: {'host': host, 'stage': 'certificate_validation'},
+        isCritical: true,
+      );
+
       return false;
     }
   }
 
   String _getCertificateFingerprint(X509Certificate cert) {
-    return 'sha256_fingerprint_placeholder';
+    final derBytes = cert.der; // Get DER-encoded certificate
+    final digest = sha256.convert(derBytes);
+    return 'sha256/${base64.encode(digest.bytes)}';
   }
 
   String _getPinnedFingerprint(String host) {
@@ -159,61 +177,69 @@ class BankingApiClient {
 class _SecurityInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers.addAll({
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0',
-    });
-
-    AuditLogger.logEvent(
-      category: 'API',
-      event: 'request',
-      userId: 'system',
-      metadata: {
-        'endpoint': options.path,
-        'method': options.method,
-        'has_data': options.data != null,
-      },
-    );
-
+    options.headers.addAll(SecurityConfig.securityHeaders);
+    print('API_REQUEST: ${options.method} ${options.path}');
     super.onRequest(options, handler);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    AuditLogger.logEvent(
-      category: 'API',
-      event: 'response',
-      userId: 'system',
-      metadata: {
-        'endpoint': response.requestOptions.path,
-        'status_code': response.statusCode,
-        'response_size': response.data?.toString().length ?? 0,
-      },
+    print(
+      'API_RESPONSE: ${response.statusCode} ${response.requestOptions.path}',
     );
-
     super.onResponse(response, handler);
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    AuditLogger.logSuspicious(
-      userId: 'system',
-      activity: 'api_error',
-      description: 'API request failed',
-      metadata: {
-        'endpoint': err.requestOptions.path,
-        'method': err.requestOptions.method,
-        'error_type': err.type.toString(),
-        'status_code': err.response?.statusCode,
-        'error_message': err.message,
-      },
-    );
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
+    print('API_ERROR: ${err.type} ${err.requestOptions.path} - ${err.message}');
+
+    // ✅ ADD: Log critical errors to Sentry
+    if (_shouldLogToSentry(err)) {
+      await ErrorSanitizer.logSecureError(
+        err,
+        err.stackTrace,
+        context: {
+          'endpoint': err.requestOptions.path,
+          'method': err.requestOptions.method,
+          'status_code': err.response?.statusCode,
+          'error_type': err.type.name,
+        },
+        isCritical: _isCriticalError(err),
+      );
+    }
 
     super.onError(err, handler);
+  }
+
+  bool _shouldLogToSentry(DioException err) {
+    // Không log timeout thông thường (quá nhiễu)
+    if (err.type == DioExceptionType.connectionTimeout ||
+        err.type == DioExceptionType.receiveTimeout) {
+      return false;
+    }
+
+    // Log tất cả errors khác
+    return true;
+  }
+
+  bool _isCriticalError(DioException err) {
+    // Certificate errors = CRITICAL
+    if (err.type == DioExceptionType.badCertificate) {
+      return true;
+    }
+
+    // Server errors 5xx = CRITICAL
+    final statusCode = err.response?.statusCode;
+    if (statusCode != null && statusCode >= 500) {
+      return true;
+    }
+
+    // Connection errors = CRITICAL (có thể là network attack)
+    if (err.type == DioExceptionType.connectionError) {
+      return true;
+    }
+
+    return false;
   }
 }
