@@ -2,6 +2,7 @@ import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
+import 'package:banking_app/core/widgets/shimmer.dart';
 import 'package:banking_app/features/account/states/account_and_card_cubit.dart';
 import 'package:banking_app/features/account/states/account_and_card_state.dart';
 import 'package:banking_app/features/account/widgets/account_card.dart';
@@ -26,6 +27,9 @@ class AccountManagementScreen extends StatelessWidget {
       body: BlocBuilder<AccountAndCardCubit, AccountAndCardState>(
         buildWhen: (previous, current) => previous.accounts != current.accounts,
         builder: (context, state) {
+          if (state.status is AccountAndCardStatusLoading) {
+            return const UserProfileSkeleton();
+          }
           return ListView.builder(
             padding: const EdgeInsets.only(top: 16, bottom: 24),
             itemCount: state.accounts.length,

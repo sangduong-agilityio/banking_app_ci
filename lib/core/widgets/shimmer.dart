@@ -1,3 +1,4 @@
+import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 /// A lightweight shimmer effect without external dependencies.
@@ -83,6 +84,44 @@ class GradientTranslation extends GradientTransform {
   @override
   Matrix4 transform(Rect bounds, {TextDirection? textDirection}) {
     return Matrix4.identity()..translate(dx);
+  }
+}
+
+class GreetingAppBarSkeleton extends StatelessWidget {
+  const GreetingAppBarSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+      color: context.colorScheme.secondary,
+      child: SafeArea(
+        bottom: false,
+        child: BAShimmerLoading(
+          child: Row(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Container(
+                width: 120,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -205,6 +244,136 @@ class _GridTileSkeleton extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class UserProfileSkeleton extends StatelessWidget {
+  const UserProfileSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BAShimmerLoading(
+      child: Column(
+        children: [
+          // Profile Image Skeleton
+          Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(height: 12),
+
+          // Username Skeleton
+          Container(
+            width: 120,
+            height: 20,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Skeleton for Account List Section
+class AccountListSkeleton extends StatelessWidget {
+  const AccountListSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 32),
+          child: Column(
+            children: [
+              // User Profile Skeleton (reusable component)
+              const UserProfileSkeleton(),
+              const SizedBox(height: 32),
+
+              // Account Cards Skeleton
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: 2,
+                  itemBuilder: (context, index) => const AccountCardSkeleton(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Skeleton for individual Account Card
+class AccountCardSkeleton extends StatelessWidget {
+  const AccountCardSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: BAShimmerLoading(
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _bar(width: 70, height: 16),
+                  _bar(width: 110, height: 16),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _infoRow(),
+              const SizedBox(height: 8),
+              _infoRow(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _infoRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [_bar(width: 100, height: 12), _bar(width: 80, height: 12)],
+    );
+  }
+
+  Widget _bar({required double width, required double height}) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(6),
       ),
     );
   }

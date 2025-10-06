@@ -5,6 +5,7 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
+import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +27,12 @@ class SearchScreen extends StatelessWidget {
             category: S.current.searchBranchSelectedTitle,
             categoryName: S.current.searchBranchDescription,
             imageUrl: BAAssets.branch(),
-            onTap: () {},
+            onTap: () {
+              BASnackBar.showNotSupported(
+                context,
+                S.current.pageNotSupportedYet,
+              );
+            },
           ),
           CardCategorySelected(
             category: S.current.searchInterestRateTitle,

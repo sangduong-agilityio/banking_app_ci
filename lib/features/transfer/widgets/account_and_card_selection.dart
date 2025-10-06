@@ -37,20 +37,22 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
   void initState() {
     super.initState();
     _controller = TextEditingController(
-      text:
-          widget.selectedAccount?.accountNumber ??
-          widget.selectedCard?.cardNumber ??
-          '',
+      text: widget.selectedAccount?.accountNumber != null
+          ? FormatterUtils.maskCardNumber(widget.selectedAccount!.accountNumber)
+          : widget.selectedCard?.cardNumber != null
+          ? FormatterUtils.maskCardNumber(widget.selectedCard!.cardNumber)
+          : '',
     );
   }
 
   @override
   void didUpdateWidget(covariant AccountOrCardSelector oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _controller.text =
-        widget.selectedAccount?.accountNumber ??
-        widget.selectedCard?.cardNumber ??
-        '';
+    _controller.text = widget.selectedAccount?.accountNumber != null
+        ? FormatterUtils.maskCardNumber(widget.selectedAccount!.accountNumber)
+        : widget.selectedCard?.cardNumber != null
+        ? FormatterUtils.maskCardNumber(widget.selectedCard!.cardNumber)
+        : '';
   }
 
   @override
@@ -86,7 +88,7 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
             padding: const EdgeInsets.only(left: 14, top: 4),
             child: Text(
               S.current.transferAvailableBalanceTitle(
-                "\$${FormatterUtils.formatAmount(account.availableBalance)}",
+                FormatterUtils.formatBalance(account.availableBalance),
               ),
               style: context.bodySmall?.copyWith(
                 fontWeight: FontWeight.w600,
@@ -99,7 +101,7 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
             padding: const EdgeInsets.only(left: 14, top: 4),
             child: Text(
               S.current.transferAvailableBalanceTitle(
-                "\$${FormatterUtils.formatAmount(card.availableBalance ?? 0)}",
+                FormatterUtils.formatBalance(card.availableBalance ?? 0),
               ),
               style: context.bodySmall?.copyWith(
                 fontWeight: FontWeight.w600,
@@ -152,9 +154,9 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
 
   String _getItemLabel(dynamic item) {
     if (item is AccountModel) {
-      return "${item.accountType} - ${item.accountNumber}";
+      return "${item.accountType} - ${FormatterUtils.maskCardNumber(item.accountNumber)}";
     } else if (item is CardModel) {
-      return "${item.cardType?.displayName ?? ''} - ${item.cardNumber}";
+      return "${item.cardType?.displayName ?? ''} - ${FormatterUtils.maskCardNumber(item.cardNumber)}";
     }
     return '';
   }

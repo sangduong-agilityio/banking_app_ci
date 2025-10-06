@@ -254,7 +254,11 @@ class ConfirmTransactionDetail extends StatelessWidget {
           name: S.current.transferCardNumberLabel,
           label: S.current.transferCardNumberLabel,
           controller: TextEditingController(
-            text: state.selectedBeneficiary?.accountNumber ?? '',
+            text: state.selectedBeneficiary?.accountNumber != null
+                ? FormatterUtils.maskCardNumber(
+                    state.selectedBeneficiary!.accountNumber,
+                  )
+                : '',
           ),
           readOnly: true,
         ),

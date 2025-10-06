@@ -2,6 +2,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/formatters.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
@@ -169,10 +170,12 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                 controller: _otpController,
                 hint: S.current.transferOtpLabel,
                 keyboardType: TextInputType.number,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(6),
                 ],
+                validator: SecureInputValidator.validateOTP,
               ),
             ),
             const SizedBox(width: 5),
