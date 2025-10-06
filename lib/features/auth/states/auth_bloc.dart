@@ -62,7 +62,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         );
       }
     } catch (e, stackTrace) {
-      // ✅ IMPROVED: Add isCritical flag and better context
+      // IMPROVED: Add isCritical flag and better context
       await ErrorSanitizer.logSecureError(
         e,
         stackTrace,
@@ -73,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
           'has_password': state.password.isNotEmpty,
           'form_valid': state.isFormValid,
         },
-        isCritical: false, // Login failures are expected, not critical
+        isCritical: false,
       );
 
       emit(
