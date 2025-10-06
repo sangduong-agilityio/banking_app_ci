@@ -35,9 +35,9 @@ class AppLocators {
       return await ObjectBoxManager.getStore();
     });
 
-    await locator.isReady<Store>(); // WAIT for Store to be ready first
+    await locator.isReady<Store>();
 
-    final store = locator<Store>(); // Get store after it's ready
+    final store = locator<Store>();
 
     /// Sync registrations
     locator.registerLazySingleton(() => Supabase.instance.client);

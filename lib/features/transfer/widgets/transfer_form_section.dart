@@ -2,7 +2,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/currency.dart';
-import 'package:banking_app/core/utils/validators.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
@@ -25,8 +25,7 @@ class TransferFormSection extends StatefulWidget {
   State<TransferFormSection> createState() => _TransferFormSectionState();
 }
 
-class _TransferFormSectionState extends State<TransferFormSection>
-    with InputValidationMixin {
+class _TransferFormSectionState extends State<TransferFormSection> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _cardNumberController = TextEditingController();
@@ -107,9 +106,12 @@ class _TransferFormSectionState extends State<TransferFormSection>
           hint: S.current.transferNameLabel,
           controller: _nameController,
           autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) => InputValidationMixin.validateRequired(
+          validator: (value) => SecureInputValidator.validateSecureInput(
             value,
-            S.current.transferNameLabel,
+            fieldName: S.current.transferNameLabel,
+            minLength: 2,
+            maxLength: 50,
+            allowSpecialChars: false,
           ),
           onChanged: (value) => context.read<TransferBloc>().add(
             UpdateTransferDetailsEvt(name: value),
@@ -126,7 +128,7 @@ class _TransferFormSectionState extends State<TransferFormSection>
             FilteringTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(16),
           ],
-          validator: InputValidationMixin.validateCardNumber,
+          validator: SecureInputValidator.validateAccountNumber,
           onChanged: (value) => context.read<TransferBloc>().add(
             UpdateTransferDetailsEvt(cardNumber: value),
           ),
@@ -146,9 +148,11 @@ class _TransferFormSectionState extends State<TransferFormSection>
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
         ],
-        validator: (v) => CurrencyUtils.validateAmount(
-          amount: double.tryParse(v ?? ''),
-          balance: state.selectedAccount?.availableBalance ?? 0,
+        validator: (v) => SecureInputValidator.validateTransferAmount(
+          v,
+          maxBalance:
+              state.selectedAccount?.availableBalance ??
+              state.selectedCard?.availableBalance,
         ),
         onChanged: (v) {
           final amount = double.tryParse(v ?? '');
@@ -169,9 +173,12 @@ class _TransferFormSectionState extends State<TransferFormSection>
         controller: _contentController,
         textInputAction: TextInputAction.done,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (value) => InputValidationMixin.validateRequired(
+        validator: (value) => SecureInputValidator.validateSecureInput(
           value,
-          S.current.transferContentLabel,
+          fieldName: S.current.transferContentLabel,
+          minLength: 3,
+          maxLength: 100,
+          allowSpecialChars: true,
         ),
         onChanged: (value) => context.read<TransferBloc>().add(
           UpdateTransferDetailsEvt(content: value),
@@ -211,9 +218,12 @@ class _TransferFormSectionState extends State<TransferFormSection>
                 controller: _bankController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 suffixIcon: const Icon(Icons.keyboard_arrow_right, size: 20),
-                validator: (value) => InputValidationMixin.validateRequired(
+                validator: (value) => SecureInputValidator.validateSecureInput(
                   value,
-                  S.current.transferChooseBankLabel,
+                  fieldName: S.current.transferChooseBankLabel,
+                  minLength: 1,
+                  maxLength: 50,
+                  allowSpecialChars: false,
                 ),
               ),
             ),
@@ -235,9 +245,12 @@ class _TransferFormSectionState extends State<TransferFormSection>
                 controller: _branchController,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 suffixIcon: const Icon(Icons.keyboard_arrow_right),
-                validator: (value) => InputValidationMixin.validateRequired(
+                validator: (value) => SecureInputValidator.validateSecureInput(
                   value,
-                  S.current.transferChooseBranchLabel,
+                  fieldName: S.current.transferChooseBranchLabel,
+                  minLength: 1,
+                  maxLength: 50,
+                  allowSpecialChars: false,
                 ),
               ),
             ),

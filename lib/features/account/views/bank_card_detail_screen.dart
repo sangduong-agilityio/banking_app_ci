@@ -51,7 +51,7 @@ class BankCardDetailScreen extends StatelessWidget {
             _bankCardInformation(
               context,
               S.current.accountAvailableBalanceTitle,
-              '\$${cards.availableBalance.toString()}',
+              FormatterUtils.formatBalance(cards.availableBalance ?? 0),
             ),
 
             const Spacer(),

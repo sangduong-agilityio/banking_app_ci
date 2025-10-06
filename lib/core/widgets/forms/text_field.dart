@@ -62,6 +62,8 @@ class BATextField extends StatefulWidget {
 class _BATextFieldState extends State<BATextField> {
   bool _textInvisible = true;
   final _iconFocusNode = FocusNode(skipTraversal: true);
+  final _formFieldKey = GlobalKey<FormFieldState>();
+  String? _errorText;
 
   @override
   void dispose() {
@@ -71,6 +73,19 @@ class _BATextFieldState extends State<BATextField> {
 
   void _togglePasswordVisibility() {
     setState(() => _textInvisible = !_textInvisible);
+  }
+
+  void _validateField() {
+    if (widget.validator != null) {
+      final error = widget.validator!(_formFieldKey.currentState?.value);
+      if (_errorText != error) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() => _errorText = error);
+          }
+        });
+      }
+    }
   }
 
   @override
@@ -83,19 +98,23 @@ class _BATextFieldState extends State<BATextField> {
           const SizedBox(height: 8),
         ],
         FormBuilderTextField(
+          key: _formFieldKey,
           name: widget.name ?? '',
           cursorColor: context.colorScheme.primary,
           keyboardType: widget.keyboardType,
           obscureText: widget.isPassword ? _textInvisible : widget.obscureText,
           autovalidateMode: widget.autovalidateMode,
-          maxLines: widget.maxLines,
+
           focusNode: widget.focusNode,
           controller: widget.controller,
           enabled: widget.enabled,
           readOnly: widget.readOnly,
           inputFormatters: widget.inputFormatters,
           textInputAction: widget.textInputAction,
-          onChanged: widget.onChanged,
+          onChanged: (value) {
+            widget.onChanged?.call(value);
+            _validateField();
+          },
           onEditingComplete:
               widget.onEditingComplete ??
               () {
@@ -105,7 +124,17 @@ class _BATextFieldState extends State<BATextField> {
                   FocusScope.of(context).unfocus();
                 }
               },
-          validator: widget.validator,
+          validator: (value) {
+            final error = widget.validator?.call(value);
+            if (_errorText != error) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  setState(() => _errorText = error);
+                }
+              });
+            }
+            return error;
+          },
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             hintText: widget.hint,

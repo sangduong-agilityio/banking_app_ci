@@ -1,6 +1,7 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
@@ -124,77 +125,83 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
               onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
               child: Padding(
                 padding: const EdgeInsets.all(30),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: context.colorScheme.onPrimary,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () => _showCompanySelector(
-                          availableCompanies,
-                          selectedCompany,
+                child: SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: context.colorScheme.onPrimary,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
                         ),
-                        child: AbsorbPointer(
-                          child: BATextField(
-                            controller:
-                                TextEditingController(
-                                    text: selectedCompany?.name ?? '',
-                                  )
-                                  ..selection = TextSelection.collapsed(
-                                    offset:
-                                        (selectedCompany?.name ?? '').length,
-                                  ),
-                            hint: S.current.payBillChooseCompanyHint,
-                            suffixIcon: const Icon(Icons.keyboard_arrow_right),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () => _showCompanySelector(
+                            availableCompanies,
+                            selectedCompany,
+                          ),
+                          child: AbsorbPointer(
+                            child: BATextField(
+                              controller:
+                                  TextEditingController(
+                                      text: selectedCompany?.name ?? '',
+                                    )
+                                    ..selection = TextSelection.collapsed(
+                                      offset:
+                                          (selectedCompany?.name ?? '').length,
+                                    ),
+                              hint: S.current.payBillChooseCompanyHint,
+                              suffixIcon: const Icon(
+                                Icons.keyboard_arrow_right,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        S.current.payBillTypeLabel(
-                          widget.billType.displayName.toLowerCase(),
+                        const SizedBox(height: 16),
+                        Text(
+                          S.current.payBillTypeLabel(
+                            widget.billType.displayName.toLowerCase(),
+                          ),
+                          style: context.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                        style: context.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w600,
+                        const SizedBox(height: 8),
+                        BATextField(
+                          controller: _billCodeController,
+                          hint: S.current.payBillCodeHint,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: SecureInputValidator.validateBillCode,
+                          onChanged: (value) {
+                            setState(() {});
+                          },
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      BATextField(
-                        controller: _billCodeController,
-                        hint: S.current.payBillCodeHint,
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                      ),
-                      const SizedBox(height: 24),
-                      Text(
-                        S.current.payBillDescription,
-                        style: context.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
+                        const SizedBox(height: 24),
+                        Text(
+                          S.current.payBillDescription,
+                          style: context.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      BAElevatedButton(
-                        padding: EdgeInsets.zero,
-                        text: S.current.payBillCheckButton,
-                        isDisabled:
-                            selectedCompany == null ||
-                            _billCodeController.text.isEmpty,
-                        onPressed: () => _handleCheckBill(state),
-                      ),
-                    ],
+                        const SizedBox(height: 24),
+                        BAElevatedButton(
+                          padding: EdgeInsets.zero,
+                          text: S.current.payBillCheckButton,
+                          isDisabled:
+                              selectedCompany == null ||
+                              _billCodeController.text.isEmpty,
+                          onPressed: () => _handleCheckBill(state),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

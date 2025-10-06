@@ -34,8 +34,6 @@ dependencies:
   # Framework for responsive design
   responsive_framework: ^1.5.1
 
-  # Adds native splash screens for iOS and Android
-  flutter_native_splash: ^2.4.4
 
   # Generates localization code from ARB files
   intl_utils: ^2.8.5
@@ -88,6 +86,9 @@ dependencies:
 
   mocktail: ^1.0.4
 
+  sentry_flutter: ^9.6.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -96,7 +97,7 @@ dev_dependencies:
   build_runner: ^2.4.11
 
   # Generates launcher icons
-  flutter_launcher_icons: ^0.14.3
+  flutter_launcher_icons: ^0.14.4
 
   # Generates Flutter asset references
   flutter_gen_runner: ^5.10.0
@@ -117,6 +118,16 @@ dev_dependencies:
 
   # Used for generating union types and data classes
   freezed: ^2.5.2
+
+  flutter_native_splash: ^2.4.6
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/img_banking.png"
+  adaptive_icon_background: "#3629B7"
+  adaptive_icon_foreground: "assets/images/img_banking.png"
 
 flutter:
   uses-material-design: true

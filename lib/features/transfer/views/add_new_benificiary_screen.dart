@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/core/utils/validators.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
@@ -230,9 +230,12 @@ class _AddBeneficiaryFormState extends State<AddBeneficiaryForm> {
                         size: 20,
                       ),
                       validator: (value) =>
-                          InputValidationMixin.validateRequired(
+                          SecureInputValidator.validateSecureInput(
                             value,
-                            S.current.transferChooseBankLabel,
+                            fieldName: S.current.transferChooseBankLabel,
+                            minLength: 1,
+                            maxLength: 50,
+                            allowSpecialChars: false,
                           ),
                     ),
                   ),
@@ -258,9 +261,12 @@ class _AddBeneficiaryFormState extends State<AddBeneficiaryForm> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       suffixIcon: const Icon(Icons.keyboard_arrow_right),
                       validator: (value) =>
-                          InputValidationMixin.validateRequired(
+                          SecureInputValidator.validateSecureInput(
                             value,
-                            S.current.transferChooseBranchLabel,
+                            fieldName: S.current.transferChooseBranchLabel,
+                            minLength: 1,
+                            maxLength: 50,
+                            allowSpecialChars: false,
                           ),
                     ),
                   ),
@@ -275,17 +281,21 @@ class _AddBeneficiaryFormState extends State<AddBeneficiaryForm> {
                       UpdateTransferDetailsEvt(name: value),
                     );
                   },
-                  validator: (value) => InputValidationMixin.validateRequired(
-                    value,
-                    S.current.transferAddNewBeneficiaryLabel,
-                  ),
+                  validator: (value) =>
+                      SecureInputValidator.validateSecureInput(
+                        value,
+                        fieldName: S.current.transferAddNewBeneficiaryLabel,
+                        minLength: 2,
+                        maxLength: 50,
+                        allowSpecialChars: false,
+                      ),
                 ),
                 const SizedBox(height: 16),
                 BATextField(
                   name: S.current.transferCardNumberLabel,
                   hint: S.current.transferCardNumberLabel,
                   controller: _cardController,
-                  validator: InputValidationMixin.validateCardNumber,
+                  validator: SecureInputValidator.validateAccountNumber,
                 ),
                 const SizedBox(height: 24),
                 BAElevatedButton(

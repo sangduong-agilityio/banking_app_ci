@@ -1,29 +1,87 @@
+import 'dart:ui';
 import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/env/env.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/security/error_sanitizer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  /// Ensure that plugin services are initialized
+  SentryWidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Sentry for error tracking
+  await SentryFlutter.init((options) {
+    options.dsn = Env.sentryDsn;
+
+    options.environment = Env.sentryEnv;
+
+    options.tracesSampleRate = 1.0;
+
+    options.debug = Env.sentryEnv != 'production';
+
+    options.beforeSend = (event, hint) {
+      if (Env.sentryEnv == 'development') {
+        final msg = event.message?.formatted ?? '';
+        if (msg.contains('Hot reload')) return null;
+      }
+      return event;
+    };
+  }, appRunner: _runApp);
+}
+
+/// The main application runner
+Future<void> _runApp() async {
+  // Set up global error handlers
+  _setupGlobalErrorHandlers();
 
   // Initialize Supabase
   await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseKey);
 
-  // Setup service locators
+  // Configure dependency injection
   await AppLocators.setupLocators();
 
-  // Wait until all async singletons are ready
+  // Ensure all singletons are ready
   await locator.allReady();
 
-  // Setup intl date formatting
-  await initializeDateFormatting('en_US', null);
+  // Initialize date formatting for localization
+  await initializeDateFormatting('en_US');
 
   runApp(const BankingApp());
+}
+
+/// Sets up global error handlers for Flutter and Dart errors
+void _setupGlobalErrorHandlers() {
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    FlutterError.presentError(details);
+
+    await ErrorSanitizer.logSecureError(
+      details.exception,
+      details.stack,
+      context: {
+        'library': details.library ?? 'unknown',
+        'context': details.context?.toString(),
+        'silent': details.silent,
+      },
+      isCritical: !details.silent,
+    );
+  };
+
+  /// Catches errors outside the Flutter framework
+  PlatformDispatcher.instance.onError = (error, stack) {
+    ErrorSanitizer.logSecureError(
+      error,
+      stack,
+      context: {'source': 'platform_dispatcher'},
+      isCritical: true,
+    );
+    return true;
+  };
 }
 
 class BankingApp extends StatefulWidget {

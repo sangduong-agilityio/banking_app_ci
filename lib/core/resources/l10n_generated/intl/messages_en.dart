@@ -73,11 +73,26 @@ class MessageLookup extends MessageLookupByLibrary {
     "accountTitle": MessageLookupByLibrary.simpleMessage("Account"),
     "accountToDateTitle": MessageLookupByLibrary.simpleMessage("To"),
     "accountValidFromTitle": MessageLookupByLibrary.simpleMessage("Valid from"),
+    "applicationErrorGeneric": MessageLookupByLibrary.simpleMessage(
+      "An unexpected error occurred. Please contact support if this persists.",
+    ),
     "authErrorBiometricFailed": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication failed.",
     ),
     "authErrorBiometricNotEnabled": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication is not enabled.",
+    ),
+    "authErrorEmailAlreadyExists": MessageLookupByLibrary.simpleMessage(
+      "An account with this email already exists.",
+    ),
+    "authErrorEmailNotConfirmed": MessageLookupByLibrary.simpleMessage(
+      "Please check your email and confirm your account.",
+    ),
+    "authErrorGeneric": MessageLookupByLibrary.simpleMessage(
+      "Authentication failed. Please try again.",
+    ),
+    "authErrorInvalidCredentials": MessageLookupByLibrary.simpleMessage(
+      "Invalid email or password. Please try again.",
     ),
     "authErrorLoginFailed": MessageLookupByLibrary.simpleMessage(
       "Login failed. Please check your email and password.",
@@ -85,8 +100,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorNoSavedCredentials": MessageLookupByLibrary.simpleMessage(
       "No saved credentials found for biometric login.",
     ),
+    "authErrorTooManyAttempts": MessageLookupByLibrary.simpleMessage(
+      "Too many failed attempts. Please try again in 15 minutes.",
+    ),
     "authErrorUnknown": MessageLookupByLibrary.simpleMessage(
       "An unknown error occurred. Please try again.",
+    ),
+    "authErrorUserNotFound": MessageLookupByLibrary.simpleMessage(
+      "No account found with this email address.",
+    ),
+    "authErrorWeakPassword": MessageLookupByLibrary.simpleMessage(
+      "Password is too weak. Please choose a stronger password.",
     ),
     "exchangeRateError": MessageLookupByLibrary.simpleMessage(
       "Failed to load data",
@@ -110,11 +134,44 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "homeTransferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
     "homeWithdrawTitle": MessageLookupByLibrary.simpleMessage("Withdraw"),
+    "httpErrorBadRequest": MessageLookupByLibrary.simpleMessage(
+      "Invalid request. Please check your input and try again.",
+    ),
+    "httpErrorForbidden": MessageLookupByLibrary.simpleMessage(
+      "Access denied. Please contact support if this persists.",
+    ),
+    "httpErrorGeneric": MessageLookupByLibrary.simpleMessage(
+      "Service temporarily unavailable. Please try again later.",
+    ),
+    "httpErrorNotFound": MessageLookupByLibrary.simpleMessage(
+      "Service not found. Please try again later.",
+    ),
+    "httpErrorServerError": MessageLookupByLibrary.simpleMessage(
+      "Server error. Please try again later.",
+    ),
+    "httpErrorTooManyRequests": MessageLookupByLibrary.simpleMessage(
+      "Too many requests. Please wait a moment and try again.",
+    ),
+    "httpErrorUnauthorized": MessageLookupByLibrary.simpleMessage(
+      "Session expired. Please sign in again.",
+    ),
     "landingDescription": MessageLookupByLibrary.simpleMessage(
       "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam,",
     ),
     "landingTitle": MessageLookupByLibrary.simpleMessage("Jane Cooper"),
     "messageTitle": MessageLookupByLibrary.simpleMessage("Message"),
+    "networkErrorConnection": MessageLookupByLibrary.simpleMessage(
+      "Please check your internet connection and try again.",
+    ),
+    "networkErrorGeneric": MessageLookupByLibrary.simpleMessage(
+      "Network error occurred. Please try again.",
+    ),
+    "networkErrorSecurity": MessageLookupByLibrary.simpleMessage(
+      "Security certificate error. Please contact support.",
+    ),
+    "networkErrorTimeout": MessageLookupByLibrary.simpleMessage(
+      "Request timed out. Please check your connection and try again.",
+    ),
     "noItemsFoundTitle": MessageLookupByLibrary.simpleMessage("No items found"),
     "pageNotSupportedYet": MessageLookupByLibrary.simpleMessage(
       "This page is not supported yet!",

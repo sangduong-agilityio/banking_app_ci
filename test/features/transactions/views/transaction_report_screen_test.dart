@@ -38,7 +38,7 @@ void main() {
       amount: amount,
       status: TransactionStatus.completed,
       createdAt: now,
-      category: TransactionCategory.water,
+      category: TransactionCategory.internet,
     );
 
     return TransactionReportModel(

@@ -4,6 +4,7 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
+import 'package:banking_app/core/widgets/shimmer.dart';
 import 'package:banking_app/core/widgets/tab_bar.dart';
 import 'package:banking_app/features/account/states/account_and_card_cubit.dart';
 import 'package:banking_app/features/account/states/account_and_card_state.dart';
@@ -138,6 +139,9 @@ class AccountListSection extends StatelessWidget {
           previous.user != current.user ||
           previous.accounts != current.accounts,
       builder: (context, state) {
+        if (state.status is AccountAndCardStatusLoading) {
+          return const AccountListSkeleton();
+        }
         return Column(
           children: [
             Container(

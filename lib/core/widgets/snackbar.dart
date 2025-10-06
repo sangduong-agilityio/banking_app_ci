@@ -61,12 +61,10 @@ class BASnackBar {
           ? SnackBarAction(label: '', onPressed: onRetry)
           : null,
       backgroundColor: colorBackground,
-      content: Center(
-        child: Text(
-          message,
-          style: context.textTheme.bodyLarge?.copyWith(
-            color: context.colorScheme.onPrimary,
-          ),
+      content: Text(
+        message,
+        style: context.textTheme.bodyLarge?.copyWith(
+          color: context.colorScheme.onPrimary,
         ),
       ),
     );
