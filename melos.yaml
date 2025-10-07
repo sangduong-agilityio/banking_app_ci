@@ -5,7 +5,6 @@ packages:
   - packages/**
 
 scripts:
-  # Runs after melos bootstrap
   postbootstrap: >
     melos exec -- puro flutter pub get &&
     puro pub global activate git_hooks &&
@@ -17,42 +16,84 @@ scripts:
 
   postclean: melos exec -- puro flutter clean
 
-  # Analyze all packages
   analyze:
     run: melos exec -- puro flutter analyze .
     description: Run `flutter analyze` in all packages.
-  # Generation i18n file
+
   dev:generate:i18n:
     run: melos exec --scope="banking_app" -- "puro flutter pub run intl_utils:generate"
-    description: "Generation localizations"
+    description: Generate localization files
     packageFilters:
       flutter: true
       scope:
         - banking_app
 
+<<<<<<< HEAD
+=======
   # Generate DEV launcher icons
+>>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
   generate:icon_launcher_dev:
     run: melos exec --scope="banking_app" -- puro flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons_dev.yaml
-    description: "Generate DEV launcher icons"
+    description: Generate DEV launcher icons
 
-  # Generate PROD launcher icons
   generate:icon_launcher:
     run: melos exec --scope="banking_app" -- puro flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons_prod.yaml
-    description: "Generate PROD launcher icons"
+    description: Generate PROD launcher icons
 
-  # Generate native splash
   dev:generate:native_splash:
     run: melos exec --scope="banking_app" -- puro flutter pub run flutter_native_splash:create
-    description: "Generate splash screen"
+    description: Generate splash screen
 
-  # Run build_runner for all code generation (Freezed, Isar, Envied, etc.)
   build_runner:
     run: melos exec --depends-on=build_runner -- "puro flutter pub run build_runner build --delete-conflicting-outputs"
-    description: "Run build_runner to generate code"
+    description: Run build_runner to generate code
 
-  # Combined script for devs: clean + pub get + codegen
   codegen:
     run: melos run build_runner
+<<<<<<< HEAD
+    description: Generate all necessary code for development
+
+  
+  test:selective_unit_test:
+    run: |
+      cd apps/banking_app || cd . # adjust if main app at root
+      echo "→ Generating full_coverage stubs..."
+      full_coverage
+      
+      echo "→ Running tests with coverage..."
+      puro flutter test --no-pub --coverage -r expanded
+      
+      echo "→ Filtering unwanted files from lcov.info..."
+      lcov --remove coverage/lcov.info \
+        'lib/main*.dart' \
+        'lib/app/**' \
+        'lib/core/**' \
+        'lib/**/models/**' \
+        'lib/**/repositories/**' \
+        'lib/**/entities/**' \
+        'lib/features/account/**' \
+        'lib/features/home/**' \
+        'lib/features/setting/**' \
+        'lib/features/auth/views/**' \
+        'lib/features/auth/widgets/**' \
+        'lib/features/search/states/**' \
+        'lib/features/message/**' \
+        'lib/features/transactions/states/**' \
+        -o coverage/lcov_filtered.info
+
+
+      echo "→ Generating HTML coverage report..."
+      genhtml coverage/lcov_filtered.info --output-directory coverage/html
+      
+      echo "Coverage report generated at coverage/html/index.html"
+      open coverage/html/index.html
+    description: Run Flutter unit tests and generate filtered coverage report
+    packageFilters:
+      flutter: true
+      dirExists: test
+      scope:
+        - banking_app
+=======
     description: "Generate all necessary code for development"
 
   # Unit testing scripts
@@ -84,3 +125,4 @@ scripts:
         dirExists: test
         scope:
           - banking_app
+>>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c

@@ -21,7 +21,12 @@ PODS:
   - package_info_plus (0.4.5):
     - Flutter
 =======
+<<<<<<< HEAD
+  - package_info_plus (0.4.5):
+    - Flutter
+=======
 >>>>>>> 78bfa709b3317b0b1c3ef3ecac803f873a10c0d0
+>>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -51,7 +56,11 @@ DEPENDENCIES:
 <<<<<<< HEAD
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
 =======
+<<<<<<< HEAD
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
+=======
 >>>>>>> 78bfa709b3317b0b1c3ef3ecac803f873a10c0d0
+>>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
@@ -64,7 +73,11 @@ SPEC REPOS:
 <<<<<<< HEAD
     - Sentry
 =======
+<<<<<<< HEAD
+    - Sentry
+=======
 >>>>>>> 78bfa709b3317b0b1c3ef3ecac803f873a10c0d0
+>>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
 
 EXTERNAL SOURCES:
   app_links:
@@ -87,7 +100,12 @@ EXTERNAL SOURCES:
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
 =======
+<<<<<<< HEAD
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
+=======
 >>>>>>> 78bfa709b3317b0b1c3ef3ecac803f873a10c0d0
+>>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   sentry_flutter:
@@ -112,7 +130,11 @@ SPEC CHECKSUMS:
 <<<<<<< HEAD
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
 =======
+<<<<<<< HEAD
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+=======
 >>>>>>> 78bfa709b3317b0b1c3ef3ecac803f873a10c0d0
+>>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   Sentry: 2cbbe3592f30050c60e916c63c7f5a2fa584005e
   sentry_flutter: 9b1e3e6934cb7040ffb71383c95a35f73523180c
