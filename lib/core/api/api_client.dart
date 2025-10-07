@@ -155,7 +155,6 @@ class BankingApiClient {
     try {
       final fingerprint = _getCertificateFingerprint(cert);
       print('CERT_DEBUG: Host: $host, Fingerprint: $fingerprint');
-      print('CERT_DEBUG: Subject: ${cert.subject}');
       print('CERT_DEBUG: Issuer: ${cert.issuer}');
       print('CERT_DEBUG: Valid from: ${cert.startValidity}');
       print('CERT_DEBUG: Valid to: ${cert.endValidity}');
