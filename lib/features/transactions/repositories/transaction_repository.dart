@@ -21,49 +21,63 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
   TransactionReportRepositoryImpl({required SupabaseClient client})
     : _client = client;
 
+  /// Utility: ensure user is logged in
+  User get _currentUser {
+    final user = _client.auth.currentUser;
+    if (user == null) {
+      throw Exception('User not authenticated');
+    }
+    return user;
+  }
+
   @override
   Future<List<CardModel>> fetchCards() async {
-    final currentUser = _client.auth.currentUser;
+    final response =
+        await _client.from('cards').select().eq('userId', _currentUser.id)
+            as List<dynamic>;
 
-    final response = await _client
-        .from('cards')
-        .select()
-        .eq('userId', currentUser?.id ?? '');
-
-    return (response as List<dynamic>)
-        .map((json) => CardModel.fromJson(json))
-        .toList();
+    return response.map((json) => CardModel.fromJson(json)).toList();
   }
 
   @override
   Future<TransactionReportModel> fetchTransactionReports({int? offset}) async {
-    final currentUser = _client.auth.currentUser;
+    final now = DateTime.now();
+    final recentDate = now.subtract(const Duration(days: 90));
 
-    final recentDate = DateTime.now().subtract(const Duration(days: 90));
+    final recentResponse =
+        await _client
+                .from('transactions')
+                .select('''
+      *,
+      bill_payment:bill_payments!transactionId(
+        *,
+        company:companyId(*)
+      )
+    ''')
+                .eq('userId', _currentUser.id)
+                .gte('createdAt', recentDate.toIso8601String())
+                .order('createdAt', ascending: false)
+            as List<dynamic>;
 
-    final recentResponse = await _client
-        .from('transactions')
-        .select()
-        .eq('userId', currentUser?.id ?? '')
-        .gte('createdAt', recentDate.toIso8601String())
-        .order('createdAt', ascending: false);
-
-    final recentTransactions = (recentResponse as List<dynamic>)
+    final recentTransactions = recentResponse
         .map((json) => TransactionModel.fromJson(json))
         .toList();
 
-    final balanceResponse = await _client
-        .from('balance_history')
-        .select()
-        .eq('userId', currentUser?.id ?? '')
-        .order('recordedAt', ascending: false)
-        .limit(12);
+    // Balance history (last 12 months)
+    final balanceResponse =
+        await _client
+                .from('balance_history')
+                .select()
+                .eq('userId', _currentUser.id)
+                .order('recordedAt', ascending: false)
+                .limit(12)
+            as List<dynamic>;
 
-    final balanceHistory = (balanceResponse as List<dynamic>)
+    final balanceHistory = balanceResponse
         .map((json) => BalanceSummaryModel.fromJson(json))
         .toList();
 
-    final now = DateTime.now();
+    // Normalize dates
     final today = _normalizeDate(now);
     final yesterday = _normalizeDate(now.subtract(const Duration(days: 1)));
 
@@ -76,12 +90,16 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
       yesterday,
     );
 
+    // Current balance fallback: use history if available, else recalc
     final currentBalance = balanceHistory.isNotEmpty
         ? balanceHistory.first.endingBalance
         : _calculateCurrentBalance(recentTransactions);
 
+    // Monthly aggregates
     final thisMonth = DateTime(now.year, now.month);
-    final lastMonth = DateTime(now.year, now.month - 1);
+    final lastMonth = now.month == 1
+        ? DateTime(now.year - 1, 12)
+        : DateTime(now.year, now.month - 1);
 
     return TransactionReportModel(
       todayTransactions: todayTransactions,
@@ -100,18 +118,16 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
   Future<List<TransactionModel>> fetchMoreTransactions({
     required int offset,
   }) async {
-    final currentUser = _client.auth.currentUser;
+    final response =
+        await _client
+                .from('transactions')
+                .select()
+                .eq('userId', _currentUser.id)
+                .order('createdAt', ascending: false)
+                .range(offset, offset + 19)
+            as List<dynamic>;
 
-    final response = await _client
-        .from('transactions')
-        .select()
-        .eq('userId', currentUser?.id ?? '')
-        .order('createdAt', ascending: false)
-        .range(offset, offset + 19);
-
-    return (response as List<dynamic>)
-        .map((json) => TransactionModel.fromJson(json))
-        .toList();
+    return response.map((json) => TransactionModel.fromJson(json)).toList();
   }
 
   @override
@@ -131,26 +147,24 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
     });
   }
 
+  // Helpers
+
   DateTime _normalizeDate(DateTime dt) => DateTime(dt.year, dt.month, dt.day);
 
   List<TransactionModel> _filterTransactionsByDate(
     List<TransactionModel> transactions,
     DateTime reference,
   ) {
-    return transactions.where((transaction) {
-      if (transaction.createdAt == null) return false;
-      return _normalizeDate(transaction.createdAt!) == reference;
+    return transactions.where((tx) {
+      if (tx.createdAt == null) return false;
+      return _normalizeDate(tx.createdAt!) == reference;
     }).toList();
   }
 
   double _calculateCurrentBalance(List<TransactionModel> transactions) {
     double balance = 0.0;
-    for (final transaction in transactions) {
-      if (transaction.type == TransferType.billPayment) {
-        balance -= transaction.amount.abs();
-      } else {
-        balance += transaction.amount;
-      }
+    for (final tx in transactions) {
+      balance += tx.amount;
     }
     return balance;
   }
@@ -158,13 +172,13 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
   double _calculateIncome(List<TransactionModel> transactions, DateTime month) {
     return transactions
         .where(
-          (transaction) =>
-              transaction.amount > 0 &&
-              transaction.createdAt != null &&
-              transaction.createdAt?.year == month.year &&
-              transaction.createdAt?.month == month.month,
+          (tx) =>
+              tx.amount > 0 &&
+              tx.createdAt != null &&
+              tx.createdAt!.year == month.year &&
+              tx.createdAt!.month == month.month,
         )
-        .fold(0.0, (sum, transaction) => sum + transaction.amount);
+        .fold(0.0, (sum, tx) => sum + tx.amount);
   }
 
   double _calculateExpense(
@@ -173,12 +187,12 @@ class TransactionReportRepositoryImpl implements TransactionReportRepository {
   ) {
     return transactions
         .where(
-          (transaction) =>
-              transaction.amount < 0 &&
-              transaction.createdAt != null &&
-              transaction.createdAt?.year == month.year &&
-              transaction.createdAt?.month == month.month,
+          (tx) =>
+              tx.amount < 0 &&
+              tx.createdAt != null &&
+              tx.createdAt!.year == month.year &&
+              tx.createdAt!.month == month.month,
         )
-        .fold(0.0, (sum, transaction) => sum + transaction.amount.abs());
+        .fold(0.0, (sum, tx) => sum + tx.amount.abs());
   }
 }

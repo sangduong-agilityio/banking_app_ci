@@ -292,5 +292,31 @@
   "transferErrorBiometricFailed": "Biometric authentication failed",
   "transferErrorCalculateFee": "Failed to calculate transaction fee",
   "transferErrorTransferFailed": "Transfer failed. Please try again.",
-  "transferErrorAuthenticationRequired": "Please complete authentication before confirming transfer."
+  "transferErrorAuthenticationRequired": "Please complete authentication before confirming transfer.",
+  
+  "@segmentSecurityErrors": {
+    "description": "Store translations for security-related error messages"
+  },
+  "authErrorInvalidCredentials": "Invalid email or password. Please try again.",
+  "authErrorEmailNotConfirmed": "Please check your email and confirm your account.",
+  "authErrorUserNotFound": "No account found with this email address.",
+  "authErrorTooManyAttempts": "Too many failed attempts. Please try again in 15 minutes.",
+  "authErrorWeakPassword": "Password is too weak. Please choose a stronger password.",
+  "authErrorEmailAlreadyExists": "An account with this email already exists.",
+  "authErrorGeneric": "Authentication failed. Please try again.",
+  
+  "networkErrorTimeout": "Request timed out. Please check your connection and try again.",
+  "networkErrorConnection": "Please check your internet connection and try again.",
+  "networkErrorSecurity": "Security certificate error. Please contact support.",
+  "networkErrorGeneric": "Network error occurred. Please try again.",
+  
+  "httpErrorBadRequest": "Invalid request. Please check your input and try again.",
+  "httpErrorUnauthorized": "Session expired. Please sign in again.",
+  "httpErrorForbidden": "Access denied. Please contact support if this persists.",
+  "httpErrorNotFound": "Service not found. Please try again later.",
+  "httpErrorTooManyRequests": "Too many requests. Please wait a moment and try again.",
+  "httpErrorServerError": "Server error. Please try again later.",
+  "httpErrorGeneric": "Service temporarily unavailable. Please try again later.",
+  
+  "applicationErrorGeneric": "An unexpected error occurred. Please contact support if this persists."
 }

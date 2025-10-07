@@ -1,6 +1,6 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/utils/pref_keys.dart';
-import 'package:banking_app/core/utils/validators.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -157,15 +157,13 @@ class SignInBody extends StatelessWidget {
                   BATextField(
                     controller: emailController,
                     hint: S.current.signInEmailHint,
-                    validator: (value) =>
-                        InputValidationMixin.validEmail(value ?? ''),
+                    validator: SecureInputValidator.validateEmail,
                   ),
                   BATextField(
                     controller: passwordController,
                     hint: S.current.signInPassowrdHint,
                     isPassword: true,
-                    validator: (value) =>
-                        InputValidationMixin.validPassword(value ?? ''),
+                    validator: SecureInputValidator.validatePassword,
                   ),
                 ],
                 onValidate: (isValid) {

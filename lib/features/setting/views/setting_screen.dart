@@ -4,12 +4,13 @@ import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
+import 'package:banking_app/core/services/biometric_capability.dart';
 import 'package:banking_app/core/utils/pref_keys.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/core/widgets/snackbar.dart';
+import 'package:banking_app/core/widgets/shimmer.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/features/setting/states/setting_cubit.dart';
 import 'package:banking_app/features/setting/states/setting_state.dart';
@@ -38,22 +39,11 @@ class SettingScreen extends StatelessWidget {
             titleColor: context.colorScheme.scrim,
             iconColor: context.colorScheme.scrim,
           ),
-          body: BlocConsumer<SettingCubit, SettingState>(
-            listener: (context, state) {
-              state.status.maybeWhen(
-                loading: () => context.loaderOverlay.show(),
-                success: () => context.loaderOverlay.hide(),
-                failure: () {
-                  context.loaderOverlay.hide();
-                  BASnackBar.buildErrorSnackbar(
-                    context,
-                    state.errorMessage ?? '',
-                  );
-                },
-                orElse: () => context.loaderOverlay.hide(),
-              );
-            },
+          body: BlocBuilder<SettingCubit, SettingState>(
             builder: (context, state) {
+              if (state.status is SettingStatusLoading) {
+                return Center(child: const UserProfileSkeleton());
+              }
               final user = state.user;
               return Column(
                 children: [
@@ -73,12 +63,15 @@ class SettingScreen extends StatelessWidget {
                     onTap: () {},
                   ),
                   SettingSelection(
-                    title: S.current.settingTouchIdLabel,
-                    isEnabled: state.isBiometricEnabled,
-                    onToggle: (value) {
-                      context.read<SettingCubit>().toggleBiometric(value);
-                    },
-                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    title: state.biometricCapability.settingsLabel,
+                    isEnabled:
+                        state.isBiometricEnabled &&
+                        state.biometricCapability.isAvailable,
+                    onToggle: state.biometricCapability.isAvailable
+                        ? (value) {
+                            context.read<SettingCubit>().toggleBiometric(value);
+                          }
+                        : null,
                   ),
                   SettingSelection(
                     title: S.current.settingLanguaguesTitle,

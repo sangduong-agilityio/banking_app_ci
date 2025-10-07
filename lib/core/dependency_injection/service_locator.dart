@@ -30,37 +30,34 @@ final GetIt locator = GetIt.instance;
 class AppLocators {
   /// Registers all services, repositories, blocs, and cubits
   static Future<void> setupLocators() async {
-    /// ObjectBox Store (async init)
+    /// Initialize Store first and wait for it to be ready
     locator.registerSingletonAsync<Store>(() async {
       return await ObjectBoxManager.getStore();
     });
 
-    /// Supabase client
+    await locator.isReady<Store>();
+
+    final store = locator<Store>();
+
+    /// Sync registrations
     locator.registerLazySingleton(() => Supabase.instance.client);
 
-    /// API client
     locator.registerLazySingleton<BankingApiClient>(
       () => BankingApiClient(baseUrl: Env.endPoint),
     );
 
-    /// ExchangeRate cache service (needs Store)
-    locator.registerSingletonWithDependencies<ExchangeRateCacheService>(() {
-      final store = locator<Store>();
-      final exchangeRateBox = store.box<ExchangeRateEntity>();
-      return ExchangeRateCacheService(exchangeRateBox);
-    }, dependsOn: [Store]);
+    /// Services - SYNC
+    locator.registerLazySingleton<ExchangeRateCacheService>(
+      () => ExchangeRateCacheService(store.box<ExchangeRateEntity>()),
+    );
 
-    /// Offline exchange service
-    locator.registerSingletonWithDependencies<OfflineExchangeService>(() {
-      final store = locator<Store>();
-      final currencyRateBox = store.box<CurrencyRateEntity>();
-      return OfflineExchangeService(currencyRateBox);
-    }, dependsOn: [Store]);
+    locator.registerLazySingleton<OfflineExchangeService>(
+      () => OfflineExchangeService(store.box<CurrencyRateEntity>()),
+    );
 
-    /// Biometric service
     locator.registerLazySingleton<BiometricService>(() => BiometricService());
 
-    /// Repositories
+    /// Repositories - SYNC
     locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImplement(client: locator()),
     );
@@ -69,13 +66,13 @@ class AppLocators {
       () => HomeRepositoryImpl(client: locator()),
     );
 
-    locator.registerSingletonAsync<SearchRepository>(() async {
-      return SearchRepositoryImplement(
+    locator.registerLazySingleton<SearchRepository>(
+      () => SearchRepositoryImplement(
         client: locator<BankingApiClient>(),
         cacheService: locator<ExchangeRateCacheService>(),
         offlineService: locator<OfflineExchangeService>(),
-      );
-    }, dependsOn: [ExchangeRateCacheService]);
+      ),
+    );
 
     locator.registerLazySingleton<TransferRepository>(
       () => TransferRepositoryImpl(client: locator()),
@@ -89,8 +86,8 @@ class AppLocators {
       () => TransactionReportRepositoryImpl(client: locator()),
     );
 
-    /// Blocs and Cubits
-    locator.registerLazySingleton<AuthBloc>(
+    /// Blocs and Cubits - FACTORY
+    locator.registerFactory<AuthBloc>(
       () => AuthBloc(
         repo: locator<AuthRepository>(),
         biometricService: locator<BiometricService>(),
@@ -112,21 +109,12 @@ class AppLocators {
       () => AccountAndCardCubit(repo: locator<HomeRepository>()),
     );
 
-    locator.registerSingletonAsync<SearchBloc>(
-      () async {
-        final repo = await locator.getAsync<SearchRepository>();
-        final cacheService = await locator.getAsync<ExchangeRateCacheService>();
-        return SearchBloc(
-          repo: repo,
-          cacheService: cacheService,
-          offlineService: locator<OfflineExchangeService>(),
-        );
-      },
-      dependsOn: [
-        SearchRepository,
-        ExchangeRateCacheService,
-        OfflineExchangeService,
-      ],
+    locator.registerFactory<SearchBloc>(
+      () => SearchBloc(
+        repo: locator<SearchRepository>(),
+        cacheService: locator<ExchangeRateCacheService>(),
+        offlineService: locator<OfflineExchangeService>(),
+      ),
     );
 
     locator.registerFactory<TransferBloc>(

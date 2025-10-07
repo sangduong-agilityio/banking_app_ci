@@ -1,4 +1,5 @@
 import 'package:banking_app/core/utils/formatters.dart';
+import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transactions/models/balance_summary_model.dart';
@@ -13,7 +14,7 @@ import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
-import 'package:banking_app/features/home/widgets/card.dart';
+import 'package:banking_app/features/home/widgets/cards_swiper_widget.dart';
 import 'package:banking_app/features/transactions/states/transaction_bloc.dart';
 import 'package:banking_app/features/transactions/states/transaction_event.dart';
 import 'package:banking_app/features/transactions/states/transaction_state.dart';
@@ -94,6 +95,9 @@ class TransactionReportScreen extends StatelessWidget {
                     delegate: SliverChildListDelegate([
                       Container(
                         transform: Matrix4.translationValues(0, -100, 0),
+                        constraints: BoxConstraints(
+                          minHeight: MediaQuery.of(context).size.height,
+                        ),
                         decoration: BoxDecoration(
                           color: context.colorScheme.onPrimary,
                           borderRadius: const BorderRadius.only(
@@ -149,7 +153,6 @@ class TransactionReportScreen extends StatelessWidget {
   }
 }
 
-/// Card Persistent Header Delegate
 class CardPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double maxHeight;
@@ -166,27 +169,26 @@ class CardPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
     bool overlapsContent,
   ) {
     final progress = shrinkOffset / maxExtent;
-    final cardHeight = maxHeight * (1 - progress * 0.3);
+    final currentHeight = (maxHeight - shrinkOffset).clamp(
+      minHeight,
+      maxHeight,
+    );
 
-    return Container(
-      height: maxHeight,
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Stack(
-        children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 10,
-            bottom: 5,
-            child: Transform.scale(
-              scale: 1 - (progress * 0.3),
-              child: SizedBox(
-                height: cardHeight,
-                child: const CreditCardsSwiper(),
-              ),
+    return SizedBox(
+      height: currentHeight,
+      child: OverflowBox(
+        maxHeight: currentHeight,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Transform.scale(
+            scale: (1 - progress * 0.3).clamp(0.7, 1.0),
+            alignment: Alignment.topCenter,
+            child: Opacity(
+              opacity: (1 - progress * 1.2).clamp(0.0, 1.0),
+              child: const CreditCardsSwiper(),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -224,7 +226,7 @@ class CreditCardsSwiper extends StatelessWidget {
           },
           cardBuilder: (context, index, visibleIndex) {
             final card = state.cards[index];
-            return CreditCard(
+            return SwipeableCreditCard(
               key: ValueKey<int>(index),
               data: card,
               isActive: visibleIndex == 0,
@@ -252,12 +254,12 @@ class TransactionHistory extends StatelessWidget {
             SectionHeader(title: S.current.transactionTodayTitle),
             ...report.todayTransactions.map(
               (transaction) => TransactionItem(
-                icon: transaction.category?.iconWidget,
-                iconColor: transaction.category?.color,
-                title: transaction.type.name,
-                subtitle: transaction.status.name,
+                icon: transaction.displayIcon,
+                iconColor: transaction.displayColor,
+                title: transaction.displayTitle,
+                subtitle: transaction.displaySubtitle,
                 amount:
-                    '${transaction.amount > 0 ? '+' : ''}\$${transaction.amount.abs()}',
+                    '${transaction.amount > 0 ? '+' : ''}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
                 amountColor: transaction.amount < 0
                     ? context.colorScheme.error
                     : context.colorScheme.secondary,
@@ -269,36 +271,19 @@ class TransactionHistory extends StatelessWidget {
             SectionHeader(title: S.current.transactionYesterdayTitle),
             ...report.yesterdayTransactions.map(
               (transaction) => TransactionItem(
-                icon: transaction.category?.iconWidget,
-                iconColor: transaction.category?.color,
-                title: transaction.type.name,
-                subtitle: transaction.status.name,
+                icon: transaction.displayIcon,
+                iconColor: transaction.displayColor,
+                title: transaction.displayTitle,
+                subtitle: transaction.displaySubtitle,
                 amount:
-                    '${transaction.amount > 0 ? '+' : ''}\$${transaction.amount.abs()}',
+                    '${transaction.amount > 0 ? '+' : ''}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
                 amountColor: transaction.amount < 0
                     ? context.colorScheme.error
                     : context.colorScheme.secondary,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 100),
           ],
-          if (report.recentTransactions.isNotEmpty) ...[
-            SectionHeader(title: S.current.transactionRecentTitle),
-            ...report.recentTransactions.map(
-              (transaction) => TransactionItem(
-                icon: transaction.category?.iconWidget,
-                iconColor: transaction.category?.color,
-                title: transaction.type.name,
-                subtitle: transaction.status.name,
-                amount:
-                    '${transaction.amount > 0 ? '+' : ''}\$${transaction.amount.abs()}',
-                amountColor: transaction.amount < 0
-                    ? context.colorScheme.error
-                    : context.colorScheme.secondary,
-              ),
-            ),
-          ],
-          const SizedBox(height: 100),
         ],
       ),
     );

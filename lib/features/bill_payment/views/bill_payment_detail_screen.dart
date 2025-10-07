@@ -2,6 +2,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/formatters.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
@@ -41,125 +42,113 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BAScaffold(
-      appBar: BAAppBar(
-        title: widget.bill.billType?.displayName ?? '',
-        titleColor: context.colorScheme.scrim,
-        alignment: BAAppBarAlignment.left,
-        iconColor: context.colorScheme.scrim,
-      ),
-      body: BlocConsumer<BillPaymentBloc, BillPaymentState>(
-        listener: (context, state) {
-          state.status.map(
-            loaded: (_) => context.loaderOverlay.hide(),
-            loading: (_) => context.loaderOverlay.show(),
-            failure: (_) {
-              context.loaderOverlay.hide();
-              BASnackBar.buildErrorSnackbar(context, state.errorMessage ?? '');
-            },
-            awaitingOtp: (_) {
-              context.loaderOverlay.hide();
-              BASnackBar.buildSuccessSnackbar(
-                context,
-                S.current.transferSendOtpToEmailTitle,
-              );
-            },
-            success: (_) {
-              context.loaderOverlay.hide();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<BillPaymentBloc>(),
-                    child: PaymentSuccessScreen(bill: widget.bill),
+    return LoaderOverlay(
+      child: BAScaffold(
+        appBar: BAAppBar(
+          title: widget.bill.billType?.displayName ?? '',
+          titleColor: context.colorScheme.scrim,
+          alignment: BAAppBarAlignment.left,
+          iconColor: context.colorScheme.scrim,
+        ),
+        body: BlocConsumer<BillPaymentBloc, BillPaymentState>(
+          listener: (context, state) {
+            state.status.maybeWhen(
+              loading: () => context.loaderOverlay.show(),
+              success: () {
+                context.loaderOverlay.hide();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PaymentSuccessScreen(bill: widget.bill),
                   ),
-                ),
-              );
-            },
-            initial: (_) => context.loaderOverlay.hide(),
-          );
-        },
-        builder: (context, state) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 24),
-                  BAAssets.transferSuccess(),
-                  const SizedBox(height: 16),
-                  Text(
-                    '${FormatterUtils.formatDate(widget.bill.startDate)} - ${FormatterUtils.formatDate(widget.bill.endDate)}',
-                    style: context.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
+                );
+              },
+              failure: () {
+                context.loaderOverlay.hide();
+                BASnackBar.buildErrorSnackbar(
+                  context,
+                  state.errorMessage ?? '',
+                );
+              },
+              awaitingOtp: () {
+                context.loaderOverlay.hide();
+                BASnackBar.buildSuccessSnackbar(
+                  context,
+                  S.current.transferSendOtpToEmailTitle,
+                );
+              },
+              orElse: () {},
+            );
+          },
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 24),
+                    BAAssets.transferSuccess(),
+                    const SizedBox(height: 16),
+                    Text(
+                      '${FormatterUtils.formatDate(widget.bill.startDate)} - ${FormatterUtils.formatDate(widget.bill.endDate)}',
+                      style: context.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 24),
 
-                  /// Bill details
-                  BillDetailCard(bills: widget.bill),
-                  const SizedBox(height: 34),
+                    /// Bill details
+                    BillDetailCard(bills: widget.bill),
+                    const SizedBox(height: 34),
 
-                  /// Account or Card selector
-                  AccountOrCardSelector(
-                    accounts: state.accounts,
-                    cards: state.cards,
-                    selectedAccount: state.selectedAccount,
-                    selectedCard: state.selectedCard,
-                    onSelected: (account, card) {
-                      if (account != null) {
+                    /// Account or Card selector
+                    AccountOrCardSelector(
+                      accounts: state.accounts,
+                      cards: state.cards,
+                      selectedAccount: state.selectedAccount,
+                      selectedCard: state.selectedCard,
+                      onSelected: (account, card) {
+                        if (account != null) {
+                          context.read<BillPaymentBloc>().add(
+                            SelectAccountEvt(account),
+                          );
+                        } else if (card != null) {
+                          context.read<BillPaymentBloc>().add(
+                            SelectCardEvt(card),
+                          );
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 24),
+
+                    /// OTP section
+                    _buildOtpSection(context, state),
+
+                    const SizedBox(height: 40),
+
+                    BAElevatedButton(
+                      padding: EdgeInsets.zero,
+                      height: 44,
+                      text: S.current.payBillButton,
+                      onPressed: () {
+                        final billId = state.billId ?? state.selectedBill?.id;
+                        // Confirm payment
                         context.read<BillPaymentBloc>().add(
-                          SelectAccountEvt(account),
+                          ConfirmBillPaymentWithOtpEvt(
+                            billId: billId ?? '',
+                            otpCode: _otpController.text.trim(),
+                          ),
                         );
-                      } else if (card != null) {
-                        context.read<BillPaymentBloc>().add(
-                          SelectCardEvt(card),
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 24),
-
-                  /// OTP section
-                  _buildOtpSection(context, state),
-
-                  const SizedBox(height: 40),
-
-                  /// Pay button
-                  BAElevatedButton(
-                    padding: EdgeInsets.zero,
-                    height: 44,
-                    text: S.current.payBillButton,
-                    onPressed: () {
-                      final otp = _otpController.text.trim();
-
-                      if (otp.isEmpty) {
-                        BASnackBar.buildErrorSnackbar(
-                          context,
-                          S.current.transferEnterOtpCodeTitle,
-                        );
-                        return;
-                      }
-
-                      context.read<BillPaymentBloc>().add(
-                        PayBillEvt(
-                          bill: widget.bill,
-                          paymentMethodId:
-                              state.selectedAccount?.id ??
-                              state.selectedCard?.id ??
-                              '',
-                        ),
-                      );
-                    },
-                  ),
-
-                  const SizedBox(height: 40),
-                ],
+                      },
+                    ),
+                    const SizedBox(height: 40),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -181,10 +170,12 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                 controller: _otpController,
                 hint: S.current.transferOtpLabel,
                 keyboardType: TextInputType.number,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(6),
                 ],
+                validator: SecureInputValidator.validateOTP,
               ),
             ),
             const SizedBox(width: 5),
@@ -196,10 +187,24 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                     ? S.current.transferResendButton
                     : S.current.transferGetOtpButton,
                 onPressed: () {
-                  final billId = widget.bill.id ?? '';
-                  context.read<BillPaymentBloc>().add(
-                    SendOtpEvt(billId: billId),
-                  );
+                  // Check if transaction already created
+                  if (state.billId != null && state.billId!.isNotEmpty) {
+                    // Already created transaction, just resend OTP
+                    context.read<BillPaymentBloc>().add(
+                      SendOtpEvt(billId: state.billId ?? ''),
+                    );
+                  } else {
+                    // Create transaction first
+                    context.read<BillPaymentBloc>().add(
+                      PayBillEvt(
+                        bill: widget.bill,
+                        paymentMethodId:
+                            state.selectedAccount?.id ??
+                            state.selectedCard?.id ??
+                            '',
+                      ),
+                    );
+                  }
                 },
                 height: 48,
               ),

@@ -70,9 +70,9 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => BlocProvider.value(
-                      value: context.read<TransferBloc>(),
-                      child: const TransferSuccessScreen(),
+                    builder: (_) => TransferSuccessScreen(
+                      amount: state.amount ?? 0,
+                      beneficiaryName: state.selectedBeneficiary?.name ?? '',
                     ),
                   ),
                 );
@@ -112,6 +112,7 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
                     onPressed: () {
                       final txId = state.transferId ?? '';
 
+                      // Handle biometric authentication (Touch ID/Face ID)
                       if (state.status is TransferStatusAwaitingBiometric &&
                           state.canUseBiometrics) {
                         context.read<TransferBloc>().add(
@@ -120,6 +121,7 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
                         return;
                       }
 
+                      // Handle OTP verification
                       final otp = _otpController.text.trim();
                       if (otp.isEmpty) {
                         BASnackBar.buildErrorSnackbar(
@@ -252,7 +254,11 @@ class ConfirmTransactionDetail extends StatelessWidget {
           name: S.current.transferCardNumberLabel,
           label: S.current.transferCardNumberLabel,
           controller: TextEditingController(
-            text: state.selectedBeneficiary?.accountNumber ?? '',
+            text: state.selectedBeneficiary?.accountNumber != null
+                ? FormatterUtils.maskCardNumber(
+                    state.selectedBeneficiary!.accountNumber,
+                  )
+                : '',
           ),
           readOnly: true,
         ),

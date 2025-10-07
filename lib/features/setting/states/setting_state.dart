@@ -1,4 +1,5 @@
 import 'package:banking_app/features/setting/models/user_model.dart';
+import 'package:banking_app/core/services/biometric_capability.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,6 +13,7 @@ final class SettingState extends Equatable {
     this.isBiometricEnabled = false,
     this.hasSavedBiometricCredentials = false,
     this.isBiometricAvailable = false,
+    this.biometricCapability = BiometricCapability.none,
   });
 
   final UserModel? user;
@@ -20,6 +22,7 @@ final class SettingState extends Equatable {
   final bool isBiometricEnabled;
   final bool isBiometricAvailable;
   final bool hasSavedBiometricCredentials;
+  final BiometricCapability biometricCapability;
 
   SettingState copyWith({
     UserModel? user,
@@ -28,6 +31,7 @@ final class SettingState extends Equatable {
     bool? isBiometricEnabled,
     bool? isBiometricAvailable,
     bool? hasSavedBiometricCredentials,
+    BiometricCapability? biometricCapability,
   }) {
     return SettingState(
       user: user ?? this.user,
@@ -37,6 +41,7 @@ final class SettingState extends Equatable {
       isBiometricAvailable: isBiometricAvailable ?? this.isBiometricAvailable,
       hasSavedBiometricCredentials:
           hasSavedBiometricCredentials ?? this.hasSavedBiometricCredentials,
+      biometricCapability: biometricCapability ?? this.biometricCapability,
     );
   }
 
@@ -48,6 +53,7 @@ final class SettingState extends Equatable {
     isBiometricEnabled,
     hasSavedBiometricCredentials,
     isBiometricAvailable,
+    biometricCapability,
   ];
 }
 

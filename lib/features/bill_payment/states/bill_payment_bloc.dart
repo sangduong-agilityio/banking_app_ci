@@ -2,8 +2,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bill_payment_event.dart';
 import 'bill_payment_state.dart';
 import 'package:banking_app/features/bill_payment/repositories/bill_payment_repository.dart';
+import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
+import 'package:banking_app/features/bill_payment/models/company_model.dart';
+import 'package:banking_app/features/home/models/account_model.dart';
+import 'package:banking_app/features/home/models/card_model.dart';
+import 'package:banking_app/core/bloc/base_bloc.dart';
 
-class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
+class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
   BillPaymentBloc({required this.repository})
     : super(const BillPaymentState(status: BillPaymentStatus.initial())) {
     on<BillPaymentInitializeEvt>(_onInitialize);
@@ -24,26 +29,44 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
     Emitter<BillPaymentState> emit,
   ) async {
     emit(state.copyWith(status: const BillPaymentStatus.loading()));
-    try {
-      final companies = await repository.fetchCompanies(event.type);
-      final bills = await repository.fetchBills();
-      final accounts = await repository.fetchAccounts();
-      final cards = await repository.fetchCards();
 
+    final result = await executeWithErrorHandling(
+      () async {
+        final companies = await repository.fetchCompanies(event.type);
+        final bills = await repository.fetchBills();
+        final accounts = await repository.fetchAccounts();
+        final cards = await repository.fetchCards();
+
+        return {
+          'companies': companies,
+          'bills': bills,
+          'accounts': accounts,
+          'cards': cards,
+        };
+      },
+      operationName: 'bill_payment_initialize',
+      isCritical: true,
+      context: {
+        'bill_type': event.type.name,
+        'event_type': 'BillPaymentInitializeEvt',
+      },
+    );
+
+    if (result != null) {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.loaded(),
-          bills: bills,
-          companies: companies,
-          accounts: accounts,
-          cards: cards,
+          bills: result['bills'] as List<BillPaymentModel>,
+          companies: result['companies'] as List<CompanyModel>,
+          accounts: result['accounts'] as List<AccountModel>,
+          cards: result['cards'] as List<CardModel>,
         ),
       );
-    } catch (e) {
+    } else {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: 'Failed to load bill payment data',
         ),
       );
     }
@@ -101,8 +124,15 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
     Emitter<BillPaymentState> emit,
   ) async {
     emit(state.copyWith(status: const BillPaymentStatus.loading()));
+
     try {
-      await repository.sendOtpEmail(event.billId);
+      await executeWithErrorHandling(
+        () async => await repository.sendOtpEmail(event.billId),
+        operationName: 'send_bill_payment_otp',
+        isCritical: false,
+        context: {'bill_id': event.billId},
+      );
+
       emit(
         state.copyWith(
           status: const BillPaymentStatus.awaitingOtp(),
@@ -114,7 +144,7 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: 'Failed to send OTP',
         ),
       );
     }
@@ -126,33 +156,38 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
     Emitter<BillPaymentState> emit,
   ) async {
     emit(state.copyWith(status: const BillPaymentStatus.loading()));
-    try {
-      final success = await repository.confirmPayTheBill(
-        event.billId,
-        event.otpCode,
-      );
 
-      if (!success) {
-        emit(
-          state.copyWith(
-            status: const BillPaymentStatus.failure(),
-            errorMessage: "Invalid OTP",
-          ),
+    final result = await executeWithErrorHandling(
+      () async {
+        final success = await repository.confirmPayTheBill(
+          event.billId,
+          event.otpCode,
         );
-        return;
-      }
 
+        if (!success) {
+          throw Exception('Invalid OTP');
+        }
+
+        return await repository.fetchBills();
+      },
+      operationName: 'confirm_bill_payment_with_otp',
+      isCritical: true,
+      context: {'bill_id': event.billId, 'has_otp': event.otpCode.isNotEmpty},
+    );
+
+    if (result != null) {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.success(),
           isOtpVerified: true,
+          bills: result,
         ),
       );
-    } catch (e) {
+    } else {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: 'Invalid OTP or payment confirmation failed',
         ),
       );
     }
@@ -163,28 +198,43 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
     Emitter<BillPaymentState> emit,
   ) async {
     emit(state.copyWith(status: const BillPaymentStatus.loading()));
-    try {
-      final bill = await repository.payBill(
-        bill: event.bill,
-        fromAccountId: state.selectedAccount?.id,
-        fromCardId: state.selectedCard?.id,
-      );
 
-      await repository.sendOtpEmail(bill.id ?? '');
+    final result = await executeWithErrorHandling(
+      () async {
+        final bill = await repository.payBill(
+          bill: event.bill,
+          fromAccountId: state.selectedAccount?.id,
+          fromCardId: state.selectedCard?.id,
+        );
 
+        await repository.sendOtpEmail(bill.id ?? '');
+        return bill;
+      },
+      operationName: 'pay_bill',
+      isCritical: true,
+      context: {
+        'bill_id': event.bill.id,
+        'bill_amount': event.bill.amount,
+        'has_account': state.selectedAccount != null,
+        'has_card': state.selectedCard != null,
+      },
+    );
+
+    if (result != null) {
       emit(
         state.copyWith(
+          selectedBill: result,
           status: const BillPaymentStatus.awaitingOtp(),
           otpSent: true,
-          transactionId: bill.transactionId,
-          selectedBill: bill,
+          transactionId: result.transactionId,
+          billId: result.id,
         ),
       );
-    } catch (e) {
+    } else {
       emit(
         state.copyWith(
           status: const BillPaymentStatus.failure(),
-          errorMessage: e.toString(),
+          errorMessage: 'Bill payment failed',
         ),
       );
     }
@@ -201,5 +251,10 @@ class BillPaymentBloc extends Bloc<BillPaymentEvt, BillPaymentState> {
       final fee = double.parse((state.amount! * feeRate).toStringAsFixed(2));
       emit(state.copyWith(fee: fee));
     }
+  }
+
+  @override
+  String? getCurrentUserId() {
+    return state.selectedAccount?.userId ?? state.selectedCard?.userId;
   }
 }
