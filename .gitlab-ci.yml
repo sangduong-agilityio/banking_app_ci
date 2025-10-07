@@ -1,0 +1,19 @@
+stages:
+  - mirror
+
+mirror_to_github:
+  stage: mirror
+  image: alpine:latest
+  only:
+    - feat/implement-banking-application
+  before_script:
+    - apk add --no-cache git openssh
+    - mkdir -p ~/.ssh
+    - echo "$GITLAB_MIRROR_SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - git config --global user.name "GitLab Mirror Bot"
+    - git config --global user.email "mirror-bot@example.com"
+  script:
+    - git remote add github git@github.com:sangduong-agilityio/banking_app_ci.git || true
+    - git push --mirror github
