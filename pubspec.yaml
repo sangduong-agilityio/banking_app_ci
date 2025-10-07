@@ -88,11 +88,8 @@ dependencies:
 
   sentry_flutter: ^9.6.0
 
-<<<<<<< HEAD
   fpdart: ^1.1.1
 
-=======
->>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
 
 dev_dependencies:
   flutter_test:
@@ -126,12 +123,9 @@ dev_dependencies:
 
   flutter_native_splash: ^2.4.6
 
-<<<<<<< HEAD
   faker: ^2.2.0
 
   bloc_test: ^10.0.0
-=======
->>>>>>> ef7706136447ff47fc4b2ab3cd558ccddbab9d7c
 
 flutter_icons:
   android: true
