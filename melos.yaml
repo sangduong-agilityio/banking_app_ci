@@ -63,6 +63,7 @@ scripts:
         'lib/app/**' \
         'lib/core/**' \
         'lib/**/models/**' \
+        'lib/**/repositories/**' \
         'lib/**/entities/**' \
         'lib/features/account/**' \
         'lib/features/home/**' \

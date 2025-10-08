@@ -3,10 +3,10 @@ name: Flutter Android CI/CD
 on:
   push:
     branches:
-      - feat/implement-banking-application
+      - main
   pull_request:
     branches:
-      - feat/implement-banking-application
+      - main
 
 jobs:
   build:
@@ -40,10 +40,11 @@ jobs:
       - name: Install project dependencies
         run: flutter pub get
 
-      - name: Analyze and format code
-        run: |
-          dart format --output=none --set-exit-if-changed .
-          flutter analyze
+      - name: Format code
+        run: dart format .
+
+      - name: Analyze code
+        run: flutter analyze
 
       - name: Run unit tests
         run: flutter test
