@@ -88,8 +88,6 @@ class BankingApiClient {
       final expectedFingerprint = _getPinnedFingerprint(host);
 
       if (expectedFingerprint.isEmpty) {
-        print('SECURITY_WARNING: No pinned certificate found for host: $host');
-        // ✅ ADD: Log warning
         ErrorSanitizer.logSecureError(
           Exception('Missing pinned certificate for host: $host'),
           StackTrace.current,
@@ -106,7 +104,6 @@ class BankingApiClient {
           'SECURITY_ERROR: SSL certificate fingerprint mismatch for host: $host',
         );
 
-        // ✅ ADD: Log CRITICAL security error
         ErrorSanitizer.logSecureError(
           Exception('Certificate pinning failed for host: $host'),
           StackTrace.current,
@@ -121,11 +118,6 @@ class BankingApiClient {
 
       return isValid;
     } catch (e) {
-      print(
-        'SECURITY_ERROR: Error validating certificate for host: $host - $e',
-      );
-
-      // ✅ ADD: Log certificate validation error
       ErrorSanitizer.logSecureError(
         e,
         StackTrace.current,
@@ -166,7 +158,6 @@ class BankingApiClient {
       print('CERT_DEBUG: Subject: ${cert.subject}');
       print('CERT_DEBUG: Issuer: ${cert.issuer}');
       print('CERT_DEBUG: Valid from: ${cert.startValidity}');
-      print('CERT_DEBUG: Valid to: ${cert.endValidity}');
     } catch (e) {
       print('CERT_DEBUG: Error logging certificate info: $e');
     }
@@ -194,7 +185,6 @@ class _SecurityInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     print('API_ERROR: ${err.type} ${err.requestOptions.path} - ${err.message}');
 
-    // ✅ ADD: Log critical errors to Sentry
     if (_shouldLogToSentry(err)) {
       await ErrorSanitizer.logSecureError(
         err,
@@ -213,13 +203,11 @@ class _SecurityInterceptor extends Interceptor {
   }
 
   bool _shouldLogToSentry(DioException err) {
-    // Không log timeout thông thường (quá nhiễu)
     if (err.type == DioExceptionType.connectionTimeout ||
         err.type == DioExceptionType.receiveTimeout) {
       return false;
     }
 
-    // Log tất cả errors khác
     return true;
   }
 

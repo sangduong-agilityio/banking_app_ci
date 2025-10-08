@@ -307,10 +307,6 @@ class TAUTStep {
   final Function expect;
 }
 
-// ============================================================================
-// Bloc Test Framework (REFACTORED)
-// ============================================================================
-
 class BABlocTest {
   const BABlocTest({
     required this.description,
@@ -339,8 +335,9 @@ class BABlocTest {
 
   void _setUpAndTeardown() {
     if (setUpAll != null) flutter_test.setUpAll(() => setUpAll?.call());
-    if (tearDownAll != null)
+    if (tearDownAll != null) {
       flutter_test.tearDownAll(() => tearDownAll?.call());
+    }
     if (setUp != null) flutter_test.setUp(() => setUp?.call());
     if (tearDown != null) flutter_test.tearDown(() => tearDown?.call());
   }
@@ -361,7 +358,6 @@ class BABlocTestFeature {
   }
 }
 
-/// REFACTORED: Scenarios now use lazy builders instead of receiving instances
 class BABlocTestScenario<B extends BlocBase<State>, State> {
   const BABlocTestScenario({
     required this.description,

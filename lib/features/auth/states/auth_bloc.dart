@@ -62,7 +62,6 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         );
       }
     } catch (e, stackTrace) {
-      // IMPROVED: Add isCritical flag and better context
       await ErrorSanitizer.logSecureError(
         e,
         stackTrace,

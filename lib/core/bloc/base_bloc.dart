@@ -25,7 +25,7 @@ abstract class BaseBloc<Event, State> extends Bloc<Event, State> {
         },
         isCritical: isCritical,
       );
-      return null;
+      rethrow;
     }
   }
 

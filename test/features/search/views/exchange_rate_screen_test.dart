@@ -22,7 +22,6 @@ void main() {
   setUp(() {
     mockBloc = MockSearchBloc();
   });
-
   tearDown(() {
     cleanupSearchServiceLocator();
   });
