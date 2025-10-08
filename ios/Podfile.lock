@@ -47,7 +47,10 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - local_auth_darwin (from `.symlinks/plugins/local_auth_darwin/darwin`)
   - objectbox_flutter_libs (from `.symlinks/plugins/objectbox_flutter_libs/ios`)
+<<<<<<< HEAD
   - objective_c (from `.symlinks/plugins/objective_c/ios`)
+=======
+>>>>>>> 57648217b3c9c9a2bf22efb9773d13b0f758f089
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - sentry_flutter (from `.symlinks/plugins/sentry_flutter/ios`)
@@ -77,8 +80,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/local_auth_darwin/darwin"
   objectbox_flutter_libs:
     :path: ".symlinks/plugins/objectbox_flutter_libs/ios"
+<<<<<<< HEAD
   objective_c:
     :path: ".symlinks/plugins/objective_c/ios"
+=======
+>>>>>>> 57648217b3c9c9a2bf22efb9773d13b0f758f089
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -102,7 +108,10 @@ SPEC CHECKSUMS:
   local_auth_darwin: c3ee6cce0a8d56be34c8ccb66ba31f7f180aaebb
   ObjectBox: 7760fa9072adcffe102a6adf4646ca84ba70ab6b
   objectbox_flutter_libs: 4014e38f57250b074b99893ae84579aba8f02876
+<<<<<<< HEAD
   objective_c: 89e720c30d716b036faf9c9684022048eee1eee2
+=======
+>>>>>>> 57648217b3c9c9a2bf22efb9773d13b0f758f089
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   Sentry: b53951377b78e21a734f5dc8318e333dbfc682d7
