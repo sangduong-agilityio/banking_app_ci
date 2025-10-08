@@ -48,23 +48,21 @@ scripts:
     run: melos run build_runner
     description: Generate all necessary code for development
 
-  
   test:selective_unit_test:
     run: |
       cd apps/banking_app || cd . # adjust if main app at root
       echo "→ Generating full_coverage stubs..."
       full_coverage
-      
+
       echo "→ Running tests with coverage..."
       puro flutter test --no-pub --coverage -r expanded
-      
+
       echo "→ Filtering unwanted files from lcov.info..."
       lcov --remove coverage/lcov.info \
         'lib/main*.dart' \
         'lib/app/**' \
         'lib/core/**' \
         'lib/**/models/**' \
-        'lib/**/repositories/**' \
         'lib/**/entities/**' \
         'lib/features/account/**' \
         'lib/features/home/**' \
@@ -79,7 +77,7 @@ scripts:
 
       echo "→ Generating HTML coverage report..."
       genhtml coverage/lcov_filtered.info --output-directory coverage/html
-      
+
       echo "Coverage report generated at coverage/html/index.html"
       open coverage/html/index.html
     description: Run Flutter unit tests and generate filtered coverage report
