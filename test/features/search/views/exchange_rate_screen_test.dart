@@ -78,12 +78,18 @@ void main() {
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
-                  BAFindsTextVerification(text: 'Country');
-                  BAFindsTextVerification(text: 'Buy');
-                  BAFindsTextVerification(text: 'Sell');
-                  BAFindsTextVerification(text: 'USA');
-                  BAFindsTextVerification(text: '1.00');
-                  BAFindsTextVerification(text: '1.10');
+                  // Verify table headers
+                  expect(
+                    find.text(S.current.searchCountryTitle),
+                    findsOneWidget,
+                  );
+                  expect(find.text(S.current.searchBuyTitle), findsOneWidget);
+                  expect(find.text(S.current.searchSellTitle), findsOneWidget);
+
+                  // Verify table data
+                  expect(find.text('USA'), findsOneWidget);
+                  expect(find.text('1.00'), findsOneWidget);
+                  expect(find.text('1.10'), findsOneWidget);
                 },
               ),
             ],

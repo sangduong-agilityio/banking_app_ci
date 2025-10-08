@@ -21,44 +21,46 @@ class SearchScreen extends StatelessWidget {
         alignment: BAAppBarAlignment.left,
         iconColor: context.colorScheme.scrim,
       ),
-      body: Column(
-        children: [
-          CardCategorySelected(
-            category: S.current.searchBranchSelectedTitle,
-            categoryName: S.current.searchBranchDescription,
-            imageUrl: BAAssets.branch(),
-            onTap: () {
-              BASnackBar.showNotSupported(
-                context,
-                S.current.pageNotSupportedYet,
-              );
-            },
-          ),
-          CardCategorySelected(
-            category: S.current.searchInterestRateTitle,
-            categoryName: S.current.searchInterestRateDescription,
-            imageUrl: BAAssets.interest(),
-            onTap: () {
-              context.goNamed(BAPaths.interestRate.name);
-            },
-          ),
-          CardCategorySelected(
-            category: S.current.searchExchangeRateTitle,
-            categoryName: S.current.searchExchangeRateDescription,
-            imageUrl: BAAssets.exchangeRate(),
-            onTap: () {
-              context.goNamed(BAPaths.exchangeRate.name);
-            },
-          ),
-          CardCategorySelected(
-            category: S.current.searchExchangeTitle,
-            categoryName: S.current.searchExchangeDescription,
-            imageUrl: BAAssets.exchange(),
-            onTap: () {
-              context.goNamed(BAPaths.exchange.name);
-            },
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CardCategorySelected(
+              category: S.current.searchBranchSelectedTitle,
+              categoryName: S.current.searchBranchDescription,
+              imageUrl: BAAssets.branch(),
+              onTap: () {
+                BASnackBar.showNotSupported(
+                  context,
+                  S.current.pageNotSupportedYet,
+                );
+              },
+            ),
+            CardCategorySelected(
+              category: S.current.searchInterestRateTitle,
+              categoryName: S.current.searchInterestRateDescription,
+              imageUrl: BAAssets.interest(),
+              onTap: () {
+                context.goNamed(BAPaths.interestRate.name);
+              },
+            ),
+            CardCategorySelected(
+              category: S.current.searchExchangeRateTitle,
+              categoryName: S.current.searchExchangeRateDescription,
+              imageUrl: BAAssets.exchangeRate(),
+              onTap: () {
+                context.goNamed(BAPaths.exchangeRate.name);
+              },
+            ),
+            CardCategorySelected(
+              category: S.current.searchExchangeTitle,
+              categoryName: S.current.searchExchangeDescription,
+              imageUrl: BAAssets.exchange(),
+              onTap: () {
+                context.goNamed(BAPaths.exchange.name);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
