@@ -53,7 +53,7 @@ jobs:
 
       - name: Install CMake
         run: sdkmanager "cmake;4.0.2"
-
+      # - name: Install NDK
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
         with:
