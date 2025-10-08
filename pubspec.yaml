@@ -34,7 +34,6 @@ dependencies:
   # Framework for responsive design
   responsive_framework: ^1.5.1
 
-
   # Generates localization code from ARB files
   intl_utils: ^2.8.5
 
@@ -90,6 +89,9 @@ dependencies:
 
   fpdart: ^1.1.1
 
+  crypto: ^3.0.6
+
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:
