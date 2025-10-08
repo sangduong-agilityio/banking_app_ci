@@ -14,6 +14,7 @@ import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/widgets/currency_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class ExchangeScreen extends StatefulWidget {
   const ExchangeScreen({
@@ -126,28 +127,41 @@ class _ExchangeScreenState extends State<ExchangeScreen>
           ),
         ),
 
-      child: BAScaffold(
-        appBar: BAAppBar(
-          title: S.current.searchExchangeTitle,
-          titleColor: context.colorScheme.scrim,
-          alignment: BAAppBarAlignment.left,
-          iconColor: context.colorScheme.scrim,
-        ),
-        body: BlocListener<SearchBloc, SearchState>(
-          listenWhen: (prev, curr) =>
-              prev.fromAmount != curr.fromAmount ||
-              prev.toAmount != curr.toAmount ||
-              prev.fromCurrency != curr.fromCurrency ||
-              prev.toCurrency != curr.toCurrency,
-          listener: (context, state) {
-            _updateController(_fromAmountController, state.fromAmount);
-            _updateController(_toAmountController, state.toAmount);
+      child: LoaderOverlay(
+        child: BAScaffold(
+          appBar: BAAppBar(
+            title: S.current.searchExchangeTitle,
+            titleColor: context.colorScheme.scrim,
+            alignment: BAAppBarAlignment.left,
+            iconColor: context.colorScheme.scrim,
+          ),
+          body: BlocConsumer<SearchBloc, SearchState>(
+            listenWhen: (prev, curr) =>
+                prev.status != curr.status ||
+                prev.fromAmount != curr.fromAmount ||
+                prev.toAmount != curr.toAmount ||
+                prev.fromCurrency != curr.fromCurrency ||
+                prev.toCurrency != curr.toCurrency,
+            listener: (context, state) {
+              state.status.maybeWhen(
+                loading: () => context.loaderOverlay.show(),
+                success: () {
+                  if (context.mounted) context.loaderOverlay.hide();
+                },
+                failure: () {
+                  if (context.mounted) context.loaderOverlay.hide();
+                },
+                orElse: () {
+                  if (context.mounted) context.loaderOverlay.hide();
+                },
+              );
+              _updateController(_fromAmountController, state.fromAmount);
+              _updateController(_toAmountController, state.toAmount);
 
-            if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
-              _showOfflineWarning(context);
-            }
-          },
-          child: BlocBuilder<SearchBloc, SearchState>(
+              if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
+                _showOfflineWarning(context);
+              }
+            },
             builder: (context, state) {
               return GestureDetector(
                 onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -191,12 +205,10 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                           onTap: () => _swapCurrencies(context),
                           child: AnimatedBuilder(
                             animation: _swapAnimation,
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                angle: _swapAnimation.value * math.pi,
-                                child: child,
-                              );
-                            },
+                            builder: (context, child) => Transform.rotate(
+                              angle: _swapAnimation.value * math.pi,
+                              child: child,
+                            ),
                             child: BAAssets.swap(),
                           ),
                         ),
