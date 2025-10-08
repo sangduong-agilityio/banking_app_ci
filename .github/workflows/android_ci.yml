@@ -41,6 +41,9 @@ jobs:
         run: flutter pub get
 
       - name: Run code generation
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Format code
