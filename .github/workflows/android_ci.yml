@@ -44,6 +44,9 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SUPABASE_ENDPOINT: ${{ secrets.SUPABASE_ENDPOINT }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          SENTRY_ENV: ${{ secrets.SENTRY_ENV }}
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Format code
