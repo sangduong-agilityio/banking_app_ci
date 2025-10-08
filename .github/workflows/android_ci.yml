@@ -3,10 +3,10 @@ name: Flutter Android CI/CD
 on:
   push:
     branches:
-      - main
+      - feat/implement-banking-application
   pull_request:
     branches:
-      - main
+      - feat/implement-banking-application
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install CMake
-        run: sdkmanager "cmake;4.0.2"
+        run: sdkmanager "cmake;3.22.1"
 
       - name: Cache Gradle dependencies
         uses: actions/cache@v4
@@ -63,7 +63,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      
+
       - name: Clean build directory
         run: flutter clean
 
@@ -94,7 +94,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
