@@ -3,10 +3,10 @@ name: Flutter Android CI/CD
 on:
   push:
     branches:
-      - main
+      - feat/implement-banking-application
   pull_request:
     branches:
-      - main
+      - feat/implement-banking-application
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.PUB_CACHE }}
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          key: ${{ runner.os }}-pub-${{ hashFiles("**/pubspec.lock") }}
           restore-keys: |
             ${{ runner.os }}-pub-
 
@@ -60,10 +60,10 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles("**/*.gradle*", "**/gradle-wrapper.properties") }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      
+
       - name: Clean build directory
         run: flutter clean
 
