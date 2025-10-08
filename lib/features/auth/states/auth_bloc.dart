@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
   final AuthRepository repo;
   final BiometricService biometricService;
 
+  /// Handles changes in the sign-in form validation state.
   Future<void> _onSignInFormValidateChanged(
     SignInFormValidateChangedEvt event,
     Emitter<AuthState> emit,
@@ -34,6 +35,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     );
   }
 
+  /// Handles the sign-in button press event.
   Future<void> _onSignInPressed(
     SignInButtonPressedEvt event,
     Emitter<AuthState> emit,
@@ -84,6 +86,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     }
   }
 
+  /// Handles biometric sign-in.
   Future<void> _onSignInWithBiometric(
     SignInWithBiometricEvt event,
     Emitter<AuthState> emit,
@@ -153,6 +156,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     }
   }
 
+  /// Checks the availability and status of biometric authentication.
   Future<void> _onCheckBiometricAvailability(
     CheckBiometricAvailabilityEvt event,
     Emitter<AuthState> emit,
@@ -192,6 +196,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     }
   }
 
+  /// Handles changes in the sign-up form validation state.
   Future<void> _onSignUpPressed(
     SignUpButtonPressedEvt event,
     Emitter<AuthState> emit,
@@ -239,6 +244,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     }
   }
 
+  /// Handles changes in the terms acceptance state during sign-up.
   Future<void> _onSignUpTermsChanged(
     SignUpTermsChangedEvt event,
     Emitter<AuthState> emit,
@@ -246,6 +252,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     emit(state.copyWith(isTermsAccepted: event.isAccepted));
   }
 
+  /// Handles changes in the sign-up form validation state.
   Future<void> _onSignUpFormValidateChanged(
     SignUpFormValidateChangedEvt event,
     Emitter<AuthState> emit,

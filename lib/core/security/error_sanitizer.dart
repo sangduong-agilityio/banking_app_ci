@@ -4,8 +4,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+/// A utility class for sanitizing and logging errors securely.
 class ErrorSanitizer {
-  /// Sanitizes errors to prevent sensitive information exposure
+  /// Sanitizes errors to prevent sensitive information exposure.
   static String sanitize(Object error) {
     // Handle Supabase authentication errors
     if (error is AuthException) {
@@ -26,6 +27,7 @@ class ErrorSanitizer {
     return _handleGenericError(error);
   }
 
+  /// Maps Supabase [AuthException] to user-friendly messages.
   static String _handleAuthException(AuthException error) {
     switch (error.message.toLowerCase()) {
       case 'invalid login credentials':
@@ -42,11 +44,11 @@ class ErrorSanitizer {
       case 'email already registered':
         return S.current.authErrorEmailAlreadyExists;
       default:
-        // Never expose raw auth error details
         return S.current.authErrorGeneric;
     }
   }
 
+  /// Maps [DioException] to user-friendly messages.
   static String _handleNetworkException(DioException error) {
     switch (error.type) {
       case DioExceptionType.connectionTimeout:
@@ -65,6 +67,7 @@ class ErrorSanitizer {
     }
   }
 
+  /// Maps HTTP status codes to user-friendly messages.
   static String _handleHttpStatusCode(int? statusCode) {
     switch (statusCode) {
       case 400:
@@ -87,6 +90,7 @@ class ErrorSanitizer {
     }
   }
 
+  /// Handles application-specific failures.
   static String _handleApplicationFailure(Failure failure) {
     // Application failures should already be sanitized
     // but double-check for sensitive information
@@ -108,6 +112,7 @@ class ErrorSanitizer {
     return message;
   }
 
+  /// Handles any other generic errors.
   static String _handleGenericError(Object error) {
     final message = error.toString().toLowerCase();
 
@@ -130,8 +135,7 @@ class ErrorSanitizer {
     return S.current.applicationErrorGeneric;
   }
 
-  /// Logs the full error details securely for debugging
-
+  /// Logs errors securely to Sentry with context sanitization.
   static Future<void> logSecureError(
     Object error,
     StackTrace? stackTrace, {
@@ -171,22 +175,11 @@ class ErrorSanitizer {
 
     // Also log to console in development mode
     assert(() {
-      print(
-        'SECURE_ERROR_LOG [${isCritical ? 'CRITICAL' : 'ERROR'}]: ${error.runtimeType}: ${error.toString()}',
-      );
-      if (stackTrace != null) {
-        print('STACK_TRACE: $stackTrace');
-      }
-      if (userId != null) {
-        print('USER_ID: $userId');
-      }
-      if (sanitizedContext.isNotEmpty) {
-        print('CONTEXT: $sanitizedContext');
-      }
       return true;
     }());
   }
 
+  /// Sanitizes context by removing sensitive keys and truncating long values.
   static Map<String, dynamic> _sanitizeContext(Map<String, dynamic>? context) {
     if (context == null) return {};
 

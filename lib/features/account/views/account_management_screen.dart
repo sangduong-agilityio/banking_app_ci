@@ -1,6 +1,7 @@
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
+import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/shimmer.dart';
 import 'package:banking_app/features/account/states/account_and_card_cubit.dart';
@@ -29,18 +30,22 @@ class AccountManagementScreen extends StatelessWidget {
         builder: (context, state) {
           if (state.status is AccountAndCardStatusLoading) {
             return const UserProfileSkeleton();
+          } else if (state.status is AccountAndCardStatusSuccess) {
+            return ListView.builder(
+              padding: const EdgeInsets.only(top: 16, bottom: 24),
+              itemCount: state.accounts.length,
+              itemBuilder: (context, index) {
+                final account = state.accounts[index];
+                return AccountCard(
+                  account: account,
+                  mode: AccountCardMode.management,
+                );
+              },
+            );
+          } else if (state.status is AccountAndCardStatusFailure) {
+            return NotFoundScreen();
           }
-          return ListView.builder(
-            padding: const EdgeInsets.only(top: 16, bottom: 24),
-            itemCount: state.accounts.length,
-            itemBuilder: (context, index) {
-              final account = state.accounts[index];
-              return AccountCard(
-                account: account,
-                mode: AccountCardMode.management,
-              );
-            },
-          );
+          return const SizedBox.shrink();
         },
       ),
     );

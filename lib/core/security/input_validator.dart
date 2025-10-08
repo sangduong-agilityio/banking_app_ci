@@ -1,10 +1,11 @@
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 
-/// A secure validator with stricter checks than [InputValidationMixin].
-/// Used for sensitive inputs like account number, amount, PIN, password, etc.
+/// A secure validator with stricter checks than a standard input validator.
+///
+/// This class is used for sensitive inputs like account numbers, amounts, PINs, passwords, etc.
 /// It includes checks for common weak patterns and suspicious inputs.
 class SecureInputValidator {
-  /// Validate banking account number (10–16 digits)
+  /// Validates a banking account number (10–16 digits).
   static String? validateAccountNumber(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Account number is required';
@@ -16,7 +17,7 @@ class SecureInputValidator {
     return null;
   }
 
-  /// Validate transfer amount with security + suspicious checks
+  /// Validates a transfer amount with security and suspicious checks.
   static String? validateTransferAmount(String? value, {double? maxBalance}) {
     if (value == null || value.trim().isEmpty) {
       return 'Amount is required';
@@ -38,7 +39,7 @@ class SecureInputValidator {
     return null;
   }
 
-  /// Check suspicious amount patterns
+  /// Checks for suspicious amount patterns.
   static bool _isSuspiciousAmount(double amount) {
     if (amount >= 10000 && amount % 1000 == 0) return true;
     final amountStr = amount.toStringAsFixed(2).replaceAll('.', '');
@@ -46,8 +47,7 @@ class SecureInputValidator {
     return amountStr.length > 4 && uniqueDigits <= 2;
   }
 
-  /// Validate bill code (6–20 alphanumeric characters)
-
+  /// Validates a bill code (6–20 alphanumeric characters).
   static String? validateBillCode(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Bill code is required';
@@ -59,6 +59,7 @@ class SecureInputValidator {
     return null;
   }
 
+  /// Validates an OTP code (6 digits).
   static String? validateOTP(String? value) {
     if (value == null || value.trim().isEmpty) {
       return S.current.transferEnterOtpCodeTitle;
@@ -68,6 +69,7 @@ class SecureInputValidator {
     return null;
   }
 
+  /// Validates a phone number with security and suspicious checks.
   static String? validatePhoneNumber(String? value) {
     if (value == null || value.trim().isEmpty) {
       return 'Phone number is required';
@@ -79,7 +81,7 @@ class SecureInputValidator {
     return null;
   }
 
-  /// Validate email with security + suspicious checks
+  /// Validates an email with security and suspicious checks.
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) return 'Email is required';
     final email = value.trim().toLowerCase();
@@ -96,6 +98,7 @@ class SecureInputValidator {
     return null;
   }
 
+  /// Checks for suspicious email patterns.
   static bool _isSuspiciousEmail(String email) {
     if (email.contains('..')) return true;
     const suspiciousDomains = [
@@ -108,6 +111,7 @@ class SecureInputValidator {
     return suspiciousDomains.any((d) => email.contains(d));
   }
 
+  /// Validates a password with security and suspicious checks.
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) return 'Password is required';
     if (value.length < 8) return 'Password must be at least 8 characters';
@@ -122,6 +126,7 @@ class SecureInputValidator {
     return null;
   }
 
+  /// Checks for common weak password patterns.
   static bool _isWeakPassword(String password) {
     const common = [
       'password',
@@ -146,6 +151,7 @@ class SecureInputValidator {
     return complexity < 3;
   }
 
+  /// Validates a PIN with security and suspicious checks.
   static String? validatePIN(String? value) {
     if (value == null || value.trim().isEmpty) return 'PIN is required';
     final cleaned = value.replaceAll(RegExp(r'[^\d]'), '');
@@ -156,6 +162,7 @@ class SecureInputValidator {
     return null;
   }
 
+  /// Checks for common weak PIN patterns.
   static bool _isWeakPIN(String pin) {
     if (['1234', '4321', '123456', '654321'].contains(pin)) return true;
     if (RegExp(r'^(\d)\1+$').hasMatch(pin)) return true;
@@ -163,8 +170,7 @@ class SecureInputValidator {
     return commonPins.contains(pin);
   }
 
-  /// Sanitize input by removing dangerous characters and patterns
-
+  /// Sanitizes input by removing dangerous characters and patterns.
   static String sanitizeInput(String input) {
     String result = input;
 
@@ -197,6 +203,7 @@ class SecureInputValidator {
     return result.trim();
   }
 
+  /// A general secure input validator with customizable rules.
   static String? validateSecureInput(
     String? value, {
     required String fieldName,
@@ -233,8 +240,7 @@ class SecureInputValidator {
     return null;
   }
 
-  /// Check for suspicious patterns like SQL keywords or XSS vectors
-
+  /// Checks for suspicious patterns like SQL keywords or XSS vectors.
   static bool _containsSuspiciousPatterns(String input) {
     final lower = input.toLowerCase();
     const sqlPatterns = [

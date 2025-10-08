@@ -2,12 +2,14 @@ import 'package:banking_app/features/search/entities/currency_rate_entity.dart';
 import 'package:banking_app/features/search/states/search_state.dart';
 import 'package:banking_app/objectbox.g.dart';
 
+/// A service that manages the offline caching of currency exchange rates using ObjectBox.
 class OfflineExchangeService {
   final Box<CurrencyRateEntity> _ratesBox;
 
+  /// Creates an [OfflineExchangeService] object.
   OfflineExchangeService(this._ratesBox);
 
-  // Save a rate from the API into the cache
+  /// Caches a currency exchange rate.
   void cacheRate(String fromCurrency, String toCurrency, double rate) {
     try {
       // Find existing rate
@@ -37,11 +39,11 @@ class OfflineExchangeService {
         _ratesBox.put(entity);
       }
     } catch (e) {
-      print('Error caching rate: $e');
+      // Handle any errors during caching
     }
   }
 
-  // Get a rate from the cache
+  /// Retrieves a cached currency exchange rate.
   double? getCachedRate(String fromCurrency, String toCurrency) {
     try {
       final query = _ratesBox
@@ -64,7 +66,7 @@ class OfflineExchangeService {
     }
   }
 
-  // Check the freshness status of a rate
+  /// Gets the status of a cached currency exchange rate (fresh, stale, or no data).
   ExchangeRateStatus getRateStatus(String fromCurrency, String toCurrency) {
     try {
       final query = _ratesBox
@@ -94,7 +96,7 @@ class OfflineExchangeService {
     }
   }
 
-  // Get the last updated timestamp for a given rate
+  /// Gets the last updated timestamp of a cached currency exchange rate.
   DateTime? getLastUpdated(String fromCurrency, String toCurrency) {
     try {
       final query = _ratesBox
@@ -113,17 +115,17 @@ class OfflineExchangeService {
     }
   }
 
-  // Check if there is any cached data
+  /// Checks if there is any cached data.
   bool hasAnyCachedData() {
     return _ratesBox.getAll().isNotEmpty;
   }
 
-  // Clear all cached data
+  /// Clears all the cached data.
   void clearAllCache() {
     _ratesBox.removeAll();
   }
 
-  // Get all cached rates (useful for debugging)
+  /// Retrieves all the cached currency exchange rates.
   List<CurrencyRateEntity> getAllCachedRates() {
     return _ratesBox.getAll();
   }

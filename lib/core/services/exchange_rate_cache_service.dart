@@ -2,12 +2,14 @@ import 'package:banking_app/features/search/models/exchange_rate_model.dart';
 import 'package:banking_app/features/search/entities/exchange_rate_entity.dart';
 import 'package:objectbox/objectbox.dart';
 
+/// A service that manages the caching of exchange rates using ObjectBox.
 class ExchangeRateCacheService {
   final Box<ExchangeRateEntity> _exchangeRateBox;
 
+  /// Creates an [ExchangeRateCacheService] object.
   ExchangeRateCacheService(this._exchangeRateBox);
 
-  // Check if the cache is still valid (less than 5 minutes old)
+  /// Checks if the cache is still valid (less than 5 minutes old).
   bool isCacheValid() {
     final entities = _exchangeRateBox.getAll();
     if (entities.isEmpty) return false;
@@ -19,41 +21,40 @@ class ExchangeRateCacheService {
     return difference.inMinutes < 5;
   }
 
-  // Retrieve data from cache
+  /// Retrieves the cached exchange rates.
   List<ExchangeRateModel> getCachedRates() {
     final entities = _exchangeRateBox.getAll();
     return entities.map((entity) => entity.toModel()).toList();
   }
 
-  // Save data into cache
+  /// Saves the exchange rates into the cache.
   void cacheRates(List<ExchangeRateModel> rates) {
     try {
       // Remove old cache
       _exchangeRateBox.removeAll();
 
       // Add new data with current timestamp
-      final entities = rates
-          .map((rate) => ExchangeRateEntity.fromModel(rate))
-          .toList();
+      final entities =
+          rates.map((rate) => ExchangeRateEntity.fromModel(rate)).toList();
       _exchangeRateBox.putMany(entities);
     } catch (e) {
       // Handle any errors during caching
     }
   }
 
-  // Clear all cache
+  /// Clears all the cached exchange rates.
   void clearCache() {
     _exchangeRateBox.removeAll();
   }
 
-  // Get the last updated timestamp
+  /// Gets the last updated timestamp of the cache.
   DateTime? getLastUpdatedTime() {
     final entities = _exchangeRateBox.getAll();
     if (entities.isEmpty) return null;
     return entities.first.lastUpdated;
   }
 
-  // Check if there is any cached data
+  /// Checks if there is any cached data.
   bool hasCachedData() {
     return _exchangeRateBox.getAll().isNotEmpty;
   }

@@ -1,4 +1,6 @@
+/// A helper class that provides default currency conversion rates.
 class DefaultRates {
+  /// A map of base currency rates with USD as the reference currency.
   static final Map<String, double> baseRates = {
     'USD': 1.0,
     'VND': 24300,
@@ -12,6 +14,7 @@ class DefaultRates {
     'AUD': 1.52,
   };
 
+  /// Returns the conversion rate between two currencies.
   static double? getRate(String from, String to) {
     final fromRate = baseRates[from];
     final toRate = baseRates[to];

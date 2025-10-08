@@ -35,8 +35,10 @@ class AppLocators {
       return await ObjectBoxManager.getStore();
     });
 
+    /// Wait for the Store to be ready before proceeding
     await locator.isReady<Store>();
 
+    /// Get the Store instance
     final store = locator<Store>();
 
     /// Sync registrations

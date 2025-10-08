@@ -1,13 +1,14 @@
 import 'package:intl/intl.dart';
 
+/// A utility class for formatting dates, amounts, and other common data types.
 class FormatterUtils {
-  /// Format date as dd/MM/yyyy
+  /// Formats a [DateTime] object as a string in `dd/MM/yyyy` format.
   static String formatDate(DateTime? date) {
     if (date == null) return '';
     return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
   }
 
-  /// Format month and year as "January 2025"
+  /// Formats a [DateTime] object as a string in `Month YYYY` format.
   static String formatMonthYear(DateTime date) {
     const months = [
       'January',
@@ -26,7 +27,9 @@ class FormatterUtils {
     return '${months[date.month - 1]} ${date.year}';
   }
 
-  /// Mask card number: "1234 **** **** 5678"
+  /// Masks a credit card number, showing only the first and last four digits.
+  ///
+  /// Example: `1234 **** **** 5678`
   static String maskCardNumber(String cardNumber) {
     if (cardNumber.length < 8) return cardNumber;
 
@@ -34,10 +37,10 @@ class FormatterUtils {
     final end = cardNumber.substring(cardNumber.length - 4);
     const mask = '**** ****';
 
-    return "$start $mask $end";
+    return '$start $mask $end';
   }
 
-  /// Format generic amount (without currency)
+  /// Formats a generic amount without a currency symbol.
   static String formatAmount(double amount) {
     if (amount % 1 == 0) {
       return amount.toInt().toString();
@@ -48,6 +51,7 @@ class FormatterUtils {
     }
   }
 
+  /// Formats a balance with a currency code and locale-specific formatting.
   static String formatBalance(
     double amount, {
     String currencyCode = 'USD',
@@ -63,10 +67,10 @@ class FormatterUtils {
     final formatted = format.format(amount);
 
     // Add currency code before the amount
-    return "$currencyCode $formatted";
+    return '$currencyCode $formatted';
   }
 
-  /// Format last updated time
+  /// Formats a [DateTime] object as a relative time string (e.g., "Just now", "5 minutes ago").
   static String formatLastUpdated(DateTime lastUpdated) {
     final now = DateTime.now();
     final difference = now.difference(lastUpdated);

@@ -1,25 +1,25 @@
+/// A utility class for handling currency-related operations such as conversion, formatting, and validation.
 class CurrencyUtils {
-  /// Convert from amount → to amount
+  /// Converts an amount from one currency to another using a given exchange rate.
   static double? convertFromTo(double? fromAmount, double rate) {
     if (fromAmount == null || fromAmount <= 0 || rate <= 0) return null;
     return double.parse((fromAmount * rate).toStringAsFixed(2));
   }
 
-  /// Convert to amount → from amount
+  /// Converts an amount from a target currency back to the original currency.
   static double? convertToFrom(double? toAmount, double rate) {
     if (toAmount == null || toAmount <= 0 || rate <= 0) return null;
     return double.parse((toAmount / rate).toStringAsFixed(2));
   }
 
-  /// Swap currencies and amounts
+  /// Swaps the from and to currencies and amounts.
   static ({
     String? fromCurrency,
     String? toCurrency,
     double? fromAmount,
     double? toAmount,
     double? exchangeRate,
-  })
-  swap({
+  }) swap({
     required String? fromCurrency,
     required String? toCurrency,
     required double? fromAmount,
@@ -39,7 +39,7 @@ class CurrencyUtils {
     );
   }
 
-  /// Convert amount to words (simplified)
+  /// Converts a numeric amount to its word representation.
   static String convertAmountToWords(String value) {
     final amount = double.tryParse(value.replaceAll(',', ''));
     if (amount == null) return '';
@@ -58,8 +58,9 @@ class CurrencyUtils {
     return "$amount dollars";
   }
 
-  /// Validate amount against balance and decimal precision
-  /// Returns null if valid, or error message if invalid
+  /// Validates a given amount against the available balance and decimal precision.
+  ///
+  /// Returns `null` if the amount is valid, or an error message if it is invalid.
   static String? validateAmount({
     required double? amount,
     required double balance,
@@ -76,7 +77,7 @@ class CurrencyUtils {
     return null;
   }
 
-  /// Round amount to 2 decimal points
+  /// Rounds an amount to two decimal places.
   static double roundTo2Decimal(double amount) {
     return double.parse(amount.toStringAsFixed(2));
   }

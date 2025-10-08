@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: const [
               GreetingAppBar(),
-              SizedBox(height: 10),
+              SizedBox(height: 24),
               HomeContent(),
             ],
           ),
@@ -50,9 +50,7 @@ class GreetingAppBar extends StatelessWidget {
           return const GreetingAppBarSkeleton();
         }
         return BAAppBar(
-          titleSpacing: 10,
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-          title: '${S.current.homeGreetingTitle(state.user?.username ?? '')} ',
+          title: S.current.homeGreetingTitle(state.user?.username ?? ''),
           alignment: BAAppBarAlignment.left,
           profileImage: state.user?.profileImage,
           style: context.titleMedium?.copyWith(

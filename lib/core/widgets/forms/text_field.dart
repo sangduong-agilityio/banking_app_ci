@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+/// A custom text field widget with various configurations and validation support.
+///
+/// This widget can be used for regular text input, passwords, and can be customized with icons, labels, and hints.
 class BATextField extends StatefulWidget {
+  /// Creates a [BATextField] widget.
   const BATextField({
     super.key,
     this.name,
@@ -32,33 +36,77 @@ class BATextField extends StatefulWidget {
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
   });
 
+  /// The name of the field.
   final String? name;
+
+  /// The label to display above the field.
   final String? label;
+
+  /// The hint text to display inside the field.
   final String? hint;
+
+  /// The icon to display before the text.
   final Widget? prefixIcon;
+
+  /// The icon to display after the text.
   final Widget? suffixIcon;
+
+  /// The callback that is called when the suffix icon is tapped.
   final VoidCallback? onSuffixIconTap;
+
+  /// The type of keyboard to use for editing the text.
   final TextInputType? keyboardType;
+
+  /// Whether to obscure the text being edited.
   final bool obscureText;
+
+  /// The validator function to use for validating the input.
   final String? Function(String?)? validator;
+
+  /// The maximum number of lines to show in the field.
   final int? maxLines;
+
+  /// Whether the field is enabled.
   final bool enabled;
+
+  /// Whether the field is read-only.
   final bool readOnly;
+
+  /// The list of input formatters to use for the field.
   final List<TextInputFormatter>? inputFormatters;
+
+  /// The text input action to use for the field.
   final TextInputAction? textInputAction;
+
+  /// The focus node to use for the field.
   final FocusNode? focusNode;
+
+  /// The controller to use for the field.
   final TextEditingController? controller;
+
+  /// The callback that is called when the editing is complete.
   final VoidCallback? onEditingComplete;
+
+  /// The fill color to use for the field.
   final Color? fillColor;
+
+  /// Whether the field is a password field.
   final bool isPassword;
+
+  /// The callback that is called when the value of the field changes.
   final ValueChanged<String?>? onChanged;
+
+  /// The text style to use for the hint text.
   final TextStyle? hintTextStyle;
+
+  /// The autovalidate mode to use for the field.
   final AutovalidateMode autovalidateMode;
 
   @override
   State<BATextField> createState() => _BATextFieldState();
 }
 
+/// The state for a [BATextField] widget.
 class _BATextFieldState extends State<BATextField> {
   bool _textInvisible = true;
   final _iconFocusNode = FocusNode(skipTraversal: true);
@@ -71,10 +119,12 @@ class _BATextFieldState extends State<BATextField> {
     super.dispose();
   }
 
+  /// Toggles the visibility of the password.
   void _togglePasswordVisibility() {
     setState(() => _textInvisible = !_textInvisible);
   }
 
+  /// Validates the field and updates the error text.
   void _validateField() {
     if (widget.validator != null) {
       final error = widget.validator!(_formFieldKey.currentState?.value);
@@ -104,7 +154,6 @@ class _BATextFieldState extends State<BATextField> {
           keyboardType: widget.keyboardType,
           obscureText: widget.isPassword ? _textInvisible : widget.obscureText,
           autovalidateMode: widget.autovalidateMode,
-
           focusNode: widget.focusNode,
           controller: widget.controller,
           enabled: widget.enabled,
@@ -115,8 +164,7 @@ class _BATextFieldState extends State<BATextField> {
             widget.onChanged?.call(value);
             _validateField();
           },
-          onEditingComplete:
-              widget.onEditingComplete ??
+          onEditingComplete: widget.onEditingComplete ??
               () {
                 if (widget.textInputAction == TextInputAction.next) {
                   FocusScope.of(context).nextFocus();
@@ -138,8 +186,7 @@ class _BATextFieldState extends State<BATextField> {
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             hintText: widget.hint,
-            hintStyle:
-                widget.hintTextStyle ??
+            hintStyle: widget.hintTextStyle ??
                 context.titleSmall?.copyWith(
                   color: context.colorScheme.onTertiary,
                 ),
@@ -159,14 +206,13 @@ class _BATextFieldState extends State<BATextField> {
                     onPressed: _togglePasswordVisibility,
                   )
                 : (widget.suffixIcon != null
-                      ? GestureDetector(
-                          onTap: widget.onSuffixIconTap,
-                          child: widget.suffixIcon,
-                        )
-                      : null),
+                    ? GestureDetector(
+                        onTap: widget.onSuffixIconTap,
+                        child: widget.suffixIcon,
+                      )
+                    : null),
             filled: true,
-            fillColor:
-                widget.fillColor ??
+            fillColor: widget.fillColor ??
                 (widget.enabled
                     ? context.colorScheme.onPrimary
                     : BAAppColors.textDisabled),

@@ -3,7 +3,11 @@ import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/services/biometric_capability.dart';
 import 'package:flutter/material.dart';
 
+/// A button that triggers biometric authentication (Face ID, Touch ID, or fingerprint).
+///
+/// This button adapts its appearance based on the biometric capability and whether it's enabled.
 class BABiometricButton extends StatelessWidget {
+  /// Creates a [BABiometricButton] widget.
   const BABiometricButton({
     super.key,
     required this.capability,
@@ -12,9 +16,16 @@ class BABiometricButton extends StatelessWidget {
     this.size = 56.0,
   });
 
+  /// The biometric capability of the device.
   final BiometricCapability capability;
+
+  /// The callback that is called when the button is tapped.
   final VoidCallback onPressed;
+
+  /// Whether the button is enabled.
   final bool isEnabled;
+
+  /// The size of the button.
   final double size;
 
   @override
@@ -29,12 +40,12 @@ class BABiometricButton extends StatelessWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: isEnabled
-            ? context.colorScheme.secondary.withOpacity(0.1)
-            : context.colorScheme.onSurface.withOpacity(0.1),
+            ? context.colorScheme.secondary.withAlpha(25)
+            : context.colorScheme.onSurface.withAlpha(25),
         border: Border.all(
           color: isEnabled
               ? context.colorScheme.secondary
-              : context.colorScheme.onSurface.withOpacity(0.3),
+              : context.colorScheme.onSurface.withAlpha(76),
           width: 2,
         ),
       ),
@@ -49,7 +60,7 @@ class BABiometricButton extends StatelessWidget {
               size: size * 0.4,
               color: isEnabled
                   ? context.colorScheme.secondary
-                  : context.colorScheme.onSurface.withOpacity(0.3),
+                  : context.colorScheme.onSurface.withAlpha(76),
             ),
           ),
         ),
@@ -57,6 +68,7 @@ class BABiometricButton extends StatelessWidget {
     );
   }
 
+  /// Returns the appropriate icon for the given biometric capability.
   IconData _getIconForCapability(BiometricCapability capability) {
     switch (capability) {
       case BiometricCapability.faceId:
@@ -70,7 +82,11 @@ class BABiometricButton extends StatelessWidget {
   }
 }
 
+/// A widget that displays the status of biometric authentication.
+///
+/// This widget shows an icon and an optional label to indicate the biometric status.
 class BiometricStatusIndicator extends StatelessWidget {
+  /// Creates a [BiometricStatusIndicator] widget.
   const BiometricStatusIndicator({
     super.key,
     required this.capability,
@@ -78,8 +94,13 @@ class BiometricStatusIndicator extends StatelessWidget {
     this.showLabel = true,
   });
 
+  /// The biometric capability of the device.
   final BiometricCapability capability;
+
+  /// Whether biometric authentication is enabled.
   final bool isEnabled;
+
+  /// Whether to show the label next to the icon.
   final bool showLabel;
 
   @override
@@ -96,7 +117,7 @@ class BiometricStatusIndicator extends StatelessWidget {
           size: 16,
           color: isEnabled
               ? context.colorScheme.secondary
-              : context.colorScheme.onSurface.withOpacity(0.5),
+              : context.colorScheme.onSurface.withAlpha(127),
         ),
         if (showLabel) ...[
           const SizedBox(width: 4),
@@ -105,7 +126,7 @@ class BiometricStatusIndicator extends StatelessWidget {
             style: context.bodySmall?.copyWith(
               color: isEnabled
                   ? context.colorScheme.secondary
-                  : context.colorScheme.onSurface.withOpacity(0.5),
+                  : context.colorScheme.onSurface.withAlpha(127),
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -114,6 +135,7 @@ class BiometricStatusIndicator extends StatelessWidget {
     );
   }
 
+  /// Returns the appropriate icon for the given biometric capability.
   IconData _getIconForCapability(BiometricCapability capability) {
     switch (capability) {
       case BiometricCapability.faceId:

@@ -1,4 +1,4 @@
-/// Security configuration constants for the banking application
+/// A class that contains security configuration constants for the application.
 class SecurityConfig {
   // Input validation limits
   static const int maxEmailLength = 254;
@@ -160,29 +160,29 @@ class SecurityConfig {
   static const int maxDevicesPerUser = 5;
   static const int deviceTrustDays = 30;
 
-  /// Check if running in production mode
+  /// Checks if the application is running in production mode.
   static bool get isProduction => const bool.fromEnvironment('dart.vm.product');
 
-  /// Check if debug logging is enabled
+  /// Checks if the application is running in debug mode.
   static bool get isDebugMode => !isProduction;
 
-  /// Get timeout duration for network requests
+  /// The timeout duration for network requests.
   static Duration get networkTimeout => const Duration(seconds: 30);
 
-  /// Get session timeout duration
+  /// The session timeout duration.
   static Duration get sessionTimeout =>
       const Duration(hours: maxSessionDurationHours);
 
-  /// Get OTP expiry duration
+  /// The OTP expiry duration.
   static Duration get otpExpiry => const Duration(minutes: otpExpiryMinutes);
 
-  /// Get maximum file upload size (in bytes)
+  /// The maximum file upload size in bytes (5MB).
   static int get maxFileUploadSize => 5 * 1024 * 1024; // 5MB
 
-  /// Get allowed file types for uploads
+  /// The allowed file types for uploads.
   static List<String> get allowedFileTypes => ['jpg', 'jpeg', 'png', 'pdf'];
 
-  /// Security event severity thresholds
+  /// The severity thresholds for security events.
   static const Map<String, int> severityThresholds = {
     'failed_login_attempts': 3,
     'invalid_otp_attempts': 3,
@@ -192,27 +192,35 @@ class SecurityConfig {
   };
 }
 
-/// Security validation results
+/// A class that represents the result of a security validation.
 class SecurityValidationResult {
+  /// Whether the validation was successful.
   final bool isValid;
+
+  /// The error message if the validation failed.
   final String? errorMessage;
+
+  /// Additional metadata about the validation.
   final Map<String, dynamic>? metadata;
 
+  /// Creates a [SecurityValidationResult] object for a successful validation.
   const SecurityValidationResult.valid()
-    : isValid = true,
-      errorMessage = null,
-      metadata = null;
+      : isValid = true,
+        errorMessage = null,
+        metadata = null;
 
+  /// Creates a [SecurityValidationResult] object for a failed validation.
   const SecurityValidationResult.invalid(this.errorMessage, {this.metadata})
-    : isValid = false;
+      : isValid = false;
 
+  /// Whether the validation failed.
   bool get isInvalid => !isValid;
 }
 
-/// Security risk levels
+/// An enum that defines the different security risk levels.
 enum SecurityRiskLevel { low, medium, high, critical }
 
-/// Security event categories
+/// An enum that defines the different security event categories.
 enum SecurityEventCategory {
   authentication,
   authorization,

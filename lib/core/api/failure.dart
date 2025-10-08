@@ -3,18 +3,26 @@ import 'dart:io';
 import 'package:banking_app/app/constants/constants.dart';
 import 'package:dio/dio.dart';
 
+/// A class representing a failure with a message and an optional code.
 class Failure {
+  /// Creates a [Failure] object.
   const Failure({required this.message, this.code});
+
+  /// The error message.
   final String message;
+
+  /// The error code.
   final int? code;
 }
 
+/// A utility class for handling and mapping errors to [Failure] objects.
 class ErrorMappingHandler {
+  /// Maps different types of errors to a [Failure] object.
   static Failure apiErrorMappingHandler(Object error) {
     if (error is DioException) {
       final response = error.response;
       final statusCode = response?.statusCode;
-
+      // Handle different DioException types
       switch (error.type) {
         case DioExceptionType.connectionTimeout:
           return Failure(

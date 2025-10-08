@@ -71,26 +71,37 @@ dependencies:
   # Path provider
   path_provider: ^2.1.4
 
+  # HTTP client
   http: ^1.5.0
 
+  # Local authentication (fingerprint, face ID, etc.)
   local_auth: ^2.3.0
 
+  # Secure storage for sensitive data
   flutter_secure_storage: ^9.2.4
 
+  # Image picker for selecting images from gallery or camera
   image_picker: ^1.2.0
 
+  # Charts library
   syncfusion_flutter_charts: ^31.1.19
 
+  # ObjectBox Flutter bindings
   objectbox_flutter_libs: ^4.3.0
 
+  # Mocking library for tests
   mocktail: ^1.0.4
 
+  # Sentry for error tracking
   sentry_flutter: ^9.6.0
 
+  # Functional programming utilities
   fpdart: ^1.1.1
 
+  # Cryptography library
   crypto: ^3.0.6
 
+  # File and directory path manipulation
   path: ^1.9.1
 
 dev_dependencies:
@@ -123,12 +134,16 @@ dev_dependencies:
   # Used for generating union types and data classes
   freezed: ^2.5.2
 
+  # Generates localization code from ARB files
   flutter_native_splash: ^2.4.6
 
+  # Generates fake data for testing
   faker: ^2.2.0
 
+  # BLoC testing utilities
   bloc_test: ^10.0.0
 
+# Flutter Launcher Icons configuration
 flutter_icons:
   android: true
   ios: true
@@ -136,6 +151,7 @@ flutter_icons:
   adaptive_icon_background: "#3629B7"
   adaptive_icon_foreground: "assets/images/img_banking.png"
 
+# Flutter configuration
 flutter:
   uses-material-design: true
   generate: true

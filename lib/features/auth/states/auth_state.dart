@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_state.freezed.dart';
 
+/// State class for authentication, managing various aspects of the auth process.
 class AuthState extends Equatable {
   const AuthState({
     this.status = const AuthStatus.initial(),

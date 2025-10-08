@@ -1,9 +1,11 @@
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// A utility class for displaying snackbars with different styles.
 class BASnackBar {
   BASnackBar._();
 
+  /// Builds and shows an error snackbar.
   static buildErrorSnackbar(
     BuildContext context,
     String message, {
@@ -19,6 +21,7 @@ class BASnackBar {
     );
   }
 
+  /// Builds and shows a snackbar for unsupported features.
   static void showNotSupported(
     BuildContext context,
     String message, {
@@ -34,6 +37,7 @@ class BASnackBar {
     );
   }
 
+  /// Builds and shows a success snackbar.
   static buildSuccessSnackbar(
     BuildContext context,
     String message, {
@@ -49,6 +53,7 @@ class BASnackBar {
     );
   }
 
+  /// Builds a snackbar with the given parameters.
   static SnackBar _buildSnackbar(
     BuildContext context,
     String message,

@@ -8,21 +8,24 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:crypto/crypto.dart';
 
+/// A Dio-based API client for the banking application.
 class BankingApiClient {
   final Dio _dio;
 
+  /// Creates a [BankingApiClient] object.
   BankingApiClient({required String baseUrl})
-    : _dio = Dio(
-        BaseOptions(
-          baseUrl: baseUrl,
-          connectTimeout: SecurityConfig.networkTimeout,
-          receiveTimeout: SecurityConfig.networkTimeout,
-          sendTimeout: SecurityConfig.networkTimeout,
-        ),
-      ) {
+      : _dio = Dio(
+          BaseOptions(
+            baseUrl: baseUrl,
+            connectTimeout: SecurityConfig.networkTimeout,
+            receiveTimeout: SecurityConfig.networkTimeout,
+            sendTimeout: SecurityConfig.networkTimeout,
+          ),
+        ) {
     _setupSecureClient();
   }
 
+  /// A generic request method that handles all API requests.
   Future<Response> _request(
     String method, {
     required String endpoint,
@@ -42,36 +45,39 @@ class BankingApiClient {
     }
   }
 
+  /// Performs a GET request.
   Future<Response> get(String endpoint, {Map<String, dynamic>? queryParams}) =>
       _request('GET', endpoint: endpoint, queryParams: queryParams);
 
+  /// Performs a POST request.
   Future<Response> post(String endpoint, {dynamic data}) =>
       _request('POST', endpoint: endpoint, data: data);
 
+  /// Performs a PATCH request.
   Future<Response> patch(String endpoint, {dynamic data}) =>
       _request('PATCH', endpoint: endpoint, data: data);
 
+  /// Performs a DELETE request.
   Future<Response> delete(String endpoint, {dynamic data}) =>
       _request('DELETE', endpoint: endpoint, data: data);
 
-  /// Setup secure HTTP client with certificate pinning and security headers
+  /// Sets up the secure HTTP client with certificate pinning and security headers.
   void _setupSecureClient() {
     _dio.interceptors.add(_SecurityInterceptor());
 
-    (_dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
-        (client) {
+        (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+          final client = HttpClient();
           client.badCertificateCallback = (cert, host, port) {
             return _validateCertificate(cert, host);
           };
-
+    
           client.connectionTimeout = const Duration(seconds: 30);
           client.idleTimeout = const Duration(seconds: 30);
-
+    
           return client;
-        };
-  }
+        };  }
 
-  /// Validate SSL certificate against pinned certificates
+  /// Validates the SSL certificate against pinned certificates.
   bool _validateCertificate(X509Certificate cert, String host) {
     if (const bool.fromEnvironment('dart.vm.product')) {
       return _validatePinnedCertificate(cert, host);
@@ -82,6 +88,7 @@ class BankingApiClient {
     return true;
   }
 
+  /// Validates the pinned SSL certificate.
   bool _validatePinnedCertificate(X509Certificate cert, String host) {
     try {
       final fingerprint = _getCertificateFingerprint(cert);
@@ -129,12 +136,14 @@ class BankingApiClient {
     }
   }
 
+  /// Gets the SHA-256 fingerprint of a certificate.
   String _getCertificateFingerprint(X509Certificate cert) {
     final derBytes = cert.der; // Get DER-encoded certificate
     final digest = sha256.convert(derBytes);
     return 'sha256/${base64.encode(digest.bytes)}';
   }
 
+  /// Gets the pinned fingerprint for a given host.
   String _getPinnedFingerprint(String host) {
     const pinnedCertificates = <String, String>{};
 
@@ -151,6 +160,7 @@ class BankingApiClient {
     return '';
   }
 
+  /// Logs certificate information for debugging.
   void _logCertificateInfo(X509Certificate cert, String host) {
     try {
       final fingerprint = _getCertificateFingerprint(cert);
@@ -164,7 +174,7 @@ class BankingApiClient {
   }
 }
 
-/// Security interceptor for adding headers and logging
+/// A Dio interceptor for adding security headers and logging.
 class _SecurityInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -202,6 +212,7 @@ class _SecurityInterceptor extends Interceptor {
     super.onError(err, handler);
   }
 
+  /// Determines whether an error should be logged to Sentry.
   bool _shouldLogToSentry(DioException err) {
     if (err.type == DioExceptionType.connectionTimeout ||
         err.type == DioExceptionType.receiveTimeout) {
@@ -211,6 +222,7 @@ class _SecurityInterceptor extends Interceptor {
     return true;
   }
 
+  /// Determines whether an error is critical.
   bool _isCriticalError(DioException err) {
     // Certificate errors = CRITICAL
     if (err.type == DioExceptionType.badCertificate) {
@@ -223,7 +235,7 @@ class _SecurityInterceptor extends Interceptor {
       return true;
     }
 
-    // Connection errors = CRITICAL (có thể là network attack)
+    // Connection errors = CRITICAL (potential network attack)
     if (err.type == DioExceptionType.connectionError) {
       return true;
     }

@@ -1,7 +1,6 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SettingSelection extends StatelessWidget {
   const SettingSelection({
@@ -47,7 +46,7 @@ class SettingSelection extends StatelessWidget {
                 Switch(
                   value: isEnabled ?? false,
                   onChanged: onToggle,
-                  activeColor: context.colorScheme.secondary,
+                  activeThumbColor: context.colorScheme.secondary,
                 )
               else
                 Row(

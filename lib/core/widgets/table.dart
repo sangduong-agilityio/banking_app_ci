@@ -2,7 +2,9 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// A generic data table widget that can be used to display a list of items in a table format.
 class BADataTable<T> extends StatelessWidget {
+  /// Creates a [BADataTable] widget.
   const BADataTable({
     super.key,
     required this.columns,
@@ -16,32 +18,32 @@ class BADataTable<T> extends StatelessWidget {
     this.onItemTap,
   });
 
-  /// List of column configurations
+  /// The list of column configurations.
   final List<TableColumn> columns;
 
-  /// List of data items to display
+  /// The list of data items to display.
   final List<T> data;
 
-  /// Builder function to create row content from data item
+  /// The builder function to create the row content from a data item.
   final Widget Function(BuildContext context, T item, List<TableColumn> columns)
-  itemBuilder;
+      itemBuilder;
 
-  /// Padding around the entire table
+  /// The padding around the entire table.
   final EdgeInsets padding;
 
-  /// Padding for each item row
+  /// The padding for each item row.
   final EdgeInsets itemPadding;
 
-  /// Whether to show dividers between rows
+  /// Whether to show dividers between rows.
   final bool showDividers;
 
-  /// Color for dividers
+  /// The color of the dividers.
   final Color? dividerColor;
 
-  /// Custom style for header text
+  /// The custom style for the header text.
   final TextStyle? headerStyle;
 
-  /// Callback when an item is tapped
+  /// The callback that is called when an item is tapped.
   final Function(T item, int index)? onItemTap;
 
   @override
@@ -65,6 +67,7 @@ class BADataTable<T> extends StatelessWidget {
     );
   }
 
+  /// Builds the header of the table.
   Widget _buildHeader(BuildContext context) {
     return Container(
       padding: padding,
@@ -75,8 +78,7 @@ class BADataTable<T> extends StatelessWidget {
             child: Text(
               column.title,
               textAlign: column.alignment,
-              style:
-                  headerStyle ??
+              style: headerStyle ??
                   context.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: context.colorScheme.inverseSurface,
@@ -88,6 +90,7 @@ class BADataTable<T> extends StatelessWidget {
     );
   }
 
+  /// Builds a single data row of the table.
   Widget _buildDataRow(BuildContext context, T item, int index) {
     return Column(
       children: [
@@ -111,8 +114,9 @@ class BADataTable<T> extends StatelessWidget {
   }
 }
 
-/// Configuration for a table column
+/// A class that represents a column in the data table.
 class TableColumn {
+  /// Creates a [TableColumn] object.
   const TableColumn({
     required this.title,
     required this.flex,
@@ -120,21 +124,22 @@ class TableColumn {
     this.headerStyle,
   });
 
-  /// Column title
+  /// The title of the column.
   final String title;
 
-  /// Flex value for column width
+  /// The flex value for the column width.
   final int flex;
 
-  /// Text alignment
+  /// The text alignment of the column.
   final TextAlign alignment;
 
-  /// Custom header style
+  /// The custom header style for the column.
   final TextStyle? headerStyle;
 }
 
-/// Generic row builder for simple 3-column tables
+/// A generic row builder for simple tables.
 class BATableRow extends StatelessWidget {
+  /// Creates a [BATableRow] widget.
   const BATableRow({
     super.key,
     required this.values,
@@ -142,8 +147,13 @@ class BATableRow extends StatelessWidget {
     this.valueStyles,
   });
 
+  /// The list of values to display in the row.
   final List<String> values;
+
+  /// The list of column configurations.
   final List<TableColumn> columns;
+
+  /// The list of custom text styles for the values.
   final List<TextStyle?>? valueStyles;
 
   @override
@@ -157,8 +167,7 @@ class BATableRow extends StatelessWidget {
           child: Text(
             values[index],
             textAlign: columns[index].alignment,
-            style:
-                valueStyles?[index] ??
+            style: valueStyles?[index] ??
                 context.titleMedium?.copyWith(color: context.colorScheme.scrim),
           ),
         );

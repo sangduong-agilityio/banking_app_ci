@@ -2,14 +2,11 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// A custom tab bar widget with a specific design.
+///
+/// This tab bar can be customized with different properties like height, border radius, and padding.
 class BATabBar extends StatelessWidget {
-  final TabController controller;
-  final List<String> tabs;
-  final double? height;
-  final double? borderRadius;
-  final EdgeInsets? padding;
-  final EdgeInsets? containerPadding;
-
+  /// Creates a [BATabBar] widget.
   const BATabBar({
     super.key,
     required this.controller,
@@ -19,6 +16,24 @@ class BATabBar extends StatelessWidget {
     this.padding,
     this.containerPadding = const EdgeInsets.all(20),
   });
+
+  /// The controller for the tab bar.
+  final TabController controller;
+
+  /// The list of tab names.
+  final List<String> tabs;
+
+  /// The height of the tab bar.
+  final double? height;
+
+  /// The border radius of the tab bar.
+  final double? borderRadius;
+
+  /// The padding of the tab bar.
+  final EdgeInsets? padding;
+
+  /// The padding of the container that holds the tab bar.
+  final EdgeInsets? containerPadding;
 
   @override
   Widget build(BuildContext context) {

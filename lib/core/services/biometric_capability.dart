@@ -1,8 +1,11 @@
 import 'dart:io';
 
+/// An enum that represents the biometric capabilities of a device.
 enum BiometricCapability { none, available, touchId, faceId, fingerprint }
 
+/// An extension on the [BiometricCapability] enum to provide user-friendly display names, labels, and messages.
 extension BiometricCapabilityExtension on BiometricCapability {
+  /// Returns a user-friendly display name for the biometric capability.
   String get displayName {
     switch (this) {
       case BiometricCapability.faceId:
@@ -18,6 +21,7 @@ extension BiometricCapabilityExtension on BiometricCapability {
     }
   }
 
+  /// Returns a user-friendly label for enabling biometric authentication in settings.
   String get settingsLabel {
     switch (this) {
       case BiometricCapability.faceId:
@@ -33,6 +37,7 @@ extension BiometricCapabilityExtension on BiometricCapability {
     }
   }
 
+  /// Returns a message indicating that biometric authentication has been enabled.
   String get enabledMessage {
     switch (this) {
       case BiometricCapability.faceId:
@@ -48,6 +53,7 @@ extension BiometricCapabilityExtension on BiometricCapability {
     }
   }
 
+  /// Returns a message indicating that biometric authentication has been disabled.
   String get disabledMessage {
     switch (this) {
       case BiometricCapability.faceId:
@@ -61,5 +67,6 @@ extension BiometricCapabilityExtension on BiometricCapability {
     }
   }
 
+  /// Returns whether biometric authentication is available on the device.
   bool get isAvailable => this != BiometricCapability.none;
 }

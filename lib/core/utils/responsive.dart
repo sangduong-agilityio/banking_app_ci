@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+/// An enum that defines the different responsive size types.
 enum BAResponsiveSizeType { mobile, tablet }
 
+/// A class that contains constants for device types.
 class BAResponsiveConfig {
+  /// The default scale factor for tablets.
   static const double defaultTabletScaleFactor = 1;
 }
 
+/// A utility class for handling responsive design.
 class BAResponsive {
+  /// Returns a value based on the current device type.
   static double value(
     BuildContext context, {
     double? mobile,
@@ -23,6 +28,7 @@ class BAResponsive {
     return defaultValue ?? 0;
   }
 
+  /// Returns a widget based on the current device type.
   static Widget layout(
     BuildContext context, {
     Widget? mobile,
@@ -36,6 +42,7 @@ class BAResponsive {
     }
   }
 
+  /// Scales a value based on the current device type.
   static double scale(
     BuildContext context, {
     required double defaultValue,
@@ -52,6 +59,7 @@ class BAResponsive {
     return defaultValue;
   }
 
+  /// Controls the visibility of a widget based on the current device type.
   static Widget visibility(
     BuildContext context, {
     required Widget child,
@@ -78,6 +86,7 @@ class BAResponsive {
     );
   }
 
+  /// Returns a widget based on the current orientation.
   static Widget orientation(
     BuildContext context, {
     Widget? landscape,
@@ -90,11 +99,13 @@ class BAResponsive {
     }
   }
 
+  /// Checks if the device is a tablet.
   static bool isTablet(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     return screenWidth >= 600 && screenWidth <= 1024;
   }
 
+  /// Returns a size based on the orientation and device type.
   static int orientationSizeOf(
     BuildContext context, {
     int? landscape,
@@ -110,6 +121,7 @@ class BAResponsive {
     }
   }
 
+  /// Checks if the device is in portrait mode.
   static bool isPortraitMode(BuildContext context) {
     return ResponsiveBreakpoints.of(context).orientation ==
         Orientation.portrait;

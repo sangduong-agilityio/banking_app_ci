@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 /// Wrap any placeholder widget with [BAShimmerLoading] to display an animated
 /// gradient shimmer while loading.
 class BAShimmerLoading extends StatefulWidget {
+  /// Creates a [BAShimmerLoading] widget.
   const BAShimmerLoading({
     super.key,
     required this.child,
@@ -14,15 +15,23 @@ class BAShimmerLoading extends StatefulWidget {
     this.duration,
   });
 
+  /// The widget to display the shimmer effect on.
   final Widget child;
+
+  /// The base color of the shimmer effect.
   final Color? baseColor;
+
+  /// The highlight color of the shimmer effect.
   final Color? highlightColor;
+
+  /// The duration of the shimmer animation.
   final Duration? duration;
 
   @override
   State<BAShimmerLoading> createState() => _BAShimmerLoadingState();
 }
 
+/// The state for a [BAShimmerLoading] widget.
 class _BAShimmerLoadingState extends State<BAShimmerLoading>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
@@ -77,17 +86,23 @@ class _BAShimmerLoadingState extends State<BAShimmerLoading>
   }
 }
 
+/// A [GradientTransform] that translates the gradient by a given [dx] value.
 class GradientTranslation extends GradientTransform {
+  /// Creates a [GradientTranslation] object.
   const GradientTranslation(this.dx);
+
+  /// The horizontal translation value.
   final double dx;
 
   @override
   Matrix4 transform(Rect bounds, {TextDirection? textDirection}) {
-    return Matrix4.identity()..translate(dx);
+    return Matrix4.identity()..translate(dx, 0.0, 0.0);
   }
 }
 
+/// A skeleton placeholder for a greeting app bar.
 class GreetingAppBarSkeleton extends StatelessWidget {
+  /// Creates a [GreetingAppBarSkeleton] widget.
   const GreetingAppBarSkeleton({super.key});
 
   @override
@@ -125,8 +140,9 @@ class GreetingAppBarSkeleton extends StatelessWidget {
   }
 }
 
-/// Card skeleton placeholder for loading states.
+/// A skeleton placeholder for a card.
 class BACardSkeleton extends StatelessWidget {
+  /// Creates a [BACardSkeleton] widget.
   const BACardSkeleton({super.key});
 
   @override
@@ -159,6 +175,7 @@ class BACardSkeleton extends StatelessWidget {
     );
   }
 
+  /// Builds a single bar for the skeleton.
   Widget _bar({required double width, required double height}) {
     return Container(
       width: width,
@@ -171,8 +188,9 @@ class BACardSkeleton extends StatelessWidget {
   }
 }
 
-/// Grid skeleton placeholder for loading states.
+/// A skeleton placeholder for a grid.
 class BAGridSkeleton extends StatelessWidget {
+  /// Creates a [BAGridSkeleton] widget.
   const BAGridSkeleton({
     super.key,
     this.crossAxisCount = 3,
@@ -182,10 +200,19 @@ class BAGridSkeleton extends StatelessWidget {
     this.childAspectRatio = 1,
   });
 
+  /// The number of columns in the grid.
   final int crossAxisCount;
+
+  /// The number of items in the grid.
   final int itemCount;
+
+  /// The spacing between columns.
   final double crossAxisSpacing;
+
+  /// The spacing between rows.
   final double mainAxisSpacing;
+
+  /// The aspect ratio of the children.
   final double childAspectRatio;
 
   @override
@@ -205,7 +232,9 @@ class BAGridSkeleton extends StatelessWidget {
   }
 }
 
+/// A skeleton placeholder for a grid tile.
 class _GridTileSkeleton extends StatelessWidget {
+  /// Creates a [_GridTileSkeleton] widget.
   const _GridTileSkeleton();
 
   @override
@@ -249,7 +278,9 @@ class _GridTileSkeleton extends StatelessWidget {
   }
 }
 
+/// A skeleton placeholder for a user profile.
 class UserProfileSkeleton extends StatelessWidget {
+  /// Creates a [UserProfileSkeleton] widget.
   const UserProfileSkeleton({super.key});
 
   @override
@@ -283,8 +314,9 @@ class UserProfileSkeleton extends StatelessWidget {
   }
 }
 
-/// Skeleton for Account List Section
+/// A skeleton placeholder for a list of accounts.
 class AccountListSkeleton extends StatelessWidget {
+  /// Creates an [AccountListSkeleton] widget.
   const AccountListSkeleton({super.key});
 
   @override
@@ -295,11 +327,8 @@ class AccountListSkeleton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 32),
           child: Column(
             children: [
-              // User Profile Skeleton (reusable component)
               const UserProfileSkeleton(),
               const SizedBox(height: 32),
-
-              // Account Cards Skeleton
               SizedBox(
                 height: 300,
                 child: ListView.builder(
@@ -315,8 +344,9 @@ class AccountListSkeleton extends StatelessWidget {
   }
 }
 
-/// Skeleton for individual Account Card
+/// A skeleton placeholder for an account card.
 class AccountCardSkeleton extends StatelessWidget {
+  /// Creates an [AccountCardSkeleton] widget.
   const AccountCardSkeleton({super.key});
 
   @override
@@ -332,7 +362,7 @@ class AccountCardSkeleton extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withAlpha(20),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),
@@ -341,7 +371,6 @@ class AccountCardSkeleton extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -360,6 +389,7 @@ class AccountCardSkeleton extends StatelessWidget {
     );
   }
 
+  /// Builds a single row of information for the skeleton.
   Widget _infoRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -367,6 +397,7 @@ class AccountCardSkeleton extends StatelessWidget {
     );
   }
 
+  /// Builds a single bar for the skeleton.
   Widget _bar({required double width, required double height}) {
     return Container(
       width: width,

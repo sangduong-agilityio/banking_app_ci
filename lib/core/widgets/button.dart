@@ -2,14 +2,11 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// A custom elevated button widget with a specific design.
+///
+/// This button can be disabled and its dimensions can be customized.
 class BAElevatedButton extends StatefulWidget {
-  final String text;
-  final VoidCallback? onPressed;
-  final bool isDisabled;
-  final double? width;
-  final double? height;
-  final EdgeInsetsGeometry? padding;
-
+  /// Creates a [BAElevatedButton] widget.
   const BAElevatedButton({
     super.key,
     required this.text,
@@ -20,10 +17,29 @@ class BAElevatedButton extends StatefulWidget {
     this.padding,
   });
 
+  /// The text to display on the button.
+  final String text;
+
+  /// The callback that is called when the button is tapped.
+  final VoidCallback? onPressed;
+
+  /// Whether the button is disabled.
+  final bool isDisabled;
+
+  /// The width of the button.
+  final double? width;
+
+  /// The height of the button.
+  final double? height;
+
+  /// The padding of the button.
+  final EdgeInsetsGeometry? padding;
+
   @override
   State<BAElevatedButton> createState() => _BAElevatedButtonState();
 }
 
+/// The state for a [BAElevatedButton] widget.
 class _BAElevatedButtonState extends State<BAElevatedButton> {
   @override
   Widget build(BuildContext context) {

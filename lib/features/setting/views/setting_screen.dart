@@ -10,7 +10,6 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/core/widgets/shimmer.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/features/setting/states/setting_cubit.dart';
 import 'package:banking_app/features/setting/states/setting_state.dart';
@@ -18,7 +17,6 @@ import 'package:banking_app/features/setting/widgets/setting_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -31,71 +29,106 @@ class SettingScreen extends StatelessWidget {
         repo: locator<AuthRepository>(),
         biometricService: locator<BiometricService>(),
       )..fetchProfile(),
-      child: LoaderOverlay(
-        child: BAScaffold(
-          appBar: BAAppBar(
-            title: S.current.settingTitle,
-            alignment: BAAppBarAlignment.left,
-            titleColor: context.colorScheme.scrim,
-            iconColor: context.colorScheme.scrim,
-          ),
-          body: BlocBuilder<SettingCubit, SettingState>(
-            builder: (context, state) {
-              if (state.status is SettingStatusLoading) {
-                return Center(child: const UserProfileSkeleton());
-              }
-              final user = state.user;
-              return Column(
-                children: [
-                  const SizedBox(height: 20),
-                  BAProfileImage(url: user?.profileImage, size: 100),
-                  const SizedBox(height: 15),
-                  Text(
-                    user?.username ?? '',
-                    style: context.titleMedium?.copyWith(
-                      color: context.colorScheme.secondary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  SettingSelection(
-                    title: S.current.settingPasswordTitle,
-                    onTap: () {},
-                  ),
-                  SettingSelection(
-                    title: state.biometricCapability.settingsLabel,
-                    isEnabled:
-                        state.isBiometricEnabled &&
-                        state.biometricCapability.isAvailable,
-                    onToggle: state.biometricCapability.isAvailable
-                        ? (value) {
-                            context.read<SettingCubit>().toggleBiometric(value);
-                          }
-                        : null,
-                  ),
-                  SettingSelection(
-                    title: S.current.settingLanguaguesTitle,
-                    onTap: () {},
-                  ),
-                  SettingSelection(
-                    title: S.current.settingAppInformationTitle,
-                    onTap: () {},
-                  ),
-                  SettingSelection(
-                    title: S.current.settingCustomerCareTitle,
-                    subtitle: '19008989',
-                    onTap: () {},
-                  ),
-                  SettingSelection(
-                    title: S.current.settingLogoutTitle,
-                    onTap: () => _showLogoutDialog(context),
-                  ),
-                ],
-              );
-            },
-          ),
+      child: BAScaffold(
+        appBar: BAAppBar(
+          title: S.current.settingTitle,
+          titleColor: context.colorScheme.onPrimary,
+          alignment: BAAppBarAlignment.left,
+          iconColor: context.colorScheme.onPrimary,
+          backgroundColor: context.colorScheme.secondary,
+        ),
+        body: Container(
+          color: context.colorScheme.secondary,
+          child: const SettingContent(),
         ),
       ),
+    );
+  }
+}
+
+class SettingContent extends StatelessWidget {
+  const SettingContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SettingCubit, SettingState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(top: 50),
+              decoration: BoxDecoration(
+                color: context.colorScheme.onPrimary,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 70),
+                    Text(
+                      state.user?.username ?? '',
+                      style: context.titleMedium?.copyWith(
+                        color: context.colorScheme.secondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SettingSelection(
+                      title: S.current.settingPasswordTitle,
+                      onTap: () {},
+                    ),
+                    SettingSelection(
+                      title: state.biometricCapability.settingsLabel,
+                      isEnabled:
+                          state.isBiometricEnabled &&
+                          state.biometricCapability.isAvailable,
+                      onToggle: state.biometricCapability.isAvailable
+                          ? (value) {
+                              context.read<SettingCubit>().toggleBiometric(
+                                value,
+                              );
+                            }
+                          : null,
+                    ),
+                    SettingSelection(
+                      title: S.current.settingLanguaguesTitle,
+                      onTap: () {},
+                    ),
+                    SettingSelection(
+                      title: S.current.settingAppInformationTitle,
+                      onTap: () {},
+                    ),
+                    SettingSelection(
+                      title: S.current.settingCustomerCareTitle,
+                      subtitle: '19008989',
+                      onTap: () {},
+                    ),
+                    SettingSelection(
+                      title: S.current.settingLogoutTitle,
+                      onTap: () => _showLogoutDialog(context),
+                    ),
+                    const SizedBox(height: 40),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: BAProfileImage(url: state.user?.profileImage, size: 100),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -29,7 +29,7 @@ class AccountCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withAlpha(20),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),

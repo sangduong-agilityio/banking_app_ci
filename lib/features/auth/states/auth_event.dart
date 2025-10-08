@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+/// Base class for all authentication events.
+/// Extends [Equatable] to enable value comparison.
 class AuthEvt extends Equatable {
   const AuthEvt();
 
@@ -7,6 +9,7 @@ class AuthEvt extends Equatable {
   List<Object?> get props => [];
 }
 
+/// Event triggered when the sign-in form validation state changes.
 class SignInFormValidateChangedEvt extends AuthEvt {
   const SignInFormValidateChangedEvt({
     required this.isValidate,
@@ -21,6 +24,7 @@ class SignInFormValidateChangedEvt extends AuthEvt {
   List<Object?> get props => [email, password, isValidate];
 }
 
+/// Event triggered when the sign-in button is pressed.
 class SignInButtonPressedEvt extends AuthEvt {
   const SignInButtonPressedEvt();
 
@@ -28,6 +32,7 @@ class SignInButtonPressedEvt extends AuthEvt {
   List<Object?> get props => [];
 }
 
+/// Event triggered to initiate biometric sign-in.
 class SignInWithBiometricEvt extends AuthEvt {
   const SignInWithBiometricEvt();
 
@@ -35,6 +40,7 @@ class SignInWithBiometricEvt extends AuthEvt {
   List<Object?> get props => [];
 }
 
+/// Event triggered to check biometric availability.
 class CheckBiometricAvailabilityEvt extends AuthEvt {
   const CheckBiometricAvailabilityEvt();
 
@@ -42,6 +48,7 @@ class CheckBiometricAvailabilityEvt extends AuthEvt {
   List<Object?> get props => [];
 }
 
+/// Event triggered when the sign-up form validation state changes.
 class SignUpFormValidateChangedEvt extends AuthEvt {
   const SignUpFormValidateChangedEvt({
     required this.isValidate,
@@ -59,6 +66,7 @@ class SignUpFormValidateChangedEvt extends AuthEvt {
   List<Object?> get props => [isValidate, username, email, password];
 }
 
+/// Event triggered when the sign-up button is pressed.
 class SignUpButtonPressedEvt extends AuthEvt {
   const SignUpButtonPressedEvt();
 
@@ -66,6 +74,7 @@ class SignUpButtonPressedEvt extends AuthEvt {
   List<Object?> get props => [];
 }
 
+/// Event triggered when the terms acceptance state changes during sign-up.
 class SignUpTermsChangedEvt extends AuthEvt {
   const SignUpTermsChangedEvt({required this.isAccepted});
 

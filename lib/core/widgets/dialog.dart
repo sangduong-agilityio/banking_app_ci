@@ -5,7 +5,11 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:flutter/material.dart';
 
+/// A standard dialog widget that can be used to display a message to the user.
+///
+/// This dialog has a title, content, and two buttons for confirming or canceling an action.
 class BADialog extends StatelessWidget {
+  /// Creates a [BADialog] widget.
   const BADialog({
     required this.title,
     required this.content,
@@ -16,11 +20,22 @@ class BADialog extends StatelessWidget {
     super.key,
   });
 
+  /// The callback that is called when the accept button is tapped.
   final VoidCallback? onAccept;
+
+  /// The callback that is called when the cancel button is tapped.
   final VoidCallback? onCancel;
+
+  /// The title of the dialog.
   final String? title;
+
+  /// The content of the dialog.
   final String? content;
+
+  /// The text to display on the confirm button.
   final String? confirmButton;
+
+  /// The text to display on the cancel button.
   final String? confirmCancel;
 
   @override
@@ -61,18 +76,11 @@ class BADialog extends StatelessWidget {
   }
 }
 
+/// A dialog widget that allows the user to select an item from a list.
+///
+/// This dialog can also include a search bar to filter the list.
 class BASelectorDialog<T> extends StatefulWidget {
-  final String title;
-  final List<T> items;
-  final String? selectedValue;
-  final String Function(T) value;
-  final String Function(T) label;
-  final bool enableSearch;
-  final bool enableDivider;
-  final bool Function(T, String)? searchFilter;
-  final void Function(T) onSelected;
-  final void Function(String)? onSearchChanged;
-
+  /// Creates a [BASelectorDialog] widget.
   const BASelectorDialog({
     super.key,
     required this.title,
@@ -87,26 +95,57 @@ class BASelectorDialog<T> extends StatefulWidget {
     this.onSearchChanged,
   });
 
+  /// The title of the dialog.
+  final String title;
+
+  /// The list of items to display.
+  final List<T> items;
+
+  /// The currently selected value.
+  final String? selectedValue;
+
+  /// A function that returns the value of an item.
+  final String Function(T) value;
+
+  /// A function that returns the label of an item.
+  final String Function(T) label;
+
+  /// Whether to enable the search bar.
+  final bool enableSearch;
+
+  /// Whether to enable the divider between items.
+  final bool enableDivider;
+
+  /// A function that filters the items based on the search query.
+  final bool Function(T, String)? searchFilter;
+
+  /// The callback that is called when an item is selected.
+  final void Function(T) onSelected;
+
+  /// The callback that is called when the search query changes.
+  final void Function(String)? onSearchChanged;
+
   @override
   State<BASelectorDialog<T>> createState() => _BASelectorDialogState<T>();
 }
 
+/// The state for a [BASelectorDialog] widget.
 class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
-  String _query = "";
+  String _query = '';
 
   @override
   Widget build(BuildContext context) {
     final filteredItems = widget.enableSearch && _query.isNotEmpty
         ? widget.items
-              .where(
-                (e) => widget.searchFilter != null
-                    ? widget.searchFilter!(e, _query)
-                    : widget
-                          .label(e)
-                          .toLowerCase()
-                          .contains(_query.toLowerCase()),
-              )
-              .toList()
+            .where(
+              (e) => widget.searchFilter != null
+                  ? widget.searchFilter!(e, _query)
+                  : widget
+                      .label(e)
+                      .toLowerCase()
+                      .contains(_query.toLowerCase()),
+            )
+            .toList()
         : widget.items;
 
     return GestureDetector(
@@ -169,31 +208,31 @@ class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
                   child: filteredItems.isEmpty
                       ? Center(child: Text(S.current.noItemsFoundTitle))
                       : widget.enableDivider
-                      ? ListView.separated(
-                          itemCount: filteredItems.length,
-                          separatorBuilder: (_, __) => Divider(
-                            height: 1,
-                            thickness: 0.5,
-                            color: Colors.grey.withOpacity(0.4),
-                          ),
-                          itemBuilder: (context, index) {
-                            final item = filteredItems[index];
-                            final itemValue = widget.value(item);
-                            final isSelected =
-                                itemValue == widget.selectedValue;
-                            return _buildListTile(context, item, isSelected);
-                          },
-                        )
-                      : ListView.builder(
-                          itemCount: filteredItems.length,
-                          itemBuilder: (context, index) {
-                            final item = filteredItems[index];
-                            final itemValue = widget.value(item);
-                            final isSelected =
-                                itemValue == widget.selectedValue;
-                            return _buildListTile(context, item, isSelected);
-                          },
-                        ),
+                          ? ListView.separated(
+                              itemCount: filteredItems.length,
+                              separatorBuilder: (_, __) => Divider(
+                                height: 1,
+                                thickness: 0.5,
+                                color: Colors.grey.withAlpha(102),
+                              ),
+                              itemBuilder: (context, index) {
+                                final item = filteredItems[index];
+                                final itemValue = widget.value(item);
+                                final isSelected =
+                                    itemValue == widget.selectedValue;
+                                return _buildListTile(context, item, isSelected);
+                              },
+                            )
+                          : ListView.builder(
+                              itemCount: filteredItems.length,
+                              itemBuilder: (context, index) {
+                                final item = filteredItems[index];
+                                final itemValue = widget.value(item);
+                                final isSelected =
+                                    itemValue == widget.selectedValue;
+                                return _buildListTile(context, item, isSelected);
+                              },
+                            ),
                 ),
               ],
             ),
@@ -203,6 +242,7 @@ class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
     );
   }
 
+  /// Builds a list tile for an item.
   Widget _buildListTile(BuildContext context, T item, bool isSelected) {
     return ListTile(
       contentPadding: EdgeInsets.zero,

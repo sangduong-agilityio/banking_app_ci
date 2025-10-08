@@ -5,21 +5,11 @@ import 'package:banking_app/core/utils/formatters.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:flutter/material.dart';
 
+/// A generic card widget that can be customized with different properties.
+///
+/// This widget can be used to create various card-based UI elements.
 class BACard extends StatelessWidget {
-  final Widget child;
-  final VoidCallback? onTap;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
-  final double? borderRadius;
-  final Color? backgroundColor;
-  final Color? borderColor;
-  final double? elevation;
-  final Gradient? gradient;
-  final double? width;
-  final double? height;
-  final bool showShadow;
-  final BorderRadiusGeometry? customBorderRadius;
-
+  /// Creates a [BACard] widget.
   const BACard({
     super.key,
     required this.child,
@@ -37,6 +27,45 @@ class BACard extends StatelessWidget {
     this.customBorderRadius,
   });
 
+  /// The child widget to display inside the card.
+  final Widget child;
+
+  /// The callback that is called when the card is tapped.
+  final VoidCallback? onTap;
+
+  /// The padding of the card.
+  final EdgeInsetsGeometry? padding;
+
+  /// The margin of the card.
+  final EdgeInsetsGeometry? margin;
+
+  /// The border radius of the card.
+  final double? borderRadius;
+
+  /// The background color of the card.
+  final Color? backgroundColor;
+
+  /// The border color of the card.
+  final Color? borderColor;
+
+  /// The elevation of the card.
+  final double? elevation;
+
+  /// The gradient of the card.
+  final Gradient? gradient;
+
+  /// The width of the card.
+  final double? width;
+
+  /// The height of the card.
+  final double? height;
+
+  /// Whether to show a shadow behind the card.
+  final bool showShadow;
+
+  /// The custom border radius of the card.
+  final BorderRadiusGeometry? customBorderRadius;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,16 +77,11 @@ class BACard extends StatelessWidget {
   }
 }
 
+/// A card widget specifically designed to display a single transaction.
+///
+/// This widget shows details like title, subtitle, amount, and an icon.
 class TransactionCard extends StatelessWidget {
-  final String title;
-  final String? subtitle;
-  final String? amount;
-  final bool? isDebit;
-  final String? imageUrl;
-  final VoidCallback? onTap;
-  final Widget? customIcon;
-  final bool showTrailing;
-
+  /// Creates a [TransactionCard] widget.
   const TransactionCard({
     super.key,
     required this.title,
@@ -69,6 +93,30 @@ class TransactionCard extends StatelessWidget {
     this.customIcon,
     this.showTrailing = false,
   });
+
+  /// The title of the transaction.
+  final String title;
+
+  /// The subtitle of the transaction.
+  final String? subtitle;
+
+  /// The amount of the transaction.
+  final String? amount;
+
+  /// Whether the transaction is a debit.
+  final bool? isDebit;
+
+  /// The URL of the image to display.
+  final String? imageUrl;
+
+  /// The callback that is called when the card is tapped.
+  final VoidCallback? onTap;
+
+  /// A custom icon to display.
+  final Widget? customIcon;
+
+  /// Whether to show the trailing icon.
+  final bool showTrailing;
 
   @override
   Widget build(BuildContext context) {
@@ -98,14 +146,12 @@ class TransactionCard extends StatelessWidget {
                     ),
                   )
                 : customIcon ??
-                      const Icon(
-                        Icons.business,
-                        color: BAAppColors.textSecondary,
-                      ),
+                    const Icon(
+                      Icons.business,
+                      color: BAAppColors.textSecondary,
+                    ),
           ),
-
           const SizedBox(width: 12),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,7 +175,6 @@ class TransactionCard extends StatelessWidget {
               ],
             ),
           ),
-
           isDebit == null
               ? Icon(Icons.arrow_forward_ios, color: Colors.grey[400], size: 20)
               : Text(
@@ -147,7 +192,11 @@ class TransactionCard extends StatelessWidget {
   }
 }
 
+/// A card widget used to display a selected category.
+///
+/// This widget shows the category name, an image, and has a callback.
 class CardCategorySelected extends StatelessWidget {
+  /// Creates a [CardCategorySelected] widget.
   const CardCategorySelected({
     super.key,
     required this.onTap,
@@ -155,24 +204,32 @@ class CardCategorySelected extends StatelessWidget {
     this.category,
     this.imageUrl,
   });
+
+  /// The name of the category.
   final String? category;
+
+  /// The name of the category.
   final String? categoryName;
+
+  /// The widget to display as the image.
   final Widget? imageUrl;
+
+  /// The callback that is called when the card is tapped.
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       child: InkWell(
         onTap: onTap,
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: context.colorScheme.onPrimary,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
-              BoxShadow(color: Color(0xFFCBD5E0).withAlpha(150), blurRadius: 5),
+              BoxShadow(color: const Color(0xFFCBD5E0).withAlpha(150), blurRadius: 5),
             ],
           ),
           child: Row(
@@ -209,15 +266,20 @@ class CardCategorySelected extends StatelessWidget {
   }
 }
 
+/// A card widget that displays credit card information and has a swipe animation effect.
 class SwipeableCreditCard extends StatelessWidget {
-  final CardModel data;
-  final bool isActive;
-
+  /// Creates a [SwipeableCreditCard] widget.
   const SwipeableCreditCard({
     super.key,
     required this.data,
     this.isActive = false,
   });
+
+  /// The data for the credit card.
+  final CardModel data;
+
+  /// Whether the card is active.
+  final bool isActive;
 
   @override
   Widget build(BuildContext context) {
@@ -229,6 +291,7 @@ class SwipeableCreditCard extends StatelessWidget {
     );
   }
 
+  /// Builds the content of the card.
   Widget _buildCardContent(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
@@ -266,7 +329,7 @@ class SwipeableCreditCard extends StatelessWidget {
                   color: context.colorScheme.onPrimary,
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

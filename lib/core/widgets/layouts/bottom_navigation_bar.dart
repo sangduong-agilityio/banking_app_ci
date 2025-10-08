@@ -4,7 +4,11 @@ import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:flutter/material.dart';
 
+/// A custom bottom navigation bar widget with a specific design.
+///
+/// This bottom navigation bar can be customized with different properties like items, background color, and selected/unselected item colors.
 class BABottomNavigationBar extends StatelessWidget {
+  /// Creates a [BABottomNavigationBar] widget.
   const BABottomNavigationBar({
     super.key,
     required this.items,
@@ -15,11 +19,22 @@ class BABottomNavigationBar extends StatelessWidget {
     this.onTap,
   });
 
+  /// The list of items to display in the bottom navigation bar.
   final List<BABottomNavigationBarItem> items;
+
+  /// The background color of the bottom navigation bar.
   final Color? backgroundColor;
+
+  /// The color of the selected item.
   final Color selectedItemColor;
+
+  /// The color of the unselected items.
   final Color unselectedItemColor;
+
+  /// The index of the currently selected item.
   final int currentIndex;
+
+  /// The callback that is called when an item is tapped.
   final Function(int)? onTap;
 
   @override
@@ -83,18 +98,26 @@ class BABottomNavigationBar extends StatelessWidget {
   }
 }
 
+/// A class that represents an item in the bottom navigation bar.
 class BABottomNavigationBarItem {
-  final Widget icon;
-  final Widget activeIcon;
-  final String label;
-
+  /// Creates a [BABottomNavigationBarItem] object.
   BABottomNavigationBarItem({
     required this.icon,
     required this.activeIcon,
     required this.label,
   });
+
+  /// The icon to display when the item is not selected.
+  final Widget icon;
+
+  /// The icon to display when the item is selected.
+  final Widget activeIcon;
+
+  /// The label to display below the icon.
+  final String label;
 }
 
+/// Returns a list of [BABottomNavigationBarItem]s.
 List<BABottomNavigationBarItem> bottomNavigationBarItems(BuildContext context) {
   return [
     BABottomNavigationBarItem(

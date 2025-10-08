@@ -2,9 +2,11 @@ import 'package:banking_app/objectbox.g.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+/// Manages the ObjectBox store instance.
 class ObjectBoxManager {
   static Store? _store;
 
+  /// Returns the singleton ObjectBox store instance.
   static Future<Store> getStore() async {
     if (_store != null) return _store!;
 
@@ -21,6 +23,7 @@ class ObjectBoxManager {
     }
   }
 
+  /// Closes the ObjectBox store instance and stops admin if running.
   static Future<void> closeStore() async {
     _store?.close();
     _store = null;
