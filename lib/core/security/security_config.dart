@@ -205,13 +205,13 @@ class SecurityValidationResult {
 
   /// Creates a [SecurityValidationResult] object for a successful validation.
   const SecurityValidationResult.valid()
-      : isValid = true,
-        errorMessage = null,
-        metadata = null;
+    : isValid = true,
+      errorMessage = null,
+      metadata = null;
 
   /// Creates a [SecurityValidationResult] object for a failed validation.
   const SecurityValidationResult.invalid(this.errorMessage, {this.metadata})
-      : isValid = false;
+    : isValid = false;
 
   /// Whether the validation failed.
   bool get isInvalid => !isValid;

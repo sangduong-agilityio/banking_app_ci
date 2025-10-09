@@ -14,7 +14,7 @@ import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
-import 'package:banking_app/features/home/widgets/cards_swiper_widget.dart';
+import 'package:banking_app/core/widgets/cards_swiper.dart';
 import 'package:banking_app/features/transactions/states/transaction_bloc.dart';
 import 'package:banking_app/features/transactions/states/transaction_event.dart';
 import 'package:banking_app/features/transactions/states/transaction_state.dart';
@@ -215,14 +215,14 @@ class CreditCardsSwiper extends StatelessWidget {
           cardData: state.cards,
           onCardChange: (index) {
             context.read<TransactionReportBloc>().add(
-              ChangeCardIndexEvt(index),
-            );
+                  ChangeCardIndexEvt(index),
+                );
           },
           shouldStartCardCollectionAnimation: state.shouldPlayAnimation,
           onCardCollectionAnimationComplete: (value) {
             context.read<TransactionReportBloc>().add(
-              SetAnimationStatusEvt(value),
-            );
+                  SetAnimationStatusEvt(value),
+                );
           },
           cardBuilder: (context, index, visibleIndex) {
             final card = state.cards[index];

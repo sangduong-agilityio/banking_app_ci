@@ -3,20 +3,43 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+/// A widget that displays a stack of cards and allows the user to swipe
+/// through them with a 3D animation.
 class CardsSwiperWidget<T> extends StatefulWidget {
+  /// The data for the cards to be displayed.
   final List<T> cardData;
+
   final Duration animationDuration;
+
+  /// The duration of the downward drag animation.
   final Duration downDragDuration;
+
+  /// The duration of the card collection animation.
   final Duration collectionDuration;
+
+  /// The maximum distance the user can drag a card up or down.
   final double maxDragDistance;
+
+  /// The limit for dragging a card down before it bounces back.
   final double dragDownLimit;
+
+  /// The threshold value for completing the swipe animation.
   final double thresholdValue;
+
+  /// A callback that is called when the card changes.
   final void Function(int)? onCardChange;
+
+  /// A builder for the card widgets.
   final Widget Function(BuildContext context, int index, int visibleIndex)
   cardBuilder;
+
+  /// A flag to indicate whether the card collection animation should start.
   final bool shouldStartCardCollectionAnimation;
+
+  /// A callback that is called when the card collection animation is complete.
   final void Function(bool value) onCardCollectionAnimationComplete;
 
+  // Animation parameters for the cards.
   final double topCardOffsetStart;
   final double topCardOffsetEnd;
   final double topCardScaleStart;
@@ -64,11 +87,11 @@ class CardsSwiperWidget<T> extends StatefulWidget {
 class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     with TickerProviderStateMixin {
   // Animation Controllers
-  late AnimationController _controller;
-  late Animation<double> _yOffsetAnimation;
-  late Animation<double> _rotationAnimation;
-  late Animation<double> _animation;
-  late AnimationController _downDragController;
+  late final AnimationController _controller;
+  late final Animation<double> _yOffsetAnimation;
+  late final Animation<double> _rotationAnimation;
+  late final Animation<double> _animation;
+  late final AnimationController _downDragController;
   late Animation<double> _downDragAnimation;
   AnimationController? _cardCollectionAnimationController;
   Animation<double>? _cardCollectionyOffsetAnimation;
@@ -128,6 +151,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     super.dispose();
   }
 
+  /// Initializes the animations for the card swiper.
   void _initializeAnimations() {
     _controller = AnimationController(
       duration: widget.animationDuration,
@@ -167,6 +191,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
           });
   }
 
+  /// Sets up the listener for the swipe animation.
   void _setupAnimationListener() {
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -183,6 +208,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     });
   }
 
+  /// Handles the card switch when the animation reaches the midpoint.
   void _handleCardSwitchAtMidpoint() {
     if (!_isCardSwitched && _controller.value >= 0.5) {
       if (_debounceTimer?.isActive ?? false) {
@@ -195,6 +221,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Performs the card switch by moving the top card to the bottom of the stack.
   void _performCardSwitch() {
     var firstCard = _cardData.removeAt(0);
     _poppedCardIndex = widget.cardData.indexOf(firstCard);
@@ -208,6 +235,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     widget.onCardChange?.call(widget.cardData.indexOf(_cardData[0]));
   }
 
+  /// Initializes the card collection animation.
   void _initializeCollectionAnimation() {
     if (widget.shouldStartCardCollectionAnimation) {
       _cardCollectionAnimationController = AnimationController(
@@ -229,6 +257,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Handles the change in the card collection animation status.
   void _handleCollectionAnimationChange() {
     if (widget.shouldStartCardCollectionAnimation) {
       _cardCollectionAnimationController = AnimationController(
@@ -254,6 +283,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Resets the animations to their initial state.
   void _resetAnimations() {
     _controller.stop();
     _downDragController.stop();
@@ -266,6 +296,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     _dragOffset = 0.0;
   }
 
+  /// Updates the card widgets based on the current card data.
   void _updateCardWidgets() {
     // Top card
     if (_cardData.isNotEmpty) {
@@ -295,6 +326,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Handles the start of a vertical drag gesture.
   void _onVerticalDragStart(DragStartDetails details) {
     if (_shouldIgnoreGesture()) return;
 
@@ -306,9 +338,11 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     _hasReachedHalf = false;
   }
 
+  /// Handles the update of a vertical drag gesture.
   void _onVerticalDragUpdate(DragUpdateDetails details) {
-    if (_shouldIgnoreGesture() || _hasReachedHalf || _isAnimationBlocked)
+    if (_shouldIgnoreGesture() || _hasReachedHalf || _isAnimationBlocked) {
       return;
+    }
 
     double dragDistance = _dragStartPosition - details.globalPosition.dy;
 
@@ -319,6 +353,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Handles the end of a vertical drag gesture.
   void _onVerticalDragEnd(DragEndDetails details) {
     if (_shouldIgnoreGesture() || _isAnimationBlocked) return;
 
@@ -331,6 +366,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     _shouldPlayVibration = true;
   }
 
+  /// Determines whether the gesture should be ignored.
   bool _shouldIgnoreGesture() {
     return _controller.isAnimating ||
         _downDragController.isAnimating ||
@@ -338,6 +374,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
         _cardData.length == 1;
   }
 
+  /// Handles the upward drag gesture.
   void _handleUpwardDrag(double dragDistance) {
     double dragFraction = dragDistance / widget.maxDragDistance;
     double newValue = (_startAnimationValue + dragFraction).clamp(0.0, 1.0);
@@ -350,6 +387,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Handles the downward drag gesture.
   void _handleDownwardDrag(double dragDistance) {
     _controller.value = _startAnimationValue;
     double downDragOffset = dragDistance.clamp(widget.dragDownLimit, 0.0);
@@ -361,6 +399,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Animates the card to the completion of the swipe.
   void _animateToCompletion() {
     final double remaining = 1.0 - _controller.value;
     final int duration = (_controller.duration!.inMilliseconds * remaining)
@@ -378,6 +417,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Animates the drag offset back to zero.
   void _animateDragOffsetToZero() {
     _downDragAnimation = Tween<double>(begin: _dragOffset, end: 0.0).animate(
       CurvedAnimation(parent: _downDragController, curve: Curves.easeOutCubic),
@@ -385,6 +425,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     _downDragController.forward(from: 0.0);
   }
 
+  /// Completes or reverts the animation based on the threshold value.
   void _completeOrRevertAnimation() {
     if (_controller.value >= widget.thresholdValue) {
       final double remaining = 1.0 - _controller.value;
@@ -417,6 +458,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     }
   }
 
+  /// Plays a haptic feedback vibration for the card switch.
   void _playCardSwitchVibration() {
     HapticFeedback.lightImpact();
     Future.delayed(
@@ -425,6 +467,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     );
   }
 
+  /// Plays a haptic feedback vibration when the card is blocked.
   void _playCardBlockVibration() {
     HapticFeedback.lightImpact();
     Future.delayed(
@@ -459,20 +502,24 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     );
   }
 
+  /// Builds the stack of cards.
   List<Widget> _buildCardStack() {
+    if (_cardData.isEmpty) {
+      return [const SizedBox.shrink()];
+    }
     if (_cardData.length == 1) {
       return [_topCardWidget ?? const SizedBox.shrink()];
     }
 
-    double yOffsetAnimationValue = _yOffsetAnimation.value;
-    double rotation = _rotationAnimation.value;
-    double totalYOffset = _calculateTotalYOffset(yOffsetAnimationValue);
+    final yOffsetAnimationValue = _yOffsetAnimation.value;
+    final rotation = _rotationAnimation.value;
+    final totalYOffset = _calculateTotalYOffset(yOffsetAnimationValue);
 
-    int cardCount = min(_cardData.length, 3);
-    List<Widget> stackChildren = [];
+    final cardCount = min(_cardData.length, 3);
+    final stackChildren = <Widget>[];
 
     if (_isCardSwitched) {
-      for (int i = 0; i < cardCount; i++) {
+      for (var i = 0; i < cardCount; i++) {
         stackChildren.add(
           i == 0
               ? _buildTopCard(totalYOffset, rotation)
@@ -480,7 +527,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
         );
       }
     } else {
-      for (int i = cardCount - 1; i >= 0; i--) {
+      for (var i = cardCount - 1; i >= 0; i--) {
         stackChildren.add(
           i == 0 ? _buildTopCard(totalYOffset, rotation) : _buildBackCard(i),
         );
@@ -490,8 +537,9 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     return stackChildren;
   }
 
+  /// Calculates the total Y offset for the top card.
   double _calculateTotalYOffset(double yOffsetAnimationValue) {
-    double totalYOffset =
+    var totalYOffset =
         -yOffsetAnimationValue * widget.maxDragDistance +
         (_downDragController.isAnimating
             ? _downDragAnimation.value
@@ -506,17 +554,18 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     return totalYOffset;
   }
 
+  /// Builds the top card in the stack.
   Widget _buildTopCard(double yOffset, double rotation) {
     if (_topCardWidget == null) return const SizedBox.shrink();
 
-    Widget cardWidget = _isCardSwitched && _cardData.length > 1
+    final cardWidget = _isCardSwitched && _cardData.length > 1
         ? (_poppedCardWidget ?? const SizedBox.shrink())
         : (_topCardWidget ?? const SizedBox.shrink());
 
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        double scale = _calculateTopCardScale();
+        final scale = _calculateTopCardScale();
 
         return Transform(
           alignment: Alignment.center,
@@ -536,8 +585,9 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     );
   }
 
+  /// Calculates the scale of the top card.
   double _calculateTopCardScale() {
-    double controllerValue = _controller.value;
+    final controllerValue = _controller.value;
 
     if (controllerValue > 0.5 || _cardData.length == 1) {
       return _cardData.length == 2 ? 0.95 : 0.9;
@@ -556,16 +606,18 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     return 1.0;
   }
 
+  /// Calculates the offset for the card switch animation.
   double _calculateSwitchOffset(double rotation) {
     return (-widget.thirdCardOffsetStart) * ((rotation + 180) / 90);
   }
 
+  /// Builds a back card in the stack.
   Widget _buildBackCard(int index) {
     if (_cardData.length <= 1 || index >= _cardData.length) {
       return const SizedBox.shrink();
     }
 
-    Widget? cardWidget = _getBackCardWidget(index);
+    final cardWidget = _getBackCardWidget(index);
     if (cardWidget == null) return const SizedBox.shrink();
 
     return AnimatedBuilder(
@@ -585,6 +637,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     );
   }
 
+  /// Returns the widget for the back card at the given index.
   Widget? _getBackCardWidget(int index) {
     if (_isCardSwitched) {
       if (index == 1) return _topCardWidget;
@@ -596,23 +649,24 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     return null;
   }
 
+  /// Calculates the transforms for the back card at the given index.
   _CardTransforms _calculateBackCardTransforms(int index) {
-    double controllerValue = _controller.value;
-    double initialOffset = _getInitialOffset(index);
-    double initialScale = _getInitialScale(index);
-    double targetScale = _getTargetScale(index);
+    final controllerValue = _controller.value;
+    final initialOffset = _getInitialOffset(index);
+    final initialScale = _getInitialScale(index);
+    final targetScale = _getTargetScale(index);
 
-    double yOffset = initialOffset;
-    double scale = initialScale;
+    var yOffset = initialOffset;
+    var scale = initialScale;
 
     if (controllerValue <= 0.5) {
-      double progress = controllerValue / 0.5;
+      final progress = controllerValue / 0.5;
       yOffset = _cardData.length == 2
           ? initialOffset - widget.secondCardOffsetStart * progress
           : initialOffset - widget.thirdCardOffsetStart * progress;
       scale = initialScale;
     } else {
-      double progress = Curves.easeOut.transform((controllerValue - 0.5) / 0.5);
+      final progress = Curves.easeOut.transform((controllerValue - 0.5) / 0.5);
       yOffset = _calculateBackCardYOffset(initialOffset, progress);
       scale = initialScale + (targetScale - initialScale) * progress;
     }
@@ -625,6 +679,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     return _CardTransforms(yOffset: yOffset, scale: scale);
   }
 
+  /// Returns the initial offset for the back card at the given index.
   double _getInitialOffset(int index) {
     if (_cardData.length == 2) return widget.secondCardOffsetStart;
     return index == 1
@@ -632,6 +687,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
         : widget.thirdCardOffsetStart;
   }
 
+  /// Returns the initial scale for the back card at the given index.
   double _getInitialScale(int index) {
     if (_cardData.length == 2) return widget.secondCardScaleStart;
     return index == 1
@@ -639,11 +695,13 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
         : widget.thirdCardScaleStart;
   }
 
+  /// Returns the target scale for the back card at the given index.
   double _getTargetScale(int index) {
     if (_cardData.length == 2) return widget.secondCardScaleEnd;
     return index == 1 ? widget.secondCardScaleEnd : widget.thirdCardScaleEnd;
   }
 
+  /// Calculates the Y offset for the back card.
   double _calculateBackCardYOffset(double initialOffset, double progress) {
     if (_cardData.length == 2) {
       return initialOffset -
@@ -655,6 +713,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
         widget.thirdCardOffsetEnd * progress;
   }
 
+  /// Applies the collection animation to the Y offset.
   double _applyCollectionAnimation(double yOffset, int index) {
     return _cardCollectionyOffsetAnimation!
         .drive(CurveTween(curve: Interval((0.4 * (index - 1)), 0.9)))

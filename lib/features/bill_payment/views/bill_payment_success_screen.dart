@@ -9,6 +9,7 @@ import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen that is displayed after a bill payment is successfully completed.
 class PaymentSuccessScreen extends StatelessWidget {
   const PaymentSuccessScreen({
     super.key,

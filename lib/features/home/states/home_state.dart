@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'home_state.freezed.dart';
 
+/// Represents the state of the home screen.
 class HomeState extends Equatable {
   const HomeState({
     this.status = const HomeStatus.initial(),

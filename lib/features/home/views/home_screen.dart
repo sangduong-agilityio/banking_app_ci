@@ -9,8 +9,9 @@ import 'package:banking_app/features/home/states/home_cubit.dart';
 import 'package:banking_app/features/home/states/home_state.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/features/home/widgets/list_view_actions.dart';
-import 'package:banking_app/features/home/widgets/cards_swiper_widget.dart';
+import 'package:banking_app/core/widgets/cards_swiper.dart';
 import 'package:banking_app/core/widgets/shimmer.dart';
+import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,17 +43,16 @@ class GreetingAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      buildWhen: (previous, current) => previous.user != current.user,
-
-      builder: (context, state) {
-        if (state.status is HomeStatusLoading) {
+    return BlocSelector<HomeCubit, HomeState, UserModel?>(
+      selector: (state) => state.user,
+      builder: (context, user) {
+        if (user == null) {
           return const GreetingAppBarSkeleton();
         }
         return BAAppBar(
-          title: S.current.homeGreetingTitle(state.user?.username ?? ''),
+          title: S.current.homeGreetingTitle(user.username ?? ''),
           alignment: BAAppBarAlignment.left,
-          profileImage: state.user?.profileImage,
+          profileImage: user.profileImage,
           style: context.titleMedium?.copyWith(
             color: context.colorScheme.onPrimary,
           ),
@@ -94,6 +94,7 @@ class HomeContent extends StatelessWidget {
               children: const [
                 SizedBox(height: 20),
                 CreditCardsSwiper(),
+                SizedBox(height: 24),
                 HomeActionsGrid(),
                 SizedBox(height: 40),
               ],
@@ -112,24 +113,27 @@ class CreditCardsSwiper extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 204,
-      child: BlocBuilder<HomeCubit, HomeState>(
-        buildWhen: (previous, current) => previous.cards != current.cards,
-        builder: (context, state) {
-          if (state.status is HomeStatusLoading) {
+      child: BlocSelector<HomeCubit, HomeState, (List<CardModel>, bool)>(
+        selector: (state) => (state.cards, state.shouldPlayAnimation),
+        builder: (context, data) {
+          final cards = data.$1;
+          final shouldPlayAnimation = data.$2;
+
+          if (cards.isEmpty) {
             return Row(children: const [Expanded(child: BACardSkeleton())]);
           }
 
           return CardsSwiperWidget<CardModel>(
-            cardData: state.cards,
+            cardData: cards,
             onCardChange: (index) {
               context.read<HomeCubit>().changeCardIndex(index);
             },
-            shouldStartCardCollectionAnimation: state.shouldPlayAnimation,
+            shouldStartCardCollectionAnimation: shouldPlayAnimation,
             onCardCollectionAnimationComplete: (value) {
               context.read<HomeCubit>().setAnimationStatus(value);
             },
             cardBuilder: (context, index, visibleIndex) {
-              final card = state.cards[index];
+              final card = cards[index];
               return SwipeableCreditCard(
                 key: ValueKey<int>(index),
                 data: card,

@@ -19,7 +19,8 @@ class CurrencyUtils {
     double? fromAmount,
     double? toAmount,
     double? exchangeRate,
-  }) swap({
+  })
+  swap({
     required String? fromCurrency,
     required String? toCurrency,
     required double? fromAmount,

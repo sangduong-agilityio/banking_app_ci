@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen where the user can select a company and enter a bill code to check for a bill.
 class PaymentOptionScreen extends StatefulWidget {
   const PaymentOptionScreen({super.key, required this.billType});
   final BillType billType;
@@ -27,7 +28,6 @@ class PaymentOptionScreen extends StatefulWidget {
 
 class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
   final _billCodeController = TextEditingController();
-  CompanyModel? selectedCompany;
 
   @override
   void dispose() {
@@ -35,6 +35,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
     super.dispose();
   }
 
+  /// Shows a dialog for the user to select a company.
   void _showCompanySelector(
     List<CompanyModel> companies,
     CompanyModel? selectedCompany,
@@ -55,33 +56,31 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
     );
   }
 
+  /// Handles the logic for checking a bill after the user enters a bill code.
   void _handleCheckBill(BillPaymentState state) {
-    if (state.selectedCompany == null || _billCodeController.text.isEmpty) {
+    final selectedCompany = state.selectedCompany;
+    if (selectedCompany == null || _billCodeController.text.isEmpty) {
       return;
     }
 
     final trimmedCode = _billCodeController.text.trim();
 
-    try {
-      final selectedBill = state.bills.firstWhere(
-        (bill) =>
-            bill.billType == widget.billType &&
-            bill.company?.id == state.selectedCompany?.id &&
-            bill.billCode == trimmedCode,
-      );
+    final selectedBill = state.bills.firstWhere(
+      (bill) =>
+          bill.billType == widget.billType &&
+          bill.company?.id == selectedCompany.id &&
+          bill.billCode == trimmedCode,
+    );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: context.read<BillPaymentBloc>(),
-            child: BillPaymentDetailsScreen(bill: selectedBill),
-          ),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: context.read<BillPaymentBloc>(),
+          child: BillPaymentDetailsScreen(bill: selectedBill),
         ),
-      );
-    } catch (_) {
-      BASnackBar.buildErrorSnackbar(context, 'Invalid bill code');
-    }
+      ),
+    );
   }
 
   @override

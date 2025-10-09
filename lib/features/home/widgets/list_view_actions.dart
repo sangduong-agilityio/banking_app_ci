@@ -7,6 +7,7 @@ import 'package:banking_app/features/home/widgets/card_action.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+/// A widget that displays a grid of actions for the user to perform.
 class ListViewActions extends StatelessWidget {
   const ListViewActions({super.key, this.bills});
 

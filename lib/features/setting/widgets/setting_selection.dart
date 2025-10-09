@@ -2,7 +2,9 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that displays a setting option with a title, an optional subtitle, and an optional switch or tap action.
 class SettingSelection extends StatelessWidget {
+  /// Creates a new instance of [SettingSelection].
   const SettingSelection({
     super.key,
     required this.title,

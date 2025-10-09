@@ -5,10 +5,11 @@ import 'package:banking_app/core/utils/formatters.dart';
 import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
 import 'package:flutter/material.dart';
 
+/// A card widget that displays the detailed information of a bill.
 class BillDetailCard extends StatelessWidget {
-  const BillDetailCard({super.key, required this.bills});
+  const BillDetailCard({super.key, required this.bill});
 
-  final BillPaymentModel bills;
+  final BillPaymentModel bill;
 
   @override
   Widget build(BuildContext context) {
@@ -35,41 +36,41 @@ class BillDetailCard extends StatelessWidget {
 
           _buildInfoDetail(
             S.current.payBillNameTitle,
-            bills.user?.username ?? '',
+            bill.user?.username ?? '',
           ),
-          _buildInfoDetail(S.current.payBillAddressTitle, bills.address ?? ''),
+          _buildInfoDetail(S.current.payBillAddressTitle, bill.address ?? ''),
           _buildInfoDetail(
             S.current.payBillPhoneNumberTitle,
-            bills.phoneNumber ?? '',
+            bill.phoneNumber ?? '',
           ),
-          _buildInfoDetail(S.current.payBillCodeTitle, bills.billCode ?? ''),
+          _buildInfoDetail(S.current.payBillCodeTitle, bill.billCode ?? ''),
           _buildInfoDetail(
             S.current.payBillFormTitle,
-            FormatterUtils.formatDate(bills.startDate),
+            FormatterUtils.formatDate(bill.startDate),
           ),
           _buildInfoDetail(
             S.current.payBillToTitle,
-            FormatterUtils.formatDate(bills.endDate),
+            FormatterUtils.formatDate(bill.endDate),
           ),
 
           _buildAmount(
-            S.current.payBillTypeTitle(bills.billType?.displayName ?? ''),
-            "\$${bills.amount?.toStringAsFixed(2)}",
+            S.current.payBillTypeTitle(bill.billType?.displayName ?? ''),
+            "\$${bill.amount?.toStringAsFixed(2)}",
             valueColor: context.colorScheme.secondary,
           ),
           Divider(color: Colors.grey.shade300),
 
-          if ((bills.tax ?? 0) > 0)
+          if ((bill.tax ?? 0) > 0)
             _buildAmount(
               S.current.payBillTaxTitle,
-              "\$${bills.tax?.toStringAsFixed(2)}",
+              "\$${bill.tax?.toStringAsFixed(2)}",
               valueColor: context.colorScheme.secondary,
             ),
           Divider(color: Colors.grey.shade300),
 
           _buildAmount(
             S.current.payBillTotalTitle,
-            "\$${((bills.amount ?? 0) + (bills.tax ?? 0)).toStringAsFixed(2)}",
+            "\$${((bill.amount ?? 0) + (bill.tax ?? 0)).toStringAsFixed(2)}",
             isBold: true,
             valueColor: context.colorScheme.error,
           ),
@@ -79,6 +80,7 @@ class BillDetailCard extends StatelessWidget {
   }
 }
 
+/// A helper widget to build a row with a label and a value for displaying bill details.
 Widget _buildInfoDetail(String label, String value) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 6),
@@ -112,6 +114,7 @@ Widget _buildInfoDetail(String label, String value) {
   );
 }
 
+/// A helper widget to build a row for displaying amounts (e.g., bill amount, tax, total).
 Widget _buildAmount(
   String label,
   String value, {

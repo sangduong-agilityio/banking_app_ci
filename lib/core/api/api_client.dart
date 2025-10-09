@@ -14,14 +14,14 @@ class BankingApiClient {
 
   /// Creates a [BankingApiClient] object.
   BankingApiClient({required String baseUrl})
-      : _dio = Dio(
-          BaseOptions(
-            baseUrl: baseUrl,
-            connectTimeout: SecurityConfig.networkTimeout,
-            receiveTimeout: SecurityConfig.networkTimeout,
-            sendTimeout: SecurityConfig.networkTimeout,
-          ),
-        ) {
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: baseUrl,
+          connectTimeout: SecurityConfig.networkTimeout,
+          receiveTimeout: SecurityConfig.networkTimeout,
+          sendTimeout: SecurityConfig.networkTimeout,
+        ),
+      ) {
     _setupSecureClient();
   }
 
@@ -65,17 +65,18 @@ class BankingApiClient {
   void _setupSecureClient() {
     _dio.interceptors.add(_SecurityInterceptor());
 
-        (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-          final client = HttpClient();
-          client.badCertificateCallback = (cert, host, port) {
-            return _validateCertificate(cert, host);
-          };
-    
-          client.connectionTimeout = const Duration(seconds: 30);
-          client.idleTimeout = const Duration(seconds: 30);
-    
-          return client;
-        };  }
+    (_dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+      final client = HttpClient();
+      client.badCertificateCallback = (cert, host, port) {
+        return _validateCertificate(cert, host);
+      };
+
+      client.connectionTimeout = const Duration(seconds: 30);
+      client.idleTimeout = const Duration(seconds: 30);
+
+      return client;
+    };
+  }
 
   /// Validates the SSL certificate against pinned certificates.
   bool _validateCertificate(X509Certificate cert, String host) {

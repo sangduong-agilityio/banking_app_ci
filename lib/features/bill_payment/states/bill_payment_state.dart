@@ -7,6 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'bill_payment_state.freezed.dart';
 
+/// Represents the state of the bill payment feature.
 class BillPaymentState extends Equatable {
   const BillPaymentState({
     this.status = const BillPaymentStatus.initial(),
@@ -128,12 +129,24 @@ class BillPaymentState extends Equatable {
   ];
 }
 
+/// Represents the different statuses of the bill payment process.
 @freezed
 class BillPaymentStatus with _$BillPaymentStatus {
+  /// The initial state.
   const factory BillPaymentStatus.initial() = BillPaymentStatusInitial;
+
+  /// The state when data is being loaded.
   const factory BillPaymentStatus.loading() = BillPaymentStatusLoading;
+
+  /// The state when data has been successfully loaded.
   const factory BillPaymentStatus.loaded() = BillPaymentStatusLoaded;
+
+  /// The state when the application is waiting for OTP verification.
   const factory BillPaymentStatus.awaitingOtp() = BillPaymentStatusAwaitingOtp;
+
+  /// The state when the payment is successful.
   const factory BillPaymentStatus.success() = BillPaymentStatusSuccess;
+
+  /// The state when an error has occurred.
   const factory BillPaymentStatus.failure() = BillPaymentStatusFailure;
 }

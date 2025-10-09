@@ -164,7 +164,8 @@ class _BATextFieldState extends State<BATextField> {
             widget.onChanged?.call(value);
             _validateField();
           },
-          onEditingComplete: widget.onEditingComplete ??
+          onEditingComplete:
+              widget.onEditingComplete ??
               () {
                 if (widget.textInputAction == TextInputAction.next) {
                   FocusScope.of(context).nextFocus();
@@ -186,7 +187,8 @@ class _BATextFieldState extends State<BATextField> {
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             hintText: widget.hint,
-            hintStyle: widget.hintTextStyle ??
+            hintStyle:
+                widget.hintTextStyle ??
                 context.titleSmall?.copyWith(
                   color: context.colorScheme.onTertiary,
                 ),
@@ -206,13 +208,14 @@ class _BATextFieldState extends State<BATextField> {
                     onPressed: _togglePasswordVisibility,
                   )
                 : (widget.suffixIcon != null
-                    ? GestureDetector(
-                        onTap: widget.onSuffixIconTap,
-                        child: widget.suffixIcon,
-                      )
-                    : null),
+                      ? GestureDetector(
+                          onTap: widget.onSuffixIconTap,
+                          child: widget.suffixIcon,
+                        )
+                      : null),
             filled: true,
-            fillColor: widget.fillColor ??
+            fillColor:
+                widget.fillColor ??
                 (widget.enabled
                     ? context.colorScheme.onPrimary
                     : BAAppColors.textDisabled),

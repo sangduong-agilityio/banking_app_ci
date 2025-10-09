@@ -11,6 +11,7 @@ import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
+import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:banking_app/features/setting/states/setting_cubit.dart';
 import 'package:banking_app/features/setting/states/setting_state.dart';
 import 'package:banking_app/features/setting/widgets/setting_selection.dart';
@@ -51,9 +52,20 @@ class SettingContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingCubit, SettingState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
+    return BlocSelector<
+      SettingCubit,
+      SettingState,
+      (SettingStatus, UserModel?, bool, BiometricCapability)
+    >(
+      selector: (state) => (
+        state.status,
+        state.user,
+        state.isBiometricEnabled,
+        state.biometricCapability,
+      ),
+      builder: (context, data) {
+        final (status, user, isBiometricEnabled, biometricCapability) = data;
+
         return Stack(
           clipBehavior: Clip.none,
           children: [
@@ -72,7 +84,7 @@ class SettingContent extends StatelessWidget {
                   children: [
                     const SizedBox(height: 70),
                     Text(
-                      state.user?.username ?? '',
+                      user?.username ?? '',
                       style: context.titleMedium?.copyWith(
                         color: context.colorScheme.secondary,
                         fontWeight: FontWeight.w600,
@@ -84,16 +96,13 @@ class SettingContent extends StatelessWidget {
                       onTap: () {},
                     ),
                     SettingSelection(
-                      title: state.biometricCapability.settingsLabel,
+                      title: biometricCapability.settingsLabel,
                       isEnabled:
-                          state.isBiometricEnabled &&
-                          state.biometricCapability.isAvailable,
-                      onToggle: state.biometricCapability.isAvailable
-                          ? (value) {
-                              context.read<SettingCubit>().toggleBiometric(
-                                value,
-                              );
-                            }
+                          isBiometricEnabled && biometricCapability.isAvailable,
+                      onToggle: biometricCapability.isAvailable
+                          ? (value) => context
+                                .read<SettingCubit>()
+                                .toggleBiometric(value)
                           : null,
                     ),
                     SettingSelection(
@@ -123,7 +132,7 @@ class SettingContent extends StatelessWidget {
               left: 0,
               right: 0,
               child: Center(
-                child: BAProfileImage(url: state.user?.profileImage, size: 100),
+                child: BAProfileImage(url: user?.profileImage, size: 100),
               ),
             ),
           ],

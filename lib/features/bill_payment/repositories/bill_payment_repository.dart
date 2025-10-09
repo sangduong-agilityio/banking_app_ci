@@ -6,26 +6,44 @@ import 'package:banking_app/features/transactions/models/transaction_model.dart'
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
 
+/// Abstract repository for handling bill payment operations.
 abstract class BillPaymentRepository {
+  /// Fetches a list of the user's past bill payments.
   Future<List<BillPaymentModel>> fetchBills();
+
+  /// Fetches a list of the user's bank accounts.
   Future<List<AccountModel>> fetchAccounts();
+
+  /// Fetches a list of the user's credit/debit cards.
   Future<List<CardModel>> fetchCards();
+
+  /// Fetches a list of companies for a specific bill type (e.g., electricity, water).
   Future<List<CompanyModel>> fetchCompanies(BillType type);
+
+  /// Sends a One-Time Password (OTP) to the user's registered email for a specific bill.
   Future<String> sendOtpEmail(String billId);
+
+  /// Initiates a bill payment by creating a pending transaction.
   Future<BillPaymentModel> payBill({
     required BillPaymentModel bill,
     String? fromAccountId,
     String? fromCardId,
   });
+
+  /// Confirms and completes a bill payment using an OTP or biometric authentication.
   Future<bool> confirmPayTheBill(String billId, String otpCode);
 }
 
+const String _biometricAuth = 'BIOMETRIC_AUTH';
+
+/// Implementation of the [BillPaymentRepository] that uses Supabase for data persistence.
 class BillPaymentRepositoryImpl implements BillPaymentRepository {
   final SupabaseClient _client;
 
   BillPaymentRepositoryImpl({required SupabaseClient client})
     : _client = client;
 
+  /// Gets the current authenticated user, throwing an exception if not found.
   User get _currentUser {
     final user = _client.auth.currentUser;
     if (user == null) throw Exception('User not authenticated');
@@ -109,7 +127,7 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
   @override
   Future<bool> confirmPayTheBill(String billId, String otpCode) async {
     // Verify OTP (skip for biometric)
-    if (otpCode != "BIOMETRIC_AUTH") {
+    if (otpCode != _biometricAuth) {
       final isValid = await _verifyOtp(billId, otpCode);
       if (!isValid) return false;
     }
@@ -135,7 +153,7 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
         .eq('id', bill['transactionId']);
 
     // Mark OTP as used
-    if (otpCode != "BIOMETRIC_AUTH") {
+    if (otpCode != _biometricAuth) {
       await _client
           .from('bill_payment_otps')
           .update({'isUsed': true})
@@ -182,11 +200,13 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
 
   /// Helper Methods
 
+  /// Generates a random 6-digit OTP.
   String _generateOtp() {
     final random = Random();
     return (100000 + random.nextInt(900000)).toString();
   }
 
+  /// Verifies the provided OTP against the database.
   Future<bool> _verifyOtp(String billId, String otpCode) async {
     final response = await _client
         .from('bill_payment_otps')
@@ -200,22 +220,26 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     return response != null;
   }
 
+  /// Validates that the bill amount is greater than zero.
   void _validateBillAmount(double? amount) {
     if (amount == null || amount <= 0) {
       throw Exception('Invalid bill amount');
     }
   }
 
+  /// Validates that a payment method (account or card) has been selected.
   void _validatePaymentMethod(String? fromAccountId, String? fromCardId) {
     if (fromAccountId == null && fromCardId == null) {
       throw Exception('Please select a payment method');
     }
   }
 
+  /// Calculates the total amount including tax and fee.
   double _calculateTotal(BillPaymentModel bill) {
     return (bill.amount ?? 0.0) + (bill.tax ?? 0.0) + (bill.fee ?? 0.0);
   }
 
+  /// Checks if the selected account or card has sufficient balance.
   Future<void> _checkBalance(
     String? fromAccountId,
     String? fromCardId,
@@ -246,6 +270,7 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     }
   }
 
+  /// Creates a new transaction record in the database.
   Future<String> _createTransaction({
     required BillPaymentModel bill,
     required double totalAmount,
@@ -274,6 +299,7 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
     return txnInsert['id'] as String;
   }
 
+  /// Creates a new bill payment record in the database.
   Future<BillPaymentModel> _createBillPayment({
     required BillPaymentModel bill,
     required String transactionId,

@@ -2,6 +2,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that displays a single transaction item.
 class TransactionItem extends StatelessWidget {
   const TransactionItem({
     super.key,
@@ -40,15 +41,15 @@ class TransactionItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (title?.isNotEmpty ?? false)
+                if (title != null)
                   Text(
                     title ?? '',
                     style: context.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                if (subtitle?.isNotEmpty ?? false) const SizedBox(height: 2),
-                if (subtitle?.isNotEmpty ?? false)
+                if (subtitle != null) ...[
+                  const SizedBox(height: 2),
                   Text(
                     subtitle ?? '',
                     style: context.bodyMedium?.copyWith(
@@ -56,16 +57,18 @@ class TransactionItem extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                ],
               ],
             ),
           ),
-          Text(
-            amount ?? '',
-            style: context.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: amountColor,
+          if (amount != null)
+            Text(
+              amount ?? '',
+              style: context.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: amountColor,
+              ),
             ),
-          ),
         ],
       ),
     );

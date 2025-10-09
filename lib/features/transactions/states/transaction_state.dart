@@ -5,6 +5,7 @@ import '../../home/models/card_model.dart';
 
 part 'transaction_state.freezed.dart';
 
+/// Represents the state of the transaction report screen.
 class TransactionReportState extends Equatable {
   const TransactionReportState({
     this.status = const TransactionReportStatus.initial(),
@@ -51,14 +52,22 @@ class TransactionReportState extends Equatable {
   ];
 }
 
+/// Represents the status of the transaction report.
 @freezed
 sealed class TransactionReportStatus with _$TransactionReportStatus {
+  /// The initial status.
   const factory TransactionReportStatus.initial() =
       TransactionReportStatusInitial;
+
+  /// The loading status.
   const factory TransactionReportStatus.loading() =
       TransactionReportStatusLoading;
+
+  /// The success status.
   const factory TransactionReportStatus.success() =
       TransactionReportStatusSuccess;
+
+  /// The failure status.
   const factory TransactionReportStatus.failure() =
       TransactionReportStatusFailure;
 }

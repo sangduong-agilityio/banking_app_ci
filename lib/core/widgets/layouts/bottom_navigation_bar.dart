@@ -101,7 +101,7 @@ class BABottomNavigationBar extends StatelessWidget {
 /// A class that represents an item in the bottom navigation bar.
 class BABottomNavigationBarItem {
   /// Creates a [BABottomNavigationBarItem] object.
-  BABottomNavigationBarItem({
+  const BABottomNavigationBarItem({
     required this.icon,
     required this.activeIcon,
     required this.label,

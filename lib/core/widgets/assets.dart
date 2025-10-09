@@ -15,7 +15,7 @@ class BAAssetImage extends StatelessWidget {
   /// Creates a [BAAssetImage] widget.
   ///
   /// The [path] parameter is required and must not start with 'http' or 'https'.
-  BAAssetImage({
+  const BAAssetImage({
     required this.path,
     super.key,
     this.errorBuilder,
@@ -24,10 +24,7 @@ class BAAssetImage extends StatelessWidget {
     this.color,
     this.boxFit,
     this.type = ImageLoaderType.assetPNG,
-  }) : assert(
-          !path.startsWith('http'),
-          'Asset Image path should not start with http or https',
-        );
+  });
 
   /// The path to the asset image.
   final String path;
@@ -115,7 +112,7 @@ enum ImageLoaderType {
   assetSVG,
 
   /// Load an image from the network and cache it.
-  cachedNetwork
+  cachedNetwork,
 }
 
 /// A private helper class that handles the actual image loading logic.
@@ -163,10 +160,10 @@ class _BAImageLoader extends StatelessWidget {
           fit: boxFit,
           errorBuilder:
               (BuildContext context, Object error, StackTrace? stackTrace) {
-            log('Image $url load failed. Error: $error');
+                log('Image $url load failed. Error: $error');
 
-            return errorBuilder ?? Icon(Icons.broken_image, size: width);
-          },
+                return errorBuilder ?? Icon(Icons.broken_image, size: width);
+              },
           width: width,
           height: height,
           color: color,
@@ -200,10 +197,10 @@ class _BAImageLoader extends StatelessWidget {
           imageBuilder:
               (BuildContext context, ImageProvider<Object> provider) =>
                   Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(image: provider),
-            ),
-          ),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(image: provider),
+                    ),
+                  ),
         );
     }
   }
@@ -215,76 +212,90 @@ class _BAImageLoader extends StatelessWidget {
 class BAAssets {
   /// A widget for the lock driver image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      lockDriver = _BALockDriveImage.new;
+  lockDriver = _BALockDriveImage.new;
 
   /// A widget for the home icon.
-  static Widget Function(
-      {double? width,
-      double? height,
-      BoxFit? boxfit,
-      Color? color}) home = _BAHomeImage.new;
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  })
+  home = _BAHomeImage.new;
 
   /// A widget for the filled home icon.
-  static Widget Function(
-      {double? width,
-      double? height,
-      BoxFit? boxfit,
-      Color? color}) homeFilled = _BAHomeFilledImage.new;
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  })
+  homeFilled = _BAHomeFilledImage.new;
 
   /// A widget for the search icon.
-  static Widget Function(
-      {double? width,
-      double? height,
-      BoxFit? boxfit,
-      Color? color}) search = _BASearchImage.new;
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  })
+  search = _BASearchImage.new;
 
   /// A widget for the message icon.
-  static Widget Function(
-      {double? width,
-      double? height,
-      BoxFit? boxfit,
-      Color? color}) message = _BAMessageImage.new;
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  })
+  message = _BAMessageImage.new;
 
   /// A widget for the filled message icon.
-  static Widget Function(
-      {double? width,
-      double? height,
-      BoxFit? boxfit,
-      Color? color}) messageFilled = _BAMessageFilledImage.new;
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  })
+  messageFilled = _BAMessageFilledImage.new;
 
   /// A widget for the settings icon.
-  static Widget Function(
-      {double? width,
-      double? height,
-      BoxFit? boxfit,
-      Color? color}) setting = _BASettingImage.new;
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  })
+  setting = _BASettingImage.new;
 
   /// A widget for the filled settings icon.
-  static Widget Function(
-      {double? width,
-      double? height,
-      BoxFit? boxfit,
-      Color? color}) settingFilled = _BASettingFilledImage.new;
+  static Widget Function({
+    double? width,
+    double? height,
+    BoxFit? boxfit,
+    Color? color,
+  })
+  settingFilled = _BASettingFilledImage.new;
 
   /// A widget for the contacts image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      contacts = _BAContactsImage.new;
+  contacts = _BAContactsImage.new;
 
   /// A widget for the credit card image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      creditCard = _BACreditCardImage.new;
+  creditCard = _BACreditCardImage.new;
 
   /// A widget for the credit card in image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      creditCardIn = _BACreditCardInImage.new;
+  creditCardIn = _BACreditCardInImage.new;
 
   /// A widget for the file paragraph image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      fileParagraph = _BAFileParagraphImage.new;
+  fileParagraph = _BAFileParagraphImage.new;
 
   /// A widget for the mobile banking image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      mobileBanking = _BAMobileBankingImage.new;
+  mobileBanking = _BAMobileBankingImage.new;
 
   /// A widget for the pig image.
   static Widget Function({double? width, double? height, BoxFit? boxfit}) pig =
@@ -292,91 +303,91 @@ class BAAssets {
 
   /// A widget for the receipt image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      receipt = _BAReceiptImage.new;
+  receipt = _BAReceiptImage.new;
 
   /// A widget for the sync devices image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      syncDevices = _BASyncDevicesImage.new;
+  syncDevices = _BASyncDevicesImage.new;
 
   /// A widget for the wallet image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      wallet = _BAWalletImage.new;
+  wallet = _BAWalletImage.new;
 
   /// A widget for the empty image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      empty = _BAEmptyImage.new;
+  empty = _BAEmptyImage.new;
 
   /// A widget for the electric image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      electric = _BAElectricImage.new;
+  electric = _BAElectricImage.new;
 
   /// A widget for the water image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      water = _BAWaterImage.new;
+  water = _BAWaterImage.new;
 
   /// A widget for the water bill image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      waterBill = _BAWaterBillImage.new;
+  waterBill = _BAWaterBillImage.new;
 
   /// A widget for the internet image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      internet = _BAInternetImage.new;
+  internet = _BAInternetImage.new;
 
   /// A widget for the internet bill image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      internetBill = _BAInternetBillImage.new;
+  internetBill = _BAInternetBillImage.new;
 
   /// A widget for the transfer money bill image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      transferMoneyBill = _BATransferMoneyBillImage.new;
+  transferMoneyBill = _BATransferMoneyBillImage.new;
 
   /// A widget for the electric bill image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      electricBill = _BAElectricBillImage.new;
+  electricBill = _BAElectricBillImage.new;
 
   /// A widget for the transaction success image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      transactionSuccess = _BATransactionSuccessImage.new;
+  transactionSuccess = _BATransactionSuccessImage.new;
 
   /// A widget for the branch image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      branch = _BABranchImage.new;
+  branch = _BABranchImage.new;
 
   /// A widget for the interest image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      interest = _BAInterestImage.new;
+  interest = _BAInterestImage.new;
 
   /// A widget for the exchange image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      exchange = _BAExchangeImage.new;
+  exchange = _BAExchangeImage.new;
 
   /// A widget for the exchange rate image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      exchangeRate = _BAExchangeRateImage.new;
+  exchangeRate = _BAExchangeRateImage.new;
 
   /// A widget for the exchange money image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      exchangeMoney = _BAExchangeMoneyImage.new;
+  exchangeMoney = _BAExchangeMoneyImage.new;
 
   /// A widget for the swap image.
-  static Widget Function({double? width, double? height, BoxFit? boxfit})
-      swap = _BASwapImage.new;
+  static Widget Function({double? width, double? height, BoxFit? boxfit}) swap =
+      _BASwapImage.new;
 
   /// A widget for the fingerprint image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      fingerprint = _BAFingerprintImage.new;
+  fingerprint = _BAFingerprintImage.new;
 
   /// A widget for the beneficiary image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      beneficiary = _BABeneficiaryImage.new;
+  beneficiary = _BABeneficiaryImage.new;
 
   /// A widget for the save online image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      saveOnline = _BASaveOnlineImage.new;
+  saveOnline = _BASaveOnlineImage.new;
 
   /// A widget for the transfer success image.
   static Widget Function({double? width, double? height, BoxFit? boxfit})
-      transferSuccess = _BATransferSuccessImage.new;
+  transferSuccess = _BATransferSuccessImage.new;
 }
 
 /// A widget for displaying the home icon.
@@ -1400,4 +1411,3 @@ class BAProfileImage extends StatelessWidget {
     );
   }
 }
-

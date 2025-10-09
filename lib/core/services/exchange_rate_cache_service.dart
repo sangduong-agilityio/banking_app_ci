@@ -45,8 +45,9 @@ class ExchangeRateCacheService {
       _exchangeRateBox.removeAll();
 
       // Add new data with current timestamp
-      final entities =
-          rates.map((rate) => ExchangeRateEntity.fromModel(rate)).toList();
+      final entities = rates
+          .map((rate) => ExchangeRateEntity.fromModel(rate))
+          .toList();
       _exchangeRateBox.putMany(entities);
     } catch (e) {
       // Handle any errors during caching

@@ -146,10 +146,10 @@ class TransactionCard extends StatelessWidget {
                     ),
                   )
                 : customIcon ??
-                    const Icon(
-                      Icons.business,
-                      color: BAAppColors.textSecondary,
-                    ),
+                      const Icon(
+                        Icons.business,
+                        color: BAAppColors.textSecondary,
+                      ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -229,7 +229,10 @@ class CardCategorySelected extends StatelessWidget {
             color: context.colorScheme.onPrimary,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
-              BoxShadow(color: const Color(0xFFCBD5E0).withAlpha(150), blurRadius: 5),
+              BoxShadow(
+                color: const Color(0xFFCBD5E0).withAlpha(150),
+                blurRadius: 5,
+              ),
             ],
           ),
           child: Row(

@@ -4,6 +4,7 @@ import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/features/bill_payment/models/company_model.dart';
 import 'package:equatable/equatable.dart';
 
+/// Base class for all bill payment events.
 abstract class BillPaymentEvt extends Equatable {
   const BillPaymentEvt();
 
@@ -11,6 +12,7 @@ abstract class BillPaymentEvt extends Equatable {
   List<Object?> get props => [];
 }
 
+/// Event to initialize the bill payment feature with a specific bill type.
 class BillPaymentInitializeEvt extends BillPaymentEvt {
   const BillPaymentInitializeEvt(this.type);
 
@@ -20,6 +22,7 @@ class BillPaymentInitializeEvt extends BillPaymentEvt {
   List<Object> get props => [type];
 }
 
+/// Event to select a specific bill to pay.
 class SelectBillEvt extends BillPaymentEvt {
   const SelectBillEvt(this.bill);
   final BillPaymentModel bill;
@@ -27,6 +30,7 @@ class SelectBillEvt extends BillPaymentEvt {
   List<Object> get props => [bill];
 }
 
+/// Event to select a company for the bill payment.
 class SelectCompanyEvt extends BillPaymentEvt {
   const SelectCompanyEvt(this.company);
 
@@ -36,6 +40,7 @@ class SelectCompanyEvt extends BillPaymentEvt {
   List<Object> get props => [company];
 }
 
+/// Event to select a bank account as the payment method.
 class SelectAccountEvt extends BillPaymentEvt {
   const SelectAccountEvt(this.account);
 
@@ -45,6 +50,7 @@ class SelectAccountEvt extends BillPaymentEvt {
   List<Object> get props => [account];
 }
 
+/// Event to select a card as the payment method.
 class SelectCardEvt extends BillPaymentEvt {
   const SelectCardEvt(this.card);
 
@@ -54,6 +60,7 @@ class SelectCardEvt extends BillPaymentEvt {
   List<Object> get props => [card];
 }
 
+/// Event to update the details of the bill being paid.
 class UpdateBillDetailsEvt extends BillPaymentEvt {
   const UpdateBillDetailsEvt({
     this.amount,
@@ -71,6 +78,7 @@ class UpdateBillDetailsEvt extends BillPaymentEvt {
   List<Object?> get props => [amount, fee, billCode, phoneNumber];
 }
 
+/// Event to initiate the payment of a bill.
 class PayBillEvt extends BillPaymentEvt {
   const PayBillEvt({required this.bill, required this.paymentMethodId});
 
@@ -81,6 +89,7 @@ class PayBillEvt extends BillPaymentEvt {
   List<Object> get props => [bill, paymentMethodId];
 }
 
+/// Event to send an OTP to the user's email for verification.
 class SendOtpEvt extends BillPaymentEvt {
   const SendOtpEvt({required this.billId});
 
@@ -89,6 +98,7 @@ class SendOtpEvt extends BillPaymentEvt {
   List<Object> get props => [billId];
 }
 
+/// Event to confirm the bill payment with an OTP.
 class ConfirmBillPaymentWithOtpEvt extends BillPaymentEvt {
   const ConfirmBillPaymentWithOtpEvt({
     required this.billId,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'transaction_event.dart';
 import 'transaction_state.dart';
 
+/// A BLoC that manages the state of the transaction report feature.
 class TransactionReportBloc
     extends Bloc<TransactionReportEvt, TransactionReportState> {
   TransactionReportBloc({required this.repo})
@@ -14,6 +15,7 @@ class TransactionReportBloc
 
   final TransactionReportRepository repo;
 
+  /// Handles the initialization of the transaction report.
   Future<void> _onTransactionReportInitialize(
     TransactionReportInitializeEvt event,
     Emitter<TransactionReportState> emit,
@@ -40,17 +42,19 @@ class TransactionReportBloc
     }
   }
 
-  Future<void> _onChangeCardIndex(
+  /// Handles changes to the selected card index.
+  void _onChangeCardIndex(
     ChangeCardIndexEvt event,
     Emitter<TransactionReportState> emit,
-  ) async {
+  ) {
     emit(state.copyWith(selectedCardIndex: event.index));
   }
 
-  Future<void> _onSetAnimationStatus(
+  /// Handles changes to the animation status.
+  void _onSetAnimationStatus(
     SetAnimationStatusEvt event,
     Emitter<TransactionReportState> emit,
-  ) async {
+  ) {
     emit(state.copyWith(shouldPlayAnimation: event.shouldPlay));
   }
 }

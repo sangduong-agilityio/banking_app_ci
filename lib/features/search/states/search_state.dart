@@ -101,20 +101,20 @@ class SearchState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        exchangeRates,
-        fromCurrency,
-        toCurrency,
-        fromAmount,
-        toAmount,
-        interestRates,
-        currencies,
-        exchangeRate,
-        lastUpdated,
-        isFromCache,
-        exchangeRateStatus,
-        lastExchangeRateUpdate,
-      ];
+    status,
+    exchangeRates,
+    fromCurrency,
+    toCurrency,
+    fromAmount,
+    toAmount,
+    interestRates,
+    currencies,
+    exchangeRate,
+    lastUpdated,
+    isFromCache,
+    exchangeRateStatus,
+    lastExchangeRateUpdate,
+  ];
 }
 
 /// Represents the status of an exchange rate.
@@ -126,7 +126,7 @@ enum ExchangeRateStatus {
   stale,
 
   /// There is no data for the exchange rate.
-  noData
+  noData,
 }
 
 /// An extension on [ExchangeRateStatus] to provide additional functionality.

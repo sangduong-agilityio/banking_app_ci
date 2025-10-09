@@ -8,6 +8,8 @@ import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/core/bloc/base_bloc.dart';
 
+/// Manages the state for the bill payment feature, handling user interactions
+/// and business logic.
 class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
   BillPaymentBloc({required this.repository})
     : super(const BillPaymentState(status: BillPaymentStatus.initial())) {
@@ -24,6 +26,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
 
   final BillPaymentRepository repository;
 
+  /// Handles the initialization of the bill payment screen, fetching necessary data.
   Future<void> _onInitialize(
     BillPaymentInitializeEvt event,
     Emitter<BillPaymentState> emit,
@@ -72,6 +75,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     }
   }
 
+  /// Handles the selection of a pre-existing bill.
   void _onSelectBill(SelectBillEvt event, Emitter<BillPaymentState> emit) {
     emit(
       state.copyWith(
@@ -83,6 +87,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     _recalculateFee(emit);
   }
 
+  /// Handles the selection of a company.
   void _onSelectCompany(
     SelectCompanyEvt event,
     Emitter<BillPaymentState> emit,
@@ -91,6 +96,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     _recalculateFee(emit);
   }
 
+  /// Handles the selection of a payment account.
   void _onSelectAccount(
     SelectAccountEvt event,
     Emitter<BillPaymentState> emit,
@@ -99,11 +105,13 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     _recalculateFee(emit);
   }
 
+  /// Handles the selection of a payment card.
   void _onSelectCard(SelectCardEvt event, Emitter<BillPaymentState> emit) {
     emit(state.copyWith(selectedCard: event.card, clearAccount: true));
     _recalculateFee(emit);
   }
 
+  /// Updates bill details such as amount, bill code, or phone number.
   void _onUpdateBillDetails(
     UpdateBillDetailsEvt event,
     Emitter<BillPaymentState> emit,
@@ -118,7 +126,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     if (event.amount != null) _recalculateFee(emit);
   }
 
-  /// Send OTP to email
+  /// Sends an OTP to the user's email to authorize the transaction.
   Future<void> _onSendOtp(
     SendOtpEvt event,
     Emitter<BillPaymentState> emit,
@@ -150,7 +158,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     }
   }
 
-  /// Confirm bill payment with OTP
+  /// Confirms the bill payment with the provided OTP.
   Future<void> _onConfirmWithOtp(
     ConfirmBillPaymentWithOtpEvt event,
     Emitter<BillPaymentState> emit,
@@ -193,6 +201,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     }
   }
 
+  /// Initiates the bill payment process.
   Future<void> _onPayBill(
     PayBillEvt event,
     Emitter<BillPaymentState> emit,
@@ -240,6 +249,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     }
   }
 
+  /// Recalculates the transaction fee based on the selected payment method.
   void _recalculateFee(Emitter<BillPaymentState> emit) {
     if (state.amount != null) {
       double feeRate = 0.0;

@@ -137,15 +137,15 @@ class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
   Widget build(BuildContext context) {
     final filteredItems = widget.enableSearch && _query.isNotEmpty
         ? widget.items
-            .where(
-              (e) => widget.searchFilter != null
-                  ? widget.searchFilter!(e, _query)
-                  : widget
-                      .label(e)
-                      .toLowerCase()
-                      .contains(_query.toLowerCase()),
-            )
-            .toList()
+              .where(
+                (e) => widget.searchFilter != null
+                    ? widget.searchFilter!(e, _query)
+                    : widget
+                          .label(e)
+                          .toLowerCase()
+                          .contains(_query.toLowerCase()),
+              )
+              .toList()
         : widget.items;
 
     return GestureDetector(
@@ -208,31 +208,31 @@ class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
                   child: filteredItems.isEmpty
                       ? Center(child: Text(S.current.noItemsFoundTitle))
                       : widget.enableDivider
-                          ? ListView.separated(
-                              itemCount: filteredItems.length,
-                              separatorBuilder: (_, __) => Divider(
-                                height: 1,
-                                thickness: 0.5,
-                                color: Colors.grey.withAlpha(102),
-                              ),
-                              itemBuilder: (context, index) {
-                                final item = filteredItems[index];
-                                final itemValue = widget.value(item);
-                                final isSelected =
-                                    itemValue == widget.selectedValue;
-                                return _buildListTile(context, item, isSelected);
-                              },
-                            )
-                          : ListView.builder(
-                              itemCount: filteredItems.length,
-                              itemBuilder: (context, index) {
-                                final item = filteredItems[index];
-                                final itemValue = widget.value(item);
-                                final isSelected =
-                                    itemValue == widget.selectedValue;
-                                return _buildListTile(context, item, isSelected);
-                              },
-                            ),
+                      ? ListView.separated(
+                          itemCount: filteredItems.length,
+                          separatorBuilder: (_, __) => Divider(
+                            height: 1,
+                            thickness: 0.5,
+                            color: Colors.grey.withAlpha(102),
+                          ),
+                          itemBuilder: (context, index) {
+                            final item = filteredItems[index];
+                            final itemValue = widget.value(item);
+                            final isSelected =
+                                itemValue == widget.selectedValue;
+                            return _buildListTile(context, item, isSelected);
+                          },
+                        )
+                      : ListView.builder(
+                          itemCount: filteredItems.length,
+                          itemBuilder: (context, index) {
+                            final item = filteredItems[index];
+                            final itemValue = widget.value(item);
+                            final isSelected =
+                                itemValue == widget.selectedValue;
+                            return _buildListTile(context, item, isSelected);
+                          },
+                        ),
                 ),
               ],
             ),

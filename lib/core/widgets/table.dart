@@ -26,7 +26,7 @@ class BADataTable<T> extends StatelessWidget {
 
   /// The builder function to create the row content from a data item.
   final Widget Function(BuildContext context, T item, List<TableColumn> columns)
-      itemBuilder;
+  itemBuilder;
 
   /// The padding around the entire table.
   final EdgeInsets padding;
@@ -78,7 +78,8 @@ class BADataTable<T> extends StatelessWidget {
             child: Text(
               column.title,
               textAlign: column.alignment,
-              style: headerStyle ??
+              style:
+                  headerStyle ??
                   context.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: context.colorScheme.inverseSurface,
@@ -167,7 +168,8 @@ class BATableRow extends StatelessWidget {
           child: Text(
             values[index],
             textAlign: columns[index].alignment,
-            style: valueStyles?[index] ??
+            style:
+                valueStyles?[index] ??
                 context.titleMedium?.copyWith(color: context.colorScheme.scrim),
           ),
         );

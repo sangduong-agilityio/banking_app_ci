@@ -26,7 +26,7 @@ void main() {
             },
             buildWidget: () => createBillPayTestWidget(
               child: BillDetailCard(
-                bills: const BillPaymentModel(
+                bill: const BillPaymentModel(
                   userId: 'John Doe',
                   address: '123 Main St',
                   phoneNumber: '0123456789',

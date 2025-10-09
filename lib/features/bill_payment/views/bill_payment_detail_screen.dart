@@ -21,6 +21,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen that displays the details of a specific bill and allows the user to pay it.
 class BillPaymentDetailsScreen extends StatefulWidget {
   const BillPaymentDetailsScreen({super.key, required this.bill});
 
@@ -38,6 +39,18 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
   void dispose() {
     _otpController.dispose();
     super.dispose();
+  }
+
+  /// Handles the confirmation of the bill payment.
+  void _confirmPayment() {
+    final state = context.read<BillPaymentBloc>().state;
+    final billId = state.billId ?? state.selectedBill?.id;
+    context.read<BillPaymentBloc>().add(
+      ConfirmBillPaymentWithOtpEvt(
+        billId: billId ?? '',
+        otpCode: _otpController.text.trim(),
+      ),
+    );
   }
 
   @override
@@ -99,7 +112,7 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                     const SizedBox(height: 24),
 
                     /// Bill details
-                    BillDetailCard(bills: widget.bill),
+                    BillDetailCard(bill: widget.bill),
                     const SizedBox(height: 34),
 
                     /// Account or Card selector
@@ -131,16 +144,7 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                       padding: EdgeInsets.zero,
                       height: 44,
                       text: S.current.payBillButton,
-                      onPressed: () {
-                        final billId = state.billId ?? state.selectedBill?.id;
-                        // Confirm payment
-                        context.read<BillPaymentBloc>().add(
-                          ConfirmBillPaymentWithOtpEvt(
-                            billId: billId ?? '',
-                            otpCode: _otpController.text.trim(),
-                          ),
-                        );
-                      },
+                      onPressed: _confirmPayment,
                     ),
                     const SizedBox(height: 40),
                   ],
@@ -153,6 +157,7 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
     );
   }
 
+  /// Builds the OTP input section, including the 'Get OTP' button.
   Widget _buildOtpSection(BuildContext context, BillPaymentState state) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

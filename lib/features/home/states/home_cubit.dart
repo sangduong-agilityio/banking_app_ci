@@ -2,11 +2,14 @@ import 'package:banking_app/features/home/states/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/home/repositories/home_repository.dart';
 
+/// A Cubit that manages the state of the home screen.
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit({required this.repo}) : super(const HomeState());
 
+  /// The repository for fetching home screen data.
   final HomeRepository repo;
 
+  /// Initializes the home screen by fetching the user and card data.
   Future<void> homeInitialize() async {
     emit(state.copyWith(status: const HomeStatus.loading()));
     try {
@@ -30,11 +33,13 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> changeCardIndex(int index) async {
+  /// Changes the index of the currently selected card.
+  void changeCardIndex(int index) {
     emit(state.copyWith(currentCardIndex: index));
   }
 
-  Future<void> setAnimationStatus(bool value) async {
+  /// Sets the animation status for the card swiper.
+  void setAnimationStatus(bool value) {
     emit(state.copyWith(shouldPlayAnimation: value));
   }
 }

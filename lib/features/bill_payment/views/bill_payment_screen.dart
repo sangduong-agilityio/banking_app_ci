@@ -14,9 +14,11 @@ import 'package:banking_app/features/bill_payment/views/bill_payment_option_scre
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen that displays the available bill payment categories (e.g., electricity, water, internet).
 class BillPaymentScreen extends StatelessWidget {
   const BillPaymentScreen({super.key});
 
+  /// Navigates to the payment option screen for the selected bill type.
   void _navigateToOptionScreen(BuildContext context, BillType type) {
     Navigator.push(
       context,
