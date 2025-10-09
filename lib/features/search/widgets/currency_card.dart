@@ -8,14 +8,27 @@ import 'package:banking_app/features/search/states/search_state.dart';
 import 'package:banking_app/features/search/widgets/offline_rate_indicator.dart';
 import 'package:flutter/material.dart';
 
+/// A card widget for displaying currency information and input.
 class CurrencyCard extends StatelessWidget {
+  /// The label for the card (e.g., \"From\", \"To\").
   final String label;
+
+  /// The currency code (e.g., \"USD\").
   final String currency;
+
+  /// The text editing controller for the amount input field.
   final TextEditingController controller;
+
+  /// A callback function that is called when the currency is tapped.
   final VoidCallback onCurrencyTap;
+
+  /// Whether the card is in a loading state.
   final bool isLoading;
+
+  /// A callback function that is called when the amount is changed.
   final ValueChanged<String?>? onChanged;
 
+  /// Creates a [CurrencyCard] object.
   const CurrencyCard({
     super.key,
     required this.label,
@@ -52,7 +65,7 @@ class CurrencyCard extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border(
                   left: BorderSide(
-                    color: context.colorScheme.outline.withOpacity(0.5),
+                    color: context.colorScheme.outline.withAlpha(100),
                   ),
                 ),
               ),
@@ -81,15 +94,30 @@ class CurrencyCard extends StatelessWidget {
   }
 }
 
+/// A widget that displays the currency exchange interface.
 class ExchangeBox extends StatelessWidget {
+  /// The card for the \"from\" currency.
   final CurrencyCard fromCard;
+
+  /// The card for the \"to\" currency.
   final CurrencyCard toCard;
+
+  /// The button to swap the currencies.
   final Widget swapButton;
+
+  /// The current exchange rate.
   final String? exchangeRate;
+
+  /// Whether the exchange button is enabled.
   final bool isButtonEnabled;
+
+  /// The status of the exchange rate (fresh, stale, or no data).
   final ExchangeRateStatus? rateStatus;
+
+  /// The timestamp when the exchange rate was last updated.
   final DateTime? lastRateUpdate;
 
+  /// Creates an [ExchangeBox] object.
   const ExchangeBox({
     super.key,
     required this.fromCard,
@@ -170,6 +198,7 @@ class ExchangeBox extends StatelessWidget {
     );
   }
 
+  /// Shows a dialog to confirm the use of an offline exchange rate.
   Future<void> _showOfflineExchangeDialog(BuildContext context) async {
     return showDialog(
       context: context,
@@ -187,6 +216,7 @@ class ExchangeBox extends StatelessWidget {
     );
   }
 
+  /// Performs the exchange and shows a snackbar with the result.
   void _performExchange(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

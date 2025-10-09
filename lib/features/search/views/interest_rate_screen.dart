@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen that displays a list of interest rates.
+///
+/// This screen fetches and displays a list of interest rates in a table format.
 class InterestRateScreen extends StatelessWidget {
   const InterestRateScreen({super.key});
 
@@ -45,6 +48,7 @@ class InterestRateScreen extends StatelessWidget {
             builder: (context, state) {
               final interestRates = state.interestRates;
 
+              // Display the interest rates in a data table.
               return BADataTable(
                 columns: [
                   TableColumn(

@@ -15,34 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class ExchangeRateScreen extends StatefulWidget {
+class ExchangeRateScreen extends StatelessWidget {
   const ExchangeRateScreen({super.key});
-
-  @override
-  State<ExchangeRateScreen> createState() => _ExchangeRateScreenState();
-}
-
-class _ExchangeRateScreenState extends State<ExchangeRateScreen> {
-  Timer? _refreshTimer;
-
-  @override
-  void initState() {
-    super.initState();
-    // Auto refresh every 5 minutes
-    _refreshTimer = Timer.periodic(const Duration(minutes: 5), (_) {
-      if (mounted) {
-        context.read<SearchBloc>().add(
-          const ExchangeRateRefreshEvt(forceRefresh: true),
-        );
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _refreshTimer?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
