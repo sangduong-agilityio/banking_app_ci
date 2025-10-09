@@ -5,10 +5,16 @@ import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/security/error_sanitizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:banking_app/core/utils/pref_keys.dart';
 
+/// Bloc for handling authentication events and states.
 class AuthBloc extends Bloc<AuthEvt, AuthState> {
-  AuthBloc({required this.repo, required this.biometricService})
-    : super(const AuthState()) {
+  AuthBloc({
+    required this.repo,
+    required this.biometricService,
+    required this.prefs,
+  }) : super(const AuthState()) {
     on<SignInFormValidateChangedEvt>(_onSignInFormValidateChanged);
     on<SignInButtonPressedEvt>(_onSignInPressed);
     on<SignInWithBiometricEvt>(_onSignInWithBiometric);
@@ -20,12 +26,13 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
 
   final AuthRepository repo;
   final BiometricService biometricService;
+  final SharedPreferences prefs;
 
   /// Handles changes in the sign-in form validation state.
-  Future<void> _onSignInFormValidateChanged(
+  void _onSignInFormValidateChanged(
     SignInFormValidateChangedEvt event,
     Emitter<AuthState> emit,
-  ) async {
+  ) {
     emit(
       state.copyWith(
         isFormValid: event.isValidate,
@@ -36,6 +43,10 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
   }
 
   /// Handles the sign-in button press event.
+  ///
+  /// This method attempts to sign in the user with the provided email and password.
+  /// If successful, it saves the session token and emits a success state.
+  /// If it fails, it logs the error and emits a failure state with a sanitized error message.
   Future<void> _onSignInPressed(
     SignInButtonPressedEvt event,
     Emitter<AuthState> emit,
@@ -48,6 +59,10 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
       );
 
       if (response.user != null && response.session != null) {
+        await prefs.setString(
+          PrefKeys.sessionToken,
+          response.session?.accessToken ?? '',
+        );
         emit(
           state.copyWith(
             status: const AuthStatus.success(),
@@ -87,6 +102,10 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
   }
 
   /// Handles biometric sign-in.
+  ///
+  /// This method attempts to sign in the user with biometrics.
+  /// If successful, it saves the session token and emits a success state.
+  /// If it fails, it logs the error and emits a failure state with a sanitized error message.
   Future<void> _onSignInWithBiometric(
     SignInWithBiometricEvt event,
     Emitter<AuthState> emit,
@@ -117,6 +136,10 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
 
       final response = await repo.setSession(token);
       if (response.user != null && response.session != null) {
+        await prefs.setString(
+          PrefKeys.sessionToken,
+          response.session?.accessToken ?? '',
+        );
         emit(
           state.copyWith(
             status: const AuthStatus.success(),
@@ -196,7 +219,11 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     }
   }
 
-  /// Handles changes in the sign-up form validation state.
+  /// Handles the sign-up button press event.
+  ///
+  /// This method attempts to sign up the user with the provided email, password, and username.
+  /// If successful, it emits a success state.
+  /// If it fails, it logs the error and emits a failure state with a sanitized error message.
   Future<void> _onSignUpPressed(
     SignUpButtonPressedEvt event,
     Emitter<AuthState> emit,
@@ -216,7 +243,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
               : const AuthStatus.failure(),
           errorMessage: response.user != null
               ? ''
-              : S.current.authErrorLoginFailed,
+              : S.current.authErrorSignupFailed,
         ),
       );
     } catch (e, stackTrace) {
@@ -245,18 +272,18 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
   }
 
   /// Handles changes in the terms acceptance state during sign-up.
-  Future<void> _onSignUpTermsChanged(
+  void _onSignUpTermsChanged(
     SignUpTermsChangedEvt event,
     Emitter<AuthState> emit,
-  ) async {
+  ) {
     emit(state.copyWith(isTermsAccepted: event.isAccepted));
   }
 
   /// Handles changes in the sign-up form validation state.
-  Future<void> _onSignUpFormValidateChanged(
+  void _onSignUpFormValidateChanged(
     SignUpFormValidateChangedEvt event,
     Emitter<AuthState> emit,
-  ) async {
+  ) {
     emit(
       state.copyWith(
         isFormValid: event.isValidate,

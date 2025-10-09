@@ -17,6 +17,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen for user sign-up.
+///
+/// This screen provides a form for new users to create an account.
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -90,6 +93,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 }
 
+/// The main body of the sign-up screen.
+///
+/// This widget contains the sign-up form and the link to the sign-in screen.
 class SignUpBody extends StatelessWidget {
   const SignUpBody({
     required this.usernameController,
@@ -98,6 +104,7 @@ class SignUpBody extends StatelessWidget {
     required this.isFormValid,
     super.key,
   });
+
   final TextEditingController usernameController;
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -119,30 +126,7 @@ class SignUpBody extends StatelessWidget {
           child: AuthForm(
             title: S.current.signUpWelcomeTitle,
             description: S.current.signUpDescription,
-            textFields: [
-              BATextField(
-                controller: usernameController,
-                hint: S.current.validatorNameRequired,
-                validator: (value) => SecureInputValidator.validateSecureInput(
-                  value,
-                  fieldName: S.current.validatorNameRequired,
-                  minLength: 2,
-                  maxLength: 50,
-                  allowSpecialChars: false,
-                ),
-              ),
-              BATextField(
-                controller: emailController,
-                hint: S.current.signInEmailHint,
-                validator: SecureInputValidator.validateEmail,
-              ),
-              BATextField(
-                controller: passwordController,
-                hint: S.current.signInPassowrdHint,
-                isPassword: true,
-                validator: SecureInputValidator.validatePassword,
-              ),
-            ],
+            textFields: _buildTextFields(),
             onValidate: (isValid) {
               context.read<AuthBloc>().add(
                 SignUpFormValidateChangedEvt(
@@ -169,25 +153,57 @@ class SignUpBody extends StatelessWidget {
                 SignUpTermsChangedEvt(isAccepted: value ?? false),
               );
             },
-            footer: RichText(
-              text: TextSpan(
-                text: S.current.signUpAlreadyAcccount,
-                style: context.bodySmall,
-                children: [
-                  TextSpan(
-                    text: S.current.signInTitle,
-                    style: context.bodySmall?.copyWith(
-                      color: context.colorScheme.secondary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () => context.pop(),
-                  ),
-                ],
-              ),
-            ),
+            footer: _buildFooter(context),
           ),
         ),
+      ),
+    );
+  }
+
+  /// Builds the text fields for the sign-up form.
+  List<Widget> _buildTextFields() {
+    return [
+      BATextField(
+        controller: usernameController,
+        hint: S.current.validatorNameRequired,
+        validator: (value) => SecureInputValidator.validateSecureInput(
+          value,
+          fieldName: S.current.validatorNameRequired,
+          minLength: 2,
+          maxLength: 50,
+          allowSpecialChars: false,
+        ),
+      ),
+      BATextField(
+        controller: emailController,
+        hint: S.current.signInEmailHint,
+        validator: SecureInputValidator.validateEmail,
+      ),
+      BATextField(
+        controller: passwordController,
+        hint: S.current.signInPassowrdHint,
+        isPassword: true,
+        validator: SecureInputValidator.validatePassword,
+      ),
+    ];
+  }
+
+  /// Builds the footer of the sign-up form, including the link to the sign-in screen.
+  Widget _buildFooter(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        text: S.current.signUpAlreadyAcccount,
+        style: context.bodySmall,
+        children: [
+          TextSpan(
+            text: S.current.signInTitle,
+            style: context.bodySmall?.copyWith(
+              color: context.colorScheme.secondary,
+              fontWeight: FontWeight.w600,
+            ),
+            recognizer: TapGestureRecognizer()..onTap = () => context.pop(),
+          ),
+        ],
       ),
     );
   }

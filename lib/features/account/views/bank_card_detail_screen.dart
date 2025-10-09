@@ -8,10 +8,14 @@ import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:flutter/material.dart';
 
+/// A screen that displays the details of a bank card.
+///
+/// This screen shows the cardholder's name, card number, valid dates, and
+/// available balance. It also provides an option to delete the card.
 class BankCardDetailScreen extends StatelessWidget {
-  const BankCardDetailScreen({super.key, required this.cards});
+  const BankCardDetailScreen({super.key, required this.card});
 
-  final CardModel cards;
+  final CardModel card;
 
   @override
   Widget build(BuildContext context) {
@@ -31,31 +35,30 @@ class BankCardDetailScreen extends StatelessWidget {
             _bankCardInformation(
               context,
               S.current.accountNameTitle,
-              cards.cardHolderName,
+              card.cardHolderName,
             ),
             _bankCardInformation(
               context,
               S.current.accountCardNumberTitle,
-              FormatterUtils.maskCardNumber(cards.cardNumber),
+              FormatterUtils.maskCardNumber(card.cardNumber),
             ),
             _bankCardInformation(
               context,
               S.current.accountValidFromTitle,
-              cards.validFrom ?? '',
+              card.validFrom ?? '',
             ),
             _bankCardInformation(
               context,
               S.current.accountGoodThruTitle,
-              cards.goodThru ?? '',
+              card.goodThru ?? '',
             ),
             _bankCardInformation(
               context,
               S.current.accountAvailableBalanceTitle,
-              FormatterUtils.formatBalance(cards.availableBalance ?? 0),
+              FormatterUtils.formatBalance(card.availableBalance ?? 0),
             ),
 
             const Spacer(),
-            // Delete Card Button
             SizedBox(
               width: double.infinity,
               child: TextButton(
@@ -80,6 +83,7 @@ class BankCardDetailScreen extends StatelessWidget {
     );
   }
 
+  /// A helper widget to display a label and a value in a row.
   Widget _bankCardInformation(
     BuildContext context,
     String label,
@@ -113,6 +117,7 @@ class BankCardDetailScreen extends StatelessWidget {
     );
   }
 
+  /// Shows a dialog to confirm the deletion of the card.
   void _showDeleteCard(BuildContext context) {
     showDialog(
       context: context,

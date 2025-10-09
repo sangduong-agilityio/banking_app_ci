@@ -1804,6 +1804,16 @@ class S {
     );
   }
 
+  /// `Signup failed. Please verify your information and try again.`
+  String get authErrorSignupFailed {
+    return Intl.message(
+      'Signup failed. Please verify your information and try again.',
+      name: 'authErrorSignupFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Biometric authentication is not enabled.`
   String get authErrorBiometricNotEnabled {
     return Intl.message(

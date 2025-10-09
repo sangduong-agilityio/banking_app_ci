@@ -2,18 +2,15 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/formatters.dart';
-import 'package:banking_app/core/widgets/assets.dart';
-import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';
 import 'package:banking_app/features/transfer/views/transfer_success_screen.dart';
+import 'package:banking_app/features/transfer/widgets/otp_section.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
@@ -25,14 +22,6 @@ class ConfirmTransferScreen extends StatefulWidget {
 }
 
 class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
-  final _otpController = TextEditingController();
-
-  @override
-  void dispose() {
-    _otpController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return LoaderOverlay(
@@ -63,7 +52,6 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
               },
               awaitingBiometric: (_) {
                 context.loaderOverlay.hide();
-                _otpController.clear();
               },
               success: (_) {
                 context.loaderOverlay.hide();
@@ -101,44 +89,8 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
                   const SizedBox(height: 24),
 
                   /// OTP or Biometric Authentication Section
-                  _buildOtpSection(context, state),
+                  const OtpSection(),
 
-                  const SizedBox(height: 24),
-
-                  /// Confirm Button
-                  BAElevatedButton(
-                    padding: EdgeInsets.zero,
-                    text: S.current.transferConfirmButton,
-                    onPressed: () {
-                      final txId = state.transferId ?? '';
-
-                      // Handle biometric authentication (Touch ID/Face ID)
-                      if (state.status is TransferStatusAwaitingBiometric &&
-                          state.canUseBiometrics) {
-                        context.read<TransferBloc>().add(
-                          const ConfirmWithBiometricEvt(),
-                        );
-                        return;
-                      }
-
-                      // Handle OTP verification
-                      final otp = _otpController.text.trim();
-                      if (otp.isEmpty) {
-                        BASnackBar.buildErrorSnackbar(
-                          context,
-                          S.current.transferEnterOtpCodeTitle,
-                        );
-                        return;
-                      }
-
-                      context.read<TransferBloc>().add(
-                        ConfirmTransferWithOtpEvt(
-                          otpCode: otp,
-                          transferId: txId,
-                        ),
-                      );
-                    },
-                  ),
                   const SizedBox(height: 40),
                 ],
               ),
@@ -146,66 +98,6 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
           },
         ),
       ),
-    );
-  }
-
-  Widget _buildOtpSection(BuildContext context, TransferState state) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          S.current.transferGetOtpTransactionTitle,
-          style: context.bodySmall?.copyWith(fontWeight: FontWeight.w600),
-        ),
-        const SizedBox(height: 8),
-
-        if (state.status is TransferStatusAwaitingBiometric &&
-            state.canUseBiometrics)
-          Center(
-            child: GestureDetector(
-              onTap: () {
-                context.read<TransferBloc>().add(
-                  const ConfirmWithBiometricEvt(),
-                );
-              },
-              child: BAAssets.fingerprint(),
-            ),
-          )
-        else
-          Row(
-            children: [
-              Expanded(
-                flex: 3,
-                child: BATextField(
-                  controller: _otpController,
-                  hint: S.current.transferOtpLabel,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(6),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 5),
-              Expanded(
-                flex: 2,
-                child: BAElevatedButton(
-                  padding: const EdgeInsets.only(left: 15),
-                  text: state.otpSent
-                      ? S.current.transferResendButton
-                      : S.current.transferGetOtpButton,
-                  onPressed: () {
-                    final transactionId = state.transferId;
-                    context.read<TransferBloc>().add(
-                      SendOtpEvt(transferId: transactionId ?? ''),
-                    );
-                  },
-                  height: 48,
-                ),
-              ),
-            ],
-          ),
-      ],
     );
   }
 }
@@ -225,19 +117,15 @@ class ConfirmTransactionDetail extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // From Account
+        // From Account/Card
         BATextField(
           name: S.current.transferFormLabel,
           label: S.current.transferFormLabel,
-          controller: TextEditingController(
-            text: FormatterUtils.maskCardNumber(
-              state.selectedAccount?.accountNumber ?? '',
-            ),
-          ),
+          controller: TextEditingController(text: _getFromSourceNumber()),
           readOnly: true,
         ),
-        sizeBox,
 
+        sizeBox,
         // To Beneficiary
         BATextField(
           name: S.current.transferToLabel,
@@ -305,5 +193,17 @@ class ConfirmTransactionDetail extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  /// Gets the masked number of the selected account or card.
+  String _getFromSourceNumber() {
+    if (state.selectedAccount != null) {
+      return FormatterUtils.maskCardNumber(
+        state.selectedAccount!.accountNumber,
+      );
+    } else if (state.selectedCard != null) {
+      return FormatterUtils.maskCardNumber(state.selectedCard!.cardNumber);
+    }
+    return '';
   }
 }

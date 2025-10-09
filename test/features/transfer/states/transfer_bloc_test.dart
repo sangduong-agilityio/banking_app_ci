@@ -64,7 +64,7 @@ void main() {
                 () => transferRepo.fetchBanks(),
               ).thenAnswer((_) async => MockTransferData.mockBanks);
               when(
-                () => transferRepo.fetchBranchs(),
+                () => transferRepo.fetchBranches(),
               ).thenAnswer((_) async => MockTransferData.mockBranches);
               when(
                 () => transferRepo.fetchAccounts(),
@@ -90,7 +90,7 @@ void main() {
                 branches: MockTransferData.mockBranches,
                 accounts: MockTransferData.mockAccounts,
                 cards: MockTransferData.mockCards,
-                beneficiariesFiltered: MockTransferData.mockBeneficiaries,
+                filteredBeneficiaries: MockTransferData.mockBeneficiaries,
                 biometricAvailable: true,
                 biometricEnabled: true,
               ),
@@ -111,7 +111,7 @@ void main() {
                 () => transferRepo.fetchBanks(),
               ).thenAnswer((_) async => MockTransferData.mockBanks);
               when(
-                () => transferRepo.fetchBranchs(),
+                () => transferRepo.fetchBranches(),
               ).thenAnswer((_) async => MockTransferData.mockBranches);
               when(
                 () => transferRepo.fetchAccounts(),
@@ -137,7 +137,7 @@ void main() {
                 branches: MockTransferData.mockBranches,
                 accounts: MockTransferData.mockAccounts,
                 cards: MockTransferData.mockCards,
-                beneficiariesFiltered: MockTransferData.mockBeneficiaries,
+                filteredBeneficiaries: MockTransferData.mockBeneficiaries,
                 biometricAvailable: false,
                 biometricEnabled: false,
               ),
@@ -168,7 +168,7 @@ void main() {
               TransferState(
                 beneficiaries: MockTransferData.mockBeneficiaries,
                 banks: MockTransferData.mockBanks,
-                beneficiariesFiltered: MockTransferData.mockBeneficiaries,
+                filteredBeneficiaries: MockTransferData.mockBeneficiaries,
               ),
             ],
           ),
@@ -352,7 +352,7 @@ void main() {
             build: () => transferBloc,
             seed: () => TransferState(
               beneficiaries: MockTransferData.mockBeneficiaries,
-              beneficiariesFiltered: MockTransferData.mockBeneficiaries,
+              filteredBeneficiaries: MockTransferData.mockBeneficiaries,
               selectedBank: MockTransferData.mockBank1,
               selectedBranch: MockTransferData.mockBranch1,
             ),
@@ -360,9 +360,12 @@ void main() {
             expect: () => [
               TransferState(
                 beneficiaries: MockTransferData.mockBeneficiaries,
-                beneficiariesFiltered: MockTransferData.mockBeneficiaries,
+                filteredBeneficiaries: MockTransferData.mockBeneficiaries,
                 selectedBank: MockTransferData.mockBank2,
                 selectedBranch: null,
+                sameBankBeneficiaries: const [],
+                otherBankBeneficiaries: const [],
+                viaCardBeneficiaries: const [],
               ),
             ],
           ),
@@ -498,7 +501,7 @@ void main() {
               TransferState(
                 beneficiaries: MockTransferData.mockBeneficiaries,
                 searchQuery: 'Jane',
-                beneficiariesFiltered: [MockTransferData.mockBeneficiary2],
+                filteredBeneficiaries: [MockTransferData.mockBeneficiary2],
               ),
             ],
           ),
@@ -518,7 +521,7 @@ void main() {
               TransferState(
                 beneficiaries: MockTransferData.mockBeneficiaries,
                 searchQuery: '9876543210',
-                beneficiariesFiltered: [MockTransferData.mockBeneficiary1],
+                filteredBeneficiaries: [MockTransferData.mockBeneficiary1],
               ),
             ],
           ),
@@ -533,14 +536,14 @@ void main() {
             seed: () => TransferState(
               beneficiaries: MockTransferData.mockBeneficiaries,
               searchQuery: 'Previous',
-              beneficiariesFiltered: [MockTransferData.mockBeneficiary1],
+              filteredBeneficiaries: [MockTransferData.mockBeneficiary1],
             ),
             act: (bloc) => bloc.add(SearchBeneficiaryEvt('')),
             expect: () => [
               TransferState(
                 beneficiaries: MockTransferData.mockBeneficiaries,
                 searchQuery: '',
-                beneficiariesFiltered: MockTransferData.mockBeneficiaries,
+                filteredBeneficiaries: MockTransferData.mockBeneficiaries,
               ),
             ],
           ),
@@ -639,6 +642,7 @@ void main() {
               const TransferState(
                 status: TransferStatus.failure(),
                 errorMessage: 'Failed to add beneficiary',
+                otpSent: false,
               ),
             ],
           ),
@@ -733,6 +737,7 @@ void main() {
                 selectedAccount: MockTransferData.mockAccount1,
                 selectedBeneficiary: MockTransferData.mockBeneficiary1,
                 amount: 500.0,
+                otpSent: false,
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/states/transfer_event.dart';
 import 'package:banking_app/features/transfer/states/transfer_state.dart';
@@ -40,6 +41,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -59,6 +61,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -73,6 +76,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -99,6 +103,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -125,6 +130,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -140,6 +146,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -174,6 +181,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -200,6 +208,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -225,6 +234,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -255,7 +265,10 @@ void main() {
               return createTestWidget(
                 child: BlocProvider<TransferBloc>.value(
                   value: mockBloc,
-                  child: BeneficiarySelection(state: state),
+                  child: BeneficiarySelection(
+                    onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
+                    state: state,
+                  ),
                 ),
               );
             },
@@ -279,6 +292,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -315,6 +329,7 @@ void main() {
               child: BlocProvider<TransferBloc>.value(
                 value: mockBloc,
                 child: BeneficiarySelection(
+                  onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
                   state: createInitialTransferState(),
                 ),
               ),
@@ -353,7 +368,10 @@ void main() {
               return createTestWidget(
                 child: BlocProvider<TransferBloc>.value(
                   value: mockBloc,
-                  child: BeneficiarySelection(state: state),
+                  child: BeneficiarySelection(
+                    onBeneficiarySelected: (BeneficiaryModel beneficiary) {},
+                    state: state,
+                  ),
                 ),
               );
             },

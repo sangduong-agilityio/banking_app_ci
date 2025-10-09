@@ -8,15 +8,8 @@ import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that allows the user to select either a bank account or a bank card.
 class AccountOrCardSelector extends StatefulWidget {
-  final List<AccountModel> accounts;
-  final List<CardModel> cards;
-
-  final AccountModel? selectedAccount;
-  final CardModel? selectedCard;
-
-  final void Function(AccountModel? account, CardModel? card) onSelected;
-
   const AccountOrCardSelector({
     super.key,
     required this.accounts,
@@ -25,6 +18,12 @@ class AccountOrCardSelector extends StatefulWidget {
     this.selectedCard,
     required this.onSelected,
   });
+
+  final List<AccountModel> accounts;
+  final List<CardModel> cards;
+  final AccountModel? selectedAccount;
+  final CardModel? selectedCard;
+  final void Function(AccountModel? account, CardModel? card) onSelected;
 
   @override
   State<AccountOrCardSelector> createState() => _AccountOrCardSelectorState();
@@ -36,23 +35,14 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(
-      text: widget.selectedAccount?.accountNumber != null
-          ? FormatterUtils.maskCardNumber(widget.selectedAccount!.accountNumber)
-          : widget.selectedCard?.cardNumber != null
-          ? FormatterUtils.maskCardNumber(widget.selectedCard!.cardNumber)
-          : '',
-    );
+    _controller = TextEditingController();
+    _updateControllerText();
   }
 
   @override
   void didUpdateWidget(covariant AccountOrCardSelector oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _controller.text = widget.selectedAccount?.accountNumber != null
-        ? FormatterUtils.maskCardNumber(widget.selectedAccount!.accountNumber)
-        : widget.selectedCard?.cardNumber != null
-        ? FormatterUtils.maskCardNumber(widget.selectedCard!.cardNumber)
-        : '';
+    _updateControllerText();
   }
 
   @override
@@ -61,11 +51,17 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
     super.dispose();
   }
 
+  /// Updates the text of the controller with the selected account or card number.
+  void _updateControllerText() {
+    _controller.text = widget.selectedAccount?.accountNumber != null
+        ? FormatterUtils.maskCardNumber(widget.selectedAccount!.accountNumber)
+        : widget.selectedCard?.cardNumber != null
+        ? FormatterUtils.maskCardNumber(widget.selectedCard!.cardNumber)
+        : '';
+  }
+
   @override
   Widget build(BuildContext context) {
-    final account = widget.selectedAccount;
-    final card = widget.selectedCard;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -83,36 +79,36 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
           ),
         ),
         const SizedBox(height: 4),
-        if (account != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 14, top: 4),
-            child: Text(
-              S.current.transferAvailableBalanceTitle(
-                FormatterUtils.formatBalance(account.availableBalance),
-              ),
-              style: context.bodySmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: context.colorScheme.secondary,
-              ),
-            ),
-          )
-        else if (card != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 14, top: 4),
-            child: Text(
-              S.current.transferAvailableBalanceTitle(
-                FormatterUtils.formatBalance(card.availableBalance ?? 0),
-              ),
-              style: context.bodySmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: context.colorScheme.secondary,
-              ),
-            ),
-          ),
+        _buildAvailableBalance(context),
       ],
     );
   }
 
+  /// Builds the widget that displays the available balance of the selected account or card.
+  Widget _buildAvailableBalance(BuildContext context) {
+    final balance =
+        widget.selectedAccount?.availableBalance ??
+        widget.selectedCard?.availableBalance;
+
+    if (balance == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 14, top: 4),
+      child: Text(
+        S.current.transferAvailableBalanceTitle(
+          FormatterUtils.formatBalance(balance),
+        ),
+        style: context.bodySmall?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: context.colorScheme.secondary,
+        ),
+      ),
+    );
+  }
+
+  /// Shows a dialog for selecting an account or a card.
   void _showSelectorDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -134,6 +130,7 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
     );
   }
 
+  /// Returns the value of the selected item for the selector dialog.
   String? _getSelectedValue() {
     if (widget.selectedAccount != null) {
       return 'account_${widget.selectedAccount!.accountNumber}';
@@ -143,21 +140,23 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
     return null;
   }
 
+  /// Returns the value of an item for the selector dialog.
   String _getItemValue(dynamic item) {
-    if (item is AccountModel) {
-      return 'account_${item.accountNumber}';
-    } else if (item is CardModel) {
-      return 'card_${item.cardNumber}';
-    }
-    return '';
+    return switch (item) {
+      AccountModel() => 'account_${item.accountNumber}',
+      CardModel() => 'card_${item.cardNumber}',
+      _ => '',
+    };
   }
 
+  /// Returns the label of an item for the selector dialog.
   String _getItemLabel(dynamic item) {
-    if (item is AccountModel) {
-      return "${item.accountType} - ${FormatterUtils.maskCardNumber(item.accountNumber)}";
-    } else if (item is CardModel) {
-      return "${item.cardType?.displayName ?? ''} - ${FormatterUtils.maskCardNumber(item.cardNumber)}";
-    }
-    return '';
+    return switch (item) {
+      AccountModel() =>
+        "${item.accountType} - ${FormatterUtils.maskCardNumber(item.accountNumber)}",
+      CardModel() =>
+        "${item.cardType?.displayName ?? ''} - ${FormatterUtils.maskCardNumber(item.cardNumber)}",
+      _ => '',
+    };
   }
 }

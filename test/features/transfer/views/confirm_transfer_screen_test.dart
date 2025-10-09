@@ -51,6 +51,9 @@ void main() {
                 child: const ConfirmTransferScreen(),
               );
             },
+            interactions: [
+              BAWaitInteraction(duration: const Duration(milliseconds: 300)),
+            ],
             verifications: [
               BAFindsWidgetVerification(finder: find.byType(AppBar)),
             ],
@@ -72,6 +75,9 @@ void main() {
                 child: const ConfirmTransferScreen(),
               );
             },
+            interactions: [
+              BAWaitInteraction(duration: const Duration(milliseconds: 300)),
+            ],
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
@@ -97,6 +103,9 @@ void main() {
                 child: const ConfirmTransferScreen(),
               );
             },
+            interactions: [
+              BAWaitInteraction(duration: const Duration(milliseconds: 300)),
+            ],
             verifications: [
               BAFindsWidgetVerification(
                 finder: find.byType(BAElevatedButton),
@@ -124,6 +133,9 @@ void main() {
                 child: const ConfirmTransferScreen(),
               );
             },
+            interactions: [
+              BAWaitInteraction(duration: const Duration(milliseconds: 300)),
+            ],
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
@@ -149,6 +161,9 @@ void main() {
                 child: const ConfirmTransferScreen(),
               );
             },
+            interactions: [
+              BAWaitInteraction(duration: const Duration(milliseconds: 300)),
+            ],
             verifications: [
               BACustomVerification(
                 verification: (tester) async {
@@ -596,9 +611,10 @@ void main() {
                   );
 
                   // Scroll to OTP field
+                  final scrollable = find.byType(SingleChildScrollView).first;
                   await tester.dragUntilVisible(
                     otpField,
-                    find.byType(SingleChildScrollView),
+                    scrollable,
                     const Offset(0, -100),
                   );
                   await tester.pumpAndSettle();

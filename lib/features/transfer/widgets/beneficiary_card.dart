@@ -1,13 +1,8 @@
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
+/// A card widget for displaying a beneficiary.
 class BeneficiaryCard extends StatelessWidget {
-  final double width;
-  final double height;
-  final bool isSelected;
-  final VoidCallback onTap;
-  final Widget child;
-
   const BeneficiaryCard({
     super.key,
     this.width = 100,
@@ -16,6 +11,12 @@ class BeneficiaryCard extends StatelessWidget {
     required this.onTap,
     required this.child,
   });
+
+  final double width;
+  final double height;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

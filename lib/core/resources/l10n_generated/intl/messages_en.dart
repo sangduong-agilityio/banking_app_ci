@@ -100,6 +100,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorNoSavedCredentials": MessageLookupByLibrary.simpleMessage(
       "No saved credentials found for biometric login.",
     ),
+    "authErrorSignupFailed": MessageLookupByLibrary.simpleMessage(
+      "Signup failed. Please verify your information and try again.",
+    ),
     "authErrorTooManyAttempts": MessageLookupByLibrary.simpleMessage(
       "Too many failed attempts. Please try again in 15 minutes.",
     ),

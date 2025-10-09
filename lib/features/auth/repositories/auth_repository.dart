@@ -30,15 +30,19 @@ abstract class AuthRepository {
   Future<void> logout();
 }
 
-/// Concrete implementation of AuthRepository using Supabase.
+/// Concrete implementation of [AuthRepository] using Supabase.
 class AuthRepositoryImplement implements AuthRepository {
   final SupabaseClient _client;
 
-  /// Constructor takes a SupabaseClient instance from outside (dependency injection).
+  /// Creates an [AuthRepositoryImplement] object.
+  ///
+  /// The [client] is the Supabase client used to make authentication requests.
   AuthRepositoryImplement({required SupabaseClient client}) : _client = client;
 
-  /// Sign up a new user with Supabase.
-  /// Stores additional metadata like username in `data`.
+  /// Signs up a new user with Supabase.
+  ///
+  /// This method implements the [signUp] method from the [AuthRepository] class.
+  /// It stores additional metadata like username in the `data` field.
   @override
   Future<AuthResponse> signUp({
     required String email,
@@ -52,7 +56,9 @@ class AuthRepositoryImplement implements AuthRepository {
     );
   }
 
-  /// Sign in using email and password.
+  /// Signs in an existing user with Supabase.
+  ///
+  /// This method implements the [signIn] method from the [AuthRepository] class.
   @override
   Future<AuthResponse> signIn({
     required String email,
@@ -64,24 +70,32 @@ class AuthRepositoryImplement implements AuthRepository {
     );
   }
 
-  /// Refresh the session and return a new AuthResponse.
+  /// Refreshes the current session to get a new access token.
+  ///
+  /// This method implements the [refreshSession] method from the [AuthRepository] class.
   @override
   Future<AuthResponse> refreshSession() async {
     return await _client.auth.refreshSession();
   }
 
-  /// Set the session manually using a refresh token.
-  /// Useful for restoring user session after app restart.
+  /// Sets the session using a refresh token.
+  ///
+  /// This method implements the [setSession] method from the [AuthRepository] class.
+  /// It is typically used when restoring the session on app startup.
   @override
   Future<AuthResponse> setSession(String refreshToken) async {
     return await _client.auth.setSession(refreshToken);
   }
 
-  /// Return the current logged-in user, if any.
+  /// Gets the current user if logged in.
+  ///
+  /// This method implements the [getCurrentUser] method from the [AuthRepository] class.
   @override
   User? getCurrentUser() => _client.auth.currentUser;
 
-  /// Sign out the current user.
+  /// Logs out the current user.
+  ///
+  /// This method implements the [logout] method from the [AuthRepository] class.
   @override
   Future<void> logout() async {
     await _client.auth.signOut();

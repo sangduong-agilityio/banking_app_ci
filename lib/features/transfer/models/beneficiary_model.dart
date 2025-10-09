@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'beneficiary_model.freezed.dart';
 part 'beneficiary_model.g.dart';
 
+/// Represents a beneficiary for a transfer.
 @freezed
 class BeneficiaryModel with _$BeneficiaryModel {
   const factory BeneficiaryModel({

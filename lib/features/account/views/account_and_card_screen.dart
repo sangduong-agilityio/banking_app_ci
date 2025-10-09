@@ -16,7 +16,12 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// A screen that displays the user's accounts and bank cards.
+///
+/// This screen has two tabs: one for accounts and one for bank cards.
+/// It uses a [AccountAndCardCubit] to manage the state.
 class AccountAndCardScreen extends StatefulWidget {
+  /// Creates an [AccountAndCardScreen] object.
   const AccountAndCardScreen({super.key});
 
   @override
@@ -31,6 +36,8 @@ class _AccountAndCardScreenState extends State<AccountAndCardScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    // The listener is used to rebuild the widget when the tab changes.
+    // This is to ensure that the correct tab is highlighted.
     _tabController.addListener(() {
       setState(() {});
     });
@@ -55,16 +62,16 @@ class _AccountAndCardScreenState extends State<AccountAndCardScreen>
         ),
         body: Column(
           children: [
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             BATabBar(
               controller: _tabController,
               tabs: [S.current.accountTitle, S.current.accountCardTitle],
-              containerPadding: EdgeInsets.symmetric(horizontal: 24),
+              containerPadding: const EdgeInsets.symmetric(horizontal: 24),
             ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: [AccountListSection(), BankCardListSection()],
+                children: const [AccountListSection(), BankCardListSection()],
               ),
             ),
           ],
@@ -74,13 +81,15 @@ class _AccountAndCardScreenState extends State<AccountAndCardScreen>
   }
 }
 
-/// Bank Card List Section
+/// A widget that displays a list of bank cards.
 class BankCardListSection extends StatelessWidget {
+  /// Creates a [BankCardListSection] object.
   const BankCardListSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountAndCardCubit, AccountAndCardState>(
+      // Rebuild the widget only when the list of cards changes.
       buildWhen: (previous, current) => previous.cards != current.cards,
       builder: (context, state) {
         final cards = state.cards;
@@ -99,14 +108,13 @@ class BankCardListSection extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 16),
                     child: GestureDetector(
                       onTap: () {
+                        // Navigate to the bank card detail screen with the selected card.
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (_) => BlocProvider.value(
                               value: context.read<AccountAndCardCubit>(),
-                              child: BankCardDetailScreen(
-                                cards: state.cards[0],
-                              ),
+                              child: BankCardDetailScreen(card: card),
                             ),
                           ),
                         );
@@ -128,28 +136,31 @@ class BankCardListSection extends StatelessWidget {
   }
 }
 
-/// Account List Section
+/// A widget that displays a list of bank accounts.
 class AccountListSection extends StatelessWidget {
+  /// Creates an [AccountListSection] object.
   const AccountListSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountAndCardCubit, AccountAndCardState>(
+      // Rebuild the widget only when the user or the list of accounts changes.
       buildWhen: (previous, current) =>
           previous.user != current.user ||
           previous.accounts != current.accounts,
       builder: (context, state) {
+        // Show a skeleton loading indicator while the data is being fetched.
         if (state.status is AccountAndCardStatusLoading) {
           return const AccountListSkeleton();
         }
         return Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 32),
               child: Column(
                 children: [
                   BAProfileImage(url: state.user?.profileImage, size: 100),
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
                   Text(
                     state.user?.username ?? '',
                     style: context.titleMedium?.copyWith(
@@ -157,33 +168,33 @@ class AccountListSection extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 32),
-                  GestureDetector(
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: state.accounts.length,
+                itemBuilder: (context, index) {
+                  final account = state.accounts[index];
+                  return GestureDetector(
                     onTap: () {
+                      // Navigate to the account management screen with the selected account.
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: context.read<AccountAndCardCubit>(),
-                            child: AccountManagementScreen(
-                              account: state.accounts[0],
-                            ),
+                            child: AccountManagementScreen(account: account),
                           ),
                         ),
                       );
                     },
-                    child: SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                        itemCount: state.accounts.length,
-                        itemBuilder: (context, index) => AccountCard(
-                          account: state.accounts[index],
-                          mode: AccountCardMode.overview,
-                        ),
-                      ),
+                    child: AccountCard(
+                      account: account,
+                      mode: AccountCardMode.overview,
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ],

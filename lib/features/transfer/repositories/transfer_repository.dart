@@ -8,6 +8,7 @@ import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/models/branch_model.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
+import 'package:banking_app/core/exceptions/transfer_exceptions.dart';
 
 abstract class TransferRepository {
   /// Fetch methods
@@ -15,7 +16,7 @@ abstract class TransferRepository {
   Future<List<CardModel>> fetchCards();
   Future<List<BeneficiaryModel>> fetchBeneficiaries();
   Future<List<BankModel>> fetchBanks();
-  Future<List<BranchModel>> fetchBranchs();
+  Future<List<BranchModel>> fetchBranches();
   Future<List<TransactionModel>> fetchTransactionHistory();
 
   /// Add / calculate
@@ -29,12 +30,17 @@ abstract class TransferRepository {
   Future<bool> confirmTransfer(String transferId, String otpCode);
 }
 
+const String _biometricAuth = 'BIOMETRIC_AUTH';
+const String _statusPending = 'pending';
+const String _statusCompleted = 'completed';
+const String _statusFailed = 'failed';
+
+/// An implementation of the [TransferRepository] that uses Supabase as the backend.
 class TransferRepositoryImpl implements TransferRepository {
   final SupabaseClient _client;
 
   TransferRepositoryImpl({required SupabaseClient client}) : _client = client;
 
-  /// Fetch methods
   @override
   Future<List<AccountModel>> fetchAccounts() async {
     final currentUser = _client.auth.currentUser;
@@ -80,7 +86,7 @@ class TransferRepositoryImpl implements TransferRepository {
   }
 
   @override
-  Future<List<BranchModel>> fetchBranchs() async {
+  Future<List<BranchModel>> fetchBranches() async {
     final response = await _client.from('branches').select();
     return (response as List)
         .map((json) => BranchModel.fromJson(json as Map<String, dynamic>))
@@ -100,7 +106,6 @@ class TransferRepositoryImpl implements TransferRepository {
         .toList();
   }
 
-  /// Add / calculate
   @override
   Future<BeneficiaryModel> addNewBeneficiary(
     BeneficiaryModel beneficiary,
@@ -134,7 +139,7 @@ class TransferRepositoryImpl implements TransferRepository {
   @override
   Future<void> sendOtpEmail(String transferId) async {
     final currentUser = _client.auth.currentUser;
-    if (currentUser == null) throw Exception('User not logged in');
+    if (currentUser == null) throw const UserNotLoggedInException();
 
     final random = Random();
     final otpCode = (100000 + random.nextInt(900000)).toString();
@@ -157,45 +162,16 @@ class TransferRepositoryImpl implements TransferRepository {
 
       print('OTP $otpCode sent to ${currentUser.email ?? ''}');
     } catch (e) {
-      throw Exception('Failed to send OTP: ${e.toString()}');
+      throw OtpSendFailedException('Failed to send OTP: ${e.toString()}');
     }
   }
 
-  /// Transfer actions
   @override
   Future<TransferResult> initiateTransfer(TransferModel request) async {
     final currentUser = _client.auth.currentUser;
-    if (currentUser == null) throw Exception('User not logged in');
+    if (currentUser == null) throw const UserNotLoggedInException();
 
-    // Insufficient funds check
-    final double amount = (request.amount ?? 0) + (request.transactionFee ?? 0);
-    if ((request.fromAccount?.id == null && request.fromCard?.id == null) ||
-        amount <= 0) {
-      throw Exception('Invalid transfer source or amount');
-    }
-
-    // Verify source balance
-    if (request.fromAccount?.id != null) {
-      final acc = await _client
-          .from('accounts')
-          .select('availableBalance')
-          .eq('id', request.fromAccount!.id)
-          .single();
-      final available = (acc['availableBalance'] as num).toDouble();
-      if (available < amount) {
-        throw Exception('Insufficient funds in account');
-      }
-    } else if (request.fromCard?.id != null) {
-      final card = await _client
-          .from('cards')
-          .select('availableBalance')
-          .eq('id', request.fromCard!.id)
-          .single();
-      final available = (card['availableBalance'] as num).toDouble();
-      if (available < amount) {
-        throw Exception('Insufficient funds on card');
-      }
-    }
+    await _verifySourceBalance(request);
 
     final insert = await _client
         .from('transfers')
@@ -208,7 +184,7 @@ class TransferRepositoryImpl implements TransferRepository {
           'content': request.content,
           'transferType': request.transferType.name,
           'authMethod': request.authMethod?.name,
-          'status': 'pending',
+          'status': _statusPending,
           'userId': currentUser.id,
         })
         .select('id')
@@ -249,105 +225,172 @@ class TransferRepositoryImpl implements TransferRepository {
       }
       return false;
     } catch (e) {
-      return false;
+      throw const InvalidOtpException();
     }
   }
 
+  /// Confirms a transfer after OTP or biometric verification.
   @override
   Future<bool> confirmTransfer(String transferId, String otpCode) async {
-    final currentUser = _client.auth.currentUser;
-    bool success = false;
+    final success = await _verifyTransferAuthorization(transferId, otpCode);
 
-    if (otpCode == "BIOMETRIC_AUTH") {
-      success = true;
-    } else {
-      // Verify OTP
-      final otpValid = await _client
-          .from('transfer_otps')
-          .select()
-          .eq('transferId', transferId)
-          .eq('isUsed', true)
-          .maybeSingle();
-
-      success = otpValid != null;
-    }
-
-    // Update transfer status
-    await _client
-        .from('transfers')
-        .update({
-          'status': success ? 'completed' : 'failed',
-          if (success) 'completedAt': DateTime.now().toIso8601String(),
-        })
-        .eq('id', transferId);
+    await _updateTransferStatus(transferId, success);
 
     if (success) {
-      // Fetch transfer details
-      final transfer = await _client
-          .from('transfers')
-          .select('fromAccountId, fromCardId, amount, transactionFee')
-          .eq('id', transferId)
-          .single();
-
-      final double amount = ((transfer['amount'] ?? 0) as num).toDouble();
-      final double fee = ((transfer['transactionFee'] ?? 0) as num).toDouble();
-      final double total = double.parse((amount + fee).toStringAsFixed(2));
-
-      final insertedTx = await _client
-          .from('transactions')
-          .insert({
-            'userId': currentUser?.id,
-            'type': 'transfer',
-            'amount': -total,
-            'status': 'completed',
-            'referenceNumber': DateTime.now().millisecondsSinceEpoch.toString(),
-            'createdAt': DateTime.now().toIso8601String(),
-            'description': 'Transfer to beneficiary',
-          })
-          .select()
-          .single();
-
-      final transactionId = insertedTx['id'];
-
-      await _client
-          .from('transfers')
-          .update({'transactionId': transactionId})
-          .eq('id', transferId);
-
-      if (transfer['fromAccountId'] != null) {
-        final accountId = transfer['fromAccountId'] as String;
-        final acc = await _client
-            .from('accounts')
-            .select('availableBalance')
-            .eq('id', accountId)
-            .single();
-
-        final available = (acc['availableBalance'] as num).toDouble();
-        final newBalance = double.parse((available - total).toStringAsFixed(2));
-
-        await _client
-            .from('accounts')
-            .update({'availableBalance': newBalance})
-            .eq('id', accountId);
-      } else if (transfer['fromCardId'] != null) {
-        final cardId = transfer['fromCardId'] as String;
-        final card = await _client
-            .from('cards')
-            .select('availableBalance')
-            .eq('id', cardId)
-            .single();
-
-        final available = (card['availableBalance'] as num).toDouble();
-        final newBalance = double.parse((available - total).toStringAsFixed(2));
-
-        await _client
-            .from('cards')
-            .update({'availableBalance': newBalance})
-            .eq('id', cardId);
-      }
+      final transfer = await _fetchTransferDetails(transferId);
+      final transactionId = await _createTransaction(transfer);
+      await _linkTransactionToTransfer(transferId, transactionId);
+      await _updateBalance(transfer);
     }
 
     return success;
+  }
+
+  Future<bool> _verifyTransferAuthorization(
+    String transferId,
+    String otpCode,
+  ) async {
+    if (otpCode == _biometricAuth) return true;
+
+    // Check transfer method
+    final transfer = await _client
+        .from('transfers')
+        .select('authMethod')
+        .eq('id', transferId)
+        .maybeSingle();
+
+    final method = transfer?['authMethod'] as String?;
+    if (method == 'card' || method == 'internal') {
+      return true;
+    }
+
+    // OTP validation
+    final otpValid = await _client
+        .from('transfer_otps')
+        .select()
+        .eq('transferId', transferId)
+        .eq('isUsed', true)
+        .maybeSingle();
+
+    return otpValid != null;
+  }
+
+  Future<void> _updateTransferStatus(String transferId, bool success) async {
+    await _client
+        .from('transfers')
+        .update({
+          'status': success ? _statusCompleted : _statusFailed,
+          if (success) 'completedAt': DateTime.now().toIso8601String(),
+        })
+        .eq('id', transferId);
+  }
+
+  Future<Map<String, dynamic>> _fetchTransferDetails(String transferId) async {
+    return await _client
+        .from('transfers')
+        .select('fromAccountId, fromCardId, amount, transactionFee')
+        .eq('id', transferId)
+        .single();
+  }
+
+  Future<String> _createTransaction(Map<String, dynamic> transfer) async {
+    final currentUser = _client.auth.currentUser;
+    final double amount = ((transfer['amount'] ?? 0) as num).toDouble();
+    final double fee = ((transfer['transactionFee'] ?? 0) as num).toDouble();
+    final double total = double.parse((amount + fee).toStringAsFixed(2));
+
+    final insertedTx = await _client
+        .from('transactions')
+        .insert({
+          'userId': currentUser?.id,
+          'type': 'transfer',
+          'amount': -total,
+          'status': _statusCompleted,
+          'referenceNumber': DateTime.now().millisecondsSinceEpoch.toString(),
+          'createdAt': DateTime.now().toIso8601String(),
+          'description': 'Transfer to beneficiary',
+        })
+        .select()
+        .single();
+
+    return insertedTx['id'] as String;
+  }
+
+  Future<void> _linkTransactionToTransfer(
+    String transferId,
+    String transactionId,
+  ) async {
+    await _client
+        .from('transfers')
+        .update({'transactionId': transactionId})
+        .eq('id', transferId);
+  }
+
+  Future<void> _updateBalance(Map<String, dynamic> transfer) async {
+    final double amount = ((transfer['amount'] ?? 0) as num).toDouble();
+    final double fee = ((transfer['transactionFee'] ?? 0) as num).toDouble();
+    final double total = double.parse((amount + fee).toStringAsFixed(2));
+
+    if (transfer['fromAccountId'] != null) {
+      final accountId = transfer['fromAccountId'] as String;
+      final acc = await _client
+          .from('accounts')
+          .select('availableBalance')
+          .eq('id', accountId)
+          .single();
+
+      final available = (acc['availableBalance'] as num).toDouble();
+      final newBalance = double.parse((available - total).toStringAsFixed(2));
+
+      await _client
+          .from('accounts')
+          .update({'availableBalance': newBalance})
+          .eq('id', accountId);
+    } else if (transfer['fromCardId'] != null) {
+      final cardId = transfer['fromCardId'] as String;
+      final card = await _client
+          .from('cards')
+          .select('availableBalance')
+          .eq('id', cardId)
+          .single();
+
+      final available = (card['availableBalance'] as num).toDouble();
+      final newBalance = double.parse((available - total).toStringAsFixed(2));
+
+      await _client.from('cards').update({'availableBalance': newBalance});
+    }
+  }
+
+  /// Verifies if the source account or card has sufficient balance for the transfer.
+  /// Throws an [Exception] if the balance is insufficient or the transfer source is invalid.
+  Future<void> _verifySourceBalance(TransferModel request) async {
+    final double amount = (request.amount ?? 0) + (request.transactionFee ?? 0);
+    if ((request.fromAccount?.id == null && request.fromCard?.id == null) ||
+        amount <= 0) {
+      throw const InvalidTransferSourceException();
+    }
+
+    if (request.fromAccount?.id != null) {
+      final acc = await _client
+          .from('accounts')
+          .select('availableBalance')
+          .eq('id', request.fromAccount!.id)
+          .single();
+      final available = (acc['availableBalance'] as num).toDouble();
+      if (available < amount) {
+        throw const InsufficientFundsException();
+      }
+    } else if (request.fromCard?.id != null) {
+      final card = await _client
+          .from('cards')
+          .select('availableBalance')
+          .eq('id', request.fromCard!.id)
+          .single();
+      final available = (card['availableBalance'] as num).toDouble();
+      if (available < amount) {
+        throw const InsufficientFundsException();
+      }
+    }
   }
 }
 

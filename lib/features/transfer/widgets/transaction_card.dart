@@ -2,14 +2,8 @@ import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:flutter/material.dart';
 
+/// A card widget for displaying a transaction type.
 class TransactionCard extends StatelessWidget {
-  final Widget child;
-  final bool isSelected;
-  final VoidCallback? onTap;
-  final EdgeInsetsGeometry padding;
-  final double borderRadius;
-  final TransferType type;
-
   const TransactionCard({
     super.key,
     required this.child,
@@ -19,6 +13,13 @@ class TransactionCard extends StatelessWidget {
     this.borderRadius = 15,
     required this.type,
   });
+
+  final Widget child;
+  final bool isSelected;
+  final VoidCallback? onTap;
+  final EdgeInsetsGeometry padding;
+  final double borderRadius;
+  final TransferType type;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,7 @@ class TransactionCard extends StatelessWidget {
     );
   }
 
+  /// Returns the background color of the card based on the selection state and transaction type.
   Color _getBackgroundColor(BuildContext context) {
     if (!isSelected) return context.colorScheme.onTertiary;
     switch (type) {

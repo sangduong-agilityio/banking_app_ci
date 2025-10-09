@@ -5,6 +5,7 @@ import 'package:banking_app/core/utils/formatters.dart';
 import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:flutter/material.dart';
 
+/// An enum to represent the different modes of the [AccountCard].
 enum AccountCardMode { overview, management }
 
 class AccountCard extends StatelessWidget {
@@ -38,70 +39,89 @@ class AccountCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  mode == AccountCardMode.overview
-                      ? account.accountType
-                      : S.current.accountTitle,
-                  style: context.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: context.colorScheme.scrim,
-                  ),
-                ),
-                Text(
-                  FormatterUtils.maskCardNumber(account.accountNumber),
-                  style: context.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: context.colorScheme.scrim,
-                  ),
-                ),
-              ],
-            ),
-
-            if (mode == AccountCardMode.overview) ...[
-              // Overview (Account & Card screen)
-              _cardInformation(
-                context,
-                label: S.current.accountAvailableBalanceTitle,
-                value: FormatterUtils.formatBalance(account.availableBalance),
-              ),
-              _cardInformation(
-                context,
-                label: S.current.accountBranchTitle,
-                value: account.branch,
-              ),
-            ] else ...[
-              // Management (Account Management screen)
-              _cardInformation(
-                context,
-                label: S.current.accountFromDateTitle,
-                value: FormatterUtils.formatDate(account.fromDate!),
-              ),
-              _cardInformation(
-                context,
-                label: S.current.accountToDateTitle,
-                value: FormatterUtils.formatDate(account.toDate!),
-              ),
-              _cardInformation(
-                context,
-                label: S.current.accountTermTitle,
-                value: account.term ?? '',
-              ),
-              _cardInformation(
-                context,
-                label: S.current.accountInterestRateTitle,
-                value: "${account.interestRate}%",
-              ),
-            ],
+            _buildHeader(context),
+            if (mode == AccountCardMode.overview)
+              _buildOverview(context)
+            else
+              _buildManagement(context),
           ],
         ),
       ),
     );
   }
 
+  /// Builds the header of the card, showing the account type and masked account number.
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          mode == AccountCardMode.overview
+              ? account.accountType
+              : S.current.accountTitle,
+          style: context.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: context.colorScheme.scrim,
+          ),
+        ),
+        Text(
+          FormatterUtils.maskCardNumber(account.accountNumber),
+          style: context.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: context.colorScheme.scrim,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Builds the overview section of the card.
+  Widget _buildOverview(BuildContext context) {
+    return Column(
+      children: [
+        _cardInformation(
+          context,
+          label: S.current.accountAvailableBalanceTitle,
+          value: FormatterUtils.formatBalance(account.availableBalance),
+        ),
+        _cardInformation(
+          context,
+          label: S.current.accountBranchTitle,
+          value: account.branch,
+        ),
+      ],
+    );
+  }
+
+  /// Builds the management section of the card.
+  Widget _buildManagement(BuildContext context) {
+    return Column(
+      children: [
+        _cardInformation(
+          context,
+          label: S.current.accountFromDateTitle,
+          value: FormatterUtils.formatDate(account.fromDate!),
+        ),
+        _cardInformation(
+          context,
+          label: S.current.accountToDateTitle,
+          value: FormatterUtils.formatDate(account.toDate!),
+        ),
+        _cardInformation(
+          context,
+          label: S.current.accountTermTitle,
+          value: account.term ?? '',
+        ),
+        _cardInformation(
+          context,
+          label: S.current.accountInterestRateTitle,
+          value: "${account.interestRate}%",
+        ),
+      ],
+    );
+  }
+
+  /// A helper widget to display a label and a value in a row.
   Widget _cardInformation(
     BuildContext context, {
     required String label,

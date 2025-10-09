@@ -9,3 +9,7 @@ class DioExceptionMessages {
   static const String connectionError = 'No internet connection';
   static const String unexpectedErrorOccurred = 'Unexpected error occurred';
 }
+
+class BiometricAuthConstants {
+  static const String biometricAuth = 'BIOMETRIC_AUTH';
+}

@@ -1,12 +1,10 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/core/utils/beneficiary_utils.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
@@ -17,6 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen that displays a directory of beneficiaries.
+///
+/// The screen allows users to view, search, and select beneficiaries for transfers.
 class DirectoryBeneficiaryScreen extends StatelessWidget {
   final List<BankModel> banks;
 
@@ -59,34 +60,9 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
                 return Center(child: BAAssets.empty(width: 300, height: 300));
               }
 
-              final effectiveBeneficiaries =
-                  state.beneficiariesFiltered.isNotEmpty
-                  ? state.beneficiariesFiltered
-                  : state.beneficiaries;
-
-              final viaCard = effectiveBeneficiaries
-                  .where(
-                    (b) =>
-                        getTransferType(b, userAccount) ==
-                        TransferType.cardNumber,
-                  )
-                  .toList();
-
-              final sameBank = effectiveBeneficiaries
-                  .where(
-                    (b) =>
-                        getTransferType(b, userAccount) ==
-                        TransferType.sameBank,
-                  )
-                  .toList();
-
-              final diffBank = effectiveBeneficiaries
-                  .where(
-                    (b) =>
-                        getTransferType(b, userAccount) ==
-                        TransferType.otherBank,
-                  )
-                  .toList();
+              final viaCard = state.viaCardBeneficiaries;
+              final sameBank = state.sameBankBeneficiaries;
+              final diffBank = state.otherBankBeneficiaries;
 
               return SingleChildScrollView(
                 child: Column(
@@ -155,8 +131,8 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
       builder: (_) => BlocBuilder<TransferBloc, TransferState>(
         bloc: transferBloc,
         builder: (context, state) {
-          final items = state.beneficiariesFiltered.isNotEmpty
-              ? state.beneficiariesFiltered
+          final items = state.filteredBeneficiaries.isNotEmpty
+              ? state.filteredBeneficiaries
               : state.beneficiaries;
 
           return BASelectorDialog<BeneficiaryModel>(
@@ -197,7 +173,7 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withAlpha(10),
                 blurRadius: 8,
                 offset: const Offset(0, 2),
               ),

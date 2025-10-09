@@ -18,6 +18,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// A widget that displays the form for a transfer.
+///
+/// This widget is a stateful widget that manages the form controllers and the
+/// logic for filling and clearing the form. It also builds the form fields
+/// based on the selected transfer type.
 class TransferFormSection extends StatefulWidget {
   const TransferFormSection({super.key});
 
@@ -45,6 +50,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     super.dispose();
   }
 
+  /// Fills the form with the data from the selected beneficiary.
   void _fillFromBeneficiary(BeneficiaryModel beneficiary, TransferState state) {
     _nameController.text = beneficiary.name;
     _cardNumberController.text = beneficiary.accountNumber;
@@ -59,6 +65,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     }
   }
 
+  /// Clears the form fields.
   void _clearForm() {
     _nameController.clear();
     _cardNumberController.clear();
@@ -71,7 +78,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<TransferBloc, TransferState>(
+    return BlocConsumer<TransferBloc, TransferState>(
       listenWhen: (prev, curr) =>
           prev.selectedBeneficiary != curr.selectedBeneficiary,
       listener: (context, state) {
@@ -81,23 +88,151 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           _clearForm();
         }
       },
-      child: TransferFormSectionBody(
-        formKey: _formKey,
-        nameController: _nameController,
-        cardNumberController: _cardNumberController,
-        amountController: _amountController,
-        contentController: _contentController,
-        bankController: _bankController,
-        branchController: _branchController,
-        handleConfirm: _handleConfirm,
-        transferForm: _transferForm,
-        buildFormFields: _buildFormFields,
-      ),
+      buildWhen: (prev, curr) =>
+          prev.selectedTransferType != curr.selectedTransferType ||
+          prev.selectedAccount != curr.selectedAccount ||
+          prev.selectedBank != curr.selectedBank ||
+          prev.selectedBranch != curr.selectedBranch ||
+          prev.saveToDirectory != curr.saveToDirectory,
+      builder: (context, state) {
+        return Form(
+          key: _formKey,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: context.colorScheme.onPrimary,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ..._buildTransferForm(state),
+                _buildSaveToDirectory(state),
+                const SizedBox(height: 22),
+                BAElevatedButton(
+                  isDisabled: !state.canConfirmTransfer,
+                  padding: EdgeInsets.zero,
+                  text: S.current.transferConfirmButton,
+                  onPressed: state.canConfirmTransfer
+                      ? () => _handleConfirm(context, state)
+                      : null,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
-  /// Form for bank account or card number
-  Widget _transferBankOrCardForm() {
+  /// Builds the widget for the "Save to directory" checkbox.
+  Widget _buildSaveToDirectory(TransferState state) {
+    return Row(
+      children: [
+        Checkbox(
+          value: state.saveToDirectory,
+          onChanged: (value) {
+            context.read<TransferBloc>().add(
+              UpdateTransferDetailsEvt(saveToDirectory: value ?? false),
+            );
+          },
+          activeColor: context.colorScheme.secondary,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        ),
+        Expanded(
+          child: Text(
+            S.current.transferSaveBeneficiaryTitle,
+            style: context.titleSmall,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Builds the transfer form based on the selected transfer type.
+  List<Widget> _buildTransferForm(TransferState state) {
+    switch (state.selectedTransferType) {
+      case TransferType.cardNumber:
+      case TransferType.sameBank:
+        return [
+          _buildBankOrCardForm(),
+          const SizedBox(height: 24),
+          ..._buildAmountAndContentForm(state),
+        ];
+      case TransferType.otherBank:
+        return [
+          _buildOtherBankForm(state),
+          const SizedBox(height: 24),
+          _buildBankOrCardForm(),
+          const SizedBox(height: 24),
+          ..._buildAmountAndContentForm(state),
+        ];
+    }
+  }
+
+  /// Builds the form for selecting a bank and a branch for transfers to other banks.
+  Widget _buildOtherBankForm(TransferState state) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () => _showBankSelector(state.banks, state.selectedBank),
+          child: AbsorbPointer(
+            child: BATextField(
+              name: S.current.transferChooseBankLabel,
+              hint: S.current.transferChooseBankLabel,
+              controller: _bankController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              suffixIcon: const Icon(Icons.keyboard_arrow_right, size: 20),
+              validator: (value) => SecureInputValidator.validateSecureInput(
+                value,
+                fieldName: S.current.transferChooseBankLabel,
+                minLength: 1,
+                maxLength: 50,
+                allowSpecialChars: false,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        GestureDetector(
+          onTap: state.selectedBank == null
+              ? null
+              : () {
+                  final filteredBranches = state.branches
+                      .where((b) => b.bankId == state.selectedBank?.id)
+                      .toList();
+                  _showBranchSelector(filteredBranches, state.selectedBranch);
+                },
+          child: AbsorbPointer(
+            child: BATextField(
+              name: S.current.transferChooseBranchLabel,
+              hint: S.current.transferChooseBranchLabel,
+              controller: _branchController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              suffixIcon: const Icon(Icons.keyboard_arrow_right),
+              validator: (value) => SecureInputValidator.validateSecureInput(
+                value,
+                fieldName: S.current.transferChooseBranchLabel,
+                minLength: 1,
+                maxLength: 50,
+                allowSpecialChars: false,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Builds the form for the beneficiary's name and card number.
+  Widget _buildBankOrCardForm() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -137,7 +272,8 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     );
   }
 
-  List<Widget> _buildFormFields(TransferState state) {
+  /// Builds the form for the amount and content of the transfer.
+  List<Widget> _buildAmountAndContentForm(TransferState state) {
     return [
       BATextField(
         name: S.current.transferAmountLabel,
@@ -165,7 +301,6 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           }
         },
       ),
-
       const SizedBox(height: 24),
       BATextField(
         name: S.current.transferContentLabel,
@@ -198,71 +333,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     ];
   }
 
-  List<Widget> _transferForm(TransferState state) {
-    switch (state.selectedTransferType) {
-      case TransferType.cardNumber:
-      case TransferType.sameBank:
-        return [
-          _transferBankOrCardForm(),
-          const SizedBox(height: 24),
-          ..._buildFormFields(state),
-        ];
-      case TransferType.otherBank:
-        return [
-          GestureDetector(
-            onTap: () => _showBankSelector(state.banks, state.selectedBank),
-            child: AbsorbPointer(
-              child: BATextField(
-                name: S.current.transferChooseBankLabel,
-                hint: S.current.transferChooseBankLabel,
-                controller: _bankController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                suffixIcon: const Icon(Icons.keyboard_arrow_right, size: 20),
-                validator: (value) => SecureInputValidator.validateSecureInput(
-                  value,
-                  fieldName: S.current.transferChooseBankLabel,
-                  minLength: 1,
-                  maxLength: 50,
-                  allowSpecialChars: false,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          GestureDetector(
-            onTap: state.selectedBank == null
-                ? null
-                : () {
-                    final filteredBranches = state.branches
-                        .where((b) => b.bankId == state.selectedBank?.id)
-                        .toList();
-                    _showBranchSelector(filteredBranches, state.selectedBranch);
-                  },
-            child: AbsorbPointer(
-              child: BATextField(
-                name: S.current.transferChooseBranchLabel,
-                hint: S.current.transferChooseBranchLabel,
-                controller: _branchController,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                suffixIcon: const Icon(Icons.keyboard_arrow_right),
-                validator: (value) => SecureInputValidator.validateSecureInput(
-                  value,
-                  fieldName: S.current.transferChooseBranchLabel,
-                  minLength: 1,
-                  maxLength: 50,
-                  allowSpecialChars: false,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          _transferBankOrCardForm(),
-          const SizedBox(height: 24),
-          ..._buildFormFields(state),
-        ];
-    }
-  }
-
+  /// Shows a dialog for selecting a bank.
   void _showBankSelector(List<BankModel> banks, BankModel? selectedBank) {
     showDialog(
       context: context,
@@ -282,6 +353,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     );
   }
 
+  /// Shows a dialog for selecting a branch.
   void _showBranchSelector(
     List<BranchModel> branches,
     BranchModel? selectedBranch,
@@ -303,6 +375,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     );
   }
 
+  /// Handles the confirmation of the transfer.
   void _handleConfirm(BuildContext context, TransferState state) async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -316,103 +389,6 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           child: const ConfirmTransferScreen(),
         ),
       ),
-    );
-  }
-}
-
-class TransferFormSectionBody extends StatelessWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController nameController;
-  final TextEditingController cardNumberController;
-  final TextEditingController amountController;
-  final TextEditingController contentController;
-  final TextEditingController bankController;
-  final TextEditingController branchController;
-  final void Function(BuildContext, TransferState) handleConfirm;
-  final List<Widget> Function(TransferState) transferForm;
-  final List<Widget> Function(TransferState) buildFormFields;
-
-  const TransferFormSectionBody({
-    super.key,
-    required this.formKey,
-    required this.nameController,
-    required this.cardNumberController,
-    required this.amountController,
-    required this.contentController,
-    required this.bankController,
-    required this.branchController,
-    required this.handleConfirm,
-    required this.transferForm,
-    required this.buildFormFields,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TransferBloc, TransferState>(
-      buildWhen: (prev, curr) =>
-          prev.selectedTransferType != curr.selectedTransferType ||
-          prev.selectedAccount != curr.selectedAccount ||
-          prev.selectedBank != curr.selectedBank ||
-          prev.selectedBranch != curr.selectedBranch ||
-          prev.saveToDirectory != curr.saveToDirectory,
-      builder: (context, state) {
-        return Form(
-          key: formKey,
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: context.colorScheme.onPrimary,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...transferForm(state),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: state.saveToDirectory,
-                      onChanged: (value) {
-                        context.read<TransferBloc>().add(
-                          UpdateTransferDetailsEvt(
-                            saveToDirectory: value ?? false,
-                          ),
-                        );
-                      },
-                      activeColor: context.colorScheme.secondary,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        S.current.transferSaveBeneficiaryTitle,
-                        style: context.titleSmall,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 22),
-                BAElevatedButton(
-                  isDisabled: !state.canConfirmTransfer,
-                  padding: EdgeInsets.zero,
-                  text: S.current.transferConfirmButton,
-                  onPressed: state.canConfirmTransfer
-                      ? () => handleConfirm(context, state)
-                      : null,
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

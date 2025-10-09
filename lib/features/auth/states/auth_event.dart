@@ -16,6 +16,7 @@ class SignInFormValidateChangedEvt extends AuthEvt {
     this.email,
     this.password,
   });
+
   final bool isValidate;
   final String? email;
   final String? password;

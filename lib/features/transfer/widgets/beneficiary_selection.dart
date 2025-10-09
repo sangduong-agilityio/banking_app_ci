@@ -12,17 +12,19 @@ import 'package:banking_app/features/transfer/widgets/beneficiary_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// A widget for selecting a beneficiary.
+///
+/// This widget displays a horizontal list of beneficiaries and allows the user
+/// to select one or add a new one.
 class BeneficiarySelection extends StatelessWidget {
-  final TransferState state;
-  final Function(String)? onNameChanged;
-  final Function(String)? onCardNumberChanged;
-
   const BeneficiarySelection({
     super.key,
     required this.state,
-    this.onNameChanged,
-    this.onCardNumberChanged,
+    required this.onBeneficiarySelected,
   });
+
+  final TransferState state;
+  final Function(BeneficiaryModel) onBeneficiarySelected;
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +49,7 @@ class BeneficiarySelection extends StatelessWidget {
               return _BeneficiaryCardItem(
                 beneficiary: beneficiary,
                 isSelected: isSelected,
-                onNameChanged: onNameChanged,
-                onCardNumberChanged: onCardNumberChanged,
+                onBeneficiarySelected: onBeneficiarySelected,
               );
             },
           ),
@@ -58,10 +59,11 @@ class BeneficiarySelection extends StatelessWidget {
   }
 }
 
+/// The header of the beneficiary selection widget.
 class _BeneficiarySelectionHeader extends StatelessWidget {
-  final List<BankModel> banks;
-
   const _BeneficiarySelectionHeader({required this.banks});
+
+  final List<BankModel> banks;
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +102,7 @@ class _BeneficiarySelectionHeader extends StatelessWidget {
   }
 }
 
+/// A card for adding a new beneficiary.
 class _AddBeneficiaryCard extends StatelessWidget {
   final List<BankModel> banks;
 
@@ -136,17 +139,16 @@ class _AddBeneficiaryCard extends StatelessWidget {
   }
 }
 
+/// A card item for displaying a single beneficiary.
 class _BeneficiaryCardItem extends StatelessWidget {
   final BeneficiaryModel beneficiary;
   final bool isSelected;
-  final Function(String)? onNameChanged;
-  final Function(String)? onCardNumberChanged;
+  final Function(BeneficiaryModel) onBeneficiarySelected;
 
   const _BeneficiaryCardItem({
     required this.beneficiary,
     required this.isSelected,
-    this.onNameChanged,
-    this.onCardNumberChanged,
+    required this.onBeneficiarySelected,
   });
 
   @override
@@ -155,8 +157,7 @@ class _BeneficiaryCardItem extends StatelessWidget {
       isSelected: isSelected,
       onTap: () {
         context.read<TransferBloc>().add(SelectBeneficiaryEvt(beneficiary));
-        onNameChanged?.call(beneficiary.name);
-        onCardNumberChanged?.call(beneficiary.accountNumber);
+        onBeneficiarySelected(beneficiary);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -180,6 +181,7 @@ class _BeneficiaryCardItem extends StatelessWidget {
   }
 }
 
+/// A widget for displaying a beneficiary's avatar.
 class BeneficiaryAvatar extends StatelessWidget {
   final String? avatarUrl;
 
@@ -187,14 +189,13 @@ class BeneficiaryAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasAvatar = avatarUrl != null && avatarUrl!.isNotEmpty;
     return CircleAvatar(
       radius: 30,
-      backgroundImage: (avatarUrl?.isNotEmpty ?? false)
-          ? NetworkImage(avatarUrl ?? '')
-          : null,
-      child: (avatarUrl?.isEmpty ?? true)
-          ? Icon(Icons.person, color: context.colorScheme.onPrimary)
-          : null,
+      backgroundImage: hasAvatar ? NetworkImage(avatarUrl!) : null,
+      child: hasAvatar
+          ? null
+          : Icon(Icons.person, color: context.colorScheme.onPrimary),
     );
   }
 }

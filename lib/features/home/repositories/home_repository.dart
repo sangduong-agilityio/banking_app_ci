@@ -55,10 +55,15 @@ class HomeRepositoryImpl implements HomeRepository {
       throw Exception('User is not logged in');
     }
 
+    print('Fetching accounts for user: ${currentUser.id}');
+
     final response = await _client
         .from('accounts')
         .select()
         .eq('userId', currentUser.id);
+
+    print('Supabase response: $response');
+
     return (response as List)
         .map((json) => AccountModel.fromJson(json as Map<String, dynamic>))
         .toList();

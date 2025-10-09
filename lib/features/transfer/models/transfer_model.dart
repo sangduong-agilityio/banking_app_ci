@@ -7,8 +7,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'transfer_model.freezed.dart';
 part 'transfer_model.g.dart';
 
+/// An enum representing the authentication method for a transfer.
 enum AuthMethod { otp, fingerprint, faceId }
 
+/// Represents a transfer transaction.
 @freezed
 class TransferModel with _$TransferModel {
   const factory TransferModel({
@@ -31,6 +33,7 @@ class TransferModel with _$TransferModel {
       _$TransferModelFromJson(json);
 }
 
+/// Represents a request to initiate a transfer.
 @freezed
 class TransferRequest with _$TransferRequest {
   const factory TransferRequest({
@@ -43,6 +46,7 @@ class TransferRequest with _$TransferRequest {
       _$TransferRequestFromJson(json);
 }
 
+/// Represents the fee for a transfer.
 @freezed
 class TransferFee with _$TransferFee {
   const factory TransferFee({

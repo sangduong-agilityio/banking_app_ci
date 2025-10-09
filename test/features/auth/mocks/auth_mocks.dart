@@ -3,6 +3,7 @@ import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/states/auth_bloc.dart';
 import 'package:banking_app/features/auth/states/auth_event.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRepositoryMock extends Mock implements AuthRepository {}
@@ -10,6 +11,8 @@ class AuthRepositoryMock extends Mock implements AuthRepository {}
 class AuthBlocMock extends Mock implements AuthBloc {}
 
 class BiometricServiceMock extends Mock implements BiometricService {}
+
+class PrivateKeyMock extends Mock implements SharedPreferences {}
 
 class AuthMocks {
   static final signUpForm = SignUpFormValidateChangedEvt(

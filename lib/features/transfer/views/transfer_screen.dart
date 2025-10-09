@@ -15,7 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
+/// The main screen for the transfer feature.
+///
+/// This screen allows the user to select an account or a card to transfer from,
+/// select a beneficiary, and fill in the transfer details.
 class TransferScreen extends StatefulWidget {
+  /// Creates a [TransferScreen] object.
   const TransferScreen({super.key});
 
   @override
@@ -57,39 +62,19 @@ class _TransferScreenState extends State<TransferScreen> {
               return GestureDetector(
                 onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 24),
-                      // Account Selection
-                      AccountOrCardSelector(
-                        accounts: state.accounts,
-                        cards: state.cards,
-                        selectedAccount: state.selectedAccount,
-                        selectedCard: state.selectedCard,
-                        onSelected: (account, card) {
-                          if (account != null) {
-                            context.read<TransferBloc>().add(
-                              SelectAccountEvt(account),
-                            );
-                          } else if (card != null) {
-                            context.read<TransferBloc>().add(
-                              SelectCardEvt(card),
-                            );
-                          }
-                        },
-                      ),
-                      SizedBox(height: 32),
-                      // Transaction Type Selection
-                      TransactionTypeSelection(),
-                      SizedBox(height: 32),
-                      // Beneficiary Selection
-                      BeneficiarySelection(state: state),
-                      SizedBox(height: 32),
-                      // Transfer Form Section
-                      TransferFormSection(),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 24),
+                      _buildAccountOrCardSelector(context, state),
+                      const SizedBox(height: 32),
+                      const TransactionTypeSelection(),
+                      const SizedBox(height: 32),
+                      _buildBeneficiarySelection(context, state),
+                      const SizedBox(height: 32),
+                      const TransferFormSection(),
+                      const SizedBox(height: 40),
                     ],
                   ),
                 ),
@@ -98,6 +83,36 @@ class _TransferScreenState extends State<TransferScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  /// Builds the widget for selecting an account or a card.
+  Widget _buildAccountOrCardSelector(
+    BuildContext context,
+    TransferState state,
+  ) {
+    return AccountOrCardSelector(
+      accounts: state.accounts,
+      cards: state.cards,
+      selectedAccount: state.selectedAccount,
+      selectedCard: state.selectedCard,
+      onSelected: (account, card) {
+        if (account != null) {
+          context.read<TransferBloc>().add(SelectAccountEvt(account));
+        } else if (card != null) {
+          context.read<TransferBloc>().add(SelectCardEvt(card));
+        }
+      },
+    );
+  }
+
+  /// Builds the widget for selecting a beneficiary.
+  Widget _buildBeneficiarySelection(BuildContext context, TransferState state) {
+    return BeneficiarySelection(
+      state: state,
+      onBeneficiarySelected: (beneficiary) {
+        context.read<TransferBloc>().add(SelectBeneficiaryEvt(beneficiary));
+      },
     );
   }
 }

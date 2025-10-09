@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'account_and_card_state.freezed.dart';
 
+/// Represents the state of the account and card feature.
 class AccountAndCardState extends Equatable {
   const AccountAndCardState({
     this.status = const AccountAndCardStatus.initial(),
@@ -41,10 +42,18 @@ class AccountAndCardState extends Equatable {
   List<Object?> get props => [status, errorMessage, user, cards, accounts];
 }
 
+/// Represents the status of the account and card feature.
 @freezed
 sealed class AccountAndCardStatus with _$AccountAndCardStatus {
+  /// The initial status.
   const factory AccountAndCardStatus.initial() = AccountAndCardStatusInitial;
+
+  /// The loading status.
   const factory AccountAndCardStatus.loading() = AccountAndCardStatusLoading;
+
+  /// The success status.
   const factory AccountAndCardStatus.success() = AccountAndCardStatusSuccess;
+
+  /// The failure status.
   const factory AccountAndCardStatus.failure() = AccountAndCardStatusFailure;
 }

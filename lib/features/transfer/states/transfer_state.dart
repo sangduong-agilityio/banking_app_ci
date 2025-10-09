@@ -11,6 +11,7 @@ import 'package:banking_app/features/transfer/models/transfer_model.dart';
 
 part 'transfer_state.freezed.dart';
 
+/// Represents the state of the transfer feature.
 class TransferState extends Equatable {
   const TransferState({
     this.status = const TransferStatus.initial(),
@@ -19,9 +20,10 @@ class TransferState extends Equatable {
     this.beneficiaries = const [],
     this.banks = const [],
     this.branches = const [],
-    this.beneficiariesFiltered = const [],
-    this.beneficiariesSameBank = const [],
-    this.beneficiariesOtherBank = const [],
+    this.filteredBeneficiaries = const [],
+    this.sameBankBeneficiaries = const [],
+    this.otherBankBeneficiaries = const [],
+    this.viaCardBeneficiaries = const [],
     this.selectedAccount,
     this.selectedCard,
     this.selectedTransferType = TransferType.cardNumber,
@@ -67,9 +69,10 @@ class TransferState extends Equatable {
   final TransactionModel? transaction;
   final BeneficiaryModel? newBeneficiary;
   final String searchQuery;
-  final List<BeneficiaryModel> beneficiariesFiltered;
-  final List<BeneficiaryModel> beneficiariesSameBank;
-  final List<BeneficiaryModel> beneficiariesOtherBank;
+  final List<BeneficiaryModel> filteredBeneficiaries;
+  final List<BeneficiaryModel> sameBankBeneficiaries;
+  final List<BeneficiaryModel> otherBankBeneficiaries;
+  final List<BeneficiaryModel> viaCardBeneficiaries;
   final String? avatarUrl;
   final String? name;
   final AuthMethod? authMethod;
@@ -107,9 +110,10 @@ class TransferState extends Equatable {
     String? transferId,
     TransactionModel? transaction,
     String? searchQuery,
-    List<BeneficiaryModel>? beneficiariesFiltered,
-    List<BeneficiaryModel>? beneficiariesSameBank,
-    List<BeneficiaryModel>? beneficiariesOtherBank,
+    List<BeneficiaryModel>? filteredBeneficiaries,
+    List<BeneficiaryModel>? sameBankBeneficiaries,
+    List<BeneficiaryModel>? otherBankBeneficiaries,
+    List<BeneficiaryModel>? viaCardBeneficiaries,
     bool? biometricAvailable,
     bool? biometricEnabled,
     bool? biometricAuthenticated,
@@ -139,12 +143,13 @@ class TransferState extends Equatable {
       transferId: transferId ?? this.transferId,
       transaction: transaction ?? this.transaction,
       searchQuery: searchQuery ?? this.searchQuery,
-      beneficiariesFiltered:
-          beneficiariesFiltered ?? this.beneficiariesFiltered,
-      beneficiariesSameBank:
-          beneficiariesSameBank ?? this.beneficiariesSameBank,
-      beneficiariesOtherBank:
-          beneficiariesOtherBank ?? this.beneficiariesOtherBank,
+      filteredBeneficiaries:
+          filteredBeneficiaries ?? this.filteredBeneficiaries,
+      sameBankBeneficiaries:
+          sameBankBeneficiaries ?? this.sameBankBeneficiaries,
+      otherBankBeneficiaries:
+          otherBankBeneficiaries ?? this.otherBankBeneficiaries,
+      viaCardBeneficiaries: viaCardBeneficiaries ?? this.viaCardBeneficiaries,
       selectedBank: selectedBank ?? this.selectedBank,
       selectedBranch: selectedBranch ?? this.selectedBranch,
       avatarUrl: avatarUrl ?? this.avatarUrl,
@@ -184,9 +189,10 @@ class TransferState extends Equatable {
     searchQuery,
     selectedBank,
     selectedBranch,
-    beneficiariesFiltered,
-    beneficiariesSameBank,
-    beneficiariesOtherBank,
+    filteredBeneficiaries,
+    sameBankBeneficiaries,
+    otherBankBeneficiaries,
+    viaCardBeneficiaries,
     biometricAvailable,
     biometricEnabled,
     biometricAuthenticated,
@@ -194,10 +200,13 @@ class TransferState extends Equatable {
     otpSent,
   ];
 
-  /// Helper getters
+  /// Whether the user can use biometrics for authentication.
   bool get canUseBiometrics => biometricAvailable && biometricEnabled;
+
+  /// Whether the user has been authenticated.
   bool get isAuthenticated => biometricAuthenticated;
 
+  /// Whether the user can confirm the transfer.
   bool get canConfirmTransfer {
     return (selectedAccount != null || selectedCard != null) &&
         selectedBeneficiary != null &&
@@ -206,13 +215,25 @@ class TransferState extends Equatable {
   }
 }
 
+/// Represents the status of the transfer process.
 @freezed
 sealed class TransferStatus with _$TransferStatus {
+  /// The initial status.
   const factory TransferStatus.initial() = TransferStatusInitial;
+
+  /// The loading status.
   const factory TransferStatus.loading() = TransferStatusLoading;
+
+  /// The status when the app is awaiting OTP verification.
   const factory TransferStatus.awaitingOtp() = TransferStatusAwaitingOtp;
+
+  /// The status when the app is awaiting biometric authentication.
   const factory TransferStatus.awaitingBiometric() =
       TransferStatusAwaitingBiometric;
+
+  /// The success status.
   const factory TransferStatus.success() = TransferStatusSuccess;
+
+  /// The failure status.
   const factory TransferStatus.failure() = TransferStatusFailure;
 }

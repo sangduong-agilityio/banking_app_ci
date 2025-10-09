@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'bank_model.freezed.dart';
 part 'bank_model.g.dart';
 
+/// Represents a bank.
 @freezed
 class BankModel with _$BankModel {
   const factory BankModel({

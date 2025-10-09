@@ -15,6 +15,7 @@ void main() {
   late AuthRepositoryMock repo;
   late BiometricServiceMock biometricService;
   late AuthBloc authBloc;
+  late PrivateKeyMock prefs;
 
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,12 @@ void main() {
   setUp(() {
     repo = AuthRepositoryMock();
     biometricService = BiometricServiceMock();
-    authBloc = AuthBloc(repo: repo, biometricService: biometricService);
+    prefs = PrivateKeyMock();
+    authBloc = AuthBloc(
+      repo: repo,
+      biometricService: biometricService,
+      prefs: prefs,
+    );
   });
 
   tearDown(() {

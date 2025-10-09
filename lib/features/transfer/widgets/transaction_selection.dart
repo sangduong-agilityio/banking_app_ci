@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// A widget for selecting the type of transaction.
 class TransactionTypeSelection extends StatelessWidget {
   const TransactionTypeSelection({super.key});
 
@@ -100,6 +101,7 @@ class TransactionTypeSelection extends StatelessWidget {
   }
 }
 
+/// A data class for a transaction type item.
 class TransactionTypeItem {
   final String title;
   final IconData icon;

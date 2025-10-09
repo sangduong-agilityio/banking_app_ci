@@ -24,19 +24,26 @@ import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 /// Global GetIt instance for dependency injection
 final GetIt locator = GetIt.instance;
 
 class AppLocators {
   /// Registers all services, repositories, blocs, and cubits
   static Future<void> setupLocators() async {
+    /// ASYNC registrations
+    locator.registerSingletonAsync<SharedPreferences>(
+      () => SharedPreferences.getInstance(),
+    );
+
     /// Initialize Store first and wait for it to be ready
     locator.registerSingletonAsync<Store>(() async {
       return await ObjectBoxManager.getStore();
     });
 
-    /// Wait for the Store to be ready before proceeding
-    await locator.isReady<Store>();
+    /// Wait for all async singletons to be ready
+    await locator.allReady();
 
     /// Get the Store instance
     final store = locator<Store>();
@@ -93,6 +100,7 @@ class AppLocators {
       () => AuthBloc(
         repo: locator<AuthRepository>(),
         biometricService: locator<BiometricService>(),
+        prefs: locator<SharedPreferences>(),
       ),
     );
 
