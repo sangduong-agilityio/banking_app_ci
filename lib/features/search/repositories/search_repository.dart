@@ -8,27 +8,41 @@ import 'package:banking_app/features/search/models/exchange_rate_model.dart';
 import 'package:banking_app/features/search/models/interest_rate_model.dart';
 import 'package:banking_app/features/search/states/search_state.dart';
 
+/// Repository for handling currency exchange and interest rate data.
 abstract class SearchRepository {
+  /// Exchanges a specified amount from one currency to another.
   Future<ExchangeModel> exchange({
     required String fromCurrency,
     required String toCurrency,
     required double fromAmount,
   });
 
+  /// Fetches the list of exchange rates, optionally forcing a refresh from the API.
   Future<List<ExchangeRateModel>> fetchExchangeRates({
     bool forceRefresh = false,
   });
 
+  /// Fetches the list of interest rates.
   Future<List<InterestRateModel>> fetchInterestRates();
+
+  /// Fetches the list of available currencies.
   Future<List<CurrencyModel>> fetchCurrencies();
 
+  /// Converts an amount from one currency to another, using cached rates if available.
   Future<double> convertCurrency({
     required String fromCurrency,
     required String toCurrency,
     required double amount,
   });
+
+  /// Gets the status of the exchange rate between two currencies.
+  ExchangeRateStatus getRateStatus(String fromCurrency, String toCurrency);
+
+  /// Gets the last update time of the exchange rate between two currencies.
+  DateTime? getLastRateUpdate(String fromCurrency, String toCurrency);
 }
 
+/// Implementation of [SearchRepository] using a banking API client and caching services.
 class SearchRepositoryImplement implements SearchRepository {
   final BankingApiClient _client;
   final ExchangeRateCacheService _cacheService;
@@ -42,6 +56,7 @@ class SearchRepositoryImplement implements SearchRepository {
        _cacheService = cacheService,
        _offlineService = offlineService;
 
+  /// Fetches the list of exchange rates.
   @override
   Future<List<ExchangeRateModel>> fetchExchangeRates({
     bool forceRefresh = false,
@@ -72,6 +87,7 @@ class SearchRepositoryImplement implements SearchRepository {
     }
   }
 
+  /// Fetches the list of interest rates.
   @override
   Future<List<InterestRateModel>> fetchInterestRates() async {
     String apiUrl = '${Env.endPoint}interest_rates';
@@ -86,6 +102,7 @@ class SearchRepositoryImplement implements SearchRepository {
         .toList();
   }
 
+  /// Exchanges a specified amount from one currency to another.
   @override
   Future<ExchangeModel> exchange({
     required String fromCurrency,
@@ -117,6 +134,7 @@ class SearchRepositoryImplement implements SearchRepository {
     );
   }
 
+  /// Fetches the list of available currencies.
   @override
   Future<List<CurrencyModel>> fetchCurrencies() async {
     String apiUrl = '${Env.endPoint}currencies';
@@ -130,6 +148,7 @@ class SearchRepositoryImplement implements SearchRepository {
         .toList();
   }
 
+  /// Converts an amount from one currency to another, using cached rates if available.
   @override
   Future<double> convertCurrency({
     required String fromCurrency,
@@ -138,6 +157,13 @@ class SearchRepositoryImplement implements SearchRepository {
   }) async {
     if (fromCurrency == toCurrency) {
       return amount;
+    }
+
+    final cachedRate = _offlineService.getCachedRate(fromCurrency, toCurrency);
+    final rateStatus = _offlineService.getRateStatus(fromCurrency, toCurrency);
+
+    if (rateStatus == ExchangeRateStatus.fresh && cachedRate != null) {
+      return amount * cachedRate;
     }
 
     try {
@@ -150,11 +176,6 @@ class SearchRepositoryImplement implements SearchRepository {
       _offlineService.cacheRate(fromCurrency, toCurrency, exchangeResult.rate);
       return amount * exchangeResult.rate;
     } catch (_) {
-      final cachedRate = _offlineService.getCachedRate(
-        fromCurrency,
-        toCurrency,
-      );
-
       if (cachedRate != null) {
         return amount * cachedRate;
       }
@@ -165,10 +186,14 @@ class SearchRepositoryImplement implements SearchRepository {
     }
   }
 
+  /// Gets the status of the exchange rate between two currencies.
+  @override
   ExchangeRateStatus getRateStatus(String fromCurrency, String toCurrency) {
     return _offlineService.getRateStatus(fromCurrency, toCurrency);
   }
 
+  /// Gets the last update time of the exchange rate between two currencies.
+  @override
   DateTime? getLastRateUpdate(String fromCurrency, String toCurrency) {
     return _offlineService.getLastUpdated(fromCurrency, toCurrency);
   }

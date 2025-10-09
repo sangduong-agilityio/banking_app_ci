@@ -14,8 +14,14 @@ import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/widgets/currency_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
+/// A screen for converting currencies.
+///
+/// This screen allows the user to select two currencies, enter an amount, and
+/// see the converted amount.
 class ExchangeScreen extends StatefulWidget {
+  /// Creates an [ExchangeScreen] object.
   const ExchangeScreen({
     super.key,
     this.initialFromCurrency,
@@ -23,8 +29,13 @@ class ExchangeScreen extends StatefulWidget {
     this.initialAmount,
   });
 
+  /// The initial currency to convert from.
   final String? initialFromCurrency;
+
+  /// The initial currency to convert to.
   final String? initialToCurrency;
+
+  /// The initial amount to convert.
   final double? initialAmount;
 
   @override
@@ -57,6 +68,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     }
   }
 
+  /// Whether the exchange button should be enabled.
   bool get isExchangeEnabled {
     final fromAmount = double.tryParse(_fromAmountController.text) ?? 0;
     final toAmount = double.tryParse(_toAmountController.text) ?? 0;
@@ -71,6 +83,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     super.dispose();
   }
 
+  /// Shows a dialog for selecting a currency.
   void _showCurrencySelector(BuildContext context, bool isFromCurrency) {
     final bloc = context.read<SearchBloc>();
     final state = bloc.state;
@@ -97,12 +110,14 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     );
   }
 
+  /// Swaps the \"from\" and \"to\" currencies with an animation.
   Future<void> _swapCurrencies(BuildContext context) async {
     await _swapAnimationController.forward();
     if (context.mounted) context.read<SearchBloc>().add(SwapCurrenciesEvt());
     await _swapAnimationController.reverse();
   }
 
+  /// Updates the text of a [TextEditingController] with a formatted amount.
   void _updateController(TextEditingController controller, double? amount) {
     final newText = amount != null ? FormatterUtils.formatAmount(amount) : '';
 
@@ -125,29 +140,44 @@ class _ExchangeScreenState extends State<ExchangeScreen>
             widget.initialToCurrency,
           ),
         ),
+      child: LoaderOverlay(
+        child: BAScaffold(
+          appBar: BAAppBar(
+            title: S.current.searchExchangeTitle,
+            titleColor: context.colorScheme.scrim,
+            alignment: BAAppBarAlignment.left,
+            iconColor: context.colorScheme.scrim,
+          ),
+          body: BlocConsumer<SearchBloc, SearchState>(
+            listenWhen: (prev, curr) =>
+                prev.status != curr.status ||
+                prev.fromAmount != curr.fromAmount ||
+                prev.toAmount != curr.toAmount ||
+                prev.fromCurrency != curr.fromCurrency ||
+                prev.toCurrency != curr.toCurrency,
+            listener: (context, state) {
+              state.status.maybeWhen(
+                loading: () => context.loaderOverlay.show(),
+                success: () {
+                  if (context.mounted) context.loaderOverlay.hide();
+                },
+                failure: () {
+                  if (context.mounted) context.loaderOverlay.hide();
+                },
+                orElse: () {
+                  if (context.mounted) context.loaderOverlay.hide();
+                },
+              );
 
-      child: BAScaffold(
-        appBar: BAAppBar(
-          title: S.current.searchExchangeTitle,
-          titleColor: context.colorScheme.scrim,
-          alignment: BAAppBarAlignment.left,
-          iconColor: context.colorScheme.scrim,
-        ),
-        body: BlocListener<SearchBloc, SearchState>(
-          listenWhen: (prev, curr) =>
-              prev.fromAmount != curr.fromAmount ||
-              prev.toAmount != curr.toAmount ||
-              prev.fromCurrency != curr.fromCurrency ||
-              prev.toCurrency != curr.toCurrency,
-          listener: (context, state) {
-            _updateController(_fromAmountController, state.fromAmount);
-            _updateController(_toAmountController, state.toAmount);
+              // Update the text controllers with the new amounts.
+              _updateController(_fromAmountController, state.fromAmount);
+              _updateController(_toAmountController, state.toAmount);
 
-            if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
-              _showOfflineWarning(context);
-            }
-          },
-          child: BlocBuilder<SearchBloc, SearchState>(
+              // Show a warning if the exchange rate is stale.
+              if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
+                _showOfflineWarning(context);
+              }
+            },
             builder: (context, state) {
               return GestureDetector(
                 onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -157,6 +187,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                     children: [
                       BAAssets.exchangeMoney(),
                       const SizedBox(height: 16),
+                      // The main box for currency exchange.
                       ExchangeBox(
                         isButtonEnabled: isExchangeEnabled,
                         rateStatus: state.exchangeRateStatus,
@@ -191,12 +222,10 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                           onTap: () => _swapCurrencies(context),
                           child: AnimatedBuilder(
                             animation: _swapAnimation,
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                angle: _swapAnimation.value * math.pi,
-                                child: child,
-                              );
-                            },
+                            builder: (context, child) => Transform.rotate(
+                              angle: _swapAnimation.value * math.pi,
+                              child: child,
+                            ),
                             child: BAAssets.swap(),
                           ),
                         ),
@@ -217,6 +246,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     );
   }
 
+  /// Shows a snackbar to warn the user that they are using an offline exchange rate.
   void _showOfflineWarning(BuildContext context) {
     if (!context.mounted) return;
 

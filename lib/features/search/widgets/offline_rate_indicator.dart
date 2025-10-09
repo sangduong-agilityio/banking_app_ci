@@ -5,8 +5,12 @@ import 'package:banking_app/core/utils/formatters.dart';
 import 'package:banking_app/features/search/states/search_state.dart';
 import 'package:flutter/material.dart';
 
+/// A widget that indicates the status of an exchange rate (live, offline, or no data).
 class OfflineRateIndicator extends StatelessWidget {
+  /// The status of the exchange rate.
   final ExchangeRateStatus status;
+
+  /// The timestamp when the exchange rate was last updated.
   final DateTime? lastUpdate;
 
   const OfflineRateIndicator({
@@ -46,9 +50,9 @@ class OfflineRateIndicator extends StatelessWidget {
       margin: const EdgeInsets.only(top: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withAlpha(20),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withAlpha(100), width: 1.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
