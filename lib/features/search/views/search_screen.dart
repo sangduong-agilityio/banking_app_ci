@@ -9,6 +9,10 @@ import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+/// A screen that displays a list of search categories.
+///
+/// This screen shows a list of categories that the user can search for, such as
+/// branches, interest rates, and exchange rates.
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 

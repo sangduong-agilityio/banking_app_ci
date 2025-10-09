@@ -138,8 +138,17 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
-  /// Fetch exchange rate when user changes
-  /// "from currency" or "to currency"
+  /// Fetches the exchange rate when the user changes the \"from\" or \"to\" currency.
+  ///
+  /// This method first checks if the selected currencies are the same, in which case
+  /// the exchange rate is set to 1.0. Otherwise, it attempts to fetch the exchange
+  /// rate from the repository.
+  ///
+  /// If the fetch is successful, the new rate is cached using the `OfflineExchangeService`.
+  /// If the fetch fails, the method checks for a cached rate in the `OfflineExchangeService`.
+  ///
+  /// The status of the exchange rate (fresh, stale, or no data) is also determined
+  /// and updated in the state.
   Future<void> _onExchangeRateChanged(
     ExchangeRateChangedEvt event,
     Emitter<SearchState> emit,
@@ -165,12 +174,12 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
         amount: 1.0,
       );
 
-      final rateStatus = (repo as SearchRepositoryImplement).getRateStatus(
+      final rateStatus = repo.getRateStatus(
         event.fromCurrency,
         event.toCurrency,
       );
 
-      final lastUpdate = (repo as SearchRepositoryImplement).getLastRateUpdate(
+      final lastUpdate = repo.getLastRateUpdate(
         event.fromCurrency,
         event.toCurrency,
       );
@@ -282,6 +291,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
+  /// Start a timer to auto-refresh exchange rates every 5 minutes
   void _startAutoRefreshTimer() {
     _refreshTimer?.cancel();
     _refreshTimer = Timer.periodic(const Duration(minutes: 5), (_) {
