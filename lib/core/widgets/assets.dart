@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/assets_generated/assets.gen.dart';
@@ -1379,35 +1380,103 @@ class _BAExchangeMoneyImage extends StatelessWidget {
 ///
 /// This widget displays a circular avatar of the user's profile image.
 /// If the URL is null or empty, a fallback avatar with a person icon is displayed.
+
 class BAProfileImage extends StatelessWidget {
   /// Creates a [BAProfileImage] widget.
-  const BAProfileImage({super.key, this.url, this.size = 50});
+  const BAProfileImage({
+    super.key,
+    this.url,
+    this.filePath,
+    this.size = 50,
+    this.backgroundColor,
+    this.iconColor = Colors.white,
+  });
 
-  /// The URL of the profile image.
+  /// The URL of the profile image (for network images).
   final String? url;
+
+  /// The file path of the profile image (for local files).
+  final String? filePath;
 
   /// The size of the avatar.
   final double size;
 
+  /// Background color of the avatar.
+  final Color? backgroundColor;
+
+  /// Icon color for fallback avatar.
+  final Color iconColor;
+
   @override
   Widget build(BuildContext context) {
-    if (url == null || url?.isEmpty == true) {
-      return _fallbackAvatar();
+    // Ưu tiên xử lý URL trước
+    if (url != null && url!.isNotEmpty) {
+      // If the URL points to a local file (starts with "/" or "file://")
+      if (url!.startsWith('/') || url!.startsWith('file://')) {
+        return _buildFileImage(url!);
+      }
+
+      // Otherwise, treat it as a network image
+      return _buildNetworkImage(url!);
     }
 
+    // If no URL but a file path is provided, load the local file
+    if (filePath != null && filePath!.isNotEmpty) {
+      return _buildFileImage(filePath!);
+    }
+
+    // If neither URL nor file path is available, show fallback avatar
+    return _fallbackAvatar();
+  }
+
+  /// Builds a file image from local storage
+  Widget _buildFileImage(String path) {
+    return CircleAvatar(
+      radius: size / 2,
+      backgroundColor: backgroundColor,
+      child: ClipOval(
+        child: Image.file(
+          File(path),
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Icon(Icons.person, size: size * 0.6, color: iconColor);
+          },
+        ),
+      ),
+    );
+  }
+
+  /// Builds a network image
+  Widget _buildNetworkImage(String imageUrl) {
     return CachedNetworkImage(
-      imageUrl: url ?? '',
-      imageBuilder: (context, imageProvider) =>
-          CircleAvatar(radius: size / 2, backgroundImage: imageProvider),
+      imageUrl: imageUrl,
+      imageBuilder: (context, imageProvider) => CircleAvatar(
+        radius: size / 2,
+        backgroundColor: backgroundColor,
+        backgroundImage: imageProvider,
+      ),
+      placeholder: (context, _) => _placeholderAvatar(),
       errorWidget: (context, _, __) => _fallbackAvatar(),
     );
   }
 
-  /// Returns a fallback avatar to be displayed when the profile image is not available.
+  /// Placeholder while loading image
+  Widget _placeholderAvatar() {
+    return CircleAvatar(
+      radius: size / 2,
+      backgroundColor:
+          backgroundColor?.withAlpha(50) ?? Colors.grey.withAlpha(50),
+    );
+  }
+
+  /// Returns a fallback avatar when image is unavailable
   Widget _fallbackAvatar() {
     return CircleAvatar(
       radius: size / 2,
-      child: const Icon(Icons.person, size: 15, color: Colors.white),
+      backgroundColor: backgroundColor,
+      child: Icon(Icons.person, size: size * 0.6, color: iconColor),
     );
   }
 }

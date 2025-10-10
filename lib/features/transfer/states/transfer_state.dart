@@ -31,6 +31,7 @@ class TransferState extends Equatable {
     this.selectedBank,
     this.selectedBranch,
     this.amount,
+    this.cardNumber,
     this.content,
     this.transactionFee = 0.0,
     this.saveToDirectory = false,
@@ -47,6 +48,8 @@ class TransferState extends Equatable {
     this.isOtpVerified = false,
     this.otpSent = false,
     this.errorMessage,
+    this.clearName = false,
+    this.clearAvatar = false,
   });
 
   final TransferStatus status;
@@ -75,6 +78,7 @@ class TransferState extends Equatable {
   final List<BeneficiaryModel> viaCardBeneficiaries;
   final String? avatarUrl;
   final String? name;
+  final String? cardNumber;
   final AuthMethod? authMethod;
   final bool biometricAvailable;
   final bool biometricEnabled;
@@ -82,6 +86,8 @@ class TransferState extends Equatable {
   final bool isOtpVerified;
   final bool otpSent;
   final String? errorMessage;
+  final bool clearName;
+  final bool clearAvatar;
 
   TransferState copyWith({
     TransferStatus? status,
@@ -102,6 +108,7 @@ class TransferState extends Equatable {
     String? content,
     String? avatarUrl,
     String? name,
+    String? cardNumber,
     double? transactionFee,
     bool? saveToDirectory,
     String? errorMessage,
@@ -119,6 +126,8 @@ class TransferState extends Equatable {
     bool? biometricAuthenticated,
     bool? isOtpVerified,
     bool? otpSent,
+    bool? clearName,
+    bool? clearAvatar,
   }) {
     return TransferState(
       status: status ?? this.status,
@@ -160,6 +169,9 @@ class TransferState extends Equatable {
           biometricAuthenticated ?? this.biometricAuthenticated,
       isOtpVerified: isOtpVerified ?? this.isOtpVerified,
       otpSent: otpSent ?? this.otpSent,
+      clearName: clearName ?? this.clearName,
+      clearAvatar: clearAvatar ?? this.clearAvatar,
+      cardNumber: cardNumber ?? this.cardNumber,
     );
   }
 
@@ -167,6 +179,7 @@ class TransferState extends Equatable {
   List<Object?> get props => [
     status,
     accounts,
+    cardNumber,
     cards,
     beneficiaries,
     newBeneficiary,
@@ -198,6 +211,8 @@ class TransferState extends Equatable {
     biometricAuthenticated,
     isOtpVerified,
     otpSent,
+    clearName,
+    clearAvatar,
   ];
 
   /// Whether the user can use biometrics for authentication.

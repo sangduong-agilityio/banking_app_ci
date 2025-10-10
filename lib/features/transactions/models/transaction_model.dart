@@ -11,7 +11,15 @@ enum TransferType { cardNumber, sameBank, otherBank }
 
 enum TransactionCategory { electric, water, internet }
 
-enum TransactionDisplayType { transfer, electric, water, internet }
+enum TransactionDisplayType {
+  transfer,
+  cardNumber,
+  sameBank,
+  otherBank,
+  electric,
+  water,
+  internet,
+}
 
 @freezed
 class TransactionModel with _$TransactionModel {
@@ -38,7 +46,6 @@ class TransactionModel with _$TransactionModel {
       _$TransactionModelFromJson(json);
 }
 
-/// Extension cho TransferType
 extension TransferTypeExtension on TransferType {
   String get label {
     switch (this) {
@@ -50,9 +57,19 @@ extension TransferTypeExtension on TransferType {
         return 'Other Bank';
     }
   }
+
+  IconData get icon {
+    switch (this) {
+      case TransferType.cardNumber:
+        return Icons.credit_card;
+      case TransferType.sameBank:
+        return Icons.account_balance;
+      case TransferType.otherBank:
+        return Icons.public;
+    }
+  }
 }
 
-/// Extension on TransactionCategory to provide UI properties
 extension TransactionCategoryExtension on TransactionCategory {
   Color get color {
     switch (this) {
@@ -65,7 +82,6 @@ extension TransactionCategoryExtension on TransactionCategory {
     }
   }
 
-  /// Icon widget for category
   Widget get iconWidget {
     switch (this) {
       case TransactionCategory.electric:
@@ -77,7 +93,6 @@ extension TransactionCategoryExtension on TransactionCategory {
     }
   }
 
-  /// Label for category
   String get label {
     switch (this) {
       case TransactionCategory.electric:
@@ -90,10 +105,12 @@ extension TransactionCategoryExtension on TransactionCategory {
   }
 }
 
-/// Extension on TransactionDisplayType to provide UI properties
 extension TransactionDisplayTypeExtension on TransactionDisplayType {
   Color get color {
     switch (this) {
+      case TransactionDisplayType.cardNumber:
+      case TransactionDisplayType.sameBank:
+      case TransactionDisplayType.otherBank:
       case TransactionDisplayType.transfer:
         return const Color(0xFFFF4267);
       case TransactionDisplayType.electric:
@@ -105,9 +122,14 @@ extension TransactionDisplayTypeExtension on TransactionDisplayType {
     }
   }
 
-  /// Icon widget for display type
   Widget get iconWidget {
     switch (this) {
+      case TransactionDisplayType.cardNumber:
+        return BAAssets.transferMoneyBill();
+      case TransactionDisplayType.sameBank:
+        return BAAssets.transferMoneyBill();
+      case TransactionDisplayType.otherBank:
+        return BAAssets.transferMoneyBill();
       case TransactionDisplayType.transfer:
         return BAAssets.transferMoneyBill();
       case TransactionDisplayType.electric:
@@ -119,9 +141,14 @@ extension TransactionDisplayTypeExtension on TransactionDisplayType {
     }
   }
 
-  /// Label for display type
   String get label {
     switch (this) {
+      case TransactionDisplayType.cardNumber:
+        return 'Transfer: Via Card Number';
+      case TransactionDisplayType.sameBank:
+        return 'Transfer: Same Bank';
+      case TransactionDisplayType.otherBank:
+        return 'Transfer: Other Bank';
       case TransactionDisplayType.transfer:
         return 'Transfer';
       case TransactionDisplayType.electric:
@@ -134,7 +161,6 @@ extension TransactionDisplayTypeExtension on TransactionDisplayType {
   }
 }
 
-/// Extension on TransactionModel to provide computed properties for UI
 extension TransactionModelExtension on TransactionModel {
   TransactionDisplayType get displayType {
     if (category != null) {
@@ -148,7 +174,14 @@ extension TransactionModelExtension on TransactionModel {
       }
     }
 
-    return TransactionDisplayType.transfer;
+    switch (type) {
+      case TransferType.cardNumber:
+        return TransactionDisplayType.cardNumber;
+      case TransferType.sameBank:
+        return TransactionDisplayType.sameBank;
+      case TransferType.otherBank:
+        return TransactionDisplayType.otherBank;
+    }
   }
 
   Color get displayColor => displayType.color;
@@ -158,11 +191,17 @@ extension TransactionModelExtension on TransactionModel {
   String get displayTitle => displayType.label;
 
   String get displaySubtitle {
-    if (displayType == TransactionDisplayType.transfer) {
-      return type.label;
+    if (isTransfer) {
+      if (recipientName != null && recipientName!.isNotEmpty) {
+        return recipientName!;
+      } else if (recipientAccount != null && recipientAccount!.isNotEmpty) {
+        return recipientAccount!;
+      } else {
+        return type.label;
+      }
     }
 
-    return description ?? recipientName ?? recipientAccount ?? '';
+    return description ?? '';
   }
 
   bool get isTransfer => category == null;

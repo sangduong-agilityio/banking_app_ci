@@ -10,6 +10,7 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
+import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/features/setting/models/user_model.dart';
 import 'package:banking_app/features/setting/states/setting_cubit.dart';
@@ -93,7 +94,13 @@ class SettingContent extends StatelessWidget {
                     const SizedBox(height: 20),
                     SettingSelection(
                       title: S.current.settingPasswordTitle,
-                      onTap: () {},
+                      textColor: context.colorScheme.inverseSurface,
+                      onTap: () {
+                        BASnackBar.showNotSupported(
+                          context,
+                          S.current.pageNotSupportedYet,
+                        );
+                      },
                     ),
                     SettingSelection(
                       title: biometricCapability.settingsLabel,
@@ -107,16 +114,34 @@ class SettingContent extends StatelessWidget {
                     ),
                     SettingSelection(
                       title: S.current.settingLanguaguesTitle,
-                      onTap: () {},
+                      textColor: context.colorScheme.inverseSurface,
+                      onTap: () {
+                        BASnackBar.showNotSupported(
+                          context,
+                          S.current.pageNotSupportedYet,
+                        );
+                      },
                     ),
                     SettingSelection(
                       title: S.current.settingAppInformationTitle,
-                      onTap: () {},
+                      textColor: context.colorScheme.inverseSurface,
+                      onTap: () {
+                        BASnackBar.showNotSupported(
+                          context,
+                          S.current.pageNotSupportedYet,
+                        );
+                      },
                     ),
                     SettingSelection(
                       title: S.current.settingCustomerCareTitle,
                       subtitle: '19008989',
-                      onTap: () {},
+                      textColor: context.colorScheme.inverseSurface,
+                      onTap: () {
+                        BASnackBar.showNotSupported(
+                          context,
+                          S.current.pageNotSupportedYet,
+                        );
+                      },
                     ),
                     SettingSelection(
                       title: S.current.settingLogoutTitle,

@@ -1,6 +1,7 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
@@ -189,13 +190,11 @@ class BeneficiaryAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasAvatar = avatarUrl != null && avatarUrl!.isNotEmpty;
-    return CircleAvatar(
-      radius: 30,
-      backgroundImage: hasAvatar ? NetworkImage(avatarUrl!) : null,
-      child: hasAvatar
-          ? null
-          : Icon(Icons.person, color: context.colorScheme.onPrimary),
+    return BAProfileImage(
+      url: avatarUrl,
+      size: 60,
+      backgroundColor: context.colorScheme.outlineVariant,
+      iconColor: context.colorScheme.onPrimary,
     );
   }
 }

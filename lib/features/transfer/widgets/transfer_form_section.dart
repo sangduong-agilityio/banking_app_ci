@@ -284,12 +284,21 @@ class _TransferFormSectionState extends State<TransferFormSection> {
         inputFormatters: [
           FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
         ],
-        validator: (v) => SecureInputValidator.validateTransferAmount(
-          v,
-          maxBalance:
-              state.selectedAccount?.availableBalance ??
-              state.selectedCard?.availableBalance,
-        ),
+        validator: (v) {
+          final double? maxBalance;
+          if (state.selectedAccount != null) {
+            maxBalance = state.selectedAccount?.availableBalance;
+          } else if (state.selectedCard != null) {
+            maxBalance = state.selectedCard!.availableBalance;
+          } else {
+            maxBalance = 0;
+          }
+
+          return SecureInputValidator.validateTransferAmount(
+            v,
+            maxBalance: maxBalance,
+          );
+        },
         onChanged: (v) {
           final amount = double.tryParse(v ?? '');
           if (amount != null) {
@@ -301,6 +310,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           }
         },
       ),
+
       const SizedBox(height: 24),
       BATextField(
         name: S.current.transferContentLabel,
@@ -319,17 +329,24 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           UpdateTransferDetailsEvt(content: value),
         ),
       ),
-      if (_amountController.text.isNotEmpty)
-        Padding(
-          padding: const EdgeInsets.only(left: 14, top: 8),
-          child: Text(
-            CurrencyUtils.convertAmountToWords(_amountController.text),
-            style: context.bodySmall?.copyWith(
-              color: context.colorScheme.secondary,
-              fontWeight: FontWeight.w600,
+      ValueListenableBuilder<TextEditingValue>(
+        valueListenable: _amountController,
+        builder: (context, value, _) {
+          final text = value.text.trim();
+          if (text.isEmpty) return const SizedBox.shrink();
+
+          return Padding(
+            padding: const EdgeInsets.only(left: 14, top: 8),
+            child: Text(
+              CurrencyUtils.convertAmountToWords(text),
+              style: context.bodySmall?.copyWith(
+                color: context.colorScheme.secondary,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-        ),
+          );
+        },
+      ),
     ];
   }
 

@@ -13,6 +13,7 @@ class SettingSelection extends StatelessWidget {
     this.isEnabled,
     this.onToggle,
     this.padding,
+    this.textColor,
   });
 
   final String title;
@@ -21,6 +22,7 @@ class SettingSelection extends StatelessWidget {
   final bool? isEnabled;
   final ValueChanged<bool>? onToggle;
   final EdgeInsetsGeometry? padding;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,10 @@ class SettingSelection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: context.titleMedium),
+              Text(
+                title,
+                style: context.titleMedium?.copyWith(color: textColor),
+              ),
               if (hasSwitch)
                 Switch(
                   value: isEnabled ?? false,

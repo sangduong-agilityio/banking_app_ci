@@ -41,6 +41,7 @@ class TransferRepositoryImpl implements TransferRepository {
 
   TransferRepositoryImpl({required SupabaseClient client}) : _client = client;
 
+  /// Fetches the list of accounts for the current user from Supabase.
   @override
   Future<List<AccountModel>> fetchAccounts() async {
     final currentUser = _client.auth.currentUser;
@@ -53,6 +54,7 @@ class TransferRepositoryImpl implements TransferRepository {
         .toList();
   }
 
+  /// Fetches the list of cards for the current user from Supabase.
   @override
   Future<List<CardModel>> fetchCards() async {
     final currentUser = _client.auth.currentUser;
@@ -65,6 +67,7 @@ class TransferRepositoryImpl implements TransferRepository {
         .toList();
   }
 
+  /// Fetches the list of beneficiaries for the current user from Supabase.
   @override
   Future<List<BeneficiaryModel>> fetchBeneficiaries() async {
     final currentUser = _client.auth.currentUser;
@@ -77,6 +80,7 @@ class TransferRepositoryImpl implements TransferRepository {
         .toList();
   }
 
+  /// Fetches the list of banks from Supabase.
   @override
   Future<List<BankModel>> fetchBanks() async {
     final response = await _client.from('banks').select();
@@ -85,6 +89,7 @@ class TransferRepositoryImpl implements TransferRepository {
         .toList();
   }
 
+  /// Fetches the list of branches from Supabase.
   @override
   Future<List<BranchModel>> fetchBranches() async {
     final response = await _client.from('branches').select();
@@ -93,6 +98,7 @@ class TransferRepositoryImpl implements TransferRepository {
         .toList();
   }
 
+  /// Fetches the transaction history for the current user from Supabase.
   @override
   Future<List<TransactionModel>> fetchTransactionHistory() async {
     final currentUser = _client.auth.currentUser;
@@ -106,6 +112,7 @@ class TransferRepositoryImpl implements TransferRepository {
         .toList();
   }
 
+  /// Adds a new beneficiary for the current user in Supabase.
   @override
   Future<BeneficiaryModel> addNewBeneficiary(
     BeneficiaryModel beneficiary,
@@ -126,6 +133,7 @@ class TransferRepositoryImpl implements TransferRepository {
     return BeneficiaryModel.fromJson(insert);
   }
 
+  /// Calculates the transfer fee based on the transfer type and amount.
   @override
   Future<TransferFee> calculateFee(TransferModel request) async {
     double feePercentage = request.transferType == TransferType.otherBank
@@ -136,6 +144,7 @@ class TransferRepositoryImpl implements TransferRepository {
     return TransferFee(amount: request.amount ?? 0.0, fee: fee, total: total);
   }
 
+  /// Sends an OTP email for transfer authorization.
   @override
   Future<void> sendOtpEmail(String transferId) async {
     final currentUser = _client.auth.currentUser;
@@ -166,6 +175,7 @@ class TransferRepositoryImpl implements TransferRepository {
     }
   }
 
+  /// Initiates a transfer by creating a transfer record in Supabase.
   @override
   Future<TransferResult> initiateTransfer(TransferModel request) async {
     final currentUser = _client.auth.currentUser;
@@ -199,6 +209,7 @@ class TransferRepositoryImpl implements TransferRepository {
     );
   }
 
+  /// Verifies the provided OTP code for the given transfer ID.
   @override
   Future<bool> verifyOTP(String transferId, String otpCode) async {
     try {
@@ -225,31 +236,41 @@ class TransferRepositoryImpl implements TransferRepository {
       }
       return false;
     } catch (e) {
-      throw const InvalidOtpException();
+      print('Error verifying OTP: $e');
+      return false;
     }
   }
 
   /// Confirms a transfer after OTP or biometric verification.
   @override
   Future<bool> confirmTransfer(String transferId, String otpCode) async {
-    final success = await _verifyTransferAuthorization(transferId, otpCode);
+    try {
+      final success = await _verifyTransferAuthorization(transferId, otpCode);
 
-    await _updateTransferStatus(transferId, success);
+      if (!success) {
+        await _updateTransferStatus(transferId, false);
+        return false;
+      }
 
-    if (success) {
       final transfer = await _fetchTransferDetails(transferId);
       final transactionId = await _createTransaction(transfer);
       await _linkTransactionToTransfer(transferId, transactionId);
       await _updateBalance(transfer);
-    }
 
-    return success;
+      await _updateTransferStatus(transferId, true);
+
+      return true;
+    } catch (e) {
+      await _updateTransferStatus(transferId, false);
+      return false;
+    }
   }
 
   Future<bool> _verifyTransferAuthorization(
     String transferId,
     String otpCode,
   ) async {
+    // Biometric authentication
     if (otpCode == _biometricAuth) return true;
 
     // Check transfer method
@@ -260,19 +281,22 @@ class TransferRepositoryImpl implements TransferRepository {
         .maybeSingle();
 
     final method = transfer?['authMethod'] as String?;
+
     if (method == 'card' || method == 'internal') {
       return true;
     }
 
-    // OTP validation
-    final otpValid = await _client
+    // OTP verification
+    final otpRecord = await _client
         .from('transfer_otps')
         .select()
         .eq('transferId', transferId)
+        .eq('otpCode', otpCode)
         .eq('isUsed', true)
+        .gte('expiresAt', DateTime.now().toIso8601String())
         .maybeSingle();
 
-    return otpValid != null;
+    return otpRecord != null;
   }
 
   Future<void> _updateTransferStatus(String transferId, bool success) async {
@@ -288,22 +312,26 @@ class TransferRepositoryImpl implements TransferRepository {
   Future<Map<String, dynamic>> _fetchTransferDetails(String transferId) async {
     return await _client
         .from('transfers')
-        .select('fromAccountId, fromCardId, amount, transactionFee')
+        .select(
+          'fromAccountId, fromCardId, amount, transactionFee, transferType',
+        )
         .eq('id', transferId)
         .single();
   }
 
+  /// Creates a transaction record for the transfer in Supabase.
   Future<String> _createTransaction(Map<String, dynamic> transfer) async {
     final currentUser = _client.auth.currentUser;
     final double amount = ((transfer['amount'] ?? 0) as num).toDouble();
     final double fee = ((transfer['transactionFee'] ?? 0) as num).toDouble();
     final double total = double.parse((amount + fee).toStringAsFixed(2));
+    final transferType = transfer['transferType'] ?? 'transfer';
 
     final insertedTx = await _client
         .from('transactions')
         .insert({
           'userId': currentUser?.id,
-          'type': 'transfer',
+          'type': transferType,
           'amount': -total,
           'status': _statusCompleted,
           'referenceNumber': DateTime.now().millisecondsSinceEpoch.toString(),
@@ -316,6 +344,7 @@ class TransferRepositoryImpl implements TransferRepository {
     return insertedTx['id'] as String;
   }
 
+  /// Links the transaction ID to the transfer record in Supabase.
   Future<void> _linkTransactionToTransfer(
     String transferId,
     String transactionId,
@@ -326,6 +355,7 @@ class TransferRepositoryImpl implements TransferRepository {
         .eq('id', transferId);
   }
 
+  /// Updates the balance of the source account or card after a successful transfer.
   Future<void> _updateBalance(Map<String, dynamic> transfer) async {
     final double amount = ((transfer['amount'] ?? 0) as num).toDouble();
     final double fee = ((transfer['transactionFee'] ?? 0) as num).toDouble();
@@ -333,6 +363,7 @@ class TransferRepositoryImpl implements TransferRepository {
 
     if (transfer['fromAccountId'] != null) {
       final accountId = transfer['fromAccountId'] as String;
+
       final acc = await _client
           .from('accounts')
           .select('availableBalance')
@@ -348,6 +379,7 @@ class TransferRepositoryImpl implements TransferRepository {
           .eq('id', accountId);
     } else if (transfer['fromCardId'] != null) {
       final cardId = transfer['fromCardId'] as String;
+
       final card = await _client
           .from('cards')
           .select('availableBalance')
@@ -357,12 +389,14 @@ class TransferRepositoryImpl implements TransferRepository {
       final available = (card['availableBalance'] as num).toDouble();
       final newBalance = double.parse((available - total).toStringAsFixed(2));
 
-      await _client.from('cards').update({'availableBalance': newBalance});
+      await _client
+          .from('cards')
+          .update({'availableBalance': newBalance})
+          .eq('id', cardId);
     }
   }
 
   /// Verifies if the source account or card has sufficient balance for the transfer.
-  /// Throws an [Exception] if the balance is insufficient or the transfer source is invalid.
   Future<void> _verifySourceBalance(TransferModel request) async {
     final double amount = (request.amount ?? 0) + (request.transactionFee ?? 0);
     if ((request.fromAccount?.id == null && request.fromCard?.id == null) ||
@@ -374,7 +408,7 @@ class TransferRepositoryImpl implements TransferRepository {
       final acc = await _client
           .from('accounts')
           .select('availableBalance')
-          .eq('id', request.fromAccount!.id)
+          .eq('id', request.fromAccount?.id ?? 0)
           .single();
       final available = (acc['availableBalance'] as num).toDouble();
       if (available < amount) {
@@ -384,7 +418,7 @@ class TransferRepositoryImpl implements TransferRepository {
       final card = await _client
           .from('cards')
           .select('availableBalance')
-          .eq('id', request.fromCard!.id)
+          .eq('id', request.fromCard?.id ?? 0)
           .single();
       final available = (card['availableBalance'] as num).toDouble();
       if (available < amount) {

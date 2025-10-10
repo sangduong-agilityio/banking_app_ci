@@ -218,14 +218,11 @@ class BeneficiaryTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          leading: CircleAvatar(
-            radius: 24,
-            backgroundImage: (beneficiary.avatarUrl?.isNotEmpty ?? false)
-                ? NetworkImage(beneficiary.avatarUrl!)
-                : null,
-            child: (beneficiary.avatarUrl?.isEmpty ?? true)
-                ? Icon(Icons.person, color: context.colorScheme.onPrimary)
-                : null,
+          leading: BAProfileImage(
+            url: beneficiary.avatarUrl,
+            size: 60,
+            backgroundColor: context.colorScheme.outlineVariant,
+            iconColor: context.colorScheme.onPrimary,
           ),
           title: Text(
             beneficiary.name,

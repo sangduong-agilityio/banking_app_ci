@@ -155,7 +155,8 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) {
     emit(state.copyWith(selectedTransferType: event.transferType));
-    _recalculateFeeIfNeeded();
+
+    _filterBeneficiaries(emit);
   }
 
   /// Handles the selection of a beneficiary.
@@ -195,12 +196,20 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     );
 
     if (result != null) {
+      final updatedBeneficiaries = [...state.beneficiaries, result];
+
       emit(
         state.copyWith(
           status: const TransferStatus.success(),
           newBeneficiary: result,
+          beneficiaries: updatedBeneficiaries,
+          filteredBeneficiaries: updatedBeneficiaries,
+          clearName: true,
+          clearAvatar: true,
         ),
       );
+
+      _filterBeneficiaries(emit);
     } else {
       emit(
         state.copyWith(
@@ -224,6 +233,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
         selectedBank: event.bank ?? state.selectedBank,
         selectedBranch: event.branch ?? state.selectedBranch,
         name: event.name ?? state.name,
+        cardNumber: event.cardNumber ?? state.cardNumber,
         avatarUrl: event.avatarUrl ?? state.avatarUrl,
       ),
     );
@@ -437,14 +447,14 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
           event.otpCode,
         );
 
-        if (isValid) {
-          return await transferRepo.confirmTransfer(
-            state.transferId ?? '',
-            event.otpCode,
-          );
-        } else {
-          throw Exception('Invalid OTP code');
+        if (!isValid) {
+          throw const InvalidOtpException();
         }
+
+        return await transferRepo.confirmTransfer(
+          state.transferId ?? '',
+          event.otpCode,
+        );
       },
       'confirm_transfer_with_otp',
       {'transfer_id': state.transferId, 'has_otp': event.otpCode.isNotEmpty},
@@ -484,34 +494,63 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    final result = await executeWithErrorHandling(
-      confirmation,
-      operationName: operationName,
-      isCritical: true,
-      context: context,
-    );
-
-    if (result != null && result == true) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.success(),
-          otpSent: false,
-          errorMessage: null,
-        ),
+    try {
+      final result = await executeWithErrorHandling(
+        confirmation,
+        operationName: operationName,
+        isCritical: true,
+        context: context,
       );
-    } else {
-      String mapTransferError(Object? error) => switch (error) {
-        InvalidOtpException e => e.message,
-        InsufficientFundsException e => e.message,
-        InvalidTransferSourceException e => e.message,
-        UserNotLoggedInException e => e.message,
-        _ => 'Transfer confirmation failed',
-      };
 
+      if (result != null && result == true) {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.success(),
+            otpSent: false,
+            errorMessage: null,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.failure(),
+            errorMessage: 'Transfer confirmation failed',
+          ),
+        );
+      }
+    } on InvalidOtpException catch (e) {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: mapTransferError(result),
+          errorMessage: e.message,
+        ),
+      );
+    } on InsufficientFundsException catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: e.message,
+        ),
+      );
+    } on InvalidTransferSourceException catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: e.message,
+        ),
+      );
+    } on UserNotLoggedInException catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: e.message,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: 'Transfer confirmation failed: ${e.toString()}',
         ),
       );
     }
