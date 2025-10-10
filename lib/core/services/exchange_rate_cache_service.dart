@@ -50,8 +50,7 @@ class ExchangeRateCacheService {
           .toList();
       _exchangeRateBox.putMany(entities);
     } catch (e) {
-      // Handle any errors during caching
-      print('Error caching exchange rates: $e');
+      rethrow;
     }
   }
 

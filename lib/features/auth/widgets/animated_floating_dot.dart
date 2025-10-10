@@ -11,7 +11,46 @@ class AnimatedDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dots = [
+    final dots = _getDots(context);
+
+    return Center(
+      child: SizedBox(
+        height: 200,
+        child: Stack(
+          children: [
+            // The central image.
+            Center(
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: context.colorScheme.onSurfaceVariant,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(child: BAAssets.lockDriver()),
+              ),
+            ),
+            // The animated floating dots.
+            ...dots.map(
+              (config) => AnimatedFloatingDot(
+                key: ValueKey(config.delay),
+                color: config.color,
+                size: config.size,
+                left: config.left,
+                right: config.right,
+                top: config.top,
+                bottom: config.bottom,
+                delay: config.delay,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<DotConfig> _getDots(BuildContext context) {
+    return [
       DotConfig(
         color: context.colorScheme.secondary,
         size: 10,
@@ -48,40 +87,6 @@ class AnimatedDot extends StatelessWidget {
         delay: 1000,
       ),
     ];
-
-    return Center(
-      child: SizedBox(
-        height: 200,
-        child: Stack(
-          children: [
-            // The central image.
-            Center(
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: context.colorScheme.onSurfaceVariant,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(child: BAAssets.lockDriver()),
-              ),
-            ),
-            // The animated floating dots.
-            ...dots.map(
-              (config) => AnimatedFloatingDot(
-                color: config.color,
-                size: config.size,
-                left: config.left,
-                right: config.right,
-                top: config.top,
-                bottom: config.bottom,
-                delay: config.delay,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 

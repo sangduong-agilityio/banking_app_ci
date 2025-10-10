@@ -108,9 +108,7 @@ class BankingApiClient {
       final isValid = fingerprint == expectedFingerprint;
 
       if (!isValid) {
-        print(
-          'SECURITY_ERROR: SSL certificate fingerprint mismatch for host: $host',
-        );
+
 
         ErrorSanitizer.logSecureError(
           Exception('Certificate pinning failed for host: $host'),
@@ -163,15 +161,7 @@ class BankingApiClient {
 
   /// Logs certificate information for debugging.
   void _logCertificateInfo(X509Certificate cert, String host) {
-    try {
-      final fingerprint = _getCertificateFingerprint(cert);
-      print('CERT_DEBUG: Host: $host, Fingerprint: $fingerprint');
-      print('CERT_DEBUG: Subject: ${cert.subject}');
-      print('CERT_DEBUG: Issuer: ${cert.issuer}');
-      print('CERT_DEBUG: Valid from: ${cert.startValidity}');
-    } catch (e) {
-      print('CERT_DEBUG: Error logging certificate info: $e');
-    }
+
   }
 }
 
@@ -180,21 +170,15 @@ class _SecurityInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.headers.addAll(SecurityConfig.securityHeaders);
-    print('API_REQUEST: ${options.method} ${options.path}');
+
     super.onRequest(options, handler);
   }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print(
-      'API_RESPONSE: ${response.statusCode} ${response.requestOptions.path}',
-    );
-    super.onResponse(response, handler);
-  }
+
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    print('API_ERROR: ${err.type} ${err.requestOptions.path} - ${err.message}');
+
 
     if (_shouldLogToSentry(err)) {
       await ErrorSanitizer.logSecureError(

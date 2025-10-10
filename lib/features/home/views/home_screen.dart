@@ -152,10 +152,10 @@ class HomeActionsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        if (state.status is HomeStatusLoading) {
+    return BlocSelector<HomeCubit, HomeState, HomeStatus>(
+      selector: (state) => state.status,
+      builder: (context, status) {
+        if (status is HomeStatusLoading) {
           return const BAGridSkeleton();
         }
         return const ListViewActions();

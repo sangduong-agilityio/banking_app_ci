@@ -209,23 +209,30 @@ class CreditCardsSwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TransactionReportBloc, TransactionReportState>(
-      builder: (context, state) {
+    return BlocSelector<
+      TransactionReportBloc,
+      TransactionReportState,
+      (List<CardModel>, bool)
+    >(
+      selector: (state) => (state.cards, state.shouldPlayAnimation),
+      builder: (context, data) {
+        final (cards, shouldPlayAnimation) = data;
+
         return CardsSwiperWidget<CardModel>(
-          cardData: state.cards,
+          cardData: cards,
           onCardChange: (index) {
             context.read<TransactionReportBloc>().add(
-                  ChangeCardIndexEvt(index),
-                );
+              ChangeCardIndexEvt(index),
+            );
           },
-          shouldStartCardCollectionAnimation: state.shouldPlayAnimation,
+          shouldStartCardCollectionAnimation: shouldPlayAnimation,
           onCardCollectionAnimationComplete: (value) {
             context.read<TransactionReportBloc>().add(
-                  SetAnimationStatusEvt(value),
-                );
+              SetAnimationStatusEvt(value),
+            );
           },
           cardBuilder: (context, index, visibleIndex) {
-            final card = state.cards[index];
+            final card = cards[index];
             return SwipeableCreditCard(
               key: ValueKey<int>(index),
               data: card,
@@ -306,7 +313,7 @@ class BalanceHistoryChart extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(12),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),

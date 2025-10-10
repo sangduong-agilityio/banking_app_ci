@@ -20,71 +20,75 @@ class ListViewActions extends StatelessWidget {
       crossAxisCount: 3,
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
-      children: [
-        CardAction(
-          icon: BAAssets.wallet(),
-          title: S.current.homeAccountAndCardTitle,
-          onTap: () {
-            context.goNamed(BAPaths.account.name);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.syncDevices(),
-          title: S.current.homeTransferTitle,
-          onTap: () {
-            context.goNamed(BAPaths.transfer.name);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.creditCardIn(),
-          title: S.current.homeWithdrawTitle,
-          onTap: () {
-            BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.mobileBanking(),
-          title: S.current.homeMobileRechargeTitle,
-          onTap: () {
-            BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.receipt(),
-          title: S.current.homePayTheBillTitle,
-          onTap: () {
-            context.goNamed(BAPaths.payBill.name);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.saveOnline(),
-          title: S.current.homeSaveOnlineTitle,
-          onTap: () {
-            BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.creditCard(),
-          title: S.current.homeCreditCardTitle,
-          onTap: () {
-            BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.fileParagraph(),
-          title: S.current.homeTransactionReportTitle,
-          onTap: () {
-            context.goNamed(BAPaths.transactionReport.name);
-          },
-        ),
-        CardAction(
-          icon: BAAssets.contacts(),
-          title: S.current.homeBeneficiaryTitle,
-          onTap: () {
-            BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
-          },
-        ),
-      ],
+      children: _getActions(context),
     );
+  }
+
+  List<CardAction> _getActions(BuildContext context) {
+    return [
+      CardAction(
+        icon: BAAssets.wallet(),
+        title: S.current.homeAccountAndCardTitle,
+        onTap: () {
+          context.goNamed(BAPaths.account.name);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.syncDevices(),
+        title: S.current.homeTransferTitle,
+        onTap: () {
+          context.goNamed(BAPaths.transfer.name);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.creditCardIn(),
+        title: S.current.homeWithdrawTitle,
+        onTap: () {
+          BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.mobileBanking(),
+        title: S.current.homeMobileRechargeTitle,
+        onTap: () {
+          BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.receipt(),
+        title: S.current.homePayTheBillTitle,
+        onTap: () {
+          context.goNamed(BAPaths.payBill.name);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.saveOnline(),
+        title: S.current.homeSaveOnlineTitle,
+        onTap: () {
+          BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.creditCard(),
+        title: S.current.homeCreditCardTitle,
+        onTap: () {
+          BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.fileParagraph(),
+        title: S.current.homeTransactionReportTitle,
+        onTap: () {
+          context.goNamed(BAPaths.transactionReport.name);
+        },
+      ),
+      CardAction(
+        icon: BAAssets.contacts(),
+        title: S.current.homeBeneficiaryTitle,
+        onTap: () {
+          BASnackBar.showNotSupported(context, S.current.pageNotSupportedYet);
+        },
+      ),
+    ];
   }
 }
