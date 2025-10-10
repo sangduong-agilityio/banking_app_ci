@@ -1424,6 +1424,16 @@ class S {
     );
   }
 
+  /// `No beneficiaries found`
+  String get transferNoBeneficiariesFoundTitle {
+    return Intl.message(
+      'No beneficiaries found',
+      name: 'transferNoBeneficiariesFoundTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Password`
   String get settingPasswordTitle {
     return Intl.message(

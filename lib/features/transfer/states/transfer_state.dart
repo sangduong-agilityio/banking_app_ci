@@ -101,6 +101,8 @@ class TransferState extends Equatable {
     CardModel? selectedCard,
     bool clearAccount = false,
     bool clearCard = false,
+    bool clearTransferType = false,
+    bool clearBeneficiary = false,
     TransferType? selectedTransferType,
     BeneficiaryModel? selectedBeneficiary,
     BeneficiaryModel? newBeneficiary,
@@ -138,12 +140,15 @@ class TransferState extends Equatable {
       banks: banks ?? this.banks,
       branches: branches ?? this.branches,
       authMethod: authMethod ?? this.authMethod,
-      selectedAccount: clearAccount
-          ? null
-          : (selectedAccount ?? this.selectedAccount),
+      selectedAccount:
+          clearAccount ? null : (selectedAccount ?? this.selectedAccount),
       selectedCard: clearCard ? null : (selectedCard ?? this.selectedCard),
-      selectedTransferType: selectedTransferType ?? this.selectedTransferType,
-      selectedBeneficiary: selectedBeneficiary ?? this.selectedBeneficiary,
+      selectedTransferType: clearTransferType
+          ? TransferType.cardNumber
+          : selectedTransferType ?? this.selectedTransferType,
+      selectedBeneficiary: clearBeneficiary
+          ? null
+          : selectedBeneficiary ?? this.selectedBeneficiary,
       amount: amount ?? this.amount,
       content: content ?? this.content,
       transactionFee: transactionFee ?? this.transactionFee,

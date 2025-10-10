@@ -463,6 +463,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Get OTP to verify transaction",
     ),
     "transferNameLabel": MessageLookupByLibrary.simpleMessage("Name"),
+    "transferNoBeneficiariesFoundTitle": MessageLookupByLibrary.simpleMessage(
+      "No beneficiaries found",
+    ),
     "transferOtpLabel": MessageLookupByLibrary.simpleMessage("OTP"),
     "transferResendButton": MessageLookupByLibrary.simpleMessage("Resend"),
     "transferSameBankTitle": MessageLookupByLibrary.simpleMessage(

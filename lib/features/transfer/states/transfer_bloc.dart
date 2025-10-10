@@ -1,3 +1,4 @@
+import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
@@ -114,38 +115,44 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
 
   void _filterBeneficiaries(Emitter<TransferState> emit) {
     final userAccount = state.selectedAccount;
-    if (userAccount == null) return;
+    final userCard = state.selectedCard;
 
-    final effectiveBeneficiaries = state.filteredBeneficiaries.isNotEmpty
-        ? state.filteredBeneficiaries
-        : state.beneficiaries;
+    if (userAccount == null && userCard == null) {
+      emit(state.copyWith(filteredBeneficiaries: state.beneficiaries));
+      return;
+    }
 
-    final viaCard = effectiveBeneficiaries
-        .where(
-          (b) => getTransferType(b, userAccount) == TransferType.cardNumber,
-        )
-        .toList();
+    List<BeneficiaryModel> filtered = List.from(state.beneficiaries);
 
-    final sameBank = effectiveBeneficiaries
-        .where((b) => getTransferType(b, userAccount) == TransferType.sameBank)
-        .toList();
+          filtered = state.beneficiaries.where((beneficiary) {
+            if (userAccount != null) {
+              return getTransferType(beneficiary, userAccount) ==
+                  state.selectedTransferType;
+            } else if (userCard != null) {
+              return beneficiary.transferType == TransferType.cardNumber;
+            }
+            return false;
+          }).toList();
+    filtered.sort((a, b) => a.name.compareTo(b.name));
 
-    final diffBank = effectiveBeneficiaries
-        .where((b) => getTransferType(b, userAccount) == TransferType.otherBank)
-        .toList();
-
-    emit(
-      state.copyWith(
-        viaCardBeneficiaries: viaCard,
-        sameBankBeneficiaries: sameBank,
-        otherBankBeneficiaries: diffBank,
-      ),
-    );
+    emit(state.copyWith(filteredBeneficiaries: filtered));
   }
 
   /// Handles the selection of a bank card."
   void _onSelectCard(SelectCardEvt event, Emitter<TransferState> emit) {
-    emit(state.copyWith(selectedCard: event.card, clearAccount: true));
+    if (state.selectedTransferType == TransferType.sameBank ||
+        state.selectedTransferType == TransferType.otherBank) {
+      emit(
+        state.copyWith(
+          selectedCard: event.card,
+          clearAccount: true,
+          selectedTransferType: TransferType.cardNumber,
+        ),
+      );
+    } else {
+      emit(state.copyWith(selectedCard: event.card, clearAccount: true));
+    }
+    _filterBeneficiaries(emit);
     _recalculateFeeIfNeeded();
   }
 
@@ -154,7 +161,12 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     SelectTransferTypeEvt event,
     Emitter<TransferState> emit,
   ) {
-    emit(state.copyWith(selectedTransferType: event.transferType));
+    emit(
+      state.copyWith(
+        selectedTransferType: event.transferType,
+        clearBeneficiary: true,
+      ),
+    );
 
     _filterBeneficiaries(emit);
   }

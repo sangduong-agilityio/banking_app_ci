@@ -36,24 +36,31 @@ class BeneficiarySelection extends StatelessWidget {
         const SizedBox(height: 8),
         SizedBox(
           height: 120,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: state.beneficiaries.length + 1,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return _AddBeneficiaryCard(banks: state.banks);
-              }
-              final beneficiary = state.beneficiaries[index - 1];
-              final isSelected =
-                  state.selectedBeneficiary?.id == beneficiary.id;
-              return _BeneficiaryCardItem(
-                beneficiary: beneficiary,
-                isSelected: isSelected,
-                onBeneficiarySelected: onBeneficiarySelected,
-              );
-            },
-          ),
+          child: state.filteredBeneficiaries.isEmpty
+              ? Center(
+                  child: Text(
+                    S.current.transferNoBeneficiariesFoundTitle,
+                    style: context.bodyMedium,
+                  ),
+                )
+              : ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.filteredBeneficiaries.length + 1,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return _AddBeneficiaryCard(banks: state.banks);
+                    }
+                    final beneficiary = state.filteredBeneficiaries[index - 1];
+                    final isSelected =
+                        state.selectedBeneficiary?.id == beneficiary.id;
+                    return _BeneficiaryCardItem(
+                      beneficiary: beneficiary,
+                      isSelected: isSelected,
+                      onBeneficiarySelected: onBeneficiarySelected,
+                    );
+                  },
+                ),
         ),
       ],
     );

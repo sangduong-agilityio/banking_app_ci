@@ -57,37 +57,47 @@ class TransactionTypeSelection extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = transactionTypes[index];
                   final isSelected = state.selectedTransferType == item.type;
+                  final isCardSelected = state.selectedCard != null;
+                  final isDisabled =
+                      (item.type == TransferType.sameBank ||
+                          item.type == TransferType.otherBank) &&
+                      isCardSelected;
 
                   return SizedBox(
                     width: 120,
                     child: TransactionCard(
                       isSelected: isSelected,
                       type: item.type,
-                      onTap: () {
-                        context.read<TransferBloc>().add(
-                          SelectTransferTypeEvt(item.type),
-                        );
-                        HapticFeedback.lightImpact();
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(
-                            item.icon,
-                            color: context.colorScheme.onPrimary,
-                            size: 28,
-                          ),
-                          const SizedBox(height: 11),
-                          Text(
-                            item.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: context.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w600,
+                      onTap: isDisabled
+                          ? null
+                          : () {
+                              context.read<TransferBloc>().add(
+                                SelectTransferTypeEvt(item.type),
+                              );
+                              HapticFeedback.lightImpact();
+                            },
+                      child: Opacity(
+                        opacity: isDisabled ? 0.5 : 1.0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              item.icon,
                               color: context.colorScheme.onPrimary,
+                              size: 28,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 11),
+                            Text(
+                              item.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: context.bodySmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: context.colorScheme.onPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

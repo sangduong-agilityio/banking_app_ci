@@ -226,6 +226,7 @@
   "transferEnterOtpCodeTitle":"Please enter the OTP code",
   "transferBiometricAuthenticationTitle":"Use biometric authentication instead",
   "transferSuccessDescription":"You have successfully transferred \n",
+  "transferNoBeneficiariesFoundTitle":"No beneficiaries found",
 
   "@segmentSetting": {
     "description": "Store translations that are likely to be used only in Setting feature"
