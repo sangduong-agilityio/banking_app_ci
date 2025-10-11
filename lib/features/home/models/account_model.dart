@@ -17,8 +17,10 @@ class AccountModel with _$AccountModel {
     double? interestRate,
     required String bankId,
     String? term,
+    @Default(AccountStatus.active) AccountStatus? status,
   }) = _AccountModel;
-
   factory AccountModel.fromJson(Map<String, dynamic> json) =>
       _$AccountModelFromJson(json);
 }
+
+enum AccountStatus { active, frozen, expired }

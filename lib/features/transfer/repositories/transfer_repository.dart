@@ -18,6 +18,8 @@ abstract class TransferRepository {
   Future<List<BankModel>> fetchBanks();
   Future<List<BranchModel>> fetchBranches();
   Future<List<TransactionModel>> fetchTransactionHistory();
+  Future<double> fetchCardTransactionLimit(CardModel card);
+  Future<double> fetchAccountTransactionLimit(AccountModel account);
 
   /// Add / calculate
   Future<BeneficiaryModel> addNewBeneficiary(BeneficiaryModel beneficiary);
@@ -65,6 +67,35 @@ class TransferRepositoryImpl implements TransferRepository {
     return (response as List)
         .map((json) => CardModel.fromJson(json as Map<String, dynamic>))
         .toList();
+  }
+
+  /// Fetches the transaction limit for a card.
+  @override
+  Future<double> fetchCardTransactionLimit(CardModel card) async {
+    // In a real application, this would involve a database query.
+    // For now, we'll return a hardcoded value based on the card type.
+    switch (card.cardType) {
+      case CardType.visa:
+        return 5000.0;
+      case CardType.mastercard:
+        return 10000.0;
+      default:
+        return 2000.0;
+    }
+  }
+
+  @override
+  Future<double> fetchAccountTransactionLimit(AccountModel account) async {
+    // In a real application, this would involve a database query.
+    // For now, we'll return a hardcoded value based on the account type.
+    switch (account.accountType) {
+      case 'Savings':
+        return 20000.0;
+      case 'Checking':
+        return 50000.0;
+      default:
+        return 10000.0;
+    }
   }
 
   /// Fetches the list of beneficiaries for the current user from Supabase.

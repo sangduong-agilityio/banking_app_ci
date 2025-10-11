@@ -107,8 +107,17 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   }
 
   /// Handles the selection of a bank account.
-  void _onSelectAccount(SelectAccountEvt event, Emitter<TransferState> emit) {
+  void _onSelectAccount(
+    SelectAccountEvt event,
+    Emitter<TransferState> emit,
+  ) async {
     emit(state.copyWith(selectedAccount: event.account, clearCard: true));
+
+    final limit = await transferRepo.fetchAccountTransactionLimit(
+      event.account,
+    );
+    emit(state.copyWith(transactionLimit: limit));
+
     _filterBeneficiaries(emit);
     _recalculateFeeIfNeeded();
   }
@@ -118,28 +127,84 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     final userCard = state.selectedCard;
 
     if (userAccount == null && userCard == null) {
-      emit(state.copyWith(filteredBeneficiaries: state.beneficiaries));
+      emit(
+        state.copyWith(
+          filteredBeneficiaries: state.beneficiaries,
+          viaCardBeneficiaries: state.beneficiaries
+              .where((b) => b.transferType == TransferType.cardNumber)
+              .toList(),
+          sameBankBeneficiaries: state.beneficiaries
+              .where(
+                (b) =>
+                    userAccount != null &&
+                    getTransferType(b, userAccount) == TransferType.sameBank,
+              )
+              .toList(),
+          otherBankBeneficiaries: state.beneficiaries
+              .where(
+                (b) =>
+                    userAccount != null &&
+                    getTransferType(b, userAccount) == TransferType.otherBank,
+              )
+              .toList(),
+          disabledBeneficiaries: {},
+        ),
+      );
       return;
     }
 
-    List<BeneficiaryModel> filtered = List.from(state.beneficiaries);
+    final disabledBeneficiaries = <String, String>{};
+    final filteredBeneficiaries = <BeneficiaryModel>[];
+    final viaCardBeneficiaries = <BeneficiaryModel>[];
+    final sameBankBeneficiaries = <BeneficiaryModel>[];
+    final otherBankBeneficiaries = <BeneficiaryModel>[];
 
-          filtered = state.beneficiaries.where((beneficiary) {
-            if (userAccount != null) {
-              return getTransferType(beneficiary, userAccount) ==
-                  state.selectedTransferType;
-            } else if (userCard != null) {
-              return beneficiary.transferType == TransferType.cardNumber;
-            }
-            return false;
-          }).toList();
-    filtered.sort((a, b) => a.name.compareTo(b.name));
+    for (final beneficiary in state.beneficiaries) {
+      final transferType = userAccount != null
+          ? getTransferType(beneficiary, userAccount)
+          : null;
+      if (userAccount != null) {
+        if (transferType == state.selectedTransferType) {
+          filteredBeneficiaries.add(beneficiary);
+        }
 
-    emit(state.copyWith(filteredBeneficiaries: filtered));
+        if (transferType == TransferType.sameBank) {
+          sameBankBeneficiaries.add(beneficiary);
+        } else if (transferType == TransferType.otherBank) {
+          otherBankBeneficiaries.add(beneficiary);
+        } else {
+          disabledBeneficiaries[beneficiary.id ?? ''] =
+              'This beneficiary does not support the selected transfer type.';
+        }
+      } else if (userCard != null) {
+        if (beneficiary.transferType == TransferType.cardNumber) {
+          filteredBeneficiaries.add(beneficiary);
+          viaCardBeneficiaries.add(beneficiary);
+        } else {
+          disabledBeneficiaries[beneficiary.id ?? ''] =
+              'This beneficiary does not support card transfers.';
+        }
+      }
+    }
+
+    filteredBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
+    viaCardBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
+    sameBankBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
+    otherBankBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
+
+    emit(
+      state.copyWith(
+        filteredBeneficiaries: filteredBeneficiaries,
+        viaCardBeneficiaries: viaCardBeneficiaries,
+        sameBankBeneficiaries: sameBankBeneficiaries,
+        otherBankBeneficiaries: otherBankBeneficiaries,
+        disabledBeneficiaries: disabledBeneficiaries,
+      ),
+    );
   }
 
   /// Handles the selection of a bank card."
-  void _onSelectCard(SelectCardEvt event, Emitter<TransferState> emit) {
+  void _onSelectCard(SelectCardEvt event, Emitter<TransferState> emit) async {
     if (state.selectedTransferType == TransferType.sameBank ||
         state.selectedTransferType == TransferType.otherBank) {
       emit(
@@ -152,6 +217,10 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     } else {
       emit(state.copyWith(selectedCard: event.card, clearAccount: true));
     }
+
+    final limit = await transferRepo.fetchCardTransactionLimit(event.card);
+    emit(state.copyWith(transactionLimit: limit));
+
     _filterBeneficiaries(emit);
     _recalculateFeeIfNeeded();
   }
@@ -347,6 +416,18 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     ConfirmTransferEvt event,
     Emitter<TransferState> emit,
   ) async {
+    if (state.transactionLimit != null &&
+        (state.amount ?? 0) > state.transactionLimit!) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage:
+              'Transfer amount exceeds the transaction limit for this card/account.',
+        ),
+      );
+      return;
+    }
+
     emit(state.copyWith(status: const TransferStatus.loading()));
 
     final result = await executeWithErrorHandling(

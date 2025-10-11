@@ -1,3 +1,4 @@
+import 'package:banking_app/core/utils/currency_input_formatter.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
@@ -282,7 +283,11 @@ class _TransferFormSectionState extends State<TransferFormSection> {
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         inputFormatters: [
-          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+          FilteringTextInputFormatter.digitsOnly,
+          CurrencyInputFormatter(
+            locale: 'en_US',
+            symbol: state.selectedCard?.currency == 'VND' ? '' : 'USD',
+          ),
         ],
         validator: (v) {
           final double? maxBalance;
@@ -297,10 +302,13 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           return SecureInputValidator.validateTransferAmount(
             v,
             maxBalance: maxBalance,
+            transactionLimit: state.transactionLimit,
           );
         },
         onChanged: (v) {
-          final amount = double.tryParse(v ?? '');
+          final amount = double.tryParse(
+            v?.replaceAll(RegExp(r'[^\d\.]'), '') ?? '',
+          );
           if (amount != null) {
             context.read<TransferBloc>().add(
               UpdateTransferDetailsEvt(

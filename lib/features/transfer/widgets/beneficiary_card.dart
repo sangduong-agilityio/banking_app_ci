@@ -8,6 +8,8 @@ class BeneficiaryCard extends StatelessWidget {
     this.width = 100,
     this.height = 120,
     this.isSelected = false,
+    this.isEnabled = true,
+    this.disabledReason,
     required this.onTap,
     required this.child,
   });
@@ -15,6 +17,8 @@ class BeneficiaryCard extends StatelessWidget {
   final double width;
   final double height;
   final bool isSelected;
+  final bool isEnabled;
+  final String? disabledReason;
   final VoidCallback onTap;
   final Widget child;
 
@@ -22,23 +26,35 @@ class BeneficiaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: isSelected ? colorScheme.secondary : colorScheme.onPrimary,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected
-                ? colorScheme.secondary
-                : colorScheme.outlineVariant,
-          ),
+    final card = AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: isSelected
+            ? colorScheme.secondary
+            : (isEnabled
+                ? colorScheme.onPrimary
+                : colorScheme.outlineVariant.withOpacity(0.5)),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color:
+              isSelected ? colorScheme.secondary : colorScheme.outlineVariant,
         ),
-        child: child,
       ),
+      child: child,
+    );
+
+    if (isEnabled) {
+      return GestureDetector(
+        onTap: onTap,
+        child: card,
+      );
+    }
+
+    return Tooltip(
+      message: disabledReason ?? '',
+      child: card,
     );
   }
 }

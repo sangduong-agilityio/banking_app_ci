@@ -13,6 +13,7 @@ class AccountOrCardSelector extends StatefulWidget {
   const AccountOrCardSelector({
     super.key,
     required this.accounts,
+
     required this.cards,
     this.selectedAccount,
     this.selectedCard,
@@ -108,20 +109,23 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
     );
   }
 
-  /// Shows a dialog for selecting an account or a card.
   void _showSelectorDialog(BuildContext context) {
+    final activeAccounts = widget.accounts.where((a) => a.status == AccountStatus.active).toList();
+    final activeCards = widget.cards.where((c) => c.status == CardStatus.active).toList();
+
     showDialog(
       context: context,
       builder: (dialogContext) => BASelectorDialog<dynamic>(
         title: S.current.transferAccountSelected,
-        items: [...widget.accounts, ...widget.cards],
+        items: [...activeAccounts, ...activeCards],
         selectedValue: _getSelectedValue(),
         value: (item) => _getItemValue(item),
         label: (item) => _getItemLabel(item),
         onSelected: (item) {
           if (item is AccountModel) {
             widget.onSelected(item, null);
-          } else if (item is CardModel) {
+          }
+          else if (item is CardModel) {
             widget.onSelected(null, item);
           }
           Navigator.of(dialogContext).pop();
@@ -149,13 +153,12 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
     };
   }
 
-  /// Returns the label of an item for the selector dialog.
   String _getItemLabel(dynamic item) {
     return switch (item) {
       AccountModel() =>
-        "${item.accountType} - ${FormatterUtils.maskCardNumber(item.accountNumber)}",
+        "${item.accountType} - ${FormatterUtils.maskCardNumber(item.accountNumber)} (${item.status?.name ?? ''})",
       CardModel() =>
-        "${item.cardType?.displayName ?? ''} - ${FormatterUtils.maskCardNumber(item.cardNumber)}",
+        "${item.cardType?.displayName ?? ''} - ${FormatterUtils.maskCardNumber(item.cardNumber)} (${item.status?.name ?? ''})",
       _ => '',
     };
   }

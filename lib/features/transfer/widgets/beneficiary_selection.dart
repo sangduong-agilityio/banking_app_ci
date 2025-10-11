@@ -54,9 +54,17 @@ class BeneficiarySelection extends StatelessWidget {
                     final beneficiary = state.filteredBeneficiaries[index - 1];
                     final isSelected =
                         state.selectedBeneficiary?.id == beneficiary.id;
+                    final isEnabled = !state.disabledBeneficiaries
+                        .containsKey(beneficiary.id);
+                    final disabledReason = isEnabled
+                        ? null
+                        : state.disabledBeneficiaries[beneficiary.id];
+
                     return _BeneficiaryCardItem(
                       beneficiary: beneficiary,
                       isSelected: isSelected,
+                      isEnabled: isEnabled,
+                      disabledReason: disabledReason,
                       onBeneficiarySelected: onBeneficiarySelected,
                     );
                   },
@@ -151,11 +159,15 @@ class _AddBeneficiaryCard extends StatelessWidget {
 class _BeneficiaryCardItem extends StatelessWidget {
   final BeneficiaryModel beneficiary;
   final bool isSelected;
+  final bool isEnabled;
+  final String? disabledReason;
   final Function(BeneficiaryModel) onBeneficiarySelected;
 
   const _BeneficiaryCardItem({
     required this.beneficiary,
     required this.isSelected,
+    required this.isEnabled,
+    this.disabledReason,
     required this.onBeneficiarySelected,
   });
 
@@ -163,6 +175,8 @@ class _BeneficiaryCardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BeneficiaryCard(
       isSelected: isSelected,
+      isEnabled: isEnabled,
+      disabledReason: disabledReason,
       onTap: () {
         context.read<TransferBloc>().add(SelectBeneficiaryEvt(beneficiary));
         onBeneficiarySelected(beneficiary);

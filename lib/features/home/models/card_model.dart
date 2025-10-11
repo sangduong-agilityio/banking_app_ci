@@ -28,15 +28,23 @@ class CardModel with _$CardModel {
     required String cardNumber,
     required String cardHolderName,
     required String cardTier,
+    required String currency,
     @Default(CardType.visa) CardType? cardType,
     String? validFrom,
     String? goodThru,
     double? availableBalance,
     required String bankId,
+    @Default(CardStatus.active) CardStatus? status,
   }) = _CardModel;
 
   factory CardModel.fromJson(Map<String, dynamic> json) =>
       _$CardModelFromJson(json);
+}
+
+enum CardStatus {
+  active,
+  frozen,
+  expired,
 }
 
 enum CardType {

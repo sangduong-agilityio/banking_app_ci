@@ -24,6 +24,7 @@ class TransferState extends Equatable {
     this.sameBankBeneficiaries = const [],
     this.otherBankBeneficiaries = const [],
     this.viaCardBeneficiaries = const [],
+    this.disabledBeneficiaries = const {},
     this.selectedAccount,
     this.selectedCard,
     this.selectedTransferType = TransferType.cardNumber,
@@ -34,6 +35,7 @@ class TransferState extends Equatable {
     this.cardNumber,
     this.content,
     this.transactionFee = 0.0,
+    this.transactionLimit,
     this.saveToDirectory = false,
     this.transferId,
     this.transaction,
@@ -67,6 +69,7 @@ class TransferState extends Equatable {
   final double? amount;
   final String? content;
   final double transactionFee;
+  final double? transactionLimit;
   final bool saveToDirectory;
   final String? transferId;
   final TransactionModel? transaction;
@@ -76,6 +79,7 @@ class TransferState extends Equatable {
   final List<BeneficiaryModel> sameBankBeneficiaries;
   final List<BeneficiaryModel> otherBankBeneficiaries;
   final List<BeneficiaryModel> viaCardBeneficiaries;
+  final Map<String, String> disabledBeneficiaries;
   final String? avatarUrl;
   final String? name;
   final String? cardNumber;
@@ -112,6 +116,7 @@ class TransferState extends Equatable {
     String? name,
     String? cardNumber,
     double? transactionFee,
+    double? transactionLimit,
     bool? saveToDirectory,
     String? errorMessage,
     BankModel? selectedBank,
@@ -123,6 +128,7 @@ class TransferState extends Equatable {
     List<BeneficiaryModel>? sameBankBeneficiaries,
     List<BeneficiaryModel>? otherBankBeneficiaries,
     List<BeneficiaryModel>? viaCardBeneficiaries,
+    Map<String, String>? disabledBeneficiaries,
     bool? biometricAvailable,
     bool? biometricEnabled,
     bool? biometricAuthenticated,
@@ -152,6 +158,7 @@ class TransferState extends Equatable {
       amount: amount ?? this.amount,
       content: content ?? this.content,
       transactionFee: transactionFee ?? this.transactionFee,
+      transactionLimit: transactionLimit ?? this.transactionLimit,
       saveToDirectory: saveToDirectory ?? this.saveToDirectory,
       errorMessage: errorMessage,
       transferId: transferId ?? this.transferId,
@@ -164,6 +171,8 @@ class TransferState extends Equatable {
       otherBankBeneficiaries:
           otherBankBeneficiaries ?? this.otherBankBeneficiaries,
       viaCardBeneficiaries: viaCardBeneficiaries ?? this.viaCardBeneficiaries,
+      disabledBeneficiaries:
+          disabledBeneficiaries ?? this.disabledBeneficiaries,
       selectedBank: selectedBank ?? this.selectedBank,
       selectedBranch: selectedBranch ?? this.selectedBranch,
       avatarUrl: avatarUrl ?? this.avatarUrl,
@@ -182,43 +191,45 @@ class TransferState extends Equatable {
 
   @override
   List<Object?> get props => [
-    status,
-    accounts,
-    cardNumber,
-    cards,
-    beneficiaries,
-    newBeneficiary,
-    banks,
-    branches,
-    selectedAccount,
-    selectedCard,
-    selectedTransferType,
-    authMethod,
-    selectedBeneficiary,
-    amount,
-    content,
-    transactionFee,
-    saveToDirectory,
-    errorMessage,
-    transferId,
-    avatarUrl,
-    name,
-    transaction,
-    searchQuery,
-    selectedBank,
-    selectedBranch,
-    filteredBeneficiaries,
-    sameBankBeneficiaries,
-    otherBankBeneficiaries,
-    viaCardBeneficiaries,
-    biometricAvailable,
-    biometricEnabled,
-    biometricAuthenticated,
-    isOtpVerified,
-    otpSent,
-    clearName,
-    clearAvatar,
-  ];
+        status,
+        accounts,
+        cardNumber,
+        cards,
+        beneficiaries,
+        newBeneficiary,
+        banks,
+        branches,
+        selectedAccount,
+        selectedCard,
+        selectedTransferType,
+        authMethod,
+        selectedBeneficiary,
+        amount,
+        content,
+        transactionFee,
+        transactionLimit,
+        saveToDirectory,
+        errorMessage,
+        transferId,
+        avatarUrl,
+        name,
+        transaction,
+        searchQuery,
+        selectedBank,
+        selectedBranch,
+        filteredBeneficiaries,
+        sameBankBeneficiaries,
+        otherBankBeneficiaries,
+        viaCardBeneficiaries,
+        disabledBeneficiaries,
+        biometricAvailable,
+        biometricEnabled,
+        biometricAuthenticated,
+        isOtpVerified,
+        otpSent,
+        clearName,
+        clearAvatar,
+      ];
 
   /// Whether the user can use biometrics for authentication.
   bool get canUseBiometrics => biometricAvailable && biometricEnabled;

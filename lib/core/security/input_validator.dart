@@ -18,7 +18,11 @@ class SecureInputValidator {
   }
 
   /// Validates a transfer amount with security and suspicious checks.
-  static String? validateTransferAmount(String? value, {double? maxBalance}) {
+  static String? validateTransferAmount(
+    String? value, {
+    double? maxBalance,
+    double? transactionLimit,
+  }) {
     if (value == null || value.trim().isEmpty) {
       return 'Amount is required';
     }
@@ -31,6 +35,10 @@ class SecureInputValidator {
 
     if (maxBalance != null && amount > maxBalance) {
       return 'Insufficient balance';
+    }
+
+    if (transactionLimit != null && amount > transactionLimit) {
+      return 'Amount exceeds transaction limit';
     }
 
     if (_isSuspiciousAmount(amount)) {

@@ -53,7 +53,7 @@ class SettingSelection extends StatelessWidget {
                 Switch(
                   value: isEnabled ?? false,
                   onChanged: onToggle,
-                  activeThumbColor: context.colorScheme.secondary,
+                  activeColor: context.colorScheme.secondary,
                 )
               else
                 Row(
