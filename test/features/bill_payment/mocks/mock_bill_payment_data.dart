@@ -41,8 +41,8 @@ class MockBillPaymentData {
     bankId: 'bank1',
   );
 
-  // ✅ Thay vì null, tạo một CardModel mock
   static final mockCard = CardModel(
+    currency: 'USD',
     id: 'card-1',
     cardNumber: '4111111111111111',
     cardHolderName: 'John Doe',
@@ -53,6 +53,5 @@ class MockBillPaymentData {
     bankId: 'bank1',
   );
 
-  // Hoặc nếu muốn optional, dùng nullable type
-  static final CardModel? mockCardOptional = null; // Rõ ràng là nullable
+  static final CardModel? mockCardOptional = null;
 }

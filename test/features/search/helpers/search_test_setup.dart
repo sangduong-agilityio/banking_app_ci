@@ -1,5 +1,5 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
-import 'package:banking_app/features/search/states/search_bloc.dart';
+import 'package:banking_app/features/search/blocs/search_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../mocks/mock_search_bloc.dart';

@@ -6,7 +6,7 @@ import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/models/exchange_model.dart';
 import 'package:banking_app/features/search/models/exchange_rate_model.dart';
 import 'package:banking_app/features/search/models/interest_rate_model.dart';
-import 'package:banking_app/features/search/states/search_state.dart';
+import 'package:banking_app/features/search/blocs/search_state.dart';
 
 /// Repository for handling currency exchange and interest rate data.
 abstract class SearchRepository {

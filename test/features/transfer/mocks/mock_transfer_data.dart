@@ -5,7 +5,7 @@ import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/models/branch_model.dart';
 import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
-import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class TransferRepositoryMock extends Mock implements TransferRepository {}
@@ -41,6 +41,7 @@ class MockTransferData {
 
   // Mock Cards
   static final mockCard1 = CardModel(
+    currency: 'USD',
     id: '1',
     cardNumber: '4111111111111111',
     cardType: CardType.visa,
@@ -60,6 +61,7 @@ class MockTransferData {
     bankId: 'bank1',
     cardHolderName: 'John Doe',
     cardTier: 'Platinum',
+    currency: 'USD',
   );
 
   static final mockCards = [mockCard1, mockCard2];

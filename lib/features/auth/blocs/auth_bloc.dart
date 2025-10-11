@@ -1,6 +1,6 @@
+import 'package:banking_app/features/auth/blocs/auth_event.dart';
+import 'package:banking_app/features/auth/blocs/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:banking_app/features/auth/states/auth_event.dart';
-import 'package:banking_app/features/auth/states/auth_state.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
 import 'package:banking_app/core/services/biometric_service.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';

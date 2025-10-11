@@ -1,5 +1,5 @@
-import 'package:banking_app/features/search/states/search_bloc.dart';
-import 'package:banking_app/features/search/states/search_event.dart';
+import 'package:banking_app/features/search/blocs/search_bloc.dart';
+import 'package:banking_app/features/search/blocs/search_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 

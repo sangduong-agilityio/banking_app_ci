@@ -1,5 +1,5 @@
-import 'package:banking_app/features/transfer/states/transfer_event.dart';
-import 'package:banking_app/features/transfer/states/transfer_state.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
 import 'package:banking_app/features/transfer/views/transfer_screen.dart';
 import 'package:banking_app/features/transfer/widgets/account_and_card_selection.dart';
 import 'package:banking_app/features/transfer/widgets/beneficiary_selection.dart';

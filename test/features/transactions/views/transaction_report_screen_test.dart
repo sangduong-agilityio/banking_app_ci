@@ -1,8 +1,8 @@
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:banking_app/features/transactions/models/transaction_report_model.dart';
-import 'package:banking_app/features/transactions/states/transaction_event.dart';
-import 'package:banking_app/features/transactions/states/transaction_state.dart';
+import 'package:banking_app/features/transactions/blocs/transaction_event.dart';
+import 'package:banking_app/features/transactions/blocs/transaction_state.dart';
 import 'package:banking_app/features/transactions/views/transaction_report_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,5 +1,5 @@
 import 'package:banking_app/core/widgets/button.dart';
-import 'package:banking_app/features/transfer/states/transfer_state.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
 import 'package:banking_app/features/transfer/views/transfer_success_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

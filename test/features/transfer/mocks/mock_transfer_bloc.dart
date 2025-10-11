@@ -1,6 +1,6 @@
 import 'package:banking_app/features/transactions/models/transaction_model.dart';
-import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/states/transfer_event.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
 import 'package:mocktail/mocktail.dart';
 
 import 'mock_transfer_data.dart';

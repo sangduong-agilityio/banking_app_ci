@@ -1,6 +1,6 @@
 import 'package:banking_app/features/search/models/currency_model.dart';
-import 'package:banking_app/features/search/states/search_event.dart';
-import 'package:banking_app/features/search/states/search_state.dart';
+import 'package:banking_app/features/search/blocs/search_event.dart';
+import 'package:banking_app/features/search/blocs/search_state.dart';
 import 'package:banking_app/features/search/views/exchange_screen.dart';
 import 'package:banking_app/features/search/widgets/currency_card.dart';
 import 'package:flutter/material.dart';

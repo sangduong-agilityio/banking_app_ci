@@ -2,7 +2,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/utils/formatters.dart';
-import 'package:banking_app/features/search/states/search_state.dart';
+import 'package:banking_app/features/search/blocs/search_state.dart';
 import 'package:flutter/material.dart';
 
 /// A widget that indicates the status of an exchange rate (live, offline, or no data).

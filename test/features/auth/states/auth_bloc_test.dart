@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/auth/states/auth_bloc.dart';
-import 'package:banking_app/features/auth/states/auth_event.dart';
-import 'package:banking_app/features/auth/states/auth_state.dart';
+import 'package:banking_app/features/auth/blocs/auth_bloc.dart';
+import 'package:banking_app/features/auth/blocs/auth_event.dart';
+import 'package:banking_app/features/auth/blocs/auth_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;

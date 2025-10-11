@@ -1,5 +1,5 @@
-import 'package:banking_app/features/transactions/states/transaction_bloc.dart';
-import 'package:banking_app/features/transactions/states/transaction_event.dart';
+import 'package:banking_app/features/transactions/blocs/transaction_bloc.dart';
+import 'package:banking_app/features/transactions/blocs/transaction_event.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockTransactionReportBloc extends Mock implements TransactionReportBloc {}

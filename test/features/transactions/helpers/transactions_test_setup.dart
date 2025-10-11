@@ -1,9 +1,9 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
-import 'package:banking_app/features/transactions/states/transaction_bloc.dart';
+import 'package:banking_app/features/transactions/blocs/transaction_bloc.dart';
 import 'package:banking_app/features/transactions/models/transaction_report_model.dart';
-import 'package:banking_app/features/transactions/states/transaction_event.dart';
-import 'package:banking_app/features/transactions/states/transaction_state.dart';
+import 'package:banking_app/features/transactions/blocs/transaction_event.dart';
+import 'package:banking_app/features/transactions/blocs/transaction_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 

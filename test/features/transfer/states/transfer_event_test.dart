@@ -1,7 +1,7 @@
 import 'package:banking_app/features/transactions/models/transaction_model.dart';
 import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/branch_model.dart';
-import 'package:banking_app/features/transfer/states/transfer_event.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/utils.dart';

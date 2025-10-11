@@ -1,4 +1,4 @@
-import 'package:banking_app/features/transfer/states/transfer_state.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/utils.dart';

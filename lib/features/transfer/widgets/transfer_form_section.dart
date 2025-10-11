@@ -11,9 +11,9 @@ import 'package:banking_app/features/transactions/models/transaction_model.dart'
 import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/models/branch_model.dart';
-import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/states/transfer_event.dart';
-import 'package:banking_app/features/transfer/states/transfer_state.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
 import 'package:banking_app/features/transfer/views/confirm_transfer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -1,5 +1,5 @@
 import 'package:banking_app/features/search/entities/currency_rate_entity.dart';
-import 'package:banking_app/features/search/states/search_state.dart';
+import 'package:banking_app/features/search/blocs/search_state.dart';
 import 'package:banking_app/objectbox.g.dart';
 
 /// A service that manages the long-term offline caching of individual currency

@@ -4,9 +4,9 @@ import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
-import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/states/transfer_event.dart';
-import 'package:banking_app/features/transfer/states/transfer_state.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
 import 'package:banking_app/features/transfer/views/add_new_benificiary_screen.dart';
 import 'package:banking_app/features/transfer/views/directory_beneficiary_screen.dart';
 import 'package:banking_app/features/transfer/widgets/beneficiary_card.dart';
@@ -54,8 +54,9 @@ class BeneficiarySelection extends StatelessWidget {
                     final beneficiary = state.filteredBeneficiaries[index - 1];
                     final isSelected =
                         state.selectedBeneficiary?.id == beneficiary.id;
-                    final isEnabled = !state.disabledBeneficiaries
-                        .containsKey(beneficiary.id);
+                    final isEnabled = !state.disabledBeneficiaries.containsKey(
+                      beneficiary.id,
+                    );
                     final disabledReason = isEnabled
                         ? null
                         : state.disabledBeneficiaries[beneficiary.id];

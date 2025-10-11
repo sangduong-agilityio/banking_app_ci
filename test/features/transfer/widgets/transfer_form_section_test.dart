@@ -1,9 +1,9 @@
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/features/transactions/models/transaction_model.dart';
-import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/states/transfer_event.dart';
-import 'package:banking_app/features/transfer/states/transfer_state.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
 import 'package:banking_app/features/transfer/views/confirm_transfer_screen.dart';
 import 'package:banking_app/features/transfer/widgets/transfer_form_section.dart';
 import 'package:flutter/material.dart';

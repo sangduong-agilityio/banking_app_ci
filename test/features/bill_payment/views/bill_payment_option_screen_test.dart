@@ -2,7 +2,7 @@ import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
 import 'package:banking_app/features/bill_payment/models/company_model.dart';
-import 'package:banking_app/features/bill_payment/states/bill_payment_state.dart';
+import 'package:banking_app/features/bill_payment/blocs/bill_payment_state.dart';
 import 'package:banking_app/features/bill_payment/views/bill_payment_option_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 

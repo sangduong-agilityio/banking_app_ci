@@ -1,6 +1,6 @@
 import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
-import 'package:banking_app/features/bill_payment/states/bill_payment_bloc.dart';
-import 'package:banking_app/features/bill_payment/states/bill_payment_event.dart';
+import 'package:banking_app/features/bill_payment/blocs/bill_payment_bloc.dart';
+import 'package:banking_app/features/bill_payment/blocs/bill_payment_event.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockBillPaymentBloc extends Mock implements BillPaymentBloc {}

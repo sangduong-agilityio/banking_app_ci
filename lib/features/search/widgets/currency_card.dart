@@ -4,7 +4,7 @@ import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/button.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
-import 'package:banking_app/features/search/states/search_state.dart';
+import 'package:banking_app/features/search/blocs/search_state.dart';
 import 'package:banking_app/features/search/widgets/offline_rate_indicator.dart';
 import 'package:flutter/material.dart';
 

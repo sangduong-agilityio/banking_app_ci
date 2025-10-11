@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:banking_app/features/transfer/states/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
 import '../features/transfer/mocks/mock_transfer_bloc.dart';
 
 final exceptionMock = Exception('oops');

@@ -1,6 +1,9 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/assets.dart';
+import 'package:banking_app/features/auth/blocs/auth_bloc.dart';
+import 'package:banking_app/features/auth/blocs/auth_event.dart';
+import 'package:banking_app/features/auth/blocs/auth_state.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,9 +18,6 @@ import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/widgets/auth_form.dart';
-import 'package:banking_app/features/auth/states/auth_bloc.dart';
-import 'package:banking_app/features/auth/states/auth_event.dart';
-import 'package:banking_app/features/auth/states/auth_state.dart';
 
 /// A screen for user sign-in.
 ///

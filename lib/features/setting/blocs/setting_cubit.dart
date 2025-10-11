@@ -1,9 +1,9 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/features/auth/repositories/auth_repository.dart';
-import 'package:banking_app/features/auth/states/auth_bloc.dart';
-import 'package:banking_app/features/auth/states/auth_event.dart';
+import 'package:banking_app/features/auth/blocs/auth_bloc.dart';
+import 'package:banking_app/features/auth/blocs/auth_event.dart';
 import 'package:banking_app/features/setting/models/user_model.dart';
-import 'package:banking_app/features/setting/states/setting_state.dart';
+import 'package:banking_app/features/setting/blocs/setting_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

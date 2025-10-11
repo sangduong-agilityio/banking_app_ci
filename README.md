@@ -117,7 +117,7 @@ This is the design of the app:
 ## Project Structure
 
 ```
-Feature-First Architecture
+Clean Architecture
 
 lib/
 ├── main_device_preview.dart
@@ -148,7 +148,7 @@ lib/
 │   │   │   └── auth_request.dart
 │   │   ├── repositories/
 │   │   │   └── auth_repository.dart
-│   │   ├── states/
+│   │   ├── blocs/
 │   │   │   ├── auth_bloc.dart
 │   │   │   ├── auth_event.dart
 │   │   │   └── auth_state.dart
@@ -166,7 +166,7 @@ lib/
 │   │   │   └── quick_action_model.dart
 │   │   ├── repositories/
 │   │   │   └── home_repository.dart
-│   │   ├── states/
+│   │   ├── blocs/
 │   │   │   ├── home_bloc.dart
 │   │   │   ├── home_event.dart
 │   │   │   └── home_state.dart
@@ -181,7 +181,7 @@ lib/
 │   │   │   └── search_model.dart
 │   │   ├── repositories/
 │   │   │   └── search_repository.dart
-│   │   ├── states/
+│   │   ├── blocs/
 │   │   │   ├── search_bloc.dart
 │   │   │   ├── search_event.dart
 │   │   │   └── search_state.dart
@@ -194,7 +194,7 @@ lib/
 │   │   │   └── account_model.dart
 │   │   ├── repositories/
 │   │   │   └── account_repository.dart
-│   │   ├── states/
+│   │   ├── blocs/
 │   │   │   ├── account_bloc.dart
 │   │   │   ├── account_event.dart
 │   │   │   └── account_state.dart
@@ -207,7 +207,7 @@ lib/
 │   │   │   └── transaction_model.dart
 │   │   ├── repositories/
 │   │   │   └── transaction_repository.dart
-│   │   ├── states/
+│   │   ├── blocs/
 │   │   │   ├── transaction_bloc.dart
 │   │   │   ├── transaction_event.dart
 │   │   │   └── transaction_state.dart
@@ -220,7 +220,7 @@ lib/
 │   │   │   ├── transfer_model.dart
 │   │   ├── repositories/
 │   │   │   └── transfer_repository.dart
-│   │   ├── states/
+│   │   ├── blocs/
 │   │   │   ├── transfer_bloc.dart
 │   │   │   ├── transfer_event.dart
 │   │   │   └── transfer_state.dart
@@ -234,7 +234,7 @@ lib/
 │   │   │   └── bill_model.dart
 │   │   ├── repositories/
 │   │   │   └── bill_repository.dart
-│   │   ├── states/
+│   │   ├── blocs/
 │   │   │   ├── bill_bloc.dart
 │   │   │   ├── bill_event.dart
 │   │   │   └── bill_state.dart
@@ -247,7 +247,7 @@ lib/
 │       │   └── user_model.dart
 │       ├── repositories/
 │       │   └── setting_repository.dart
-│       ├── states/
+│       ├── blocs/
 │       │   ├── setting_bloc.dart
 │       │   ├── setting_event.dart
 │       │   └── setting_state.dart

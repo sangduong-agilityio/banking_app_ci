@@ -1,4 +1,4 @@
-import 'package:banking_app/features/home/states/home_state.dart';
+import 'package:banking_app/features/home/blocs/home_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/home/repositories/home_repository.dart';
 
