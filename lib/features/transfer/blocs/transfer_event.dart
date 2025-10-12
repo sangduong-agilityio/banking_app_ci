@@ -202,3 +202,13 @@ class ConfirmWithBiometricEvt extends TransferEvt {
   @override
   List<Object?> get props => [];
 }
+
+/// Event triggered when the OTP value changes.
+class OtpChangedEvt extends TransferEvt {
+  const OtpChangedEvt(this.otp);
+
+  final String otp;
+
+  @override
+  List<Object> get props => [otp];
+}

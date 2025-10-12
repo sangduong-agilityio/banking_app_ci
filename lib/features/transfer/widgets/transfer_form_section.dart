@@ -339,24 +339,17 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           UpdateTransferDetailsEvt(content: value),
         ),
       ),
-      ValueListenableBuilder<TextEditingValue>(
-        valueListenable: _amountController,
-        builder: (context, value, _) {
-          final text = value.text.trim();
-          if (text.isEmpty) return const SizedBox.shrink();
-
-          return Padding(
-            padding: const EdgeInsets.only(left: 14, top: 8),
-            child: Text(
-              CurrencyUtils.convertAmountToWords(text),
-              style: context.bodySmall?.copyWith(
-                color: context.colorScheme.secondary,
-                fontWeight: FontWeight.w600,
-              ),
+      if (state.amount != null && state.amount! > 0)
+        Padding(
+          padding: const EdgeInsets.only(left: 14, top: 8),
+          child: Text(
+            CurrencyUtils.convertAmountToWords(state.amount!.toString()),
+            style: context.bodySmall?.copyWith(
+              color: context.colorScheme.secondary,
+              fontWeight: FontWeight.w600,
             ),
-          );
-        },
-      ),
+          ),
+        ),
     ];
   }
 

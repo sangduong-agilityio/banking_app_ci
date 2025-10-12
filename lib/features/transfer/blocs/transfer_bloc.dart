@@ -35,6 +35,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     on<SendOtpEvt>(_onSendOtp);
     on<ConfirmTransferWithOtpEvt>(_onConfirmTransferWithOtp);
     on<ConfirmWithBiometricEvt>(_onConfirmWithBiometric);
+    on<OtpChangedEvt>(_onOtpChangedEvt);
   }
 
   /// Loads the initial data required for the transfer feature.
@@ -692,5 +693,9 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   @override
   String? getCurrentUserId() {
     return state.selectedAccount?.userId ?? state.selectedCard?.userId;
+  }
+
+  void _onOtpChangedEvt(OtpChangedEvt event, Emitter<TransferState> emit) {
+    emit(state.copyWith(otp: event.otp));
   }
 }

@@ -7,6 +7,7 @@ import 'package:banking_app/features/bill_payment/models/company_model.dart';
 import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
 import 'package:banking_app/core/bloc/base_bloc.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 
 /// Manages the state for the bill payment feature, handling user interactions
 /// and business logic.
@@ -22,6 +23,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     on<SendOtpEvt>(_onSendOtp);
     on<PayBillEvt>(_onPayBill);
     on<ConfirmBillPaymentWithOtpEvt>(_onConfirmWithOtp);
+    on<OtpChangedEvt>(_onOtpChanged);
   }
 
   final BillPaymentRepository repository;
@@ -101,13 +103,25 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     SelectAccountEvt event,
     Emitter<BillPaymentState> emit,
   ) {
-    emit(state.copyWith(selectedAccount: event.account, clearCard: true));
+    emit(
+      state.copyWith(
+        selectedAccount: event.account,
+        clearCard: true,
+        status: const BillPaymentStatus.initial(),
+      ),
+    );
     _recalculateFee(emit);
   }
 
   /// Handles the selection of a payment card.
   void _onSelectCard(SelectCardEvt event, Emitter<BillPaymentState> emit) {
-    emit(state.copyWith(selectedCard: event.card, clearAccount: true));
+    emit(
+      state.copyWith(
+        selectedCard: event.card,
+        clearAccount: true,
+        status: const BillPaymentStatus.initial(),
+      ),
+    );
     _recalculateFee(emit);
   }
 
@@ -116,11 +130,14 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
     UpdateBillDetailsEvt event,
     Emitter<BillPaymentState> emit,
   ) {
+    final isBillCodeValid =
+        SecureInputValidator.validateBillCode(event.billCode) == null;
     emit(
       state.copyWith(
         amount: event.amount ?? state.amount,
         billCode: event.billCode ?? state.billCode,
         phoneNumber: event.phoneNumber ?? state.phoneNumber,
+        isBillCodeValid: isBillCodeValid,
       ),
     );
     if (event.amount != null) _recalculateFee(emit);
@@ -261,6 +278,14 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
       final fee = double.parse((state.amount! * feeRate).toStringAsFixed(2));
       emit(state.copyWith(fee: fee));
     }
+  }
+
+  void _onOtpChanged(OtpChangedEvt event, Emitter<BillPaymentState> emit) {
+    final isOtpValid = SecureInputValidator.validateOTP(event.otpCode) == null;
+    emit(state.copyWith(
+      otpCode: event.otpCode,
+      isOtpValid: isOtpValid,
+    ));
   }
 
   @override

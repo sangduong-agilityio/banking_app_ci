@@ -50,6 +50,7 @@ class TransferState extends Equatable {
     this.isOtpVerified = false,
     this.otpSent = false,
     this.errorMessage,
+    this.otp,
     this.clearName = false,
     this.clearAvatar = false,
   });
@@ -89,6 +90,7 @@ class TransferState extends Equatable {
   final bool biometricAuthenticated;
   final bool isOtpVerified;
   final bool otpSent;
+  final String? otp;
   final String? errorMessage;
   final bool clearName;
   final bool clearAvatar;
@@ -134,6 +136,7 @@ class TransferState extends Equatable {
     bool? biometricAuthenticated,
     bool? isOtpVerified,
     bool? otpSent,
+    String? otp,
     bool? clearName,
     bool? clearAvatar,
   }) {
@@ -183,6 +186,7 @@ class TransferState extends Equatable {
           biometricAuthenticated ?? this.biometricAuthenticated,
       isOtpVerified: isOtpVerified ?? this.isOtpVerified,
       otpSent: otpSent ?? this.otpSent,
+      otp: otp ?? this.otp,
       clearName: clearName ?? this.clearName,
       clearAvatar: clearAvatar ?? this.clearAvatar,
       cardNumber: cardNumber ?? this.cardNumber,
@@ -227,6 +231,7 @@ class TransferState extends Equatable {
         biometricAuthenticated,
         isOtpVerified,
         otpSent,
+        otp,
         clearName,
         clearAvatar,
       ];
@@ -244,6 +249,9 @@ class TransferState extends Equatable {
         amount != null &&
         amount! > 0;
   }
+
+  /// Whether the entered OTP is valid.
+  bool get isOtpValid => otp?.length == 6;
 }
 
 /// Represents the status of the transfer process.

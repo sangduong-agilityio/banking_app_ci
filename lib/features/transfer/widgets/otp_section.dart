@@ -6,6 +6,7 @@ import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
 import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
 import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
+import 'package:banking_app/core/security/input_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,18 +20,6 @@ class OtpSection extends StatefulWidget {
 }
 
 class _OtpSectionState extends State<OtpSection> {
-  final _otpController = TextEditingController();
-
-  @override
-  void dispose() {
-    _otpController.dispose();
-    super.dispose();
-  }
-
-  bool _isOtpValid() {
-    return _otpController.text.trim().length == 6;
-  }
-
   bool _canConfirm(TransferState state) {
     // For biometric: can confirm if awaiting biometric and biometrics available
     if (state.status is TransferStatusAwaitingBiometric &&
@@ -39,7 +28,8 @@ class _OtpSectionState extends State<OtpSection> {
     }
 
     // For OTP: can confirm if OTP was sent and user entered 6 digits
-    if (state.otpSent && _isOtpValid()) {
+    // Note: This allows confirming without the OTP being sent first.
+    if (state.isOtpValid) {
       return true;
     }
 
@@ -51,7 +41,8 @@ class _OtpSectionState extends State<OtpSection> {
     return BlocBuilder<TransferBloc, TransferState>(
       buildWhen: (previous, current) =>
           previous.otpSent != current.otpSent ||
-          previous.status != current.status,
+          previous.status != current.status ||
+          previous.otp != current.otp,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,20 +66,22 @@ class _OtpSectionState extends State<OtpSection> {
               )
             else
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     flex: 3,
-                    child: ValueListenableBuilder(
-                      valueListenable: _otpController,
-                      builder: (context, value, _) {
-                        return BATextField(
-                          controller: _otpController,
-                          hint: S.current.transferOtpLabel,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(6),
-                          ],
+                    child: BATextField(
+                      hint: S.current.transferOtpLabel,
+                      keyboardType: TextInputType.number,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
+                      validator: SecureInputValidator.validateOTP,
+                      onChanged: (value) {
+                        context.read<TransferBloc>().add(
+                          OtpChangedEvt(value ?? ''),
                         );
                       },
                     ),
@@ -115,40 +108,33 @@ class _OtpSectionState extends State<OtpSection> {
             const SizedBox(height: 24),
 
             /// Confirm Button - Only enabled when appropriate
-            ValueListenableBuilder(
-              valueListenable: _otpController,
-              builder: (context, value, _) {
-                final canConfirm = _canConfirm(state);
+            BAElevatedButton(
+              isDisabled: !_canConfirm(state),
+              padding: EdgeInsets.zero,
+              text: S.current.transferConfirmButton,
+              onPressed: !_canConfirm(state)
+                  ? null
+                  : () {
+                      final txId = state.transferId ?? '';
 
-                return BAElevatedButton(
-                  isDisabled: !canConfirm,
-                  padding: EdgeInsets.zero,
-                  text: S.current.transferConfirmButton,
-                  onPressed: !canConfirm
-                      ? null
-                      : () {
-                          final txId = state.transferId ?? '';
+                      // Handle biometric authentication
+                      if (state.status is TransferStatusAwaitingBiometric &&
+                          state.canUseBiometrics) {
+                        context.read<TransferBloc>().add(
+                          const ConfirmWithBiometricEvt(),
+                        );
+                        return;
+                      }
 
-                          // Handle biometric authentication
-                          if (state.status is TransferStatusAwaitingBiometric &&
-                              state.canUseBiometrics) {
-                            context.read<TransferBloc>().add(
-                              const ConfirmWithBiometricEvt(),
-                            );
-                            return;
-                          }
-
-                          // Handle OTP verification
-                          final otp = _otpController.text.trim();
-                          context.read<TransferBloc>().add(
-                            ConfirmTransferWithOtpEvt(
-                              otpCode: otp,
-                              transferId: txId,
-                            ),
-                          );
-                        },
-                );
-              },
+                      // Handle OTP verification
+                      final otp = state.otp ?? '';
+                      context.read<TransferBloc>().add(
+                        ConfirmTransferWithOtpEvt(
+                          otpCode: otp,
+                          transferId: txId,
+                        ),
+                      );
+                    },
             ),
           ],
         );

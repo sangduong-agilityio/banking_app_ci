@@ -111,3 +111,12 @@ class ConfirmBillPaymentWithOtpEvt extends BillPaymentEvt {
   @override
   List<Object> get props => [billId, otpCode];
 }
+
+class OtpChangedEvt extends BillPaymentEvt {
+  const OtpChangedEvt(this.otpCode);
+
+  final String otpCode;
+
+  @override
+  List<Object> get props => [otpCode];
+}

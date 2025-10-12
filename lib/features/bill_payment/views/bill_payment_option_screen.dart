@@ -65,22 +65,29 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
 
     final trimmedCode = _billCodeController.text.trim();
 
-    final selectedBill = state.bills.firstWhere(
-      (bill) =>
-          bill.billType == widget.billType &&
-          bill.company?.id == selectedCompany.id &&
-          bill.billCode == trimmedCode,
-    );
+    try {
+      final selectedBill = state.bills.firstWhere(
+        (bill) =>
+            bill.billType == widget.billType &&
+            bill.company?.id == selectedCompany.id &&
+            bill.billCode == trimmedCode,
+      );
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BlocProvider.value(
-          value: context.read<BillPaymentBloc>(),
-          child: BillPaymentDetailsScreen(bill: selectedBill),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: context.read<BillPaymentBloc>(),
+            child: BillPaymentDetailsScreen(bill: selectedBill),
+          ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      BASnackBar.buildErrorSnackbar(
+        context,
+        'Invalid bill code. Please check and try again.',
+      );
+    }
   }
 
   @override
@@ -180,8 +187,11 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: SecureInputValidator.validateBillCode,
                           onChanged: (value) {
-                            setState(() {});
+                            context.read<BillPaymentBloc>().add(
+                                  UpdateBillDetailsEvt(billCode: value),
+                                );
                           },
+
                         ),
                         const SizedBox(height: 24),
                         Text(
@@ -196,7 +206,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                           text: S.current.payBillCheckButton,
                           isDisabled:
                               selectedCompany == null ||
-                              _billCodeController.text.isEmpty,
+                              !state.isBillCodeValid,
                           onPressed: () => _handleCheckBill(state),
                         ),
                       ],

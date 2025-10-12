@@ -70,29 +70,32 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
           },
 
           builder: (context, state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /// Confirmation Title
-                  Text(
-                    S.current.transferConfirmTransaction,
-                    style: context.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
+            return GestureDetector(
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// Confirmation Title
+                    Text(
+                      S.current.transferConfirmTransaction,
+                      style: context.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
+                    const SizedBox(height: 12),
 
-                  /// Transaction Details
-                  ConfirmTransactionDetail(state: state),
-                  const SizedBox(height: 24),
+                    /// Transaction Details
+                    ConfirmTransactionDetail(state: state),
+                    const SizedBox(height: 24),
 
-                  /// OTP or Biometric Authentication Section
-                  const OtpSection(),
+                    /// OTP or Biometric Authentication Section
+                    const OtpSection(),
 
-                  const SizedBox(height: 40),
-                ],
+                    const SizedBox(height: 40),
+                  ],
+                ),
               ),
             );
           },

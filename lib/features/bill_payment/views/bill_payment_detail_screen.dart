@@ -94,60 +94,64 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
             );
           },
           builder: (context, state) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 24),
-                    BAAssets.transferSuccess(),
-                    const SizedBox(height: 16),
-                    Text(
-                      '${FormatterUtils.formatDate(widget.bill.startDate)} - ${FormatterUtils.formatDate(widget.bill.endDate)}',
-                      style: context.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w600,
+            return GestureDetector(
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 24),
+                      BAAssets.transferSuccess(),
+                      const SizedBox(height: 16),
+                      Text(
+                        '${FormatterUtils.formatDate(widget.bill.startDate)} - ${FormatterUtils.formatDate(widget.bill.endDate)}',
+                        style: context.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                    /// Bill details
-                    BillDetailCard(bill: widget.bill),
-                    const SizedBox(height: 34),
+                      /// Bill details
+                      BillDetailCard(bill: widget.bill),
+                      const SizedBox(height: 34),
 
-                    /// Account or Card selector
-                    AccountOrCardSelector(
-                      accounts: state.accounts,
-                      cards: state.cards,
-                      selectedAccount: state.selectedAccount,
-                      selectedCard: state.selectedCard,
-                      onSelected: (account, card) {
-                        if (account != null) {
-                          context.read<BillPaymentBloc>().add(
-                            SelectAccountEvt(account),
-                          );
-                        } else if (card != null) {
-                          context.read<BillPaymentBloc>().add(
-                            SelectCardEvt(card),
-                          );
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 24),
+                      /// Account or Card selector
+                      AccountOrCardSelector(
+                        accounts: state.accounts,
+                        cards: state.cards,
+                        selectedAccount: state.selectedAccount,
+                        selectedCard: state.selectedCard,
+                        onSelected: (account, card) {
+                          if (account != null) {
+                            context.read<BillPaymentBloc>().add(
+                              SelectAccountEvt(account),
+                            );
+                          } else if (card != null) {
+                            context.read<BillPaymentBloc>().add(
+                              SelectCardEvt(card),
+                            );
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 24),
 
-                    /// OTP section
-                    _buildOtpSection(context, state),
+                      /// OTP section
+                      _buildOtpSection(context, state),
 
-                    const SizedBox(height: 40),
+                      const SizedBox(height: 40),
 
-                    BAElevatedButton(
-                      padding: EdgeInsets.zero,
-                      height: 44,
-                      text: S.current.payBillButton,
-                      onPressed: _confirmPayment,
-                    ),
-                    const SizedBox(height: 40),
-                  ],
+                      BAElevatedButton(
+                        padding: EdgeInsets.zero,
+                        height: 44,
+                        text: S.current.payBillButton,
+                        isDisabled: !state.isOtpValid,
+                        onPressed: _confirmPayment,
+                      ),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -181,6 +185,11 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                   LengthLimitingTextInputFormatter(6),
                 ],
                 validator: SecureInputValidator.validateOTP,
+                onChanged: (value) {
+                  context.read<BillPaymentBloc>().add(
+                    OtpChangedEvt(value ?? ''),
+                  );
+                },
               ),
             ),
             const SizedBox(width: 5),
@@ -191,6 +200,8 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
                 text: state.otpSent
                     ? S.current.transferResendButton
                     : S.current.transferGetOtpButton,
+                isDisabled:
+                    state.selectedAccount == null && state.selectedCard == null,
                 onPressed: () {
                   // Check if transaction already created
                   if (state.billId != null && state.billId!.isNotEmpty) {

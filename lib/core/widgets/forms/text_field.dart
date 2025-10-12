@@ -34,6 +34,7 @@ class BATextField extends StatefulWidget {
     this.onChanged,
     this.hintTextStyle,
     this.autovalidateMode = AutovalidateMode.onUserInteraction,
+    this.helperText,
   });
 
   /// The name of the field.
@@ -101,6 +102,9 @@ class BATextField extends StatefulWidget {
 
   /// The autovalidate mode to use for the field.
   final AutovalidateMode autovalidateMode;
+
+  /// The helper text to display below the field.
+  final String? helperText;
 
   @override
   State<BATextField> createState() => _BATextFieldState();
@@ -187,6 +191,7 @@ class _BATextFieldState extends State<BATextField> {
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(horizontal: 16),
             hintText: widget.hint,
+            helperText: widget.helperText,
             hintStyle:
                 widget.hintTextStyle ??
                 context.titleSmall?.copyWith(
