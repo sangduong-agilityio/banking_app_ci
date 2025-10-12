@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../helpers/utils.dart';
 
-// Mock Supabase classes - extends Mock và implements interface thật
+// Mock Supabase classes - extends Mock and implements the real interface
 class MockSupabaseClient extends Mock implements SupabaseClient {}
 
 class MockGoTrueClient extends Mock implements GoTrueClient {}

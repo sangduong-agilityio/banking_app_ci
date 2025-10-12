@@ -66,7 +66,7 @@ class BATabBar extends StatelessWidget {
             final tabName = entry.value;
 
             return AnimatedBuilder(
-              animation: controller.animation!,
+              animation: controller.animation ?? kAlwaysCompleteAnimation,
               builder: (context, child) {
                 final isSelected = controller.index == index;
 

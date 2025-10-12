@@ -55,15 +55,6 @@ class _TransferFormSectionState extends State<TransferFormSection> {
   void _fillFromBeneficiary(BeneficiaryModel beneficiary, TransferState state) {
     _nameController.text = beneficiary.name;
     _cardNumberController.text = beneficiary.accountNumber;
-
-    if (state.selectedTransferType == TransferType.otherBank) {
-      final matchedBank = state.banks.firstWhere(
-        (bank) => bank.id == beneficiary.bankId,
-        orElse: () => state.banks.first,
-      );
-      _bankController.text = beneficiary.bankName ?? '';
-      context.read<TransferBloc>().add(SelectBankEvt(matchedBank));
-    }
   }
 
   /// Clears the form fields.
@@ -85,6 +76,12 @@ class _TransferFormSectionState extends State<TransferFormSection> {
       listener: (context, state) {
         if (state.selectedBeneficiary != null) {
           _fillFromBeneficiary(state.selectedBeneficiary!, state);
+          if (state.selectedBank != null) {
+            _bankController.text = state.selectedBank?.name ?? '';
+          }
+          if (state.selectedBranch != null) {
+            _branchController.text = state.selectedBranch?.name ?? '';
+          }
         } else {
           _clearForm();
         }
@@ -180,11 +177,15 @@ class _TransferFormSectionState extends State<TransferFormSection> {
 
   /// Builds the form for selecting a bank and a branch for transfers to other banks.
   Widget _buildOtherBankForm(TransferState state) {
+    final isBeneficiarySelected = state.selectedBeneficiary != null;
     return Column(
       children: [
         GestureDetector(
-          onTap: () => _showBankSelector(state.banks, state.selectedBank),
+          onTap: isBeneficiarySelected
+              ? null
+              : () => _showBankSelector(state.banks, state.selectedBank),
           child: AbsorbPointer(
+            absorbing: isBeneficiarySelected,
             child: BATextField(
               name: S.current.transferChooseBankLabel,
               hint: S.current.transferChooseBankLabel,
@@ -203,7 +204,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
         ),
         const SizedBox(height: 24),
         GestureDetector(
-          onTap: state.selectedBank == null
+          onTap: isBeneficiarySelected || state.selectedBank == null
               ? null
               : () {
                   final filteredBranches = state.branches
@@ -212,6 +213,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
                   _showBranchSelector(filteredBranches, state.selectedBranch);
                 },
           child: AbsorbPointer(
+            absorbing: isBeneficiarySelected,
             child: BATextField(
               name: S.current.transferChooseBranchLabel,
               hint: S.current.transferChooseBranchLabel,
@@ -402,7 +404,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
 
   /// Handles the confirmation of the transfer.
   void _handleConfirm(BuildContext context, TransferState state) async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
     context.read<TransferBloc>().add(ConfirmTransferEvt());
 

@@ -100,12 +100,12 @@ class AccountCard extends StatelessWidget {
         _cardInformation(
           context,
           label: S.current.accountFromDateTitle,
-          value: FormatterUtils.formatDate(account.fromDate!),
+          value: FormatterUtils.formatDate(account.fromDate),
         ),
         _cardInformation(
           context,
           label: S.current.accountToDateTitle,
-          value: FormatterUtils.formatDate(account.toDate!),
+          value: FormatterUtils.formatDate(account.toDate),
         ),
         _cardInformation(
           context,
@@ -115,7 +115,7 @@ class AccountCard extends StatelessWidget {
         _cardInformation(
           context,
           label: S.current.accountInterestRateTitle,
-          value: "${account.interestRate}%",
+          value: account.interestRate != null ? "${account.interestRate}%" : "",
         ),
       ],
     );

@@ -20,7 +20,7 @@ class MockSupabaseQueryBuilder extends Mock implements SupabaseQueryBuilder {}
 class MockPostgrestFilterBuilder extends Mock
     implements PostgrestFilterBuilder {}
 
-// Trong mock data của bạn
+// In your mock data
 class MockBillPaymentData {
   static final mockBillType = BillType.electric;
 

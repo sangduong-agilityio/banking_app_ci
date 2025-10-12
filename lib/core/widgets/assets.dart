@@ -1409,7 +1409,7 @@ class BAProfileImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ưu tiên xử lý URL trước
+    // Prioritize handling URLs first
     if (url != null && url!.isNotEmpty) {
       // If the URL points to a local file (starts with "/" or "file://")
       if (url!.startsWith('/') || url!.startsWith('file://')) {

@@ -1,4 +1,6 @@
+import 'package:banking_app/features/transfer/models/bank_model.dart';
 import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
+import 'package:banking_app/features/transfer/models/branch_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/transfer/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/repositories/transfer_repository.dart';
@@ -245,7 +247,35 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     SelectBeneficiaryEvt event,
     Emitter<TransferState> emit,
   ) {
-    emit(state.copyWith(selectedBeneficiary: event.beneficiary));
+    final beneficiary = event.beneficiary;
+    BankModel? bank;
+    BranchModel? branch;
+
+    if (beneficiary.bankId != null) {
+      for (final b in state.banks) {
+        if (b.id == beneficiary.bankId) {
+          bank = b;
+          break;
+        }
+      }
+    }
+
+    if (beneficiary.branch != null && beneficiary.bankId != null) {
+      for (final b in state.branches) {
+        if (b.name == beneficiary.branch && b.bankId == beneficiary.bankId) {
+          branch = b;
+          break;
+        }
+      }
+    }
+
+    emit(
+      state.copyWith(
+        selectedBeneficiary: beneficiary,
+        selectedBank: bank,
+        selectedBranch: branch,
+      ),
+    );
     _recalculateFeeIfNeeded();
   }
 

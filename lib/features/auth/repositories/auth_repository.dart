@@ -28,6 +28,13 @@ abstract class AuthRepository {
 
   /// Log out the current user.
   Future<void> logout();
+
+  /// Create a new user profile.
+  Future<void> createUserProfile({
+    required String userId,
+    required String username,
+    required String email,
+  });
 }
 
 /// Concrete implementation of [AuthRepository] using Supabase.
@@ -99,5 +106,18 @@ class AuthRepositoryImplement implements AuthRepository {
   @override
   Future<void> logout() async {
     await _client.auth.signOut();
+  }
+
+  @override
+  Future<void> createUserProfile({
+    required String userId,
+    required String username,
+    required String email,
+  }) async {
+    await _client.from('users').insert({
+      'id': userId,
+      'username': username,
+      'email': email,
+    });
   }
 }

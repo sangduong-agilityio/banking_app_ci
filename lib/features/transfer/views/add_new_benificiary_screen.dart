@@ -391,7 +391,7 @@ class _AddBeneficiaryFormState extends State<AddBeneficiaryForm> {
                     onPressed: !isFormValid
                         ? null
                         : () {
-                            if (_formKey.currentState!.validate()) {
+                            if (_formKey.currentState?.validate() ?? false) {
                               final bloc = context.read<TransferBloc>();
 
                               final newBeneficiary = BeneficiaryModel(
@@ -401,6 +401,7 @@ class _AddBeneficiaryFormState extends State<AddBeneficiaryForm> {
                                 bankId: bloc.state.selectedBank?.id,
                                 branch: bloc.state.selectedBranch?.name,
                                 avatarUrl: bloc.state.avatarUrl,
+                                transferType: bloc.state.selectedTransferType,
                               );
 
                               bloc.add(AddNewBeneficiaryEvt(newBeneficiary));

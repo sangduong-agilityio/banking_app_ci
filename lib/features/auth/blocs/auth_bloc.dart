@@ -236,18 +236,24 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         username: state.username,
       );
 
-      emit(
-        state.copyWith(
-          status: response.user != null
-              ? const AuthStatus.success()
-              : const AuthStatus.failure(),
-          errorMessage: response.user != null
-              ? ''
-              : S.current.authErrorSignupFailed,
-        ),
-      );
+      if (response.user != null) {
+        await repo.createUserProfile(
+          userId: response.user!.id,
+          username: state.username,
+          email: state.email,
+        );
+        emit(
+          state.copyWith(status: const AuthStatus.success(), errorMessage: ''),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: const AuthStatus.failure(),
+            errorMessage: S.current.authErrorSignupFailed,
+          ),
+        );
+      }
     } catch (e, stackTrace) {
-      // Log sign up errors (was missing before!)
       await ErrorSanitizer.logSecureError(
         e,
         stackTrace,

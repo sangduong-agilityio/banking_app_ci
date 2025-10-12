@@ -225,7 +225,9 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
   void _performCardSwitch() {
     var firstCard = _cardData.removeAt(0);
     _poppedCardIndex = widget.cardData.indexOf(firstCard);
-    _poppedCardWidget = widget.cardBuilder(context, _poppedCardIndex!, -1);
+    if (_poppedCardIndex != null && _poppedCardIndex! >= 0) {
+      _poppedCardWidget = widget.cardBuilder(context, _poppedCardIndex!, -1);
+    }
     _cardData.add(firstCard);
 
     _playCardSwitchVibration();
@@ -301,7 +303,9 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     // Top card
     if (_cardData.isNotEmpty) {
       _topCardIndex = widget.cardData.indexOf(_cardData[0]);
-      _topCardWidget = widget.cardBuilder(context, _topCardIndex!, 0);
+      if (_topCardIndex != null && _topCardIndex! >= 0) {
+        _topCardWidget = widget.cardBuilder(context, _topCardIndex!, 0);
+      }
     } else {
       _topCardIndex = null;
       _topCardWidget = null;
@@ -310,7 +314,9 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     // Second card
     if (_cardData.length > 1) {
       _secondCardIndex = widget.cardData.indexOf(_cardData[1]);
-      _secondCardWidget = widget.cardBuilder(context, _secondCardIndex!, 1);
+      if (_secondCardIndex != null && _secondCardIndex! >= 0) {
+        _secondCardWidget = widget.cardBuilder(context, _secondCardIndex!, 1);
+      }
     } else {
       _secondCardIndex = null;
       _secondCardWidget = null;
@@ -319,7 +325,9 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     // Third card
     if (_cardData.length > 2) {
       _thirdCardIndex = widget.cardData.indexOf(_cardData[2]);
-      _thirdCardWidget = widget.cardBuilder(context, _thirdCardIndex!, 2);
+      if (_thirdCardIndex != null && _thirdCardIndex! >= 0) {
+        _thirdCardWidget = widget.cardBuilder(context, _thirdCardIndex!, 2);
+      }
     } else {
       _thirdCardIndex = null;
       _thirdCardWidget = null;
@@ -402,7 +410,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
   /// Animates the card to the completion of the swipe.
   void _animateToCompletion() {
     final double remaining = 1.0 - _controller.value;
-    final int duration = (_controller.duration!.inMilliseconds * remaining)
+    final int duration = ((_controller.duration?.inMilliseconds ?? 0) * remaining)
         .round();
 
     if (duration > 0) {
@@ -429,7 +437,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
   void _completeOrRevertAnimation() {
     if (_controller.value >= widget.thresholdValue) {
       final double remaining = 1.0 - _controller.value;
-      final int duration = (_controller.duration!.inMilliseconds * remaining)
+      final int duration = ((_controller.duration?.inMilliseconds ?? 0) * remaining)
           .round();
 
       if (duration > 0) {
@@ -444,7 +452,7 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
       }
     } else {
       final int duration =
-          (_controller.duration!.inMilliseconds * _controller.value).round();
+          ((_controller.duration?.inMilliseconds ?? 0) * _controller.value).round();
 
       if (duration > 0) {
         _controller.animateBack(
@@ -492,7 +500,8 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
           animation: Listenable.merge([
             _controller,
             _downDragController,
-            if (widget.shouldStartCardCollectionAnimation)
+            if (widget.shouldStartCardCollectionAnimation &&
+                _cardCollectionAnimationController != null)
               _cardCollectionAnimationController!,
           ]),
           builder: (context, child) =>
