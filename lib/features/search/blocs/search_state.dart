@@ -23,6 +23,8 @@ class SearchState extends Equatable {
     this.isFromCache = false,
     this.exchangeRateStatus = ExchangeRateStatus.noData,
     this.lastExchangeRateUpdate,
+    this.exchangeRateRequestId = 0,
+    this.isOnline = true,
   });
 
   /// The current status of the search feature.
@@ -64,6 +66,11 @@ class SearchState extends Equatable {
   /// The timestamp when the current exchange rate was last updated.
   final DateTime? lastExchangeRateUpdate;
 
+  /// A unique identifier for the current exchange rate request.
+  final int exchangeRateRequestId;
+
+  final bool isOnline;
+
   /// Creates a copy of the current [SearchState] with the given fields replaced
   /// with the new values.
   SearchState copyWith({
@@ -80,6 +87,8 @@ class SearchState extends Equatable {
     bool? isFromCache,
     ExchangeRateStatus? exchangeRateStatus,
     DateTime? lastExchangeRateUpdate,
+    int? exchangeRateRequestId,
+    bool? isOnline,
   }) {
     return SearchState(
       status: status ?? this.status,
@@ -96,6 +105,9 @@ class SearchState extends Equatable {
       exchangeRateStatus: exchangeRateStatus ?? this.exchangeRateStatus,
       lastExchangeRateUpdate:
           lastExchangeRateUpdate ?? this.lastExchangeRateUpdate,
+      exchangeRateRequestId:
+          exchangeRateRequestId ?? this.exchangeRateRequestId,
+      isOnline: isOnline ?? this.isOnline,
     );
   }
 
@@ -114,6 +126,8 @@ class SearchState extends Equatable {
     isFromCache,
     exchangeRateStatus,
     lastExchangeRateUpdate,
+    exchangeRateRequestId,
+    isOnline,
   ];
 }
 

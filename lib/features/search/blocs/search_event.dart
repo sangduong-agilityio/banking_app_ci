@@ -70,3 +70,12 @@ class ExchangeRateRefreshEvt extends SearchEvt {
   @override
   List<Object?> get props => [forceRefresh];
 }
+
+class CheckConnectivityEvt extends SearchEvt {
+  final bool isOnline;
+
+  const CheckConnectivityEvt(this.isOnline);
+
+  @override
+  List<Object?> get props => [isOnline];
+}

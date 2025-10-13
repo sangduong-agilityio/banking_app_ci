@@ -41,11 +41,7 @@ class CardModel with _$CardModel {
       _$CardModelFromJson(json);
 }
 
-enum CardStatus {
-  active,
-  frozen,
-  expired,
-}
+enum CardStatus { active, frozen, expired }
 
 enum CardType {
   visa,

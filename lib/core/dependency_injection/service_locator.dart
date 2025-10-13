@@ -64,6 +64,18 @@ class AppLocators {
       () => OfflineExchangeService(store.box<CurrencyRateEntity>()),
     );
 
+    locator.registerLazySingleton<CurrencyCacheService>(
+      () => CurrencyCacheService(store.box<CurrencyEntity>()),
+    );
+
+    locator.registerLazySingleton<CacheManager>(
+      () => CacheManager(
+        locator<ExchangeRateCacheService>(),
+        locator<OfflineExchangeService>(),
+        locator<CurrencyCacheService>(),
+      ),
+    );
+
     locator.registerLazySingleton<BiometricService>(() => BiometricService());
 
     /// Repositories - SYNC
@@ -78,8 +90,7 @@ class AppLocators {
     locator.registerLazySingleton<SearchRepository>(
       () => SearchRepositoryImplement(
         client: locator<BankingApiClient>(),
-        cacheService: locator<ExchangeRateCacheService>(),
-        offlineService: locator<OfflineExchangeService>(),
+        cacheManager: locator<CacheManager>(),
       ),
     );
 
@@ -122,8 +133,7 @@ class AppLocators {
     locator.registerFactory<SearchBloc>(
       () => SearchBloc(
         repo: locator<SearchRepository>(),
-        cacheService: locator<ExchangeRateCacheService>(),
-        offlineService: locator<OfflineExchangeService>(),
+        cacheManager: locator<CacheManager>(),
       ),
     );
 

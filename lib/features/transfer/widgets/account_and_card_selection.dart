@@ -110,8 +110,12 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
   }
 
   void _showSelectorDialog(BuildContext context) {
-    final activeAccounts = widget.accounts.where((a) => a.status == AccountStatus.active).toList();
-    final activeCards = widget.cards.where((c) => c.status == CardStatus.active).toList();
+    final activeAccounts = widget.accounts
+        .where((a) => a.status == AccountStatus.active)
+        .toList();
+    final activeCards = widget.cards
+        .where((c) => c.status == CardStatus.active)
+        .toList();
 
     showDialog(
       context: context,
@@ -124,8 +128,7 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
         onSelected: (item) {
           if (item is AccountModel) {
             widget.onSelected(item, null);
-          }
-          else if (item is CardModel) {
+          } else if (item is CardModel) {
             widget.onSelected(null, item);
           }
           Navigator.of(dialogContext).pop();

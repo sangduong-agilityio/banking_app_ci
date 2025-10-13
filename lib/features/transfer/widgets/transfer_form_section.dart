@@ -91,7 +91,8 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           prev.selectedAccount != curr.selectedAccount ||
           prev.selectedBank != curr.selectedBank ||
           prev.selectedBranch != curr.selectedBranch ||
-          prev.saveToDirectory != curr.saveToDirectory,
+          prev.saveToDirectory != curr.saveToDirectory ||
+          prev.amount != curr.amount,
       builder: (context, state) {
         return Form(
           key: _formKey,

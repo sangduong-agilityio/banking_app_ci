@@ -27,6 +27,8 @@ void main() {
         transferType: TransferType.cardNumber,
       ),
     );
+    registerFallbackValue(MockTransferData.mockAccount1);
+    registerFallbackValue(MockTransferData.mockCard1);
   });
 
   setUp(() {
@@ -186,6 +188,11 @@ void main() {
               When SelectAccountEvt is added
               Then the state should reflect the selected account
             ''',
+            setUp: () {
+              when(
+                () => transferRepo.fetchAccountTransactionLimit(any()),
+              ).thenAnswer((_) async => 1000.0);
+            },
             build: () => transferBloc,
             act: (bloc) =>
                 bloc.add(SelectAccountEvt(MockTransferData.mockAccount1)),
@@ -203,6 +210,11 @@ void main() {
               When SelectAccountEvt is added
               Then the card should be cleared
             ''',
+            setUp: () {
+              when(
+                () => transferRepo.fetchAccountTransactionLimit(any()),
+              ).thenAnswer((_) async => 1000.0);
+            },
             build: () => transferBloc,
             seed: () => TransferState(selectedCard: MockTransferData.mockCard1),
             act: (bloc) =>
@@ -228,6 +240,11 @@ void main() {
               When SelectCardEvt is added
               Then the state should reflect the selected card
             ''',
+            setUp: () {
+              when(
+                () => transferRepo.fetchCardTransactionLimit(any()),
+              ).thenAnswer((_) async => 1000.0);
+            },
             build: () => transferBloc,
             act: (bloc) => bloc.add(SelectCardEvt(MockTransferData.mockCard1)),
             expect: () => [
@@ -244,6 +261,11 @@ void main() {
               When SelectCardEvt is added
               Then the account should be cleared
             ''',
+            setUp: () {
+              when(
+                () => transferRepo.fetchCardTransactionLimit(any()),
+              ).thenAnswer((_) async => 1000.0);
+            },
             build: () => transferBloc,
             seed: () =>
                 TransferState(selectedAccount: MockTransferData.mockAccount1),

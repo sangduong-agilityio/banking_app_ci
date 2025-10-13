@@ -108,8 +108,6 @@ class BankingApiClient {
       final isValid = fingerprint == expectedFingerprint;
 
       if (!isValid) {
-
-
         ErrorSanitizer.logSecureError(
           Exception('Certificate pinning failed for host: $host'),
           StackTrace.current,
@@ -160,9 +158,7 @@ class BankingApiClient {
   }
 
   /// Logs certificate information for debugging.
-  void _logCertificateInfo(X509Certificate cert, String host) {
-
-  }
+  void _logCertificateInfo(X509Certificate cert, String host) {}
 }
 
 /// A Dio interceptor for adding security headers and logging.
@@ -174,12 +170,8 @@ class _SecurityInterceptor extends Interceptor {
     super.onRequest(options, handler);
   }
 
-
-
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-
-
     if (_shouldLogToSentry(err)) {
       await ErrorSanitizer.logSecureError(
         err,

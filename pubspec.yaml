@@ -104,8 +104,6 @@ dependencies:
   # File and directory path manipulation
   path: ^1.9.1
   
-  url_launcher: ^6.3.2
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

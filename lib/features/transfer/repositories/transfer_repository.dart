@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:url_launcher/url_launcher.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
@@ -202,17 +201,7 @@ class TransferRepositoryImpl implements TransferRepository {
         'isUsed': false,
       });
 
-      final Uri emailLaunchUri = Uri(
-        scheme: 'mailto',
-        path: currentUser.email,
-        query: 'subject=Your OTP Code&body=Your OTP code is $otpCode',
-      );
-
-      if (await canLaunchUrl(emailLaunchUri)) {
-        await launchUrl(emailLaunchUri);
-      } else {
-        print('Could not launch email client');
-      }
+      print('OTP $otpCode sent to ${currentUser.email ?? ''}');
     } catch (e) {
       throw OtpSendFailedException('Failed to send OTP: ${e.toString()}');
     }
@@ -279,7 +268,6 @@ class TransferRepositoryImpl implements TransferRepository {
       }
       return false;
     } catch (e) {
-      print('Error verifying OTP: $e');
       return false;
     }
   }

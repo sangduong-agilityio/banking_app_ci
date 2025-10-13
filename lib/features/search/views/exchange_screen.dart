@@ -12,16 +12,13 @@ import 'package:banking_app/features/search/blocs/search_event.dart';
 import 'package:banking_app/features/search/blocs/search_state.dart';
 import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/widgets/currency_card.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 /// A screen for converting currencies.
-///
-/// This screen allows the user to select two currencies, enter an amount, and
-/// see the converted amount.
 class ExchangeScreen extends StatefulWidget {
-  /// Creates an [ExchangeScreen] object.
   const ExchangeScreen({
     super.key,
     this.initialFromCurrency,
@@ -29,13 +26,8 @@ class ExchangeScreen extends StatefulWidget {
     this.initialAmount,
   });
 
-  /// The initial currency to convert from.
   final String? initialFromCurrency;
-
-  /// The initial currency to convert to.
   final String? initialToCurrency;
-
-  /// The initial amount to convert.
   final double? initialAmount;
 
   @override
@@ -43,7 +35,7 @@ class ExchangeScreen extends StatefulWidget {
 }
 
 class _ExchangeScreenState extends State<ExchangeScreen>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   final TextEditingController _fromAmountController = TextEditingController();
   final TextEditingController _toAmountController = TextEditingController();
   late AnimationController _swapAnimationController;
@@ -52,6 +44,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     _swapAnimationController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -66,9 +60,30 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     if (widget.initialAmount != null) {
       _fromAmountController.text = widget.initialAmount!.toString();
     }
+
+    // Initial connectivity check
+    _checkConnectivity();
   }
 
-  /// Whether the exchange button should be enabled.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // Check connectivity when app comes back to foreground
+    if (state == AppLifecycleState.resumed) {
+      _checkConnectivity();
+    }
+  }
+
+  /// Check connectivity and update BLoC
+  Future<void> _checkConnectivity() async {
+    final result = await Connectivity().checkConnectivity();
+    final isOnline = result != ConnectivityResult.none;
+
+    if (mounted) {
+      context.read<SearchBloc>().add(CheckConnectivityEvt(isOnline));
+    }
+  }
+
   bool get isExchangeEnabled {
     final fromAmount = double.tryParse(_fromAmountController.text) ?? 0;
     final toAmount = double.tryParse(_toAmountController.text) ?? 0;
@@ -77,13 +92,13 @@ class _ExchangeScreenState extends State<ExchangeScreen>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _fromAmountController.dispose();
     _toAmountController.dispose();
     _swapAnimationController.dispose();
     super.dispose();
   }
 
-  /// Shows a dialog for selecting a currency.
   void _showCurrencySelector(BuildContext context, bool isFromCurrency) {
     final bloc = context.read<SearchBloc>();
     final state = bloc.state;
@@ -110,14 +125,12 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     );
   }
 
-  /// Swaps the \"from\" and \"to\" currencies with an animation.
   Future<void> _swapCurrencies(BuildContext context) async {
     await _swapAnimationController.forward();
     if (context.mounted) context.read<SearchBloc>().add(SwapCurrenciesEvt());
     await _swapAnimationController.reverse();
   }
 
-  /// Updates the text of a [TextEditingController] with a formatted amount.
   void _updateController(TextEditingController controller, double? amount) {
     final newText = amount != null ? FormatterUtils.formatAmount(amount) : '';
 
@@ -148,98 +161,165 @@ class _ExchangeScreenState extends State<ExchangeScreen>
             alignment: BAAppBarAlignment.left,
             iconColor: context.colorScheme.scrim,
           ),
-          body: BlocConsumer<SearchBloc, SearchState>(
-            listenWhen: (prev, curr) =>
-                prev.status != curr.status ||
-                prev.fromAmount != curr.fromAmount ||
-                prev.toAmount != curr.toAmount ||
-                prev.fromCurrency != curr.fromCurrency ||
-                prev.toCurrency != curr.toCurrency,
-            listener: (context, state) {
-              state.status.maybeWhen(
-                loading: () => context.loaderOverlay.show(),
-                success: () {
-                  if (context.mounted) context.loaderOverlay.hide();
-                },
-                failure: () {
-                  if (context.mounted) context.loaderOverlay.hide();
-                },
-                orElse: () {
-                  if (context.mounted) context.loaderOverlay.hide();
-                },
-              );
-
-              // Update the text controllers with the new amounts.
-              _updateController(_fromAmountController, state.fromAmount);
-              _updateController(_toAmountController, state.toAmount);
-
-              // Show a warning if the exchange rate is stale.
-              if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
-                _showOfflineWarning(context);
-              }
-            },
-            builder: (context, state) {
-              return GestureDetector(
-                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    children: [
-                      BAAssets.exchangeMoney(),
-                      const SizedBox(height: 16),
-                      // The main box for currency exchange.
-                      ExchangeBox(
-                        isButtonEnabled: isExchangeEnabled,
-                        rateStatus: state.exchangeRateStatus,
-                        lastRateUpdate: state.lastExchangeRateUpdate,
-                        fromCard: CurrencyCard(
-                          label: S.current.searchFormTitle,
-                          currency: state.fromCurrency ?? '',
-                          controller: _fromAmountController,
-                          onCurrencyTap: () =>
-                              _showCurrencySelector(context, true),
-                          onChanged: (value) {
-                            final amount = double.tryParse(value ?? '') ?? 0;
-                            context.read<SearchBloc>().add(
-                              ConvertCurrencyEvt(amount, isFromAmount: true),
-                            );
-                          },
-                        ),
-                        toCard: CurrencyCard(
-                          label: S.current.searchToTitle,
-                          currency: state.toCurrency ?? '',
-                          controller: _toAmountController,
-                          onCurrencyTap: () =>
-                              _showCurrencySelector(context, false),
-                          onChanged: (value) {
-                            final amount = double.tryParse(value ?? '') ?? 0;
-                            context.read<SearchBloc>().add(
-                              ConvertCurrencyEvt(amount, isFromAmount: false),
-                            );
-                          },
-                        ),
-                        swapButton: GestureDetector(
-                          onTap: () => _swapCurrencies(context),
-                          child: AnimatedBuilder(
-                            animation: _swapAnimation,
-                            builder: (context, child) => Transform.rotate(
-                              angle: _swapAnimation.value * math.pi,
-                              child: child,
-                            ),
-                            child: BAAssets.swap(),
+          body: Column(
+            children: [
+              // Offline banner
+              BlocBuilder<SearchBloc, SearchState>(
+                buildWhen: (prev, curr) => prev.isOnline != curr.isOnline,
+                builder: (context, state) {
+                  if (!state.isOnline) {
+                    return Container(
+                      width: double.infinity,
+                      color: Colors.red,
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.wifi_off,
+                            color: Colors.white,
+                            size: 16,
                           ),
-                        ),
-                        exchangeRate:
-                            (state.fromAmount != null && state.fromAmount! > 0)
-                            ? '1 ${state.fromCurrency ?? ''} = ${state.exchangeRate?.toStringAsFixed(2) ?? '--'} ${state.toCurrency ?? ''}'
-                            : null,
+                          const SizedBox(width: 8),
+                          Text(
+                            S.current.offline_text,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          const SizedBox(width: 8),
+                          // Retry button
+                          TextButton(
+                            onPressed: _checkConnectivity,
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: const Text(
+                              'Retry',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              ),
+              // Main content
+              Expanded(
+                child: BlocConsumer<SearchBloc, SearchState>(
+                  listenWhen: (prev, curr) =>
+                      prev.status != curr.status ||
+                      prev.fromAmount != curr.fromAmount ||
+                      prev.toAmount != curr.toAmount ||
+                      prev.fromCurrency != curr.fromCurrency ||
+                      prev.toCurrency != curr.toCurrency ||
+                      prev.exchangeRateStatus != curr.exchangeRateStatus,
+                  listener: (context, state) {
+                    state.status.maybeWhen(
+                      loading: () => context.loaderOverlay.show(),
+                      success: () {
+                        if (context.mounted) context.loaderOverlay.hide();
+                      },
+                      failure: () {
+                        if (context.mounted) context.loaderOverlay.hide();
+                      },
+                      orElse: () {
+                        if (context.mounted) context.loaderOverlay.hide();
+                      },
+                    );
+
+                    // Update the text controllers with the new amounts
+                    _updateController(_fromAmountController, state.fromAmount);
+                    _updateController(_toAmountController, state.toAmount);
+
+                    // Show a warning if the exchange rate is stale
+                    if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
+                      _showOfflineWarning(context);
+                    }
+                  },
+                  builder: (context, state) {
+                    return GestureDetector(
+                      onTap: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
+                      child: SingleChildScrollView(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          children: [
+                            BAAssets.exchangeMoney(),
+                            const SizedBox(height: 16),
+                            // The main box for currency exchange
+                            ExchangeBox(
+                              isButtonEnabled: isExchangeEnabled,
+                              rateStatus: state.exchangeRateStatus,
+                              lastRateUpdate: state.lastExchangeRateUpdate,
+                              fromCard: CurrencyCard(
+                                label: S.current.searchFormTitle,
+                                currency: state.fromCurrency ?? '',
+                                controller: _fromAmountController,
+                                onCurrencyTap: () =>
+                                    _showCurrencySelector(context, true),
+                                onChanged: (value) {
+                                  final amount =
+                                      double.tryParse(value ?? '') ?? 0;
+                                  context.read<SearchBloc>().add(
+                                    ConvertCurrencyEvt(
+                                      amount,
+                                      isFromAmount: true,
+                                    ),
+                                  );
+                                },
+                              ),
+                              toCard: CurrencyCard(
+                                label: S.current.searchToTitle,
+                                currency: state.toCurrency ?? '',
+                                controller: _toAmountController,
+                                onCurrencyTap: () =>
+                                    _showCurrencySelector(context, false),
+                                onChanged: (value) {
+                                  final amount =
+                                      double.tryParse(value ?? '') ?? 0;
+                                  context.read<SearchBloc>().add(
+                                    ConvertCurrencyEvt(
+                                      amount,
+                                      isFromAmount: false,
+                                    ),
+                                  );
+                                },
+                              ),
+                              swapButton: GestureDetector(
+                                onTap: () => _swapCurrencies(context),
+                                child: AnimatedBuilder(
+                                  animation: _swapAnimation,
+                                  builder: (context, child) => Transform.rotate(
+                                    angle: _swapAnimation.value * math.pi,
+                                    child: child,
+                                  ),
+                                  child: BAAssets.swap(),
+                                ),
+                              ),
+                              exchangeRate:
+                                  (state.fromAmount != null &&
+                                      state.fromAmount! > 0)
+                                  ? '1 ${state.fromCurrency ?? ''} = ${state.exchangeRate?.toStringAsFixed(2) ?? '--'} ${state.toCurrency ?? ''}'
+                                  : null,
+                            ),
+                            const SizedBox(height: 32),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           ),
         ),
       ),
@@ -259,18 +339,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
           label: S.current.searchRetryButton,
           textColor: context.colorScheme.onPrimary,
           onPressed: () {
-            if (!context.mounted) return;
-            final bloc = context.read<SearchBloc>();
-            if (!bloc.isClosed &&
-                bloc.state.fromCurrency != null &&
-                bloc.state.toCurrency != null) {
-              bloc.add(
-                ExchangeRateChangedEvt(
-                  bloc.state.fromCurrency ?? '',
-                  bloc.state.toCurrency ?? '',
-                ),
-              );
-            }
+            _checkConnectivity();
           },
         ),
       ),

@@ -34,27 +34,22 @@ class BeneficiaryCard extends StatelessWidget {
         color: isSelected
             ? colorScheme.secondary
             : (isEnabled
-                ? colorScheme.onPrimary
-                : colorScheme.outlineVariant.withOpacity(0.5)),
+                  ? colorScheme.onPrimary
+                  : colorScheme.outlineVariant.withAlpha(50)),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color:
-              isSelected ? colorScheme.secondary : colorScheme.outlineVariant,
+          color: isSelected
+              ? colorScheme.secondary
+              : colorScheme.outlineVariant,
         ),
       ),
       child: child,
     );
 
     if (isEnabled) {
-      return GestureDetector(
-        onTap: onTap,
-        child: card,
-      );
+      return GestureDetector(onTap: onTap, child: card);
     }
 
-    return Tooltip(
-      message: disabledReason ?? '',
-      child: card,
-    );
+    return Tooltip(message: disabledReason ?? '', child: card);
   }
 }

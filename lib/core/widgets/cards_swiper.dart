@@ -410,8 +410,8 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
   /// Animates the card to the completion of the swipe.
   void _animateToCompletion() {
     final double remaining = 1.0 - _controller.value;
-    final int duration = ((_controller.duration?.inMilliseconds ?? 0) * remaining)
-        .round();
+    final int duration =
+        ((_controller.duration?.inMilliseconds ?? 0) * remaining).round();
 
     if (duration > 0) {
       _controller.animateTo(
@@ -437,8 +437,8 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
   void _completeOrRevertAnimation() {
     if (_controller.value >= widget.thresholdValue) {
       final double remaining = 1.0 - _controller.value;
-      final int duration = ((_controller.duration?.inMilliseconds ?? 0) * remaining)
-          .round();
+      final int duration =
+          ((_controller.duration?.inMilliseconds ?? 0) * remaining).round();
 
       if (duration > 0) {
         _controller.animateTo(
@@ -452,7 +452,8 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
       }
     } else {
       final int duration =
-          ((_controller.duration?.inMilliseconds ?? 0) * _controller.value).round();
+          ((_controller.duration?.inMilliseconds ?? 0) * _controller.value)
+              .round();
 
       if (duration > 0) {
         _controller.animateBack(

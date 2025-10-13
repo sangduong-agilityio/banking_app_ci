@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:banking_app/features/bill_payment/models/company_model.dart';
 import 'package:banking_app/features/home/models/account_model.dart';
 import 'package:banking_app/features/home/models/card_model.dart';
@@ -196,8 +195,6 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       fromCardId: fromCardId,
     );
 
-    await _sendBillPaymentEmail(billPayment, transactionId);
-
     return billPayment;
   }
 
@@ -337,43 +334,5 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
         .single();
 
     return BillPaymentModel.fromJson(billInsert);
-  }
-
-  Future<void> _sendBillPaymentEmail(
-    BillPaymentModel bill,
-    String transactionId,
-  ) async {
-    final currentUser = _client.auth.currentUser;
-    if (currentUser == null) return;
-
-    final subject = 'Bill Payment Confirmation - ${bill.company?.name}';
-    final body = '''
-      Dear ${currentUser.email},
-
-      Your bill payment has been successfully processed.
-
-      Details:
-      - Company: ${bill.company?.name}
-      - Bill Code: ${bill.billCode}
-      - Amount: ${bill.amount}
-      - Tax: ${bill.tax}
-      - Fee: ${bill.fee}
-      - Total: ${_calculateTotal(bill)}
-      - Transaction ID: $transactionId
-
-      Thank you for using our service.
-    ''';
-
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: currentUser.email,
-      query: 'subject=$subject&body=$body',
-    );
-
-    if (await canLaunchUrl(emailLaunchUri)) {
-      await launchUrl(emailLaunchUri);
-    } else {
-      print('Could not launch email client');
-    }
   }
 }

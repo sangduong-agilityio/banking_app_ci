@@ -50,6 +50,7 @@ class SecureInputValidator {
   /// Checks for suspicious amount patterns.
   static bool _isSuspiciousAmount(double amount) {
     if (amount >= 10000 && amount % 1000 == 0) return true;
+    if (amount < 1000) return false;
     final amountStr = amount.toStringAsFixed(2).replaceAll('.', '');
     final uniqueDigits = amountStr.split('').toSet().length;
     return amountStr.length > 4 && uniqueDigits <= 2;

@@ -2123,6 +2123,16 @@ class S {
       args: [],
     );
   }
+
+  /// `You are currently offline.`
+  String get offline_text {
+    return Intl.message(
+      'You are currently offline.',
+      name: 'offline_text',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

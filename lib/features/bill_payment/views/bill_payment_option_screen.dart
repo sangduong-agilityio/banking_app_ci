@@ -188,10 +188,9 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                           validator: SecureInputValidator.validateBillCode,
                           onChanged: (value) {
                             context.read<BillPaymentBloc>().add(
-                                  UpdateBillDetailsEvt(billCode: value),
-                                );
+                              UpdateBillDetailsEvt(billCode: value),
+                            );
                           },
-
                         ),
                         const SizedBox(height: 24),
                         Text(
@@ -205,8 +204,7 @@ class _PaymentOptionScreenState extends State<PaymentOptionScreen> {
                           padding: EdgeInsets.zero,
                           text: S.current.payBillCheckButton,
                           isDisabled:
-                              selectedCompany == null ||
-                              !state.isBillCodeValid,
+                              selectedCompany == null || !state.isBillCodeValid,
                           onPressed: () => _handleCheckBill(state),
                         ),
                       ],

@@ -43,20 +43,84 @@ class CurrencyUtils {
   /// Converts a numeric amount to its word representation.
   static String convertAmountToWords(String value) {
     final amount = double.tryParse(value.replaceAll(',', ''));
-    if (amount == null) return '';
+    if (amount == null || amount == 0) return '';
 
-    if (amount == 1000) return "One thousand dollar";
-    if (amount == 2000) return "Two thousand dollar";
-    if (amount == 5000) return "Five thousand dollar";
-    if (amount == 10000) return "Ten thousand dollar";
-    if (amount == 20000) return "Twenty thousand dollar";
-    if (amount == 50000) return "Fifty thousand dollar";
-    if (amount == 100000) return "One hundred thousand dollar";
-    if (amount == 200000) return "Two hundred thousand dollar";
-    if (amount == 500000) return "Five hundred thousand dollar";
-    if (amount == 1000000) return "One million dollar";
+    // Use intl_utils to convert number to words
+    final words = _convertNumberToWords(amount.toInt());
 
-    return "$amount dollars";
+    return '$words dollars';
+  }
+
+  static String _convertNumberToWords(int number) {
+    const ones = [
+      '',
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
+    ];
+    const teens = [
+      'ten',
+      'eleven',
+      'twelve',
+      'thirteen',
+      'fourteen',
+      'fifteen',
+      'sixteen',
+      'seventeen',
+      'eighteen',
+      'nineteen',
+    ];
+    const tens = [
+      '',
+      '',
+      'twenty',
+      'thirty',
+      'forty',
+      'fifty',
+      'sixty',
+      'seventy',
+      'eighty',
+      'ninety',
+    ];
+    const scales = ['', 'thousand', 'million', 'billion', 'trillion'];
+
+    if (number == 0) return 'zero';
+
+    String convert(int num) {
+      if (num == 0) {
+        return '';
+      } else if (num < 10) {
+        return ones[num];
+      } else if (num < 20) {
+        return teens[num - 10];
+      } else if (num < 100) {
+        return tens[num ~/ 10] + (num % 10 != 0 ? ' ${ones[num % 10]}' : '');
+      } else {
+        return '${ones[num ~/ 100]} hundred${num % 100 != 0 ? ' ${convert(num % 100)}' : ''}';
+      }
+    }
+
+    String result = '';
+    int scaleIndex = 0;
+
+    while (number > 0) {
+      if (number % 1000 != 0) {
+        result =
+            convert(number % 1000) +
+            (scaleIndex > 0 ? ' ${scales[scaleIndex]}' : '') +
+            (result.isNotEmpty ? ' $result' : '');
+      }
+      number ~/= 1000;
+      scaleIndex++;
+    }
+
+    return result.trim().replaceAll(RegExp(r'\s+'), ' ');
   }
 
   /// Validates a given amount against the available balance and decimal precision.

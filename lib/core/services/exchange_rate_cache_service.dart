@@ -1,3 +1,7 @@
+import 'package:banking_app/core/services/offline_exchange_service.dart';
+import 'package:banking_app/features/search/blocs/search_state.dart';
+import 'package:banking_app/features/search/entities/currency_rate_entity.dart';
+import 'package:banking_app/features/search/models/currency_model.dart';
 import 'package:banking_app/features/search/models/exchange_rate_model.dart';
 import 'package:banking_app/features/search/entities/exchange_rate_entity.dart';
 import 'package:objectbox/objectbox.dart';
@@ -72,5 +76,88 @@ class ExchangeRateCacheService {
   /// Checks if there is any cached data.
   bool hasCachedData() {
     return _exchangeRateBox.getAll().isNotEmpty;
+  }
+}
+
+class CacheManager {
+  final ExchangeRateCacheService _exchangeRateCacheService;
+  final OfflineExchangeService _offlineExchangeService;
+  final CurrencyCacheService _currencyCacheService;
+
+  CacheManager(
+    this._exchangeRateCacheService,
+    this._offlineExchangeService,
+    this._currencyCacheService,
+  );
+
+  // ExchangeRateCacheService methods
+  bool isExchangeRateCacheValid() => _exchangeRateCacheService.isCacheValid();
+  List<ExchangeRateModel> getCachedExchangeRates() =>
+      _exchangeRateCacheService.getCachedRates();
+  void cacheExchangeRates(List<ExchangeRateModel> rates) =>
+      _exchangeRateCacheService.cacheRates(rates);
+  void clearExchangeRateCache() => _exchangeRateCacheService.clearCache();
+  DateTime? getLastUpdatedExchangeRateTime() =>
+      _exchangeRateCacheService.getLastUpdatedTime();
+  bool hasCachedExchangeRateData() => _exchangeRateCacheService.hasCachedData();
+
+  // OfflineExchangeService methods
+  void cacheRate(String fromCurrency, String toCurrency, double rate) =>
+      _offlineExchangeService.cacheRate(fromCurrency, toCurrency, rate);
+  double? getCachedRate(String fromCurrency, String toCurrency) =>
+      _offlineExchangeService.getCachedRate(fromCurrency, toCurrency);
+  void cacheCurrencies(List<CurrencyModel> currencies) =>
+      _currencyCacheService.cacheCurrencies(currencies);
+  List<CurrencyModel>? getCachedCurrencies() =>
+      _currencyCacheService.getCachedCurrencies();
+
+  // MISSING METHODS - ADD THESE:
+  ExchangeRateStatus getRateStatus(String fromCurrency, String toCurrency) =>
+      _offlineExchangeService.getRateStatus(fromCurrency, toCurrency);
+  DateTime? getLastUpdated(String fromCurrency, String toCurrency) =>
+      _offlineExchangeService.getLastUpdated(fromCurrency, toCurrency);
+}
+
+class CurrencyCacheService {
+  final Box<CurrencyEntity> _currencyBox;
+
+  CurrencyCacheService(this._currencyBox);
+
+  /// Caches a list of currencies.
+  void cacheCurrencies(List<CurrencyModel> currencies) {
+    try {
+      // Remove old cache
+      _currencyBox.removeAll();
+
+      // Add new data with current timestamp
+      final entities = currencies
+          .map((currency) => CurrencyEntity.fromModel(currency))
+          .toList();
+      _currencyBox.putMany(entities);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Retrieves the cached currencies.
+  List<CurrencyModel>? getCachedCurrencies() {
+    try {
+      final entities = _currencyBox.getAll();
+      if (entities.isEmpty) return null;
+
+      return entities.map((entity) => entity.toModel()).toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Clears all cached currencies.
+  void clearCache() {
+    _currencyBox.removeAll();
+  }
+
+  /// Checks if there is any cached data.
+  bool hasCachedData() {
+    return _currencyBox.getAll().isNotEmpty;
   }
 }

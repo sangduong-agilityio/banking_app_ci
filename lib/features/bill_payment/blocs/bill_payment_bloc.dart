@@ -282,10 +282,7 @@ class BillPaymentBloc extends BaseBloc<BillPaymentEvt, BillPaymentState> {
 
   void _onOtpChanged(OtpChangedEvt event, Emitter<BillPaymentState> emit) {
     final isOtpValid = SecureInputValidator.validateOTP(event.otpCode) == null;
-    emit(state.copyWith(
-      otpCode: event.otpCode,
-      isOtpValid: isOtpValid,
-    ));
+    emit(state.copyWith(otpCode: event.otpCode, isOtpValid: isOtpValid));
   }
 
   @override
