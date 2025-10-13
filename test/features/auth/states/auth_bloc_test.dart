@@ -146,6 +146,9 @@ void main() {
                   ),
                 ),
               );
+              when(
+                () => prefs.setString(any(), any()),
+              ).thenAnswer((_) async => true);
             },
             build: () => authBloc,
             seed: () => const AuthState(
@@ -170,6 +173,11 @@ void main() {
                 errorMessage: '',
               ),
             ],
+            verify: (_) {
+              verify(
+                () => prefs.setString('session_token', 'test_token'),
+              ).called(1);
+            },
           ),
           BABlocTestScenario<AuthBloc, AuthState>(
             description: '''
@@ -329,6 +337,13 @@ void main() {
                   username: any(named: 'username'),
                 ),
               ).thenAnswer((_) async => AuthResponse(user: AuthMocks.user));
+              when(
+                () => repo.createUserProfile(
+                  userId: any(named: 'userId'),
+                  username: any(named: 'username'),
+                  email: any(named: 'email'),
+                ),
+              ).thenAnswer((_) async => {});
             },
             build: () => authBloc,
             seed: () => const AuthState(
@@ -358,6 +373,15 @@ void main() {
                 errorMessage: '',
               ),
             ],
+            verify: (_) {
+              verify(
+                () => repo.createUserProfile(
+                  userId: 'test_id',
+                  username: 'test_user',
+                  email: 'test@example.com',
+                ),
+              ).called(1);
+            },
           ),
           BABlocTestScenario<AuthBloc, AuthState>(
             description: '''
