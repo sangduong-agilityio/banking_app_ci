@@ -3,6 +3,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:banking_app/core/common/utils/formatters.dart';
 import 'package:banking_app/features/home/data/models/card_model.dart';
+import 'package:banking_app/core/common/utils/card_type_utils.dart';
 import 'package:flutter/material.dart';
 
 /// A generic card widget that can be customized with different properties.
@@ -269,20 +270,20 @@ class CardCategorySelected extends StatelessWidget {
   }
 }
 
-/// A card widget that displays credit card information and has a swipe animation effect.
+/// A card widget that displays credit card information with custom styling per card type
 class SwipeableCreditCard extends StatelessWidget {
-  /// Creates a [SwipeableCreditCard] widget.
   const SwipeableCreditCard({
     super.key,
     required this.data,
     this.isActive = false,
+    this.isBalanceVisible = true,
+    this.onToggleVisibility,
   });
 
-  /// The data for the credit card.
   final CardModel data;
-
-  /// Whether the card is active.
   final bool isActive;
+  final bool isBalanceVisible; // 👈 Property này phải được truyền từ parent
+  final VoidCallback? onToggleVisibility;
 
   @override
   Widget build(BuildContext context) {
@@ -290,77 +291,257 @@ class SwipeableCreditCard extends StatelessWidget {
       scale: isActive ? 1.02 : 1.0,
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
-      child: _buildCardContent(context),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(
+            CardTypeUtils.getBorderRadius(data.cardType!),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: CardTypeUtils.getShadowColor(data.cardType!),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: _buildCardContent(context),
+      ),
     );
   }
 
-  /// Builds the content of the card.
+  /// Builds the content of the card with custom styling per card type
   Widget _buildCardContent(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          gradient: data.cardType?.gradient,
-          borderRadius: BorderRadius.circular(20),
+    final cardType = data.cardType!;
+
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        gradient: CardTypeUtils.getGradient(cardType),
+        borderRadius: BorderRadius.circular(
+          CardTypeUtils.getBorderRadius(cardType),
         ),
-        clipBehavior: Clip.hardEdge,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                data.cardHolderName,
-                style: context.displaySmall?.copyWith(
-                  color: context.colorScheme.onPrimary,
-                  fontWeight: FontWeight.w400,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 32),
-              Text(
-                data.cardTier,
-                style: context.titleSmall?.copyWith(
-                  color: context.colorScheme.onPrimary,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                FormatterUtils.maskCardNumber(data.cardNumber),
-                style: context.titleMedium?.copyWith(
-                  color: context.colorScheme.onPrimary,
-                ),
-              ),
-              const SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      FormatterUtils.formatBalance(data.availableBalance ?? 0),
-                      style: context.headlineMedium?.copyWith(
-                        color: context.colorScheme.onPrimary,
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          // Background pattern
+          _buildBackgroundPattern(cardType),
+
+          // Main content
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Card holder name & Card type
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        data.cardHolderName,
+                        style: context.displaySmall?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
+                    Text(
+                      CardTypeUtils.getDisplayName(cardType),
+                      style: CardTypeUtils.getDisplayNameStyle(cardType),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 24),
+
+                // Card tier
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
                   ),
-                  Text(
-                    data.cardType?.displayName ?? '',
-                    style: const TextStyle(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    data.cardTier,
+                    style: context.titleSmall?.copyWith(
                       color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ],
+                ),
+
+                const SizedBox(height: 12),
+
+                // Card number
+                Text(
+                  FormatterUtils.maskCardNumber(data.cardNumber),
+                  style: context.titleMedium?.copyWith(
+                    color: Colors.white,
+                    letterSpacing: 2.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+
+                const Spacer(),
+
+                // Balance and visibility toggle
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // Balance
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Available Balance',
+                            style: context.bodySmall?.copyWith(
+                              color: Colors.white.withAlpha(200),
+                              fontSize: 10,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (child, animation) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: Text(
+                              key: ValueKey<bool>(isBalanceVisible),
+                              isBalanceVisible
+                                  ? FormatterUtils.formatBalance(
+                                      data.availableBalance ?? 0,
+                                    )
+                                  : '************',
+                              style: context.headlineMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Toggle visibility button
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withAlpha(50),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 200),
+                          transitionBuilder: (child, animation) {
+                            return RotationTransition(
+                              turns: animation,
+                              child: FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: Icon(
+                            key: ValueKey<bool>(isBalanceVisible),
+                            CardTypeUtils.getVisibilityIcon(
+                              cardType,
+                              isBalanceVisible,
+                            ),
+                            size: 20,
+                          ),
+                        ),
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(8),
+                        constraints: const BoxConstraints(),
+                        onPressed: () {
+                          onToggleVisibility?.call();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build background pattern for each card type
+  Widget _buildBackgroundPattern(CardType cardType) {
+    switch (cardType) {
+      case CardType.visa:
+        return Positioned(
+          right: -50,
+          top: -50,
+          child: Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white.withOpacity(0.05),
+            ),
+          ),
+        );
+
+      case CardType.mastercard:
+        return Positioned(
+          right: -30,
+          bottom: -30,
+          child: Row(
+            children: [
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.1),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.1),
+                ),
               ),
             ],
           ),
-        ),
-      ),
-    );
+        );
+
+      case CardType.discover:
+        return Positioned(
+          left: -60,
+          bottom: -60,
+          child: Container(
+            width: 180,
+            height: 180,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [Colors.white.withOpacity(0.1), Colors.transparent],
+              ),
+            ),
+          ),
+        );
+    }
   }
 }

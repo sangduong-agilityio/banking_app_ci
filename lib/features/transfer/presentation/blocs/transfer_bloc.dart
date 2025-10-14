@@ -36,6 +36,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     on<ConfirmTransferWithOtpEvt>(_onConfirmTransferWithOtp);
     on<ConfirmWithBiometricEvt>(_onConfirmWithBiometric);
     on<OtpChangedEvt>(_onOtpChangedEvt);
+    on<BiometricErrorMessageEvt>(_onClearErrorMessage);
   }
 
   /// Loads the initial data required for the transfer feature.
@@ -563,26 +564,54 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     ConfirmTransferWithOtpEvt event,
     Emitter<TransferState> emit,
   ) async {
-    await _confirmTransfer(
-      emit,
-      () async {
-        final isValid = await transferRepo.verifyOTP(
-          state.transferId ?? '',
-          event.otpCode,
-        );
+    emit(state.copyWith(status: const TransferStatus.loading()));
+    try {
+      final isValid = await transferRepo.verifyOTP(
+        state.transferId ?? '',
+        event.otpCode,
+      );
 
-        if (!isValid) {
-          throw const InvalidOtpException();
-        }
+      if (!isValid) {
+        throw const InvalidOtpException();
+      }
 
-        return await transferRepo.confirmTransfer(
-          state.transferId ?? '',
-          event.otpCode,
+      final canUseBiometrics =
+          state.biometricAvailable && state.biometricEnabled;
+
+      if (canUseBiometrics) {
+        emit(state.copyWith(status: const TransferStatus.awaitingBiometric()));
+      } else {
+        // If no biometrics, confirm transfer directly
+        await _confirmTransfer(
+          emit,
+          () async {
+            return await transferRepo.confirmTransfer(
+              state.transferId ?? '',
+              event.otpCode,
+            );
+          },
+          'confirm_transfer_with_otp',
+          {
+            'transfer_id': state.transferId,
+            'has_otp': event.otpCode.isNotEmpty,
+          },
         );
-      },
-      'confirm_transfer_with_otp',
-      {'transfer_id': state.transferId, 'has_otp': event.otpCode.isNotEmpty},
-    );
+      }
+    } on InvalidOtpException catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: e.message,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: 'An unexpected error occurred.',
+        ),
+      );
+    }
   }
 
   /// Confirms the transfer with biometric authentication.
@@ -590,23 +619,44 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     ConfirmWithBiometricEvt event,
     Emitter<TransferState> emit,
   ) async {
-    await _confirmTransfer(
-      emit,
-      () async {
-        final canAuth = await biometricService.authenticate();
+    emit(state.copyWith(status: const TransferStatus.loading()));
+    try {
+      final canAuth = await biometricService.authenticate();
 
-        if (!canAuth) {
-          throw Exception('Biometric authentication failed');
-        }
-
-        return await transferRepo.confirmTransfer(
-          state.transferId ?? '',
-          'BIOMETRIC_AUTH',
+      if (canAuth) {
+        await _confirmTransfer(
+          emit,
+          () => transferRepo.confirmTransfer(
+            state.transferId ?? '',
+            'BIOMETRIC_AUTH',
+          ),
+          'confirm_with_biometric',
+          {'transfer_id': state.transferId, 'auth_method': 'biometric'},
         );
-      },
-      'confirm_with_biometric',
-      {'transfer_id': state.transferId, 'auth_method': 'biometric'},
-    );
+      } else {
+        emit(
+          state.copyWith(
+            status: const TransferStatus.awaitingBiometric(),
+            errorMessage: 'Biometric authentication failed. Please try again.',
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage:
+              'An unexpected error occurred during biometric authentication.',
+        ),
+      );
+    }
+  }
+
+  void _onClearErrorMessage(
+    BiometricErrorMessageEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(errorMessage: null));
   }
 
   /// A helper method to confirm the transfer.

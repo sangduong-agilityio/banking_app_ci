@@ -134,12 +134,12 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
     if (widget.cardData != oldWidget.cardData) {
       _resetAnimations();
       _cardData = List.from(widget.cardData);
-      _updateCardWidgets();
     }
     if (widget.shouldStartCardCollectionAnimation !=
         oldWidget.shouldStartCardCollectionAnimation) {
       _handleCollectionAnimationChange();
     }
+    _updateCardWidgets();
   }
 
   @override

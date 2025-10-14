@@ -266,7 +266,7 @@ class TransactionHistory extends StatelessWidget {
                 title: transaction.displayTitle,
                 subtitle: transaction.displaySubtitle,
                 amount:
-                    '${transaction.amount > 0 ? '+' : ''}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
+                    '${transaction.amount > 0 ? '+' : '-'}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
                 amountColor: transaction.amount < 0
                     ? context.colorScheme.error
                     : context.colorScheme.secondary,
@@ -283,7 +283,7 @@ class TransactionHistory extends StatelessWidget {
                 title: transaction.displayTitle,
                 subtitle: transaction.displaySubtitle,
                 amount:
-                    '${transaction.amount > 0 ? '+' : ''}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
+                    '${transaction.amount > 0 ? '+' : '-'}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
                 amountColor: transaction.amount < 0
                     ? context.colorScheme.error
                     : context.colorScheme.secondary,

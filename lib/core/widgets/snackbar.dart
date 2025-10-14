@@ -27,6 +27,7 @@ class BASnackBar {
     String message, {
     VoidCallback? onRetry,
   }) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       _buildSnackbar(
         context,

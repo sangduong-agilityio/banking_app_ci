@@ -212,3 +212,11 @@ class OtpChangedEvt extends TransferEvt {
   @override
   List<Object> get props => [otp];
 }
+
+/// Event to clear the error message.
+class BiometricErrorMessageEvt extends TransferEvt {
+  const BiometricErrorMessageEvt();
+
+  @override
+  List<Object?> get props => [];
+}

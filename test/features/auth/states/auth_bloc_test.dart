@@ -658,6 +658,47 @@ void main() {
               ),
             ],
           ),
+          BABlocTestScenario<AuthBloc, AuthState>(
+            description: '''
+              Scenario: SignIn with Touch ID successfully
+              Given a user with Touch ID enabled
+              When SignInWithBiometricEvt is added
+              Then the authentication should succeed
+            ''',
+            setUp: () {
+              when(
+                () => biometricService.canLoginWithBiometrics(),
+              ).thenAnswer((_) async => true);
+              when(
+                () => biometricService.hasTouchId(),
+              ).thenAnswer((_) async => true);
+              when(
+                () => biometricService.loginWithBiometrics(),
+              ).thenAnswer((_) async => 'refresh_token');
+              when(() => repo.setSession(any())).thenAnswer(
+                (_) async => AuthResponse(
+                  user: AuthMocks.user,
+                  session: Session(
+                    accessToken: 'test_token',
+                    tokenType: 'bearer',
+                    user: AuthMocks.user,
+                  ),
+                ),
+              );
+              when(() => prefs.setString(any(), any()))
+                  .thenAnswer((_) async => true);
+            },
+            build: () => authBloc,
+            act: (bloc) => bloc.add(const SignInWithBiometricEvt()),
+            expect: () => [
+              const AuthState(status: AuthStatus.loading()),
+              AuthState(
+                status: const AuthStatus.success(),
+                sessionToken: 'test_token',
+                errorMessage: '',
+              ),
+            ],
+          ),
         ],
       ),
     ],

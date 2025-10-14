@@ -7,6 +7,7 @@ import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_event.dart';
 import 'package:banking_app/features/transfer/presentation/blocs/transfer_state.dart';
 import 'package:banking_app/features/transfer/presentation/views/transfer_success_screen.dart';
 import 'package:banking_app/features/transfer/presentation/widgets/otp_section.dart';
@@ -33,6 +34,7 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
           iconColor: context.colorScheme.scrim,
         ),
         body: BlocConsumer<TransferBloc, TransferState>(
+          listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             state.status.map(
               loading: (_) => context.loaderOverlay.show(),
@@ -52,6 +54,15 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
               },
               awaitingBiometric: (_) {
                 context.loaderOverlay.hide();
+                if (state.errorMessage != null) {
+                  BASnackBar.buildErrorSnackbar(
+                    context,
+                    state.errorMessage ?? '',
+                  );
+                  context.read<TransferBloc>().add(
+                    const BiometricErrorMessageEvt(),
+                  );
+                }
               },
               success: (_) {
                 context.loaderOverlay.hide();
