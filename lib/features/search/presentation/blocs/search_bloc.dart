@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:banking_app/core/data/services/exchange_rate_cache_service.dart';
 import 'package:banking_app/core/common/utils/currency.dart';
+import 'package:banking_app/features/search/domain/repositories/search_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'search_event.dart';
 import 'search_state.dart';
-import '../../data/repositories/search_repository.dart';
 
 class SearchBloc extends Bloc<SearchEvt, SearchState> {
   SearchBloc({required this.repo, required CacheManager cacheManager})

@@ -11,9 +11,10 @@ import 'package:banking_app/features/bill_payment/data/repositories/bill_payment
 import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_bloc.dart';
 import 'package:banking_app/features/home/data/repositories/home_repository.dart';
 import 'package:banking_app/features/home/presentation/blocs/home_cubit.dart';
+import 'package:banking_app/features/search/data/repositories/search_repository_impl.dart';
 import 'package:banking_app/features/search/domain/entities/currency_rate_entity.dart';
 import 'package:banking_app/features/search/domain/entities/exchange_rate_entity.dart';
-import 'package:banking_app/features/search/data/repositories/search_repository.dart';
+import 'package:banking_app/features/search/domain/repositories/search_repository.dart';
 import 'package:banking_app/features/search/presentation/blocs/search_bloc.dart';
 import 'package:banking_app/features/setting/presentation/blocs/setting_cubit.dart';
 import 'package:banking_app/features/transactions/data/repositories/transaction_repository.dart';
@@ -88,7 +89,7 @@ class AppLocators {
     );
 
     locator.registerLazySingleton<SearchRepository>(
-      () => SearchRepositoryImplement(
+      () => SearchRepositoryImpl(
         client: locator<BankingApiClient>(),
         cacheManager: locator<CacheManager>(),
       ),
