@@ -1,4 +1,4 @@
-import 'package:banking_app/features/transactions/widgets/transaction_item.dart';
+import 'package:banking_app/features/transactions/presentation/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../../../helpers/utils.dart';

@@ -1,8 +1,8 @@
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/search/models/exchange_rate_model.dart';
-import 'package:banking_app/features/search/blocs/search_event.dart';
-import 'package:banking_app/features/search/blocs/search_state.dart';
-import 'package:banking_app/features/search/views/exchange_rate_screen.dart';
+import 'package:banking_app/features/search/data/models/exchange_rate_model.dart';
+import 'package:banking_app/features/search/presentation/blocs/search_event.dart';
+import 'package:banking_app/features/search/presentation/blocs/search_state.dart';
+import 'package:banking_app/features/search/presentation/views/exchange_rate_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

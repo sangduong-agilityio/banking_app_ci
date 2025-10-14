@@ -1,5 +1,5 @@
 import 'package:banking_app/app/themes/app_theme.dart';
-import 'package:banking_app/core/extensions/context_extensions.dart';
+import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:flutter/material.dart';

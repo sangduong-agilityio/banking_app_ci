@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/auth/blocs/auth_state.dart';
+import 'package:banking_app/features/auth/presentation/blocs/auth_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/utils.dart';

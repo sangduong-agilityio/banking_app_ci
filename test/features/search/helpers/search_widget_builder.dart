@@ -1,5 +1,5 @@
-import 'package:banking_app/features/search/blocs/search_bloc.dart';
-import 'package:banking_app/features/search/blocs/search_state.dart';
+import 'package:banking_app/features/search/presentation/blocs/search_bloc.dart';
+import 'package:banking_app/features/search/presentation/blocs/search_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mocktail/mocktail.dart';

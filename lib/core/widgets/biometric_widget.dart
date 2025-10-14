@@ -1,6 +1,6 @@
 import 'package:banking_app/app/themes/app_theme.dart';
-import 'package:banking_app/core/extensions/context_extensions.dart';
-import 'package:banking_app/core/services/biometric_capability.dart';
+import 'package:banking_app/core/common/extensions/context_extensions.dart';
+import 'package:banking_app/core/security/biometric_capability.dart';
 import 'package:flutter/material.dart';
 
 /// A button that triggers biometric authentication (Face ID, Touch ID, or fingerprint).

@@ -1,5 +1,5 @@
 import 'package:banking_app/core/widgets/dialog.dart';
-import 'package:banking_app/features/transfer/widgets/account_and_card_selection.dart';
+import 'package:banking_app/features/transfer/presentation/widgets/account_and_card_selection.dart';
 import 'package:banking_app/core/widgets/forms/text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

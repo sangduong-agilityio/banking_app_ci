@@ -1,5 +1,5 @@
-import 'package:banking_app/features/transactions/models/transaction_model.dart';
-import 'package:banking_app/features/transfer/widgets/transaction_card.dart';
+import 'package:banking_app/features/transactions/data/models/transaction_model.dart';
+import 'package:banking_app/features/transfer/presentation/widgets/transaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

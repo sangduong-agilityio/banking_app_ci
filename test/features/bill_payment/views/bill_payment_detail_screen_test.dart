@@ -1,9 +1,9 @@
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
-import 'package:banking_app/features/bill_payment/models/company_model.dart';
-import 'package:banking_app/features/bill_payment/blocs/bill_payment_event.dart';
-import 'package:banking_app/features/bill_payment/blocs/bill_payment_state.dart';
-import 'package:banking_app/features/bill_payment/views/bill_payment_detail_screen.dart';
+import 'package:banking_app/features/bill_payment/data/models/bill_payment_model.dart';
+import 'package:banking_app/features/bill_payment/data/models/company_model.dart';
+import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_event.dart';
+import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_state.dart';
+import 'package:banking_app/features/bill_payment/presentation/views/bill_payment_detail_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

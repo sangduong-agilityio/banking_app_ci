@@ -1,5 +1,5 @@
-import 'package:banking_app/features/bill_payment/blocs/bill_payment_bloc.dart';
-import 'package:banking_app/features/bill_payment/blocs/bill_payment_state.dart';
+import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_bloc.dart';
+import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mocktail/mocktail.dart';

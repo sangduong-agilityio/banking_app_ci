@@ -1,10 +1,10 @@
-import 'package:banking_app/features/home/models/account_model.dart';
-import 'package:banking_app/features/home/models/card_model.dart';
-import 'package:banking_app/features/transfer/models/bank_model.dart';
-import 'package:banking_app/features/transfer/models/beneficiary_model.dart';
-import 'package:banking_app/features/transfer/models/branch_model.dart';
-import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
+import 'package:banking_app/features/home/data/models/account_model.dart';
+import 'package:banking_app/features/home/data/models/card_model.dart';
+import 'package:banking_app/features/transfer/data/models/bank_model.dart';
+import 'package:banking_app/features/transfer/data/models/beneficiary_model.dart';
+import 'package:banking_app/features/transfer/data/models/branch_model.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 

@@ -1,7 +1,7 @@
-import 'package:banking_app/features/transfer/blocs/transfer_bloc.dart';
-import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
-import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
-import 'package:banking_app/features/transfer/views/directory_beneficiary_screen.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_event.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_state.dart';
+import 'package:banking_app/features/transfer/presentation/views/directory_beneficiary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

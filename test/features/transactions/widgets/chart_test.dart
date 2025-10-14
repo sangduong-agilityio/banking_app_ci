@@ -1,5 +1,5 @@
-import 'package:banking_app/features/transactions/models/balance_summary_model.dart';
-import 'package:banking_app/features/transactions/widgets/chart.dart';
+import 'package:banking_app/features/transactions/data/models/balance_summary_model.dart';
+import 'package:banking_app/features/transactions/presentation/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import '../../../helpers/utils.dart';
 

@@ -1,4 +1,4 @@
-import 'package:banking_app/core/extensions/context_extensions.dart';
+import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 /// A lightweight shimmer effect without external dependencies.

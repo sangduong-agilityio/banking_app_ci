@@ -1,4 +1,4 @@
-import 'package:banking_app/features/bill_payment/blocs/bill_payment_event.dart';
+import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_event.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/utils.dart';

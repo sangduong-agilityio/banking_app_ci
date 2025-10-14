@@ -1,7 +1,7 @@
 import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/card.dart';
-import 'package:banking_app/features/search/views/search_screen.dart';
+import 'package:banking_app/features/search/presentation/views/search_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';

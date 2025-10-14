@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:banking_app/core/extensions/context_extensions.dart';
+import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/assets_generated/assets.gen.dart';
-import 'package:banking_app/core/utils/responsive.dart';
+import 'package:banking_app/core/common/utils/responsive.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

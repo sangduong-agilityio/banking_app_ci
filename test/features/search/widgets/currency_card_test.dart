@@ -1,6 +1,6 @@
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/search/blocs/search_state.dart';
-import 'package:banking_app/features/search/widgets/currency_card.dart';
+import 'package:banking_app/features/search/presentation/blocs/search_state.dart';
+import 'package:banking_app/features/search/presentation/widgets/currency_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

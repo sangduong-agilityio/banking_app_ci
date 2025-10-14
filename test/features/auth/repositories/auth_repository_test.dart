@@ -1,4 +1,4 @@
-import 'package:banking_app/features/auth/repositories/auth_repository.dart';
+import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

@@ -1,7 +1,7 @@
-import 'package:banking_app/core/services/biometric_service.dart';
-import 'package:banking_app/features/auth/repositories/auth_repository.dart';
-import 'package:banking_app/features/auth/blocs/auth_bloc.dart';
-import 'package:banking_app/features/auth/blocs/auth_event.dart';
+import 'package:banking_app/core/data/services/biometric_service.dart';
+import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
+import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

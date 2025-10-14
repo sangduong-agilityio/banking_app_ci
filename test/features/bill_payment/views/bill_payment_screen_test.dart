@@ -1,6 +1,6 @@
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/bill_payment/blocs/bill_payment_state.dart';
-import 'package:banking_app/features/bill_payment/views/bill_payment_screen.dart';
+import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_state.dart';
+import 'package:banking_app/features/bill_payment/presentation/views/bill_payment_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

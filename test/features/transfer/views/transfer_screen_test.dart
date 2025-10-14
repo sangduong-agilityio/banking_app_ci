@@ -1,10 +1,10 @@
-import 'package:banking_app/features/transfer/blocs/transfer_event.dart';
-import 'package:banking_app/features/transfer/blocs/transfer_state.dart';
-import 'package:banking_app/features/transfer/views/transfer_screen.dart';
-import 'package:banking_app/features/transfer/widgets/account_and_card_selection.dart';
-import 'package:banking_app/features/transfer/widgets/beneficiary_selection.dart';
-import 'package:banking_app/features/transfer/widgets/transaction_selection.dart';
-import 'package:banking_app/features/transfer/widgets/transfer_form_section.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_event.dart';
+import 'package:banking_app/features/transfer/presentation/blocs/transfer_state.dart';
+import 'package:banking_app/features/transfer/presentation/views/transfer_screen.dart';
+import 'package:banking_app/features/transfer/presentation/widgets/account_and_card_selection.dart';
+import 'package:banking_app/features/transfer/presentation/widgets/beneficiary_selection.dart';
+import 'package:banking_app/features/transfer/presentation/widgets/transaction_selection.dart';
+import 'package:banking_app/features/transfer/presentation/widgets/transfer_form_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

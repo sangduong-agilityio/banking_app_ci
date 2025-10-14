@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:banking_app/app/app.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
-import 'package:banking_app/core/env/env.dart';
-import 'package:banking_app/core/security/error_sanitizer.dart';
+import 'package:banking_app/app/env/env.dart';
+import 'package:banking_app/core/error_handling/error_sanitizer.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

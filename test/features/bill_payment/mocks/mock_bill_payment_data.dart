@@ -1,8 +1,8 @@
-import 'package:banking_app/features/bill_payment/models/bill_payment_model.dart';
-import 'package:banking_app/features/bill_payment/models/company_model.dart';
-import 'package:banking_app/features/bill_payment/repositories/bill_payment_repository.dart';
-import 'package:banking_app/features/home/models/account_model.dart';
-import 'package:banking_app/features/home/models/card_model.dart';
+import 'package:banking_app/features/bill_payment/data/models/bill_payment_model.dart';
+import 'package:banking_app/features/bill_payment/data/models/company_model.dart';
+import 'package:banking_app/features/bill_payment/data/repositories/bill_payment_repository.dart';
+import 'package:banking_app/features/home/data/models/account_model.dart';
+import 'package:banking_app/features/home/data/models/card_model.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

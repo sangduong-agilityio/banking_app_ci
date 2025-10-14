@@ -120,14 +120,18 @@ This is the design of the app:
 Clean Architecture
 
 lib/
-├── main_device_preview.dart
 ├── main.dart
+├── main_device_preview.dart
+
 ├── app/
 │   ├── app.dart
 │   ├── routes.dart
 │   ├── theme.dart
 │   └── constants.dart
+
 ├── core/
+│   ├── errors/
+│   │   └── app_exceptions.dart
 │   ├── services/
 │   │   ├── supabase_service.dart
 │   │   └── auth_service.dart
@@ -135,126 +139,154 @@ lib/
 │   │   ├── validators.dart
 │   │   ├── formatters.dart
 │   │   └── extensions.dart
-│   ├── errors/
-│   │   └── app_exceptions.dart
-│   └── widgets/
-│       ├── buttons.dart
-│       ├── inputs.dart
-│       ├── cards.dart
+│   ├── widgets/
+│   │   ├── buttons.dart
+│   │   ├── inputs.dart
+│   │   └── cards.dart
+│   └── config/
+│       ├── environment.dart
+│       └── dependency_injection.dart
+
 ├── features/
 │   ├── auth/
-│   │   ├── models/
-│   │   │   ├── user_model.dart
-│   │   │   └── auth_request.dart
-│   │   ├── repositories/
-│   │   │   └── auth_repository.dart
-│   │   ├── blocs/
-│   │   │   ├── auth_bloc.dart
-│   │   │   ├── auth_event.dart
-│   │   │   └── auth_state.dart
-│   │   ├── views/
-│   │   │   ├── landing_screen.dart
-│   │   │   ├── sign_in_screen.dart
-│   │   │   ├── sign_up_screen.dart
-│   │   │   └── forgot_password_screen.dart
-│   │   └── widgets/
-│   │       ├── auth_form.dart
-│   │       └── auth_header.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── user_entity.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── auth_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── sign_in.dart
+│   │   │       ├── sign_up.dart
+│   │   │       └── forgot_password.dart
+│   │   ├── data/
+│   │   │   ├── models/
+│   │   │   │   ├── user_model.dart
+│   │   │   │   └── auth_request.dart
+│   │   │   ├── datasources/
+│   │   │   │   └── auth_remote_data_source.dart
+│   │   │   └── repositories/
+│   │   │       └── auth_repository_impl.dart
+│   │   └── presentation/
+│   │       ├── blocs/
+│   │       │   ├── auth_bloc.dart
+│   │       │   ├── auth_event.dart
+│   │       │   └── auth_state.dart
+│   │       ├── views/
+│   │       │   ├── landing_screen.dart
+│   │       │   ├── sign_in_screen.dart
+│   │       │   ├── sign_up_screen.dart
+│   │       │   └── forgot_password_screen.dart
+│   │       └── widgets/
+│   │           ├── auth_form.dart
+│   │           └── auth_header.dart
+
 │   ├── home/
-│   │   ├── models/
-│   │   │   ├── account_model.dart
-│   │   │   └── quick_action_model.dart
-│   │   ├── repositories/
-│   │   │   └── home_repository.dart
-│   │   ├── blocs/
-│   │   │   ├── home_bloc.dart
-│   │   │   ├── home_event.dart
-│   │   │   └── home_state.dart
-│   │   ├── views/
-│   │   │   └── home_screen.dart
-│   │   └── widgets/
-│   │       ├── welcome_section.dart
-│   │       ├── account_card.dart
-│   │       └── quick_actions_grid.dart
-│   ├── search/
-│   │   ├── models/
-│   │   │   └── search_model.dart
-│   │   ├── repositories/
-│   │   │   └── search_repository.dart
-│   │   ├── blocs/
-│   │   │   ├── search_bloc.dart
-│   │   │   ├── search_event.dart
-│   │   │   └── search_state.dart
-│   │   ├── views/
-│   │   │   └── search_screen.dart
-│   │   └── widgets/
-│   │       └── currency_card.dart
-│   ├── account/
-│   │   ├── models/
-│   │   │   └── account_model.dart
-│   │   ├── repositories/
-│   │   │   └── account_repository.dart
-│   │   ├── blocs/
-│   │   │   ├── account_bloc.dart
-│   │   │   ├── account_event.dart
-│   │   │   └── account_state.dart
-│   │   ├── views/
-│   │   │   └── account_screen.dart
-│   │   └── widgets/
-│   │       └── account_card.dart
-│   ├── transactions/
-│   │   ├── models/
-│   │   │   └── transaction_model.dart
-│   │   ├── repositories/
-│   │   │   └── transaction_repository.dart
-│   │   ├── blocs/
-│   │   │   ├── transaction_bloc.dart
-│   │   │   ├── transaction_event.dart
-│   │   │   └── transaction_state.dart
-│   │   ├── views/
-│   │   │   └── transaction_history_screen.dart
-│   │   └── widgets/
-│   │       └── transaction_item.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   ├── account_entity.dart
+│   │   │   │   └── quick_action_entity.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── home_repository.dart
+│   │   │   └── usecases/
+│   │   │       └── get_home_data.dart
+│   │   ├── data/
+│   │   │   ├── models/
+│   │   │   │   ├── account_model.dart
+│   │   │   │   └── quick_action_model.dart
+│   │   │   ├── datasources/
+│   │   │   │   └── home_remote_data_source.dart
+│   │   │   └── repositories/
+│   │   │       └── home_repository_impl.dart
+│   │   └── presentation/
+│   │       ├── blocs/
+│   │       │   ├── home_bloc.dart
+│   │       │   ├── home_event.dart
+│   │       │   └── home_state.dart
+│   │       ├── views/
+│   │       │   └── home_screen.dart
+│   │       └── widgets/
+│   │           ├── welcome_section.dart
+│   │           ├── account_card.dart
+│   │           └── quick_actions_grid.dart
+
 │   ├── transfer/
-│   │   ├── models/
-│   │   │   ├── transfer_model.dart
-│   │   ├── repositories/
-│   │   │   └── transfer_repository.dart
-│   │   ├── blocs/
-│   │   │   ├── transfer_bloc.dart
-│   │   │   ├── transfer_event.dart
-│   │   │   └── transfer_state.dart
-│   │   ├── views/
-│   │   │   ├── transfer_screen.dart
-│   │   └── widgets/
-│   │       ├── contact_item.dart
-│   │       └── amount_input.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── transfer_entity.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── transfer_repository.dart
+│   │   │   └── usecases/
+│   │   │       ├── create_transfer.dart
+│   │   │       └── get_transfer_history.dart
+│   │   ├── data/
+│   │   │   ├── models/
+│   │   │   │   └── transfer_model.dart
+│   │   │   ├── datasources/
+│   │   │   │   └── transfer_remote_data_source.dart
+│   │   │   └── repositories/
+│   │   │       └── transfer_repository_impl.dart
+│   │   └── presentation/
+│   │       ├── blocs/
+│   │       │   ├── transfer_bloc.dart
+│   │       │   ├── transfer_event.dart
+│   │       │   └── transfer_state.dart
+│   │       ├── views/
+│   │       │   └── transfer_screen.dart
+│   │       └── widgets/
+│   │           ├── contact_item.dart
+│   │           └── amount_input.dart
+
 │   ├── bills/
-│   │   ├── models/
-│   │   │   └── bill_model.dart
-│   │   ├── repositories/
-│   │   │   └── bill_repository.dart
-│   │   ├── blocs/
-│   │   │   ├── bill_bloc.dart
-│   │   │   ├── bill_event.dart
-│   │   │   └── bill_state.dart
-│   │   ├── views/
-│   │   │   └── bill_payment_screen.dart
-│   │   └── widgets/
-│   │       └── bill_detail_card.dart
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── bill_entity.dart
+│   │   │   ├── repositories/
+│   │   │   │   └── bill_repository.dart
+│   │   │   └── usecases/
+│   │   │       └── pay_bill.dart
+│   │   ├── data/
+│   │   │   ├── models/
+│   │   │   │   └── bill_model.dart
+│   │   │   ├── datasources/
+│   │   │   │   └── bill_remote_data_source.dart
+│   │   │   └── repositories/
+│   │   │       └── bill_repository_impl.dart
+│   │   └── presentation/
+│   │       ├── blocs/
+│   │       │   ├── bill_bloc.dart
+│   │       │   ├── bill_event.dart
+│   │       │   └── bill_state.dart
+│   │       ├── views/
+│   │       │   └── bill_payment_screen.dart
+│   │       └── widgets/
+│   │           └── bill_detail_card.dart
+
 │   └── setting/
-│       ├── models/
-│       │   └── user_model.dart
-│       ├── repositories/
-│       │   └── setting_repository.dart
-│       ├── blocs/
-│       │   ├── setting_bloc.dart
-│       │   ├── setting_event.dart
-│       │   └── setting_state.dart
-│       ├── views/
-│       │   └── setting_screen.dart
-│       └── widgets/
-│           └── card_detail.dart
+│       ├── domain/
+│       │   ├── entities/
+│       │   │   └── user_settings_entity.dart
+│       │   ├── repositories/
+│       │   │   └── setting_repository.dart
+│       │   └── usecases/
+│       │       ├── update_profile.dart
+│       │       └── get_user_settings.dart
+│       ├── data/
+│       │   ├── models/
+│       │   │   └── user_settings_model.dart
+│       │   ├── datasources/
+│       │   │   └── setting_remote_data_source.dart
+│       │   └── repositories/
+│       │       └── setting_repository_impl.dart
+│       └── presentation/
+│           ├── blocs/
+│           │   ├── setting_bloc.dart
+│           │   ├── setting_event.dart
+│           │   └── setting_state.dart
+│           ├── views/
+│           │   └── setting_screen.dart
+│           └── widgets/
+│               └── card_detail.dart
+
 ```
 
 ## Development Roadmap
