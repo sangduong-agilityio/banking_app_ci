@@ -1,4 +1,5 @@
 import 'package:banking_app/features/search/presentation/blocs/search_state.dart';
+import 'package:banking_app/features/search/data/models/conversion_result.dart';
 import 'package:banking_app/features/search/data/models/currency_model.dart';
 import 'package:banking_app/features/search/data/models/exchange_model.dart';
 import 'package:banking_app/features/search/data/models/exchange_rate_model.dart';
@@ -21,6 +22,16 @@ abstract class SearchRepository {
   Future<List<CurrencyModel>> fetchCurrencies();
 
   Future<double> convertCurrency({
+    required String fromCurrency,
+    required String toCurrency,
+    required double amount,
+  });
+
+  /// Converts an amount and returns detailed metadata about the rate source.
+  ///
+  /// This is used by the UI/BLoC to determine whether the rate is live,
+  /// cached, or derived from a default offline mapping.
+  Future<ConversionResult> convertCurrencyDetailed({
     required String fromCurrency,
     required String toCurrency,
     required double amount,

@@ -187,7 +187,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
 
     try {
-      final rate = await repo.convertCurrency(
+      final result = await repo.convertCurrencyDetailed(
         fromCurrency: event.fromCurrency,
         toCurrency: event.toCurrency,
         amount: 1.0,
@@ -195,71 +195,31 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
 
       if (state.exchangeRateRequestId != requestId) return;
 
-      _cacheManager.cacheRate(event.fromCurrency, event.toCurrency, rate);
-
-      final rateStatus = repo.getRateStatus(
-        event.fromCurrency,
-        event.toCurrency,
+      emit(
+        state.copyWith(
+          fromCurrency: event.fromCurrency,
+          toCurrency: event.toCurrency,
+          exchangeRate: result.rate,
+          exchangeRateStatus: result.status,
+          lastExchangeRateUpdate: result.lastUpdated ?? DateTime.now(),
+          isOnline: result.status == ExchangeRateStatus.fresh,
+        ),
       );
 
-      final lastUpdate = repo.getLastRateUpdate(
-        event.fromCurrency,
-        event.toCurrency,
-      );
+      _recalculateAmounts(emit, result.rate);
+    } catch (error) {
+      if (state.exchangeRateRequestId != requestId) return;
 
       emit(
         state.copyWith(
           fromCurrency: event.fromCurrency,
           toCurrency: event.toCurrency,
-          exchangeRate: rate,
-          exchangeRateStatus: rateStatus,
-          lastExchangeRateUpdate: lastUpdate ?? DateTime.now(),
-          isOnline: true,
+          exchangeRate: null,
+          exchangeRateStatus: ExchangeRateStatus.noData,
+          lastExchangeRateUpdate: null,
+          isOnline: false,
         ),
       );
-
-      _recalculateAmounts(emit, rate);
-    } catch (error) {
-      if (state.exchangeRateRequestId != requestId) return;
-
-      final cachedRate = _cacheManager.getCachedRate(
-        event.fromCurrency,
-        event.toCurrency,
-      );
-
-      if (cachedRate != null) {
-        final rateStatus = _cacheManager.getRateStatus(
-          event.fromCurrency,
-          event.toCurrency,
-        );
-        final lastUpdate = _cacheManager.getLastUpdated(
-          event.fromCurrency,
-          event.toCurrency,
-        );
-
-        emit(
-          state.copyWith(
-            fromCurrency: event.fromCurrency,
-            toCurrency: event.toCurrency,
-            exchangeRate: cachedRate,
-            exchangeRateStatus: rateStatus,
-            lastExchangeRateUpdate: lastUpdate,
-            isOnline: false,
-          ),
-        );
-        _recalculateAmounts(emit, cachedRate);
-      } else {
-        emit(
-          state.copyWith(
-            fromCurrency: event.fromCurrency,
-            toCurrency: event.toCurrency,
-            exchangeRate: null,
-            exchangeRateStatus: ExchangeRateStatus.noData,
-            lastExchangeRateUpdate: null,
-            isOnline: false,
-          ),
-        );
-      }
     }
   }
 

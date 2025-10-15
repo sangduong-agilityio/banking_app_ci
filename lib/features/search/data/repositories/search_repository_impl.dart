@@ -10,6 +10,8 @@ import 'package:banking_app/features/search/data/models/exchange_model.dart';
 import 'package:banking_app/features/search/data/models/exchange_rate_model.dart';
 import 'package:banking_app/features/search/data/models/interest_rate_model.dart';
 import 'package:banking_app/features/search/domain/repositories/search_repository.dart';
+import 'package:banking_app/core/common/utils/helpers.dart';
+import 'package:banking_app/features/search/data/models/conversion_result.dart';
 
 /// Implementation of [SearchRepository] using a banking API client and caching services.
 class SearchRepositoryImpl implements SearchRepository {
@@ -138,34 +140,82 @@ class SearchRepositoryImpl implements SearchRepository {
     required String toCurrency,
     required double amount,
   }) async {
+    final detailed = await convertCurrencyDetailed(
+      fromCurrency: fromCurrency,
+      toCurrency: toCurrency,
+      amount: amount,
+    );
+    return detailed.toAmount;
+  }
+
+  /// Converts with explicit source behavior, including offline default mapping fallback.
+  @override
+  Future<ConversionResult> convertCurrencyDetailed({
+    required String fromCurrency,
+    required String toCurrency,
+    required double amount,
+  }) async {
     if (fromCurrency == toCurrency) {
-      return amount;
+      return ConversionResult(
+        rate: 1.0,
+        toAmount: amount,
+        status: ExchangeRateStatus.fresh,
+        lastUpdated: DateTime.now(),
+      );
     }
 
+    // 1) Try fresh cached rate first
     final cachedRate = _cacheManager.getCachedRate(fromCurrency, toCurrency);
-    final rateStatus = _cacheManager.getRateStatus(fromCurrency, toCurrency);
+    final cachedStatus = _cacheManager.getRateStatus(fromCurrency, toCurrency);
+    final cachedLastUpdated = _cacheManager.getLastUpdated(fromCurrency, toCurrency);
 
-    if (rateStatus == ExchangeRateStatus.fresh && cachedRate != null) {
-      return amount * cachedRate;
+    if (cachedStatus == ExchangeRateStatus.fresh && cachedRate != null) {
+      return ConversionResult(
+        rate: cachedRate,
+        toAmount: amount * cachedRate,
+        status: ExchangeRateStatus.fresh,
+        lastUpdated: cachedLastUpdated,
+      );
     }
 
+    // 2) Try network
     try {
       final exchangeResult = await exchange(
         fromCurrency: fromCurrency,
         toCurrency: toCurrency,
         fromAmount: 1.0,
       );
-
       _cacheManager.cacheRate(fromCurrency, toCurrency, exchangeResult.rate);
-      return amount * exchangeResult.rate;
+      return ConversionResult(
+        rate: exchangeResult.rate,
+        toAmount: amount * exchangeResult.rate,
+        status: ExchangeRateStatus.fresh,
+        lastUpdated: DateTime.now(),
+      );
     } catch (_) {
+      // 3) Use stale cached if present
       if (cachedRate != null) {
-        return amount * cachedRate;
+        return ConversionResult(
+          rate: cachedRate,
+          toAmount: amount * cachedRate,
+          status: cachedStatus,
+          lastUpdated: cachedLastUpdated,
+        );
       }
 
-      throw Exception(
-        'No available exchange rate for $fromCurrency -> $toCurrency',
-      );
+      // 4) Final fallback: default mapping based on static baseRates
+      final defaultRate = DefaultRates.getRate(fromCurrency, toCurrency);
+      if (defaultRate != null) {
+        // Do NOT cache default mapping rate; it is an emergency offline derivation
+        return ConversionResult(
+          rate: defaultRate,
+          toAmount: amount * defaultRate,
+          status: ExchangeRateStatus.stale,
+          lastUpdated: null,
+        );
+      }
+
+      throw Exception('No available exchange rate for $fromCurrency -> $toCurrency');
     }
   }
 
