@@ -118,8 +118,10 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     emit(state.copyWith(status: const SearchStatus.loading()));
     try {
       final currencies = await repo.fetchCurrencies();
-      final defaultFrom = currencies.isNotEmpty ? currencies.first.code : null;
-      final defaultTo = currencies.length > 1 ? currencies[1].code : null;
+      final defaultFrom =
+          event.fromCurrency ?? (currencies.isNotEmpty ? currencies.first.code : null);
+      final defaultTo = 
+          event.toCurrency ?? (currencies.length > 1 ? currencies[1].code : null);
 
       emit(
         state.copyWith(

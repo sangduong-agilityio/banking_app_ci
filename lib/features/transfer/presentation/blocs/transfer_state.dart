@@ -53,6 +53,7 @@ class TransferState extends Equatable {
     this.otp,
     this.clearName = false,
     this.clearAvatar = false,
+    this.clearForm = false,
   });
 
   final TransferStatus status;
@@ -94,6 +95,7 @@ class TransferState extends Equatable {
   final String? errorMessage;
   final bool clearName;
   final bool clearAvatar;
+  final bool clearForm;
 
   TransferState copyWith({
     TransferStatus? status,
@@ -139,6 +141,7 @@ class TransferState extends Equatable {
     String? otp,
     bool? clearName,
     bool? clearAvatar,
+    bool? clearForm,
   }) {
     return TransferState(
       status: status ?? this.status,
@@ -190,6 +193,7 @@ class TransferState extends Equatable {
       otp: otp ?? this.otp,
       clearName: clearName ?? this.clearName,
       clearAvatar: clearAvatar ?? this.clearAvatar,
+      clearForm: clearForm ?? this.clearForm,
       cardNumber: cardNumber ?? this.cardNumber,
     );
   }
@@ -235,6 +239,7 @@ class TransferState extends Equatable {
     otp,
     clearName,
     clearAvatar,
+    clearForm,
   ];
 
   /// Whether the user can use biometrics for authentication.

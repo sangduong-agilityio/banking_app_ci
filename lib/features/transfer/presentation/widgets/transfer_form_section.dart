@@ -19,11 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/// A widget that displays the form for a transfer.
-///
-/// This widget is a stateful widget that manages the form controllers and the
-/// logic for filling and clearing the form. It also builds the form fields
-/// based on the selected transfer type.
 class TransferFormSection extends StatefulWidget {
   const TransferFormSection({super.key});
 
@@ -51,13 +46,11 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     super.dispose();
   }
 
-  /// Fills the form with the data from the selected beneficiary.
   void _fillFromBeneficiary(BeneficiaryModel beneficiary, TransferState state) {
     _nameController.text = beneficiary.name;
     _cardNumberController.text = beneficiary.accountNumber;
   }
 
-  /// Clears the form fields.
   void _clearForm() {
     _nameController.clear();
     _cardNumberController.clear();
@@ -65,16 +58,19 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     _contentController.clear();
     _bankController.clear();
     _branchController.clear();
-    _formKey.currentState?.reset();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TransferBloc, TransferState>(
       listenWhen: (prev, curr) =>
-          prev.selectedBeneficiary != curr.selectedBeneficiary,
+          prev.selectedBeneficiary != curr.selectedBeneficiary ||
+          (curr.clearForm && !prev.clearForm),
       listener: (context, state) {
-        if (state.selectedBeneficiary != null) {
+        if (state.clearForm) {
+          _clearForm();
+          context.read<TransferBloc>().add(const UpdateTransferDetailsEvt(clearForm: false));
+        } else if (state.selectedBeneficiary != null) {
           _fillFromBeneficiary(state.selectedBeneficiary!, state);
           if (state.selectedBank != null) {
             _bankController.text = state.selectedBank?.name ?? '';
@@ -131,7 +127,6 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     );
   }
 
-  /// Builds the widget for the "Save to directory" checkbox.
   Widget _buildSaveToDirectory(TransferState state) {
     return Row(
       children: [
@@ -155,13 +150,12 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     );
   }
 
-  /// Builds the transfer form based on the selected transfer type.
   List<Widget> _buildTransferForm(TransferState state) {
     switch (state.selectedTransferType) {
       case TransferType.cardNumber:
       case TransferType.sameBank:
         return [
-          _buildBankOrCardForm(),
+          _buildBankOrCardForm(state),
           const SizedBox(height: 24),
           ..._buildAmountAndContentForm(state),
         ];
@@ -169,14 +163,13 @@ class _TransferFormSectionState extends State<TransferFormSection> {
         return [
           _buildOtherBankForm(state),
           const SizedBox(height: 24),
-          _buildBankOrCardForm(),
+          _buildBankOrCardForm(state),
           const SizedBox(height: 24),
           ..._buildAmountAndContentForm(state),
         ];
     }
   }
 
-  /// Builds the form for selecting a bank and a branch for transfers to other banks.
   Widget _buildOtherBankForm(TransferState state) {
     final isBeneficiarySelected = state.selectedBeneficiary != null;
     return Column(
@@ -235,8 +228,8 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     );
   }
 
-  /// Builds the form for the beneficiary's name and card number.
-  Widget _buildBankOrCardForm() {
+  Widget _buildBankOrCardForm(TransferState state) {
+    final isBeneficiarySelected = state.selectedBeneficiary != null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -244,6 +237,7 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           name: S.current.transferNameLabel,
           hint: S.current.transferNameLabel,
           controller: _nameController,
+          readOnly: isBeneficiarySelected,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) => SecureInputValidator.validateSecureInput(
             value,
@@ -261,8 +255,9 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           name: S.current.transferCardNumberLabel,
           hint: S.current.transferCardNumberLabel,
           controller: _cardNumberController,
-          keyboardType: TextInputType.number,
+          readOnly: isBeneficiarySelected,
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          keyboardType: TextInputType.number,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
             LengthLimitingTextInputFormatter(16),
@@ -276,15 +271,14 @@ class _TransferFormSectionState extends State<TransferFormSection> {
     );
   }
 
-  /// Builds the form for the amount and content of the transfer.
   List<Widget> _buildAmountAndContentForm(TransferState state) {
     return [
       BATextField(
         name: S.current.transferAmountLabel,
         hint: S.current.transferAmountLabel,
         controller: _amountController,
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         autovalidateMode: AutovalidateMode.onUserInteraction,
+        keyboardType: const TextInputType.numberWithOptions(decimal: true),
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
           CurrencyInputFormatter(
@@ -314,14 +308,13 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           );
           if (amount != null) {
             context.read<TransferBloc>().add(
-              UpdateTransferDetailsEvt(
-                amount: CurrencyUtils.roundTo2Decimal(amount),
-              ),
-            );
+                  UpdateTransferDetailsEvt(
+                    amount: CurrencyUtils.roundTo2Decimal(amount),
+                  ),
+                );
           }
         },
       ),
-
       const SizedBox(height: 24),
       BATextField(
         name: S.current.transferContentLabel,

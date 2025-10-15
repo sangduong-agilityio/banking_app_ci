@@ -238,6 +238,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       state.copyWith(
         selectedTransferType: event.transferType,
         clearBeneficiary: true,
+        clearForm: true,
       ),
     );
 
@@ -348,6 +349,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
         name: event.name ?? state.name,
         cardNumber: event.cardNumber ?? state.cardNumber,
         avatarUrl: event.avatarUrl ?? state.avatarUrl,
+        clearForm: event.clearForm ?? state.clearForm,
       ),
     );
     if (event.amount != null) _recalculateFeeIfNeeded();
