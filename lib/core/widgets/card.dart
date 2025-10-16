@@ -1,3 +1,4 @@
+import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/app/themes/app_colors.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
@@ -401,7 +402,7 @@ class SwipeableCreditCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Available Balance',
+                            S.current.cardAvailableBalance,
                             style: context.bodySmall?.copyWith(
                               color: Colors.white.withAlpha(200),
                               fontSize: 10,
@@ -425,7 +426,7 @@ class SwipeableCreditCard extends StatelessWidget {
                                   ? FormatterUtils.formatBalance(
                                       data.availableBalance ?? 0,
                                     )
-                                  : '************',
+                                  : S.current.cardMaskedBalance,
                               style: context.headlineMedium?.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

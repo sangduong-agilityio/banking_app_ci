@@ -2,6 +2,8 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../../core/resources/l10n_generated/l10n.dart';
+
 part 'transaction_model.freezed.dart';
 part 'transaction_model.g.dart';
 
@@ -50,11 +52,11 @@ extension TransferTypeExtension on TransferType {
   String get label {
     switch (this) {
       case TransferType.cardNumber:
-        return 'Card Number';
+        return S.current.transactionCardNumber;
       case TransferType.sameBank:
-        return 'Same Bank';
+        return S.current.transactionSameBank;
       case TransferType.otherBank:
-        return 'Other Bank';
+        return S.current.transactionOtherBank;
     }
   }
 

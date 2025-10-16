@@ -223,7 +223,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    'Using cached rates',
+                                    S.current.searchUsingCachedRates,
                                     style: TextStyle(
                                       color: Colors.white.withAlpha(230),
                                       fontSize: 12,
@@ -254,8 +254,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                 ),
                               ),
                               icon: const Icon(Icons.refresh, size: 18),
-                              label: const Text(
-                                'Retry',
+                              label: Text(
+                                S.current.searchRetryButton,
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
@@ -382,7 +382,13 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                               ),
 
                               exchangeRate: state.exchangeRate != null
-                                  ? '1 ${state.fromCurrency ?? ''} = ${FormatterUtils.formatAmount(state.exchangeRate!)} ${state.toCurrency ?? ''}'
+                                  ? S.current.searchExchangeRate(
+                                      state.fromCurrency ?? '',
+                                      FormatterUtils.formatAmount(
+                                        state.exchangeRate ?? 0,
+                                      ),
+                                      state.toCurrency ?? '',
+                                    )
                                   : null,
                             ),
                             const SizedBox(height: 32),
