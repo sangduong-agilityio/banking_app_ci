@@ -6,9 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'search_state.freezed.dart';
 
-/// Represents the state of the search feature.
 class SearchState extends Equatable {
-  /// Creates a [SearchState] object.
   const SearchState({
     this.status = const SearchStatus.initial(),
     this.fromCurrency,
@@ -27,52 +25,23 @@ class SearchState extends Equatable {
     this.isOnline = true,
   });
 
-  /// The current status of the search feature.
   final SearchStatus status;
 
-  /// The list of exchange rates.
   final List<ExchangeRateModel>? exchangeRates;
-
-  /// The currency to convert from.
-  final String? fromCurrency;
-
-  /// The currency to convert to.
-  final String? toCurrency;
-
-  /// The amount in the \"from\" currency.
-  final double? fromAmount;
-
-  /// The amount in the \"to\" currency.
-  final double? toAmount;
-
-  /// The list of interest rates.
-  final List<InterestRateModel>? interestRates;
-
-  /// The list of available currencies.
-  final List<CurrencyModel>? currencies;
-
-  /// The current exchange rate.
   final double? exchangeRate;
-
-  /// The timestamp when the exchange rates were last updated.
-  final DateTime? lastUpdated;
-
-  /// Whether the exchange rates are from the cache.
   final bool isFromCache;
-
-  /// The status of the current exchange rate (fresh, stale, or no data).
   final ExchangeRateStatus exchangeRateStatus;
-
-  /// The timestamp when the current exchange rate was last updated.
+  final DateTime? lastUpdated;
   final DateTime? lastExchangeRateUpdate;
-
-  /// A unique identifier for the current exchange rate request.
   final int exchangeRateRequestId;
-
+  final String? fromCurrency;
+  final String? toCurrency;
+  final double? fromAmount;
+  final double? toAmount;
+  final List<CurrencyModel>? currencies;
+  final List<InterestRateModel>? interestRates;
   final bool isOnline;
 
-  /// Creates a copy of the current [SearchState] with the given fields replaced
-  /// with the new values.
   SearchState copyWith({
     SearchStatus? status,
     List<ExchangeRateModel>? exchangeRates,
@@ -89,14 +58,15 @@ class SearchState extends Equatable {
     DateTime? lastExchangeRateUpdate,
     int? exchangeRateRequestId,
     bool? isOnline,
+    bool clearAmounts = false,
   }) {
     return SearchState(
       status: status ?? this.status,
       exchangeRates: exchangeRates ?? this.exchangeRates,
       fromCurrency: fromCurrency ?? this.fromCurrency,
       toCurrency: toCurrency ?? this.toCurrency,
-      fromAmount: fromAmount ?? this.fromAmount,
-      toAmount: toAmount ?? this.toAmount,
+      fromAmount: clearAmounts ? null : (fromAmount ?? this.fromAmount),
+      toAmount: clearAmounts ? null : (toAmount ?? this.toAmount),
       interestRates: interestRates ?? this.interestRates,
       currencies: currencies ?? this.currencies,
       exchangeRate: exchangeRate ?? this.exchangeRate,
@@ -131,52 +101,31 @@ class SearchState extends Equatable {
   ];
 }
 
-/// Represents the status of an exchange rate.
-enum ExchangeRateStatus {
-  /// The exchange rate is fresh and up-to-date.
-  fresh,
+/// --- Exchange Rate Status ---
+enum ExchangeRateStatus { fresh, stale, noData }
 
-  /// The exchange rate is from the cache and may be outdated.
-  stale,
-
-  /// There is no data for the exchange rate.
-  noData,
-}
-
-/// An extension on [ExchangeRateStatus] to provide additional functionality.
-
-extension ExchangeRateStatusExtension on ExchangeRateStatus {
-  /// A user-friendly display name for the status.
-  String get displayName {
+/// Extension methods for ExchangeRateStatus
+extension ExchangeRateStatusX on ExchangeRateStatus {
+  String get label {
     switch (this) {
       case ExchangeRateStatus.fresh:
         return 'Live rate';
       case ExchangeRateStatus.stale:
         return 'Offline rate';
       case ExchangeRateStatus.noData:
-        return 'No rate';
+        return 'No data';
     }
   }
 
-  /// Whether the exchange rate is from the offline cache.
   bool get isOffline => this == ExchangeRateStatus.stale;
-
-  /// Whether there is data for the exchange rate.
   bool get hasData => this != ExchangeRateStatus.noData;
 }
 
 /// Represents the status of the search feature.
 @freezed
 sealed class SearchStatus with _$SearchStatus {
-  /// The initial status.
   const factory SearchStatus.initial() = SearchStatusInitial;
-
-  /// The loading status.
   const factory SearchStatus.loading() = SearchStatusLoading;
-
-  /// The success status.
   const factory SearchStatus.success() = SearchStatusSuccess;
-
-  /// The failure status.
   const factory SearchStatus.failure() = SearchStatusFailure;
 }

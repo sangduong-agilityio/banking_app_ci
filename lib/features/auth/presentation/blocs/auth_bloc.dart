@@ -22,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     on<SignUpFormValidateChangedEvt>(_onSignUpFormValidateChanged);
     on<SignUpButtonPressedEvt>(_onSignUpPressed);
     on<SignUpTermsChangedEvt>(_onSignUpTermsChanged);
+    on<GetCurrentUserEvt>(_onGetCurrentUser);
   }
 
   final AuthRepository repo;
@@ -298,5 +299,27 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         password: event.password,
       ),
     );
+  }
+
+  Future<void> _onGetCurrentUser(
+    GetCurrentUserEvt event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      final user = repo.getCurrentUser();
+      if (user != null) {
+        final username = user.userMetadata?['username'] as String?;
+        if (username != null) {
+          emit(state.copyWith(username: username));
+        }
+      }
+    } catch (e, stackTrace) {
+      await ErrorSanitizer.logSecureError(
+        e,
+        stackTrace,
+        context: {'action': 'get_current_user'},
+        isCritical: false,
+      );
+    }
   }
 }

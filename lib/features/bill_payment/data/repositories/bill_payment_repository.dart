@@ -117,7 +117,6 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       'userId': _currentUser.id,
       'isUsed': false,
     });
-
     print('OTP sent to: ${_currentUser.email}');
     print('OTP Code: $otpCode');
 

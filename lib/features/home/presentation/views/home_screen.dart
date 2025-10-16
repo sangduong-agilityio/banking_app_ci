@@ -113,11 +113,11 @@ class CreditCardsSwiper extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 204,
-      child: BlocSelector<HomeCubit, HomeState, (List<CardModel>, bool)>(
-        selector: (state) => (state.cards, state.shouldPlayAnimation),
-        builder: (context, data) {
-          final cards = data.$1;
-          final shouldPlayAnimation = data.$2;
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final cards = state.cards;
+          final shouldPlayAnimation = state.shouldPlayAnimation;
+          final isBalanceVisible = state.isBalanceVisible;
 
           if (cards.isEmpty) {
             return Row(children: const [Expanded(child: BACardSkeleton())]);
@@ -135,9 +135,13 @@ class CreditCardsSwiper extends StatelessWidget {
             cardBuilder: (context, index, visibleIndex) {
               final card = cards[index];
               return SwipeableCreditCard(
-                key: ValueKey<int>(index),
+                key: ValueKey<String>('card-$index-$isBalanceVisible'),
                 data: card,
                 isActive: visibleIndex == 0,
+                isBalanceVisible: isBalanceVisible,
+                onToggleVisibility: () {
+                  context.read<HomeCubit>().toggleBalanceVisibility();
+                },
               );
             },
           );

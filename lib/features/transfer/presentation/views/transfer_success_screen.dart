@@ -1,5 +1,6 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
+import 'package:banking_app/core/data/services/monitoring_service.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/common/utils/formatters.dart';
 import 'package:banking_app/core/widgets/assets.dart';
@@ -8,7 +9,7 @@ import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:flutter/material.dart';
 
-class TransferSuccessScreen extends StatelessWidget {
+class TransferSuccessScreen extends StatefulWidget {
   final double amount;
   final String beneficiaryName;
 
@@ -17,6 +18,27 @@ class TransferSuccessScreen extends StatelessWidget {
     required this.amount,
     required this.beneficiaryName,
   });
+
+  @override
+  State<TransferSuccessScreen> createState() => _TransferSuccessScreenState();
+}
+
+class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    MonitoringService.instance.logEvent(
+      'transfer_success',
+      data: {'amount': widget.amount, 'beneficiary': widget.beneficiaryName},
+    );
+
+    MonitoringService.instance.logBusinessMetric(
+      'total_transfer_amount',
+      value: widget.amount,
+      tags: {'beneficiary': widget.beneficiaryName},
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +79,7 @@ class TransferSuccessScreen extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: '\$${FormatterUtils.formatAmount(amount)} ',
+                      text: '\$${FormatterUtils.formatAmount(widget.amount)} ',
                       style: context.titleSmall?.copyWith(
                         color: context.colorScheme.error,
                         fontWeight: FontWeight.bold,
@@ -70,7 +92,7 @@ class TransferSuccessScreen extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: ' $beneficiaryName!',
+                      text: ' ${widget.beneficiaryName}!',
                       style: context.titleSmall?.copyWith(
                         color: context.colorScheme.secondary,
                         fontWeight: FontWeight.bold,

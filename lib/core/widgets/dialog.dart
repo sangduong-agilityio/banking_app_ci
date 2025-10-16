@@ -260,6 +260,7 @@ class _BASelectorDialogState<T> extends State<BASelectorDialog<T>> {
           : null,
       onTap: () {
         widget.onSelected(item);
+        // Navigator.pop(context);
       },
     );
   }

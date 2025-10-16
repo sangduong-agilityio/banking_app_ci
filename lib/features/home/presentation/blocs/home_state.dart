@@ -14,6 +14,7 @@ class HomeState extends Equatable {
     this.cards = const [],
     this.currentCardIndex = 0,
     this.shouldPlayAnimation = false,
+    this.isBalanceVisible = true,
   });
 
   final HomeStatus status;
@@ -22,6 +23,7 @@ class HomeState extends Equatable {
   final String? errorMessage;
   final int currentCardIndex;
   final bool shouldPlayAnimation;
+  final bool isBalanceVisible;
 
   HomeState copyWith({
     HomeStatus? status,
@@ -30,6 +32,7 @@ class HomeState extends Equatable {
     List<CardModel>? cards,
     int? currentCardIndex,
     bool? shouldPlayAnimation,
+    bool? isBalanceVisible,
   }) {
     return HomeState(
       status: status ?? this.status,
@@ -38,6 +41,7 @@ class HomeState extends Equatable {
       cards: cards ?? this.cards,
       currentCardIndex: currentCardIndex ?? this.currentCardIndex,
       shouldPlayAnimation: shouldPlayAnimation ?? this.shouldPlayAnimation,
+      isBalanceVisible: isBalanceVisible ?? this.isBalanceVisible,
     );
   }
 
@@ -49,6 +53,7 @@ class HomeState extends Equatable {
     cards,
     currentCardIndex,
     shouldPlayAnimation,
+    isBalanceVisible,
   ];
 }
 

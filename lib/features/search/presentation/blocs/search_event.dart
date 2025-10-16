@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-/// The base class for all events related to the search feature.
 abstract class SearchEvt extends Equatable {
   const SearchEvt();
 
@@ -8,24 +7,27 @@ abstract class SearchEvt extends Equatable {
   List<Object?> get props => [];
 }
 
-/// Event to initialize the interest rate screen.
-class InterestRateInitializeEvt extends SearchEvt {}
-
-/// Event to initialize the exchange rate screen.
-class ExchangeRateInitializeEvt extends SearchEvt {}
-
-/// Event to initialize the currency exchange screen.
-class ExchangeInitializeEvt extends SearchEvt {
-  const ExchangeInitializeEvt(this.fromCurrency, this.toCurrency);
-
-  final String? fromCurrency;
-  final String? toCurrency;
-
-  @override
-  List<Object?> get props => [fromCurrency, toCurrency];
+/// Interest Rate Events
+class InterestRateInitializeEvt extends SearchEvt {
+  const InterestRateInitializeEvt();
 }
 
-/// Event triggered when the user changes the \"from\" or \"to\" currency.
+/// Initializes the Exchange Rate screen.
+class ExchangeRateInitializeEvt extends SearchEvt {
+  const ExchangeRateInitializeEvt();
+}
+
+/// Refreshes the Exchange Rate data (can force API call).
+class ExchangeRateRefreshEvt extends SearchEvt {
+  const ExchangeRateRefreshEvt({this.forceRefresh = false});
+
+  final bool forceRefresh;
+
+  @override
+  List<Object?> get props => [forceRefresh];
+}
+
+/// Triggered when user changes the from/to currency pair.
 class ExchangeRateChangedEvt extends SearchEvt {
   const ExchangeRateChangedEvt(this.fromCurrency, this.toCurrency);
 
@@ -36,7 +38,18 @@ class ExchangeRateChangedEvt extends SearchEvt {
   List<Object?> get props => [fromCurrency, toCurrency];
 }
 
-/// Event to convert an amount from one currency to another.
+/// Initializes the Exchange screen.
+class ExchangeInitializeEvt extends SearchEvt {
+  const ExchangeInitializeEvt(this.fromCurrency, this.toCurrency);
+
+  final String? fromCurrency;
+  final String? toCurrency;
+
+  @override
+  List<Object?> get props => [fromCurrency, toCurrency];
+}
+
+/// Converts an entered amount between currencies.
 class ConvertCurrencyEvt extends SearchEvt {
   const ConvertCurrencyEvt(this.amount, {this.isFromAmount = true});
 
@@ -47,10 +60,12 @@ class ConvertCurrencyEvt extends SearchEvt {
   List<Object?> get props => [amount, isFromAmount];
 }
 
-/// Event to swap the \"from\" and \"to\" currencies.
-class SwapCurrenciesEvt extends SearchEvt {}
+/// Swaps the from/to currencies.
+class SwapCurrenciesEvt extends SearchEvt {
+  const SwapCurrenciesEvt();
+}
 
-/// Event triggered when the user selects a currency.
+/// Triggered when user manually selects a currency.
 class SelectCurrencyEvt extends SearchEvt {
   const SelectCurrencyEvt(this.isFromCurrency, this.currency);
 
@@ -61,20 +76,11 @@ class SelectCurrencyEvt extends SearchEvt {
   List<Object?> get props => [isFromCurrency, currency];
 }
 
-/// Event to refresh the exchange rates.
-class ExchangeRateRefreshEvt extends SearchEvt {
-  const ExchangeRateRefreshEvt({this.forceRefresh = false});
-
-  final bool forceRefresh;
-
-  @override
-  List<Object?> get props => [forceRefresh];
-}
-
+/// Triggered when connectivity changes (online/offline).
 class CheckConnectivityEvt extends SearchEvt {
-  final bool isOnline;
-
   const CheckConnectivityEvt(this.isOnline);
+
+  final bool isOnline;
 
   @override
   List<Object?> get props => [isOnline];

@@ -42,6 +42,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void initState() {
     super.initState();
     _authBloc = locator<AuthBloc>();
+    _authBloc.add(const GetCurrentUserEvt());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _authBloc.add(const CheckBiometricAvailabilityEvt());
     });
@@ -113,6 +114,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             const SignInWithBiometricEvt(),
                           );
                         },
+                        username: state.username,
                       ),
                     ],
                   ),
@@ -138,6 +140,7 @@ class SignInBody extends StatelessWidget {
   final bool isBiometricEnabled;
   final bool hasSavedBiometricCredentials;
   final VoidCallback onBiometricPressed;
+  final String username;
 
   const SignInBody({
     super.key,
@@ -148,6 +151,7 @@ class SignInBody extends StatelessWidget {
     required this.isBiometricEnabled,
     required this.hasSavedBiometricCredentials,
     required this.onBiometricPressed,
+    required this.username,
   });
 
   @override
@@ -166,7 +170,9 @@ class SignInBody extends StatelessWidget {
           child: Column(
             children: [
               AuthForm(
-                title: S.current.signInWelcomeTitle,
+                title: username.isNotEmpty
+                    ? '${S.current.signInWelcomeTitle} $username'
+                    : S.current.signInWelcomeTitle,
                 description: S.current.signInDescription,
                 textFields: _buildTextFields(),
                 onValidate: (isValid) {

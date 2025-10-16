@@ -32,11 +32,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(type) => "Cached data • Updated: ${type}";
 
-  static String m6(type) => "Fresh data • Updated: ${type}";
+  static String m6(fromCurrency, rate, toCurrency) =>
+      "1 ${fromCurrency} = ${rate} ${toCurrency}";
 
-  static String m7(type) => "Offline rate ${type}";
+  static String m7(type) => "Fresh data • Updated: ${type}";
 
-  static String m8(type) => "Available balance: ${type}";
+  static String m8(type) => "Offline rate ${type}";
+
+  static String m9(type) => "Available balance: ${type}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -115,6 +118,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "authErrorWeakPassword": MessageLookupByLibrary.simpleMessage(
       "Password is too weak. Please choose a stronger password.",
     ),
+    "cardAvailableBalance": MessageLookupByLibrary.simpleMessage(
+      "Available Balance",
+    ),
+    "cardMaskedBalance": MessageLookupByLibrary.simpleMessage("************"),
     "exchangeRateError": MessageLookupByLibrary.simpleMessage(
       "Failed to load data",
     ),
@@ -127,13 +134,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "homeMobileRechargeTitle": MessageLookupByLibrary.simpleMessage(
       "Mobile recharge",
     ),
-    "homePayTheBillTitle": MessageLookupByLibrary.simpleMessage(
-      "Pay the \nbill",
-    ),
+    "homePayTheBillTitle": MessageLookupByLibrary.simpleMessage("Pay the bill"),
     "homeSaveOnlineTitle": MessageLookupByLibrary.simpleMessage("Save Online"),
     "homeTitle": MessageLookupByLibrary.simpleMessage("Home"),
     "homeTransactionReportTitle": MessageLookupByLibrary.simpleMessage(
-      "Transaction \nReport",
+      "Transaction Report",
     ),
     "homeTransferTitle": MessageLookupByLibrary.simpleMessage("Transfer"),
     "homeWithdrawTitle": MessageLookupByLibrary.simpleMessage("Withdraw"),
@@ -176,6 +181,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Request timed out. Please check your connection and try again.",
     ),
     "noItemsFoundTitle": MessageLookupByLibrary.simpleMessage("No items found"),
+    "offline_text": MessageLookupByLibrary.simpleMessage(
+      "You are currently offline.",
+    ),
     "pageNotSupportedYet": MessageLookupByLibrary.simpleMessage(
       "This page is not supported yet!",
     ),
@@ -254,6 +262,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchExchangeDescription": MessageLookupByLibrary.simpleMessage(
       "Exchange amount of money",
     ),
+    "searchExchangeRate": m6,
     "searchExchangeRateDescription": MessageLookupByLibrary.simpleMessage(
       "Search for exchange rate",
     ),
@@ -262,7 +271,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchExchangeTitle": MessageLookupByLibrary.simpleMessage("Exchange"),
     "searchFormTitle": MessageLookupByLibrary.simpleMessage("From"),
-    "searchFreshDataTitle": m6,
+    "searchFreshDataTitle": m7,
     "searchInterestKindTitle": MessageLookupByLibrary.simpleMessage(
       "Interest kind",
     ),
@@ -280,7 +289,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchOfflineExchangeTitle": MessageLookupByLibrary.simpleMessage(
       "Offline Exchange",
     ),
-    "searchOfflineRateTitle": m7,
+    "searchOfflineRateTitle": m8,
     "searchPerformExchangeStatusOffline": MessageLookupByLibrary.simpleMessage(
       "Transaction completed with offline rate",
     ),
@@ -295,6 +304,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchSellTitle": MessageLookupByLibrary.simpleMessage("Sell"),
     "searchTitle": MessageLookupByLibrary.simpleMessage("Search"),
     "searchToTitle": MessageLookupByLibrary.simpleMessage("To"),
+    "searchUsingCachedRates": MessageLookupByLibrary.simpleMessage(
+      "Using cached rates",
+    ),
     "searchUsingOfflineExchangeTitle": MessageLookupByLibrary.simpleMessage(
       "Using offline exchange rate",
     ),
@@ -310,6 +322,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "settingConfirmPasswordLabel": MessageLookupByLibrary.simpleMessage(
       "Confirm password",
+    ),
+    "settingCustomerCareSubtitle": MessageLookupByLibrary.simpleMessage(
+      "19008989",
     ),
     "settingCustomerCareTitle": MessageLookupByLibrary.simpleMessage(
       "Customer care",
@@ -366,7 +381,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Term and Conditions",
     ),
     "signUpTermAndConditions": MessageLookupByLibrary.simpleMessage(
-      "By creating an account your agree \nto our ",
+      "By creating an account your agree to our ",
     ),
     "signUpTitle": MessageLookupByLibrary.simpleMessage("Sign up"),
     "signUpUsername": MessageLookupByLibrary.simpleMessage(
@@ -374,11 +389,33 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "signUpWelcomeTitle": MessageLookupByLibrary.simpleMessage("Welcome to us"),
     "transactionBalanceTitle": MessageLookupByLibrary.simpleMessage("Balance"),
+    "transactionCardNumber": MessageLookupByLibrary.simpleMessage(
+      "Card Number",
+    ),
+    "transactionElectricBill": MessageLookupByLibrary.simpleMessage(
+      "Electric Bill",
+    ),
+    "transactionInternetBill": MessageLookupByLibrary.simpleMessage(
+      "Internet Bill",
+    ),
+    "transactionOtherBank": MessageLookupByLibrary.simpleMessage("Other Bank"),
     "transactionRecentTitle": MessageLookupByLibrary.simpleMessage("Recent"),
     "transactionReportTitle": MessageLookupByLibrary.simpleMessage(
       "Transaction report",
     ),
+    "transactionSameBank": MessageLookupByLibrary.simpleMessage("Same Bank"),
     "transactionTodayTitle": MessageLookupByLibrary.simpleMessage("Today"),
+    "transactionTransfer": MessageLookupByLibrary.simpleMessage("Transfer"),
+    "transactionTransferOtherBank": MessageLookupByLibrary.simpleMessage(
+      "Transfer: Other Bank",
+    ),
+    "transactionTransferSameBank": MessageLookupByLibrary.simpleMessage(
+      "Transfer: Same Bank",
+    ),
+    "transactionTransferViaCardNumber": MessageLookupByLibrary.simpleMessage(
+      "Transfer: Via Card Number",
+    ),
+    "transactionWaterBill": MessageLookupByLibrary.simpleMessage("Water Bill"),
     "transactionYesterdayTitle": MessageLookupByLibrary.simpleMessage(
       "Yesterday",
     ),
@@ -398,7 +435,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferAnotherBankTitle": MessageLookupByLibrary.simpleMessage(
       "Transfer to another bank",
     ),
-    "transferAvailableBalanceTitle": m8,
+    "transferAvailableBalanceTitle": m9,
     "transferBeneficiaryBank": MessageLookupByLibrary.simpleMessage(
       "Beneficiary bank",
     ),
@@ -487,7 +524,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "OTP has been sent to your email. Please check your inbox",
     ),
     "transferSuccessDescription": MessageLookupByLibrary.simpleMessage(
-      "You have successfully transferred \n",
+      "You have successfully transferred",
     ),
     "transferSuccessTitle": MessageLookupByLibrary.simpleMessage(
       "Transfer successful!",
