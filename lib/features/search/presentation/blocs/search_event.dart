@@ -60,7 +60,7 @@ class ConvertCurrencyEvt extends SearchEvt {
   List<Object?> get props => [amount, isFromAmount];
 }
 
-/// Swaps the from/to currencies.
+/// Swaps the from/to currencies and their amounts WITHOUT recalculating.
 class SwapCurrenciesEvt extends SearchEvt {
   const SwapCurrenciesEvt();
 }
