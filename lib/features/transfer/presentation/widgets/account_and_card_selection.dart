@@ -161,7 +161,7 @@ class _AccountOrCardSelectorState extends State<AccountOrCardSelector> {
       AccountModel() =>
         "${item.accountType} - ${FormatterUtils.maskCardNumber(item.accountNumber)} (${item.status?.name ?? ''})",
       CardModel() =>
-        "${item.cardType?.displayName ?? ''} - ${FormatterUtils.maskCardNumber(item.cardNumber)} (${item.status?.name ?? ''})",
+        "${item.cardType?.name ?? ''} - ${FormatterUtils.maskCardNumber(item.cardNumber)} (${item.status?.name ?? ''})",
       _ => '',
     };
   }

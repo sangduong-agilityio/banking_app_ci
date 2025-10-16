@@ -64,6 +64,7 @@ class _BillPaymentDetailsScreenState extends State<BillPaymentDetailsScreen> {
           iconColor: context.colorScheme.scrim,
         ),
         body: BlocConsumer<BillPaymentBloc, BillPaymentState>(
+          listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             state.status.maybeWhen(
               loading: () => context.loaderOverlay.show(),

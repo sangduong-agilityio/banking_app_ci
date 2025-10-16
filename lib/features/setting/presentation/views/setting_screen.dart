@@ -134,7 +134,7 @@ class SettingContent extends StatelessWidget {
                     ),
                     SettingSelection(
                       title: S.current.settingCustomerCareTitle,
-                      subtitle: '19008989',
+                      subtitle: S.current.settingCustomerCareSubtitle,
                       textColor: context.colorScheme.inverseSurface,
                       onTap: () {
                         BASnackBar.showNotSupported(

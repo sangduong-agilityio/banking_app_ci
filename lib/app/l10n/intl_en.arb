@@ -43,7 +43,7 @@
   "signUpTitle": "Sign up",
   "signUpWelcomeTitle": "Welcome to us",
   "signUpDescription": "Hello there, create New account",
-  "signUpTermAndConditions": "By creating an account your agree \nto our ",
+  "signUpTermAndConditions": "By creating an account your agree to our ",
   "signUpTermAndConditionButton": "Term and Conditions",
   "signUpButton": "Sign up",
   "signUpAlreadyAcccount": "Have an account? ",
@@ -64,9 +64,9 @@
   "homeTransferTitle": "Transfer",
   "homeWithdrawTitle": "Withdraw",
   "homeMobileRechargeTitle": "Mobile recharge",
-  "homePayTheBillTitle": "Pay the \nbill",
+  "homePayTheBillTitle": "Pay the bill",
   "homeCreditCardTitle": "Credit card",
-  "homeTransactionReportTitle": "Transaction \nReport",
+  "homeTransactionReportTitle": "Transaction Report",
   "homeSaveOnlineTitle":"Save Online",
   "homeBeneficiaryTitle":"Beneficiary",
 
@@ -225,7 +225,7 @@
   "transferOtpLabel":"OTP",
   "transferEnterOtpCodeTitle":"Please enter the OTP code",
   "transferBiometricAuthenticationTitle":"Use biometric authentication instead",
-  "transferSuccessDescription":"You have successfully transferred \n",
+  "transferSuccessDescription":"You have successfully transferred",
   "transferNoBeneficiariesFoundTitle":"No beneficiaries found",
 
   "@segmentSetting": {
@@ -235,6 +235,7 @@
   "settingLanguaguesTitle": "Languages",
   "settingAppInformationTitle": "App information",
   "settingCustomerCareTitle": "Customer care",
+  "settingCustomerCareSubtitle": "19008989",
   "settingChangePasswordTitle": "Change password",
   "settingLogoutTitle": "Log out?",
   "settingLogoutContent": "You will be returned to the login screen",
@@ -320,5 +321,33 @@
   "httpErrorServerError": "Server error. Please try again later.",
   "httpErrorGeneric": "Service temporarily unavailable. Please try again later.",
   
-  "applicationErrorGeneric": "An unexpected error occurred. Please contact support if this persists."
+  "applicationErrorGeneric": "An unexpected error occurred. Please contact support if this persists.",
+  "offline_text": "You are currently offline.",
+  "searchUsingCachedRates": "Using cached rates",
+  "searchExchangeRate": "1 {fromCurrency} = {rate} {toCurrency}",
+  "@searchExchangeRate": {
+      "placeholders": {
+        "fromCurrency": {
+          "type": "String"
+        },
+        "rate": {
+          "type": "String"
+        },
+        "toCurrency": {
+          "type": "String"
+        }
+      }
+    },
+  "cardAvailableBalance": "Available Balance",
+  "cardMaskedBalance": "************",
+  "transactionCardNumber": "Card Number",
+  "transactionSameBank": "Same Bank",
+  "transactionOtherBank": "Other Bank",
+  "transactionElectricBill": "Electric Bill",
+  "transactionWaterBill": "Water Bill",
+  "transactionInternetBill": "Internet Bill",
+  "transactionTransferViaCardNumber": "Transfer: Via Card Number",
+  "transactionTransferSameBank": "Transfer: Same Bank",
+  "transactionTransferOtherBank": "Transfer: Other Bank",
+  "transactionTransfer": "Transfer"
 }

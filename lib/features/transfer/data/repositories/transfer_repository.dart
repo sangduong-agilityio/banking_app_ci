@@ -200,7 +200,6 @@ class TransferRepositoryImpl implements TransferRepository {
         'userId': currentUser.id,
         'isUsed': false,
       });
-
       print('OTP $otpCode sent to ${currentUser.email ?? ''}');
     } catch (e) {
       throw OtpSendFailedException('Failed to send OTP: ${e.toString()}');

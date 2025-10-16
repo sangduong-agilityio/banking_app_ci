@@ -294,10 +294,10 @@ class S {
     );
   }
 
-  /// `By creating an account your agree \nto our `
+  /// `By creating an account your agree to our `
   String get signUpTermAndConditions {
     return Intl.message(
-      'By creating an account your agree \nto our ',
+      'By creating an account your agree to our ',
       name: 'signUpTermAndConditions',
       desc: '',
       args: [],
@@ -409,10 +409,10 @@ class S {
     );
   }
 
-  /// `Pay the \nbill`
+  /// `Pay the bill`
   String get homePayTheBillTitle {
     return Intl.message(
-      'Pay the \nbill',
+      'Pay the bill',
       name: 'homePayTheBillTitle',
       desc: '',
       args: [],
@@ -429,10 +429,10 @@ class S {
     );
   }
 
-  /// `Transaction \nReport`
+  /// `Transaction Report`
   String get homeTransactionReportTitle {
     return Intl.message(
-      'Transaction \nReport',
+      'Transaction Report',
       name: 'homeTransactionReportTitle',
       desc: '',
       args: [],
@@ -1414,10 +1414,10 @@ class S {
     );
   }
 
-  /// `You have successfully transferred \n`
+  /// `You have successfully transferred`
   String get transferSuccessDescription {
     return Intl.message(
-      'You have successfully transferred \n',
+      'You have successfully transferred',
       name: 'transferSuccessDescription',
       desc: '',
       args: [],
@@ -1469,6 +1469,16 @@ class S {
     return Intl.message(
       'Customer care',
       name: 'settingCustomerCareTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `19008989`
+  String get settingCustomerCareSubtitle {
+    return Intl.message(
+      '19008989',
+      name: 'settingCustomerCareSubtitle',
       desc: '',
       args: [],
     );
@@ -2129,6 +2139,150 @@ class S {
     return Intl.message(
       'You are currently offline.',
       name: 'offline_text',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Using cached rates`
+  String get searchUsingCachedRates {
+    return Intl.message(
+      'Using cached rates',
+      name: 'searchUsingCachedRates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `1 {fromCurrency} = {rate} {toCurrency}`
+  String searchExchangeRate(
+    String fromCurrency,
+    String rate,
+    String toCurrency,
+  ) {
+    return Intl.message(
+      '1 $fromCurrency = $rate $toCurrency',
+      name: 'searchExchangeRate',
+      desc: '',
+      args: [fromCurrency, rate, toCurrency],
+    );
+  }
+
+  /// `Available Balance`
+  String get cardAvailableBalance {
+    return Intl.message(
+      'Available Balance',
+      name: 'cardAvailableBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `************`
+  String get cardMaskedBalance {
+    return Intl.message(
+      '************',
+      name: 'cardMaskedBalance',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card Number`
+  String get transactionCardNumber {
+    return Intl.message(
+      'Card Number',
+      name: 'transactionCardNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Same Bank`
+  String get transactionSameBank {
+    return Intl.message(
+      'Same Bank',
+      name: 'transactionSameBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Other Bank`
+  String get transactionOtherBank {
+    return Intl.message(
+      'Other Bank',
+      name: 'transactionOtherBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Electric Bill`
+  String get transactionElectricBill {
+    return Intl.message(
+      'Electric Bill',
+      name: 'transactionElectricBill',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Water Bill`
+  String get transactionWaterBill {
+    return Intl.message(
+      'Water Bill',
+      name: 'transactionWaterBill',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Internet Bill`
+  String get transactionInternetBill {
+    return Intl.message(
+      'Internet Bill',
+      name: 'transactionInternetBill',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer: Via Card Number`
+  String get transactionTransferViaCardNumber {
+    return Intl.message(
+      'Transfer: Via Card Number',
+      name: 'transactionTransferViaCardNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer: Same Bank`
+  String get transactionTransferSameBank {
+    return Intl.message(
+      'Transfer: Same Bank',
+      name: 'transactionTransferSameBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer: Other Bank`
+  String get transactionTransferOtherBank {
+    return Intl.message(
+      'Transfer: Other Bank',
+      name: 'transactionTransferOtherBank',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transfer`
+  String get transactionTransfer {
+    return Intl.message(
+      'Transfer',
+      name: 'transactionTransfer',
       desc: '',
       args: [],
     );

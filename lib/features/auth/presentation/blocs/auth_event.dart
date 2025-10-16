@@ -84,3 +84,11 @@ class SignUpTermsChangedEvt extends AuthEvt {
   @override
   List<Object?> get props => [isAccepted];
 }
+
+/// Event triggered to get the current user.
+class GetCurrentUserEvt extends AuthEvt {
+  const GetCurrentUserEvt();
+
+  @override
+  List<Object?> get props => [];
+}

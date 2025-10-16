@@ -42,4 +42,8 @@ class HomeCubit extends Cubit<HomeState> {
   void setAnimationStatus(bool value) {
     emit(state.copyWith(shouldPlayAnimation: value));
   }
+
+  void toggleBalanceVisibility() {
+    emit(state.copyWith(isBalanceVisible: !state.isBalanceVisible));
+  }
 }

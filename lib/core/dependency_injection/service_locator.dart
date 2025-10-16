@@ -2,8 +2,12 @@ import 'package:banking_app/core/data/services/api/api_client.dart';
 import 'package:banking_app/core/data/database/objectbox_setup.dart';
 import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/data/services/biometric_service.dart';
+import 'package:banking_app/core/data/services/currency_cache_service.dart';
 import 'package:banking_app/core/data/services/exchange_rate_cache_service.dart';
 import 'package:banking_app/core/data/services/offline_exchange_service.dart';
+import 'package:banking_app/core/data/services/exchange_cache_manager.dart';
+import 'package:banking_app/core/data/services/connectivity_service.dart';
+
 import 'package:banking_app/features/account/presentation/blocs/account_and_card_cubit.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
@@ -21,42 +25,41 @@ import 'package:banking_app/features/transactions/data/repositories/transaction_
 import 'package:banking_app/features/transactions/presentation/blocs/transaction_bloc.dart';
 import 'package:banking_app/features/transfer/data/repositories/transfer_repository.dart';
 import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
+
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Global GetIt instance for dependency injection
 final GetIt locator = GetIt.instance;
 
 class AppLocators {
-  /// Registers all services, repositories, blocs, and cubits
   static Future<void> setupLocators() async {
-    /// ASYNC registrations
+    /// Async initializations
     locator.registerSingletonAsync<SharedPreferences>(
       () => SharedPreferences.getInstance(),
     );
 
-    /// Initialize Store first and wait for it to be ready
-    locator.registerSingletonAsync<Store>(() async {
-      return await ObjectBoxManager.getStore();
-    });
+    locator.registerSingletonAsync<Store>(() => ObjectBoxManager.getStore());
 
-    /// Wait for all async singletons to be ready
+    /// Synchronous registrations that depend on async ones
+    locator.registerSingletonAsync<ConnectivityService>(
+      () => Future.value(ConnectivityService()),
+    );
+
+    /// Wait for async singletons to be ready
     await locator.allReady();
 
-    /// Get the Store instance
     final store = locator<Store>();
 
-    /// Sync registrations
+    /// Synchronous registrations
     locator.registerLazySingleton(() => Supabase.instance.client);
 
     locator.registerLazySingleton<BankingApiClient>(
       () => BankingApiClient(baseUrl: Env.endPoint),
     );
 
-    /// Services - SYNC
+    /// Services
     locator.registerLazySingleton<ExchangeRateCacheService>(
       () => ExchangeRateCacheService(store.box<ExchangeRateEntity>()),
     );
@@ -66,20 +69,23 @@ class AppLocators {
     );
 
     locator.registerLazySingleton<CurrencyCacheService>(
-      () => CurrencyCacheService(store.box<CurrencyEntity>()),
+      () => CurrencyCacheService(
+        store.box<CurrencyEntity>(),
+        store.box<CurrencyRateEntity>(),
+      ),
     );
 
-    locator.registerLazySingleton<CacheManager>(
-      () => CacheManager(
-        locator<ExchangeRateCacheService>(),
-        locator<OfflineExchangeService>(),
-        locator<CurrencyCacheService>(),
+    locator.registerLazySingleton<ExchangeCacheManager>(
+      () => ExchangeCacheManager(
+        rateCache: locator<ExchangeRateCacheService>(),
+        offlineCache: locator<OfflineExchangeService>(),
+        currencyCache: locator<CurrencyCacheService>(),
       ),
     );
 
     locator.registerLazySingleton<BiometricService>(() => BiometricService());
 
-    /// Repositories - SYNC
+    /// Repositories
     locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImplement(client: locator()),
     );
@@ -91,7 +97,7 @@ class AppLocators {
     locator.registerLazySingleton<SearchRepository>(
       () => SearchRepositoryImpl(
         client: locator<BankingApiClient>(),
-        cacheManager: locator<CacheManager>(),
+        cacheManager: locator<ExchangeCacheManager>(),
       ),
     );
 
@@ -107,7 +113,7 @@ class AppLocators {
       () => TransactionReportRepositoryImpl(client: locator()),
     );
 
-    /// Blocs and Cubits - FACTORY
+    /// Blocs / Cubits
     locator.registerFactory<AuthBloc>(
       () => AuthBloc(
         repo: locator<AuthRepository>(),
@@ -134,7 +140,9 @@ class AppLocators {
     locator.registerFactory<SearchBloc>(
       () => SearchBloc(
         repo: locator<SearchRepository>(),
-        cacheManager: locator<CacheManager>(),
+        cacheManager: locator<ExchangeCacheManager>(),
+        connectivityStream:
+            locator<ConnectivityService>().connectionStatusStream,
       ),
     );
 

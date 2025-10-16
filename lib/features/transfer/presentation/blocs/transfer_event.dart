@@ -103,6 +103,7 @@ class UpdateTransferDetailsEvt extends TransferEvt {
     this.bank,
     this.branch,
     this.avatarUrl,
+    this.clearForm,
   });
 
   final String? name;
@@ -113,6 +114,7 @@ class UpdateTransferDetailsEvt extends TransferEvt {
   final BankModel? bank;
   final BranchModel? branch;
   final String? avatarUrl;
+  final bool? clearForm;
 
   @override
   List<Object?> get props => [
@@ -124,6 +126,7 @@ class UpdateTransferDetailsEvt extends TransferEvt {
     name,
     avatarUrl,
     branch,
+    clearForm,
   ];
 }
 
@@ -211,4 +214,12 @@ class OtpChangedEvt extends TransferEvt {
 
   @override
   List<Object> get props => [otp];
+}
+
+/// Event to clear the error message.
+class BiometricErrorMessageEvt extends TransferEvt {
+  const BiometricErrorMessageEvt();
+
+  @override
+  List<Object?> get props => [];
 }
