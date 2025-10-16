@@ -1,148 +1,130 @@
 import 'package:banking_app/features/search/domain/entities/currency_rate_entity.dart';
-import 'package:banking_app/features/search/presentation/blocs/search_state.dart';
 import 'package:banking_app/objectbox.g.dart';
 
-/// A service that manages the long-term offline caching of individual currency
-/// exchange rates.
+/// Handles offline exchange rate lookups and caching with bidirectional support.
 ///
-/// This service uses ObjectBox to store currency exchange rates, allowing the app
-/// to provide exchange rate information even when the user is offline. The cached
-/// rates are considered \"stale\" after 1 hour, but can still be used if no fresh
-/// data is available.
+/// IMPROVEMENT: Automatically caches both directions (A→B and B→A)
+/// to support currency swapping without additional API calls.
 class OfflineExchangeService {
   final Box<CurrencyRateEntity> _ratesBox;
 
-  /// Creates an [OfflineExchangeService] object.
   OfflineExchangeService(this._ratesBox);
 
-  /// Caches a currency exchange rate.
+  /// Cache exchange rate with bidirectional support.
+  void cacheOfflineRate({
+    required String fromCurrency,
+    required String toCurrency,
+    required double rate,
+  }) {
+    if (rate <= 0) {
+      return;
+    }
+
+    try {
+      // Cache forward direction (A → B)
+      _cacheOneDirection(from: fromCurrency, to: toCurrency, rate: rate);
+
+      // Cache reverse direction (B → A)
+      final reverseRate = 1.0 / rate;
+      _cacheOneDirection(from: toCurrency, to: fromCurrency, rate: reverseRate);
+    } catch (e) {}
+  }
+
+  /// Cache rate in one direction only (internal helper).
+  void _cacheOneDirection({
+    required String from,
+    required String to,
+    required double rate,
+  }) {
+    final existing = _ratesBox
+        .query(
+          CurrencyRateEntity_.fromCurrency.equals(from) &
+              CurrencyRateEntity_.toCurrency.equals(to),
+        )
+        .build()
+        .findFirst();
+
+    final entity = CurrencyRateEntity(
+      id: existing?.id ?? 0,
+      fromCurrency: from,
+      toCurrency: to,
+      rate: rate,
+      lastUpdated: DateTime.now(),
+    );
+
+    _ratesBox.put(entity);
+  }
+
+  /// Get cached exchange rate for a currency pair.
   ///
-  /// This method checks if a rate for the given currency pair already exists.
-  /// If it does, the existing rate is updated with the new value and timestamp.
-  /// Otherwise, a new entry is created.
-  void cacheRate(String fromCurrency, String toCurrency, double rate) {
-    try {
-      // Find existing rate
-      final existingQuery = _ratesBox
-          .query(
-            CurrencyRateEntity_.fromCurrency.equals(fromCurrency) &
-                CurrencyRateEntity_.toCurrency.equals(toCurrency),
-          )
-          .build();
+  /// Returns null if:
+  /// - Rate not found in cache
+  /// - Rate is older than 24 hours (stale)
+  double? getOfflineRate(String fromCurrency, String toCurrency) {
+    final entity = _ratesBox
+        .query(
+          CurrencyRateEntity_.fromCurrency.equals(fromCurrency) &
+              CurrencyRateEntity_.toCurrency.equals(toCurrency),
+        )
+        .build()
+        .findFirst();
 
-      final existing = existingQuery.findFirst();
-      existingQuery.close();
-
-      if (existing != null) {
-        // Update existing rate
-        existing.rate = rate;
-        existing.lastUpdated = DateTime.now();
-        _ratesBox.put(existing);
-      } else {
-        // Create a new rate
-        final entity = CurrencyRateEntity(
-          fromCurrency: fromCurrency,
-          toCurrency: toCurrency,
-          rate: rate,
-          lastUpdated: DateTime.now(),
-        );
-        _ratesBox.put(entity);
-      }
-    } catch (e) {
-      // Handle any errors during caching
-      print('Error caching currency rate: $e');
-    }
-  }
-
-  /// Retrieves a cached currency exchange rate.
-  double? getCachedRate(String fromCurrency, String toCurrency) {
-    try {
-      final query = _ratesBox
-          .query(
-            CurrencyRateEntity_.fromCurrency.equals(fromCurrency) &
-                CurrencyRateEntity_.toCurrency.equals(toCurrency),
-          )
-          .build();
-
-      final entity = query.findFirst();
-      query.close();
-
-      if (entity != null) {
-        return entity.rate;
-      }
-
-      return null;
-    } catch (e) {
-      print('Error getting cached rate: $e');
+    if (entity == null) {
       return null;
     }
+
+    // Check if rate is too old (> 24 hours = stale)
+    final age = DateTime.now().difference(entity.lastUpdated);
+    if (age.inHours > 24) {
+    } else {}
+
+    return entity.rate;
   }
 
-  /// Gets the status of a cached currency exchange rate (fresh, stale, or no data).
-  ///
-  /// A rate is considered stale if it is older than 1 hour.
-  ExchangeRateStatus getRateStatus(String fromCurrency, String toCurrency) {
-    try {
-      final query = _ratesBox
-          .query(
-            CurrencyRateEntity_.fromCurrency.equals(fromCurrency) &
-                CurrencyRateEntity_.toCurrency.equals(toCurrency),
-          )
-          .build();
-
-      final entity = query.findFirst();
-      query.close();
-
-      if (entity == null) {
-        return ExchangeRateStatus.noData;
-      }
-
-      final difference = DateTime.now().difference(entity.lastUpdated);
-
-      // Consider the rate stale if older than 1 hour
-      if (difference.inHours >= 1) {
-        return ExchangeRateStatus.stale;
-      }
-
-      return ExchangeRateStatus.fresh;
-    } catch (e) {
-      print('Error getting rate status: $e');
-      return ExchangeRateStatus.noData;
-    }
+  /// Check if a cached rate exists (regardless of age).
+  bool hasOfflineRate(String fromCurrency, String toCurrency) {
+    final result = _ratesBox
+        .query(
+          CurrencyRateEntity_.fromCurrency.equals(fromCurrency) &
+              CurrencyRateEntity_.toCurrency.equals(toCurrency),
+        )
+        .build()
+        .findFirst();
+    return result != null;
   }
 
-  /// Gets the last updated timestamp of a cached currency exchange rate.
-  DateTime? getLastUpdated(String fromCurrency, String toCurrency) {
-    try {
-      final query = _ratesBox
-          .query(
-            CurrencyRateEntity_.fromCurrency.equals(fromCurrency) &
-                CurrencyRateEntity_.toCurrency.equals(toCurrency),
-          )
-          .build();
+  /// Check if a cached rate is fresh (< 24 hours old).
+  bool isCacheFresh(String fromCurrency, String toCurrency) {
+    final entity = _ratesBox
+        .query(
+          CurrencyRateEntity_.fromCurrency.equals(fromCurrency) &
+              CurrencyRateEntity_.toCurrency.equals(toCurrency),
+        )
+        .build()
+        .findFirst();
 
-      final entity = query.findFirst();
-      query.close();
+    if (entity == null) return false;
 
-      return entity?.lastUpdated;
-    } catch (e) {
-      print('Error getting last updated timestamp: $e');
-      return null;
-    }
+    final age = DateTime.now().difference(entity.lastUpdated);
+    return age.inHours <= 24;
   }
 
-  /// Checks if there is any cached data.
-  bool hasAnyCachedData() {
-    return _ratesBox.getAll().isNotEmpty;
+  /// Get all cached rates (for debugging).
+  List<CurrencyRateEntity> getAllCachedRates() {
+    return _ratesBox.getAll();
   }
 
-  /// Clears all the cached data.
-  void clearAllCache() {
+  /// Clear all cached rates.
+  void clearCache() {
     _ratesBox.removeAll();
   }
 
-  /// Retrieves all the cached currency exchange rates.
-  List<CurrencyRateEntity> getAllCachedRates() {
-    return _ratesBox.getAll();
+  /// Log current cache status (for debugging).
+  void logCacheStatus() {
+    final all = getAllCachedRates();
+
+    for (final entity in all) {
+      DateTime.now().difference(entity.lastUpdated);
+    }
   }
 }

@@ -12,12 +12,11 @@ import 'package:banking_app/features/search/presentation/blocs/search_event.dart
 import 'package:banking_app/features/search/presentation/blocs/search_state.dart';
 import 'package:banking_app/features/search/data/models/currency_model.dart';
 import 'package:banking_app/features/search/presentation/widgets/currency_card.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-/// A screen for converting currencies.
+/// A screen for converting currencies with offline support.
 class ExchangeScreen extends StatefulWidget {
   const ExchangeScreen({
     super.key,
@@ -35,16 +34,18 @@ class ExchangeScreen extends StatefulWidget {
 }
 
 class _ExchangeScreenState extends State<ExchangeScreen>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+    with TickerProviderStateMixin {
   final TextEditingController _fromAmountController = TextEditingController();
   final TextEditingController _toAmountController = TextEditingController();
   late AnimationController _swapAnimationController;
   late Animation<double> _swapAnimation;
+  bool _hasShownStaleWarning = false;
+  bool _userEditingFromAmount = false;
+  bool _userEditingToAmount = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
 
     _swapAnimationController = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -61,27 +62,16 @@ class _ExchangeScreenState extends State<ExchangeScreen>
       _fromAmountController.text = widget.initialAmount!.toString();
     }
 
-    // Initial connectivity check
-    _checkConnectivity();
+    _fromAmountController.addListener(_onFromAmountChanged);
+    _toAmountController.addListener(_onToAmountChanged);
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    // Check connectivity when app comes back to foreground
-    if (state == AppLifecycleState.resumed) {
-      _checkConnectivity();
-    }
+  void _onFromAmountChanged() {
+    _userEditingFromAmount = _fromAmountController.text.isNotEmpty;
   }
 
-  /// Check connectivity and update BLoC
-  Future<void> _checkConnectivity() async {
-    final result = await Connectivity().checkConnectivity();
-    final isOnline = result != ConnectivityResult.none;
-
-    if (mounted) {
-      context.read<SearchBloc>().add(CheckConnectivityEvt(isOnline));
-    }
+  void _onToAmountChanged() {
+    _userEditingToAmount = _toAmountController.text.isNotEmpty;
   }
 
   bool get isExchangeEnabled {
@@ -92,7 +82,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    _fromAmountController.removeListener(_onFromAmountChanged);
+    _toAmountController.removeListener(_onToAmountChanged);
     _fromAmountController.dispose();
     _toAmountController.dispose();
     _swapAnimationController.dispose();
@@ -127,13 +118,31 @@ class _ExchangeScreenState extends State<ExchangeScreen>
 
   Future<void> _swapCurrencies(BuildContext context) async {
     await _swapAnimationController.forward();
-    if (context.mounted) context.read<SearchBloc>().add(SwapCurrenciesEvt());
+    if (context.mounted) {
+      context.read<SearchBloc>().add(const SwapCurrenciesEvt());
+    }
     await _swapAnimationController.reverse();
   }
 
-  void _updateController(TextEditingController controller, double? amount) {
-    final newText = amount != null ? FormatterUtils.formatAmount(amount) : '';
+  void _updateController(
+    TextEditingController controller,
+    double? amount, {
+    required bool userIsEditing,
+  }) {
+    // Force clear when amount is null
+    if (amount == null) {
+      if (controller.text.isNotEmpty) {
+        controller.clear();
+      }
+      return;
+    }
 
+    // Don't update if user is actively editing
+    if (userIsEditing) {
+      return;
+    }
+
+    final newText = FormatterUtils.formatAmount(amount);
     if (controller.text == newText) return;
 
     controller.value = controller.value.copyWith(
@@ -163,55 +172,105 @@ class _ExchangeScreenState extends State<ExchangeScreen>
           ),
           body: Column(
             children: [
-              // Offline banner
               BlocBuilder<SearchBloc, SearchState>(
                 buildWhen: (prev, curr) => prev.isOnline != curr.isOnline,
                 builder: (context, state) {
                   if (!state.isOnline) {
-                    return Container(
-                      width: double.infinity,
-                      color: Colors.red,
-                      padding: const EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.wifi_off,
-                            color: Colors.white,
-                            size: 16,
+                    return Material(
+                      elevation: 4,
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.orange.shade700,
+                              Colors.orange.shade600,
+                            ],
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            S.current.offline_text,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          const SizedBox(width: 8),
-                          // Retry button
-                          TextButton(
-                            onPressed: _checkConnectivity,
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 4,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withAlpha(20),
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            child: const Text(
-                              'Retry',
-                              style: TextStyle(
+                              child: const Icon(
+                                Icons.wifi_off_rounded,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                                size: 20,
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    S.current.offline_text,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      letterSpacing: 0.2,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    'Using cached rates',
+                                    style: TextStyle(
+                                      color: Colors.white.withAlpha(230),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Retry button
+                            TextButton.icon(
+                              onPressed: () {
+                                context.read<SearchBloc>().add(
+                                  const ExchangeRateRefreshEvt(
+                                    forceRefresh: true,
+                                  ),
+                                );
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.orange.shade700,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              icon: const Icon(Icons.refresh, size: 18),
+                              label: const Text(
+                                'Retry',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }
                   return const SizedBox.shrink();
                 },
               ),
+
               // Main content
               Expanded(
                 child: BlocConsumer<SearchBloc, SearchState>(
@@ -219,8 +278,6 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                       prev.status != curr.status ||
                       prev.fromAmount != curr.fromAmount ||
                       prev.toAmount != curr.toAmount ||
-                      prev.fromCurrency != curr.fromCurrency ||
-                      prev.toCurrency != curr.toCurrency ||
                       prev.exchangeRateStatus != curr.exchangeRateStatus,
                   listener: (context, state) {
                     state.status.maybeWhen(
@@ -236,26 +293,40 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                       },
                     );
 
-                    // Update the text controllers with the new amounts
-                    _updateController(_fromAmountController, state.fromAmount);
-                    _updateController(_toAmountController, state.toAmount);
+                    _updateController(
+                      _fromAmountController,
+                      state.fromAmount,
+                      userIsEditing: _userEditingFromAmount,
+                    );
+                    _updateController(
+                      _toAmountController,
+                      state.toAmount,
+                      userIsEditing: _userEditingToAmount,
+                    );
 
-                    // Show a warning if the exchange rate is stale
-                    if (state.exchangeRateStatus == ExchangeRateStatus.stale) {
-                      _showOfflineWarning(context);
+                    if (state.exchangeRateStatus == ExchangeRateStatus.stale &&
+                        !_hasShownStaleWarning) {
+                      _hasShownStaleWarning = true;
+                    }
+
+                    if (state.exchangeRateStatus == ExchangeRateStatus.fresh) {
+                      _hasShownStaleWarning = false;
                     }
                   },
                   builder: (context, state) {
                     return GestureDetector(
-                      onTap: () =>
-                          FocusManager.instance.primaryFocus?.unfocus(),
+                      onTap: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        _userEditingFromAmount = false;
+                        _userEditingToAmount = false;
+                      },
                       child: SingleChildScrollView(
                         padding: const EdgeInsets.all(24),
                         child: Column(
                           children: [
                             BAAssets.exchangeMoney(),
-                            const SizedBox(height: 16),
-                            // The main box for currency exchange
+                            const SizedBox(height: 24),
+
                             ExchangeBox(
                               isButtonEnabled: isExchangeEnabled,
                               rateStatus: state.exchangeRateStatus,
@@ -267,6 +338,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                 onCurrencyTap: () =>
                                     _showCurrencySelector(context, true),
                                 onChanged: (value) {
+                                  _userEditingFromAmount =
+                                      value?.isNotEmpty ?? false;
                                   final amount =
                                       double.tryParse(value ?? '') ?? 0;
                                   context.read<SearchBloc>().add(
@@ -284,6 +357,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                 onCurrencyTap: () =>
                                     _showCurrencySelector(context, false),
                                 onChanged: (value) {
+                                  _userEditingToAmount =
+                                      value?.isNotEmpty ?? false;
                                   final amount =
                                       double.tryParse(value ?? '') ?? 0;
                                   context.read<SearchBloc>().add(
@@ -305,10 +380,9 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                   child: BAAssets.swap(),
                                 ),
                               ),
-                              exchangeRate:
-                                  (state.fromAmount != null &&
-                                      state.fromAmount! > 0)
-                                  ? '1 ${state.fromCurrency ?? ''} = ${state.exchangeRate?.toStringAsFixed(2) ?? '--'} ${state.toCurrency ?? ''}'
+
+                              exchangeRate: state.exchangeRate != null
+                                  ? '1 ${state.fromCurrency ?? ''} = ${FormatterUtils.formatAmount(state.exchangeRate!)} ${state.toCurrency ?? ''}'
                                   : null,
                             ),
                             const SizedBox(height: 32),
@@ -321,26 +395,6 @@ class _ExchangeScreenState extends State<ExchangeScreen>
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  /// Shows a snackbar to warn the user that they are using an offline exchange rate.
-  void _showOfflineWarning(BuildContext context) {
-    if (!context.mounted) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(S.current.searchUsingOfflineExchangeTitle),
-        backgroundColor: context.colorScheme.inversePrimary,
-        duration: const Duration(seconds: 2),
-        action: SnackBarAction(
-          label: S.current.searchRetryButton,
-          textColor: context.colorScheme.onPrimary,
-          onPressed: () {
-            _checkConnectivity();
-          },
         ),
       ),
     );

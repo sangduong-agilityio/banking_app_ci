@@ -223,5 +223,3 @@ class BiometricErrorMessageEvt extends TransferEvt {
   @override
   List<Object?> get props => [];
 }
-
-

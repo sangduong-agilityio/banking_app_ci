@@ -69,7 +69,9 @@ class _TransferFormSectionState extends State<TransferFormSection> {
       listener: (context, state) {
         if (state.clearForm) {
           _clearForm();
-          context.read<TransferBloc>().add(const UpdateTransferDetailsEvt(clearForm: false));
+          context.read<TransferBloc>().add(
+            const UpdateTransferDetailsEvt(clearForm: false),
+          );
         } else if (state.selectedBeneficiary != null) {
           _fillFromBeneficiary(state.selectedBeneficiary!, state);
           if (state.selectedBank != null) {
@@ -308,10 +310,10 @@ class _TransferFormSectionState extends State<TransferFormSection> {
           );
           if (amount != null) {
             context.read<TransferBloc>().add(
-                  UpdateTransferDetailsEvt(
-                    amount: CurrencyUtils.roundTo2Decimal(amount),
-                  ),
-                );
+              UpdateTransferDetailsEvt(
+                amount: CurrencyUtils.roundTo2Decimal(amount),
+              ),
+            );
           }
         },
       ),

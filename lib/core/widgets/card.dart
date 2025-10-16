@@ -282,7 +282,7 @@ class SwipeableCreditCard extends StatelessWidget {
 
   final CardModel data;
   final bool isActive;
-  final bool isBalanceVisible; // 👈 Property này phải được truyền từ parent
+  final bool isBalanceVisible;
   final VoidCallback? onToggleVisibility;
 
   @override
@@ -364,7 +364,7 @@ class SwipeableCreditCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withAlpha(20),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -495,7 +495,7 @@ class SwipeableCreditCard extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withOpacity(0.05),
+              color: Colors.white.withAlpha(12),
             ),
           ),
         );
@@ -511,7 +511,7 @@ class SwipeableCreditCard extends StatelessWidget {
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withAlpha(25),
                 ),
               ),
               const SizedBox(width: 10),
@@ -520,7 +520,7 @@ class SwipeableCreditCard extends StatelessWidget {
                 height: 120,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withAlpha(25),
                 ),
               ),
             ],
@@ -537,7 +537,7 @@ class SwipeableCreditCard extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(
-                colors: [Colors.white.withOpacity(0.1), Colors.transparent],
+                colors: [Colors.white.withAlpha(25), Colors.transparent],
               ),
             ),
           ),

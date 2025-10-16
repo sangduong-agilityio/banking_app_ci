@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'card_model.freezed.dart';
@@ -43,8 +42,4 @@ class CardModel with _$CardModel {
 
 enum CardStatus { active, frozen, expired }
 
-enum CardType {
-  visa,
-  mastercard,
-  discover;
-}
+enum CardType { visa, mastercard, discover }

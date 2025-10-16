@@ -685,8 +685,9 @@ void main() {
                   ),
                 ),
               );
-              when(() => prefs.setString(any(), any()))
-                  .thenAnswer((_) async => true);
+              when(
+                () => prefs.setString(any(), any()),
+              ).thenAnswer((_) async => true);
             },
             build: () => authBloc,
             act: (bloc) => bloc.add(const SignInWithBiometricEvt()),

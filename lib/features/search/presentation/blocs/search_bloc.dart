@@ -1,15 +1,23 @@
 import 'dart:async';
-import 'package:banking_app/core/data/services/exchange_rate_cache_service.dart';
+
+import 'package:banking_app/core/data/services/exchange_cache_manager.dart';
 import 'package:banking_app/core/common/utils/currency.dart';
 import 'package:banking_app/features/search/domain/repositories/search_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'search_event.dart';
 import 'search_state.dart';
 
+/// SearchBloc handles exchange/interest/currency flow with offline cache support.
+///
+/// IMPORTANT: Only _onCheckConnectivity() is allowed to set isOnline.
+/// Other methods MUST NOT change isOnline.
 class SearchBloc extends Bloc<SearchEvt, SearchState> {
-  SearchBloc({required this.repo, required CacheManager cacheManager})
-    : _cacheManager = cacheManager,
-      super(const SearchState()) {
+  SearchBloc({
+    required this.repo,
+    required ExchangeCacheManager cacheManager,
+    Stream<bool>? connectivityStream,
+  }) : _cacheManager = cacheManager,
+       super(const SearchState()) {
     on<InterestRateInitializeEvt>(_onInitializeInterestRate);
     on<ExchangeRateInitializeEvt>(_onInitializeExchangeRate);
     on<ExchangeRateRefreshEvt>(_onRefreshExchangeRate);
@@ -19,13 +27,23 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     on<SwapCurrenciesEvt>(_onSwapCurrencies);
     on<SelectCurrencyEvt>(_onSelectCurrency);
     on<CheckConnectivityEvt>(_onCheckConnectivity);
+
+    if (connectivityStream != null) {
+      _connectivitySub = connectivityStream.listen((isOnline) {
+        add(CheckConnectivityEvt(isOnline));
+      });
+    }
   }
 
   final SearchRepository repo;
-  final CacheManager _cacheManager;
-  Timer? _refreshTimer;
+  final ExchangeCacheManager _cacheManager;
 
-  /// Initialize and fetch interest rates
+  Timer? _refreshTimer;
+  StreamSubscription<bool>? _connectivitySub;
+
+  /// ---------------------------
+  /// Interest rates
+  /// ---------------------------
   Future<void> _onInitializeInterestRate(
     InterestRateInitializeEvt event,
     Emitter<SearchState> emit,
@@ -37,24 +55,27 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
         state.copyWith(
           interestRates: interestRates,
           status: const SearchStatus.success(),
+          // DO NOT set isOnline here
         ),
       );
-    } catch (_) {
+    } catch (e) {
       emit(state.copyWith(status: const SearchStatus.failure()));
     }
   }
 
-  /// Initialize and fetch exchange rates
+  /// Exchange rates initialization
   Future<void> _onInitializeExchangeRate(
     ExchangeRateInitializeEvt event,
     Emitter<SearchState> emit,
   ) async {
-    emit(state.copyWith(status: const SearchStatus.loading()));
+    if (state.exchangeRates == null || state.exchangeRates!.isEmpty) {
+      emit(state.copyWith(status: const SearchStatus.loading()));
+    }
 
     try {
-      final isFromCache = _cacheManager.isExchangeRateCacheValid();
+      final isFromCache = _cacheManager.isRateCacheValid;
       final exchangeRates = await repo.fetchExchangeRates();
-      final lastUpdated = _cacheManager.getLastUpdatedExchangeRateTime();
+      final lastUpdated = _cacheManager.rateCacheLastUpdated;
 
       emit(
         state.copyWith(
@@ -66,19 +87,34 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       );
 
       _startAutoRefreshTimer();
-    } catch (_) {
-      emit(state.copyWith(status: const SearchStatus.failure()));
+    } catch (e) {
+      final cached = _cacheManager.getCachedRates();
+      if (cached.isNotEmpty) {
+        emit(
+          state.copyWith(
+            exchangeRates: cached,
+            lastUpdated: _cacheManager.rateCacheLastUpdated,
+            isFromCache: true,
+            status: const SearchStatus.success(),
+          ),
+        );
+        _startAutoRefreshTimer();
+      } else {
+        emit(state.copyWith(status: const SearchStatus.failure()));
+      }
     }
   }
 
+  /// ---------------------------
   /// Refresh exchange rates
+  /// ---------------------------
   Future<void> _onRefreshExchangeRate(
     ExchangeRateRefreshEvt event,
     Emitter<SearchState> emit,
   ) async {
-    if (!event.forceRefresh && state.exchangeRates != null) {
-      // Skip loading state if we have data and it's not a forced refresh
-    } else {
+    if (event.forceRefresh ||
+        state.exchangeRates == null ||
+        state.exchangeRates!.isEmpty) {
       emit(state.copyWith(status: const SearchStatus.loading()));
     }
 
@@ -86,7 +122,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       final exchangeRates = await repo.fetchExchangeRates(
         forceRefresh: event.forceRefresh,
       );
-      final lastUpdated = _cacheManager.getLastUpdatedExchangeRateTime();
+      final lastUpdated = _cacheManager.rateCacheLastUpdated;
 
       emit(
         state.copyWith(
@@ -94,34 +130,34 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
           lastUpdated: lastUpdated,
           isFromCache: false,
           status: const SearchStatus.success(),
-          isOnline: true,
         ),
       );
-    } catch (_) {
-      if (state.exchangeRates != null) {
-        emit(
-          state.copyWith(status: const SearchStatus.success(), isOnline: false),
-        );
+    } catch (e) {
+      if (state.exchangeRates != null && state.exchangeRates!.isNotEmpty) {
+        emit(state.copyWith(status: const SearchStatus.success()));
       } else {
-        emit(
-          state.copyWith(status: const SearchStatus.failure(), isOnline: false),
-        );
+        emit(state.copyWith(status: const SearchStatus.failure()));
       }
     }
   }
 
-  /// Initialize exchange screen
+  ///  Exchange screen initialization
   Future<void> _onInitializeExchange(
     ExchangeInitializeEvt event,
     Emitter<SearchState> emit,
   ) async {
-    emit(state.copyWith(status: const SearchStatus.loading()));
+    if (state.currencies == null || state.currencies!.isEmpty) {
+      emit(state.copyWith(status: const SearchStatus.loading()));
+    }
+
     try {
       final currencies = await repo.fetchCurrencies();
       final defaultFrom =
-          event.fromCurrency ?? (currencies.isNotEmpty ? currencies.first.code : null);
-      final defaultTo = 
-          event.toCurrency ?? (currencies.length > 1 ? currencies[1].code : null);
+          event.fromCurrency ??
+          (currencies.isNotEmpty ? currencies.first.code : null);
+      final defaultTo =
+          event.toCurrency ??
+          (currencies.length > 1 ? currencies[1].code : null);
 
       emit(
         state.copyWith(
@@ -129,17 +165,15 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
           fromCurrency: defaultFrom,
           toCurrency: defaultTo,
           status: const SearchStatus.success(),
-          isOnline: true,
         ),
       );
 
       if (defaultFrom != null && defaultTo != null) {
         add(ExchangeRateChangedEvt(defaultFrom, defaultTo));
       }
-    } catch (_) {
-      // Try to load cached currencies
+    } catch (e) {
       final cachedCurrencies = _cacheManager.getCachedCurrencies();
-      if (cachedCurrencies != null && cachedCurrencies.isNotEmpty) {
+      if (cachedCurrencies.isNotEmpty) {
         final defaultFrom = cachedCurrencies.first.code;
         final defaultTo = cachedCurrencies.length > 1
             ? cachedCurrencies[1].code
@@ -151,7 +185,6 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
             fromCurrency: defaultFrom,
             toCurrency: defaultTo,
             status: const SearchStatus.success(),
-            isOnline: false,
           ),
         );
 
@@ -159,14 +192,12 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
           add(ExchangeRateChangedEvt(defaultFrom, defaultTo));
         }
       } else {
-        emit(
-          state.copyWith(status: const SearchStatus.failure(), isOnline: false),
-        );
+        emit(state.copyWith(status: const SearchStatus.failure()));
       }
     }
   }
 
-  /// Fetches the exchange rate when currencies change
+  ///  Exchange rate changed
   Future<void> _onExchangeRateChanged(
     ExchangeRateChangedEvt event,
     Emitter<SearchState> emit,
@@ -195,19 +226,21 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
         amount: 1.0,
       );
 
-      if (state.exchangeRateRequestId != requestId) return;
+      if (state.exchangeRateRequestId != requestId) {
+        return;
+      }
 
-      _cacheManager.cacheRate(event.fromCurrency, event.toCurrency, rate);
-
-      final rateStatus = repo.getRateStatus(
-        event.fromCurrency,
-        event.toCurrency,
+      _cacheManager.cacheOfflineRate(
+        from: event.fromCurrency,
+        to: event.toCurrency,
+        rate: rate,
       );
 
-      final lastUpdate = repo.getLastRateUpdate(
-        event.fromCurrency,
-        event.toCurrency,
-      );
+      final rateStatus =
+          _cacheManager.hasOfflineRate(event.fromCurrency, event.toCurrency)
+          ? ExchangeRateStatus.fresh
+          : ExchangeRateStatus.stale;
+      final lastUpdate = _cacheManager.rateCacheLastUpdated;
 
       emit(
         state.copyWith(
@@ -215,29 +248,26 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
           toCurrency: event.toCurrency,
           exchangeRate: rate,
           exchangeRateStatus: rateStatus,
-          lastExchangeRateUpdate: lastUpdate ?? DateTime.now(),
-          isOnline: true,
+          lastExchangeRateUpdate: lastUpdate,
         ),
       );
 
       _recalculateAmounts(emit, rate);
-    } catch (error) {
-      if (state.exchangeRateRequestId != requestId) return;
+    } catch (e) {
+      if (state.exchangeRateRequestId != requestId) {
+        return;
+      }
 
-      final cachedRate = _cacheManager.getCachedRate(
+      final cachedRate = _cacheManager.getOfflineRate(
         event.fromCurrency,
         event.toCurrency,
       );
-
       if (cachedRate != null) {
-        final rateStatus = _cacheManager.getRateStatus(
-          event.fromCurrency,
-          event.toCurrency,
-        );
-        final lastUpdate = _cacheManager.getLastUpdated(
-          event.fromCurrency,
-          event.toCurrency,
-        );
+        final rateStatus =
+            _cacheManager.hasOfflineRate(event.fromCurrency, event.toCurrency)
+            ? ExchangeRateStatus.fresh
+            : ExchangeRateStatus.stale;
+        final lastUpdate = _cacheManager.rateCacheLastUpdated;
 
         emit(
           state.copyWith(
@@ -246,9 +276,9 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
             exchangeRate: cachedRate,
             exchangeRateStatus: rateStatus,
             lastExchangeRateUpdate: lastUpdate,
-            isOnline: false,
           ),
         );
+
         _recalculateAmounts(emit, cachedRate);
       } else {
         emit(
@@ -258,48 +288,29 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
             exchangeRate: null,
             exchangeRateStatus: ExchangeRateStatus.noData,
             lastExchangeRateUpdate: null,
-            isOnline: false,
           ),
         );
       }
     }
   }
 
-  /// Check connectivity and retry if back online
-  Future<void> _onCheckConnectivity(
-    CheckConnectivityEvt event,
-    Emitter<SearchState> emit,
-  ) async {
-    if (event.isOnline && !state.isOnline) {
-      // Just came back online, refresh data
-      add(const ExchangeRateRefreshEvt(forceRefresh: true));
-
-      // If we're on exchange screen, refresh the current rate
-      if (state.fromCurrency != null && state.toCurrency != null) {
-        add(ExchangeRateChangedEvt(state.fromCurrency!, state.toCurrency!));
-      }
-    }
-
-    emit(state.copyWith(isOnline: event.isOnline));
-  }
-
-  /// Recalculate amounts based on exchange rate
-  void _recalculateAmounts(Emitter<SearchState> emit, double rate) {
-    final newToAmount = CurrencyUtils.convertFromTo(state.fromAmount, rate);
-    final newFromAmount = CurrencyUtils.convertToFrom(state.toAmount, rate);
-
-    if (newToAmount != null) {
-      emit(state.copyWith(toAmount: newToAmount));
-    } else if (newFromAmount != null) {
-      emit(state.copyWith(fromAmount: newFromAmount));
-    }
-  }
-
-  /// Handle currency conversion
+  /// Convert currency event
   void _onConvertCurrency(ConvertCurrencyEvt event, Emitter<SearchState> emit) {
     final rate = state.exchangeRate;
-    if (rate == null || rate <= 0) return;
 
+    // Invalid rate - clear both amounts
+    if (rate == null || rate <= 0) {
+      emit(state.copyWith(clearAmounts: true));
+      return;
+    }
+
+    // If amount is 0 or negative, clear fields
+    if (event.amount <= 0) {
+      emit(state.copyWith(clearAmounts: true));
+      return;
+    }
+
+    // Normal conversion
     if (event.isFromAmount) {
       final toAmount = CurrencyUtils.convertFromTo(event.amount, rate);
       emit(state.copyWith(fromAmount: event.amount, toAmount: toAmount));
@@ -329,18 +340,12 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       ),
     );
 
-    if (swapped.fromAmount != null &&
-        swapped.fromAmount! > 0 &&
-        swapped.exchangeRate != null) {
-      final recalculatedToAmount = CurrencyUtils.convertFromTo(
-        swapped.fromAmount,
-        swapped.exchangeRate ?? 0,
-      );
-      emit(state.copyWith(toAmount: recalculatedToAmount));
+    if (swapped.fromCurrency != null && swapped.toCurrency != null) {
+      add(ExchangeRateChangedEvt(swapped.fromCurrency!, swapped.toCurrency!));
     }
   }
 
-  /// Handle currency selection
+  /// Select currency
   void _onSelectCurrency(SelectCurrencyEvt event, Emitter<SearchState> emit) {
     final newFromCurrency = event.isFromCurrency
         ? event.currency
@@ -363,7 +368,45 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
-  /// Start auto-refresh timer
+  /// Check connectivity changes
+  Future<void> _onCheckConnectivity(
+    CheckConnectivityEvt event,
+    Emitter<SearchState> emit,
+  ) async {
+    final previouslyOnline = state.isOnline;
+
+    // When switching from online → offline: mark rate as stale
+    if (!event.isOnline && previouslyOnline) {
+      emit(
+        state.copyWith(
+          isOnline: false,
+          exchangeRateStatus: ExchangeRateStatus.stale,
+        ),
+      );
+    } else {
+      emit(state.copyWith(isOnline: event.isOnline));
+    }
+
+    if (event.isOnline && !previouslyOnline) {
+      add(const ExchangeRateRefreshEvt(forceRefresh: true));
+
+      if (state.fromCurrency != null && state.toCurrency != null) {
+        add(ExchangeRateChangedEvt(state.fromCurrency!, state.toCurrency!));
+      }
+    }
+  }
+
+  void _recalculateAmounts(Emitter<SearchState> emit, double rate) {
+    final newToAmount = CurrencyUtils.convertFromTo(state.fromAmount, rate);
+    final newFromAmount = CurrencyUtils.convertToFrom(state.toAmount, rate);
+
+    if (newToAmount != null) {
+      emit(state.copyWith(toAmount: newToAmount));
+    } else if (newFromAmount != null) {
+      emit(state.copyWith(fromAmount: newFromAmount));
+    }
+  }
+
   void _startAutoRefreshTimer() {
     _refreshTimer?.cancel();
     _refreshTimer = Timer.periodic(const Duration(minutes: 5), (_) {
@@ -376,6 +419,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
   @override
   Future<void> close() {
     _refreshTimer?.cancel();
+    _connectivitySub?.cancel();
     return super.close();
   }
 }
