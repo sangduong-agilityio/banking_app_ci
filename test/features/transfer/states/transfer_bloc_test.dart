@@ -595,7 +595,7 @@ void main() {
               selectedBeneficiary: MockTransferData.mockBeneficiary1,
               amount: 100.0,
             ),
-            act: (bloc) => bloc.add(CalculateTransactionFeeEvt()),
+            act: (bloc) => bloc.add(const CalculateTransactionFeeEvt(100.0)),
             expect: () => [
               TransferState(
                 status: const TransferStatus.loading(),

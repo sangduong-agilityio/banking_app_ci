@@ -103,6 +103,18 @@ dependencies:
 
   # File and directory path manipulation
   path: ^1.9.1
+
+  ag_ui:
+    path: D:/development/flutter-training/packages/ag-ui/sdks/community/dart
+
+  # WebSocket support
+  web_socket_channel: ^3.0.3
+  # Environment variable loader
+  flutter_dotenv: ^6.0.0
+  
+  meta: 1.16.0
+  timeago: ^3.7.1
+  lottie: ^3.3.2
   
 dev_dependencies:
   flutter_test:
@@ -142,6 +154,7 @@ dev_dependencies:
 
   # BLoC testing utilities
   bloc_test: ^10.0.0
+
 
 # Flutter Launcher Icons configuration
 flutter_icons:

@@ -37,4 +37,14 @@ class AccountAndCardCubit extends Cubit<AccountAndCardState> {
       );
     }
   }
+
+  /// Gets the balance for an account with the specified [accountId].
+  /// Returns null if the account is not found.
+  double? getBalance(String accountId) {
+    final account = state.accounts.firstWhere(
+      (account) => account.id == accountId,
+      orElse: () => throw Exception('Account not found'),
+    );
+    return account.availableBalance;
+  }
 }

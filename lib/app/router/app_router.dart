@@ -1,11 +1,15 @@
 import 'package:banking_app/app/router/router_guard.dart';
+import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
+import 'package:banking_app/features/chat/bloc/assistant_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/account/presentation/views/account_and_card_screen.dart';
 import 'package:banking_app/features/auth/presentation/views/sign_in_screen.dart';
 import 'package:banking_app/features/auth/presentation/views/sign_up_screen.dart';
 import 'package:banking_app/features/bill_payment/presentation/views/bill_payment_screen.dart';
+import 'package:banking_app/features/chat/screens/banking_assistant_screen.dart';
 import 'package:banking_app/features/home/presentation/views/home_screen.dart';
 import 'package:banking_app/features/message/message_screen.dart';
 import 'package:banking_app/features/search/presentation/views/exchange_rate_screen.dart';
@@ -129,7 +133,10 @@ class BAAppRouter {
               GoRoute(
                 path: BAPaths.message.path,
                 name: BAPaths.message.name,
-                builder: (context, state) => const MessageScreen(),
+                builder: (context, state) => BlocProvider(
+                  create: (context) => locator<AssistantBloc>(),
+                  child: const MessageScreen(),
+                ),
               ),
             ],
           ),

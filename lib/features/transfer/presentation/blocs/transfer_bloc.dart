@@ -19,6 +19,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   TransferBloc({required this.transferRepo, required this.biometricService})
     : super(TransferState(status: TransferStatus.initial())) {
     on<TransferInitializeEvt>(_onTransferInitialize);
+    on<TransferInitializeWithParamsEvt>(_onTransferInitializeWithParams);
     on<BeneficiariesInitializeEvt>(_onBeneficiariesInitialize);
     on<SelectAccountEvt>(_onSelectAccount);
     on<SelectCardEvt>(_onSelectCard);
@@ -29,6 +30,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     on<AddNewBeneficiaryEvt>(_onAddNewBeneficiary);
     on<UpdateTransferDetailsEvt>(_onUpdateTransferForm);
     on<FillTransferDetailsEvt>(_onFillTransferDetails);
+    on<CalculateTransactionFeeEvt>(_onCalculateTransactionFee);
     on<SearchBeneficiaryEvt>(_onSearchBeneficiaries);
     on<CalculateTransactionFeeEvt>(_onCalculateTransactionFee);
     on<ConfirmTransferEvt>(_onConfirmTransfer);
@@ -37,6 +39,42 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     on<ConfirmWithBiometricEvt>(_onConfirmWithBiometric);
     on<OtpChangedEvt>(_onOtpChangedEvt);
     on<BiometricErrorMessageEvt>(_onClearErrorMessage);
+  }
+
+  /// Handles initialization with pre-filled parameters from AG-UI
+  Future<void> _onTransferInitializeWithParams(
+    TransferInitializeWithParamsEvt event,
+    Emitter<TransferState> emit,
+  ) async {
+    if (event.params == null) return;
+    
+    final params = event.params!;
+    
+    // Pre-fill account/beneficiary if provided
+    if (params.fromAccount != null) {
+      final accounts = state.accounts;
+      final account = accounts.firstWhere(
+        (a) => a.accountNumber == params.fromAccount,
+        orElse: () => accounts.first,
+      );
+      add(SelectAccountEvt(account));
+    }
+
+    if (params.beneficiaryId != null && params.bankId != null) {
+      final beneficiary = state.beneficiaries.firstWhere(
+        (b) => b.id == params.beneficiaryId && b.bankId == params.bankId,
+        orElse: () => state.beneficiaries.first,
+      );
+      add(SelectBeneficiaryEvt(beneficiary));
+    }
+
+    // Pre-fill transfer details if provided
+    if (params.amount != null || params.description != null) {
+      add(FillTransferDetailsEvt(
+        amount: params.amount,
+        content: params.description,
+      ));
+    }
   }
 
   /// Loads the initial data required for the transfer feature.
@@ -245,6 +283,21 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     _filterBeneficiaries(emit);
   }
 
+  /// Handles filling transfer details
+  void _onFillTransferDetails(
+    FillTransferDetailsEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    emit(state.copyWith(
+      amount: event.amount,
+      content: event.content,
+    ));
+
+    if (event.amount != null) {
+      add(CalculateTransactionFeeEvt(event.amount!));
+    }
+  }
+
   /// Handles the selection of a beneficiary.
   void _onSelectBeneficiary(
     SelectBeneficiaryEvt event,
@@ -355,14 +408,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     if (event.amount != null) _recalculateFeeIfNeeded();
   }
 
-  /// Fills the transfer details from the event.
-  void _onFillTransferDetails(
-    FillTransferDetailsEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    emit(state.copyWith(amount: event.amount, content: event.content));
-    _recalculateFeeIfNeeded();
-  }
 
   /// Searches for beneficiaries based on a query.
   void _onSearchBeneficiaries(
@@ -738,7 +783,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
         state.selectedBeneficiary != null &&
         state.amount != null &&
         state.amount! > 0) {
-      add(CalculateTransactionFeeEvt());
+      add(CalculateTransactionFeeEvt(state.amount!));
     }
   }
 

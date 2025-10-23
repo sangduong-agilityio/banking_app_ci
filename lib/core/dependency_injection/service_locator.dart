@@ -1,6 +1,8 @@
 import 'package:banking_app/core/data/services/api/api_client.dart';
 import 'package:banking_app/core/data/database/objectbox_setup.dart';
 import 'package:banking_app/app/env/env.dart';
+import 'package:banking_app/features/chat/bloc/assistant_bloc.dart';
+import 'package:banking_app/features/chat/services/ag_ui_service.dart';
 import 'package:banking_app/core/data/services/biometric_service.dart';
 import 'package:banking_app/core/data/services/currency_cache_service.dart';
 import 'package:banking_app/core/data/services/exchange_rate_cache_service.dart';
@@ -13,6 +15,7 @@ import 'package:banking_app/features/auth/data/repositories/auth_repository.dart
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:banking_app/features/bill_payment/data/repositories/bill_payment_repository.dart';
 import 'package:banking_app/features/bill_payment/presentation/blocs/bill_payment_bloc.dart';
+import 'package:banking_app/features/chat/repositories/assistant_repository.dart';
 import 'package:banking_app/features/home/data/repositories/home_repository.dart';
 import 'package:banking_app/features/home/presentation/blocs/home_cubit.dart';
 import 'package:banking_app/features/search/data/repositories/search_repository_impl.dart';
@@ -85,6 +88,13 @@ class AppLocators {
 
     locator.registerLazySingleton<BiometricService>(() => BiometricService());
 
+    locator.registerLazySingleton<AgUiService>(
+      () => AgUiService(
+        baseUrl: Env.aguiBaseUrl,
+        apiKey: Env.aguiApiKey,
+      ),
+    );
+
     /// Repositories
     locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImplement(client: locator()),
@@ -98,6 +108,13 @@ class AppLocators {
       () => SearchRepositoryImpl(
         client: locator<BankingApiClient>(),
         cacheManager: locator<ExchangeCacheManager>(),
+      ),
+    );
+
+    locator.registerLazySingleton<AssistantRepository>(
+      () => AssistantRepositoryImpl(
+        agUiService: locator<AgUiService>(),
+        prefs: locator<SharedPreferences>(),
       ),
     );
 
@@ -159,6 +176,13 @@ class AppLocators {
 
     locator.registerFactory<TransactionReportBloc>(
       () => TransactionReportBloc(repo: locator<TransactionReportRepository>()),
+    );
+
+    locator.registerFactory<AssistantBloc>(
+      () => AssistantBloc(
+        repository: locator<AssistantRepository>(),
+        agUiService: locator<AgUiService>(),
+      ),
     );
   }
 }

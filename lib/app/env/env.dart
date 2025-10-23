@@ -18,4 +18,10 @@ abstract class Env {
 
   @EnviedField(varName: 'SENTRY_ENV', obfuscate: true)
   static String sentryEnv = _Env.sentryEnv;
+
+    @EnviedField(varName: 'AGUI_BASE_URL')
+  static String aguiBaseUrl = _Env.aguiBaseUrl;
+
+  @EnviedField(varName: 'AGUI_API_KEY', obfuscate: true)
+  static String? aguiApiKey = _Env.aguiApiKey;
 }

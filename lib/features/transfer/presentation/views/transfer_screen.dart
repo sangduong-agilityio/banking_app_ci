@@ -1,6 +1,8 @@
+import 'package:banking_app/app/router/app_router.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:banking_app/features/transfer/data/models/transfer_params.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
@@ -21,7 +23,12 @@ import 'package:loader_overlay/loader_overlay.dart';
 /// select a beneficiary, and fill in the transfer details.
 class TransferScreen extends StatefulWidget {
   /// Creates a [TransferScreen] object.
-  const TransferScreen({super.key});
+  const TransferScreen({
+    super.key,
+    this.params,
+  });
+
+  final TransferParams? params;
 
   @override
   State<TransferScreen> createState() => _TransferScreenState();
@@ -31,8 +38,9 @@ class _TransferScreenState extends State<TransferScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          locator<TransferBloc>()..add(TransferInitializeEvt()),
+      create: (context) => locator<TransferBloc>()
+        ..add(TransferInitializeEvt())
+        ..add(TransferInitializeWithParamsEvt(widget.params)),
       child: LoaderOverlay(
         child: BAScaffold(
           appBar: BAAppBar(
@@ -40,6 +48,15 @@ class _TransferScreenState extends State<TransferScreen> {
             titleColor: context.colorScheme.scrim,
             alignment: BAAppBarAlignment.left,
             iconColor: context.colorScheme.scrim,
+            actions: [
+              TextButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, BAPaths.message.path);
+                },
+                icon: const Icon(Icons.help_outline),
+                label: const Text('Need help?'),
+              ),
+            ],
           ),
           body: BlocConsumer<TransferBloc, TransferState>(
             listener: (context, state) {

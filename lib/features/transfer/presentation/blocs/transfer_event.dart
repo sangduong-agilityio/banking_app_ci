@@ -6,6 +6,7 @@ import 'package:banking_app/features/home/data/models/card_model.dart';
 import 'package:banking_app/features/transfer/data/models/bank_model.dart';
 import 'package:banking_app/features/transfer/data/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/data/models/branch_model.dart';
+import 'package:banking_app/features/transfer/data/models/transfer_params.dart';
 
 /// The base class for all events related to the transfer feature.
 abstract class TransferEvt extends Equatable {
@@ -17,6 +18,16 @@ abstract class TransferEvt extends Equatable {
 
 /// Event to initialize the transfer screen.
 class TransferInitializeEvt extends TransferEvt {}
+
+/// Event to initialize the transfer screen with pre-filled parameters.
+class TransferInitializeWithParamsEvt extends TransferEvt {
+  const TransferInitializeWithParamsEvt(this.params);
+
+  final TransferParams? params;
+
+  @override
+  List<Object?> get props => [params];
+}
 
 /// Event to initialize the beneficiaries screen.
 class BeneficiariesInitializeEvt extends TransferEvt {
@@ -132,13 +143,16 @@ class UpdateTransferDetailsEvt extends TransferEvt {
 
 /// Event to fill the transfer details.
 class FillTransferDetailsEvt extends TransferEvt {
-  const FillTransferDetailsEvt({required this.amount, required this.content});
+  const FillTransferDetailsEvt({
+    this.amount,
+    this.content,
+  });
 
-  final double amount;
-  final String content;
+  final double? amount;
+  final String? content;
 
   @override
-  List<Object> get props => [amount, content];
+  List<Object?> get props => [amount, content];
 }
 
 /// Event to add a new beneficiary.
@@ -162,7 +176,14 @@ class SearchBeneficiaryEvt extends TransferEvt {
 }
 
 /// Event to calculate the transaction fee.
-class CalculateTransactionFeeEvt extends TransferEvt {}
+class CalculateTransactionFeeEvt extends TransferEvt {
+  const CalculateTransactionFeeEvt(this.amount);
+
+  final double amount;
+
+  @override
+  List<Object> get props => [amount];
+}
 
 /// Event to confirm the transfer.
 class ConfirmTransferEvt extends TransferEvt {
