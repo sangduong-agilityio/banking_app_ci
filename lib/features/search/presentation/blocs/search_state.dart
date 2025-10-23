@@ -26,7 +26,6 @@ class SearchState extends Equatable {
   });
 
   final SearchStatus status;
-
   final List<ExchangeRateModel>? exchangeRates;
   final double? exchangeRate;
   final bool isFromCache;
@@ -101,7 +100,7 @@ class SearchState extends Equatable {
   ];
 }
 
-/// --- Exchange Rate Status ---
+/// Exchange Rate Status
 enum ExchangeRateStatus { fresh, stale, noData }
 
 /// Extension methods for ExchangeRateStatus

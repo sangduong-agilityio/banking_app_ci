@@ -110,6 +110,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
           enableDivider: false,
           onSelected: (currency) {
             bloc.add(SelectCurrencyEvt(isFromCurrency, currency.code));
+            Navigator.of(dialogContext).pop();
           },
         );
       },
@@ -117,6 +118,9 @@ class _ExchangeScreenState extends State<ExchangeScreen>
   }
 
   Future<void> _swapCurrencies(BuildContext context) async {
+    _userEditingFromAmount = false;
+    _userEditingToAmount = false;
+
     await _swapAnimationController.forward();
     if (context.mounted) {
       context.read<SearchBloc>().add(const SwapCurrenciesEvt());
