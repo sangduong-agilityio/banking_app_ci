@@ -46,6 +46,12 @@ dependencies:
   # Persistent storage for simple data
   shared_preferences: ^2.5.3
 
+  # Logging framework
+  logging: ^1.2.0
+
+  # Vector math utilities
+  vector_math: ^2.1.4
+
   # Freezed annotations for code generation
   freezed_annotation: ^2.4.4
 

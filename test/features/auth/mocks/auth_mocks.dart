@@ -15,6 +15,7 @@ class BiometricServiceMock extends Mock implements BiometricService {}
 class PrivateKeyMock extends Mock implements SharedPreferences {}
 
 class AuthMocks {
+  // Sign Up Form Events
   static final signUpForm = SignUpFormValidateChangedEvt(
     isValidate: true,
     username: 'test_user',
@@ -22,6 +23,13 @@ class AuthMocks {
     password: 'password123',
   );
 
+  static final signUpFormEmpty = SignUpFormValidateChangedEvt(
+    isValidate: false,
+  );
+
+  static final signUpButtonPressed = SignUpButtonPressedEvt();
+
+  // Sign In Form Events
   static final signInForm = SignInFormValidateChangedEvt(
     isValidate: true,
     email: 'test@example.com',
@@ -32,14 +40,22 @@ class AuthMocks {
     isValidate: false,
   );
 
-  static final signUpFormEmpty = SignUpFormValidateChangedEvt(
-    isValidate: false,
-  );
-
-  static final signUpButtonPressed = SignUpButtonPressedEvt();
-
   static final signInButtonPressed = SignInButtonPressedEvt();
 
+  // Biometric Events
+  static const signInWithBiometric = SignInWithBiometricEvt();
+
+  static const checkBiometricAvailability = CheckBiometricAvailabilityEvt();
+
+  // Terms & Conditions Events
+  static const signUpTermsChanged = SignUpTermsChangedEvt(isAccepted: true);
+
+  static const signUpTermsChangedFalse = SignUpTermsChangedEvt(isAccepted: false);
+
+  // User Events
+  static const getCurrentUser = GetCurrentUserEvt();
+
+  // Supabase User & Session
   static final User user = User(
     id: 'test_id',
     email: 'test@example.com',

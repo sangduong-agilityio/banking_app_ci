@@ -1,5 +1,6 @@
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math_64.dart' hide Colors;
 
 /// A lightweight shimmer effect without external dependencies.
 ///
@@ -96,7 +97,7 @@ class GradientTranslation extends GradientTransform {
 
   @override
   Matrix4 transform(Rect bounds, {TextDirection? textDirection}) {
-    return Matrix4.identity()..translate(dx, 0.0, 0.0);
+    return Matrix4.identity()..translateByVector3(Vector3(dx, 0.0, 0.0));
   }
 }
 
