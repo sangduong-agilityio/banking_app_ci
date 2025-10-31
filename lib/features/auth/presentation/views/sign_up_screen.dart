@@ -8,7 +8,6 @@ import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
-import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_state.dart';
 import 'package:banking_app/features/auth/presentation/widgets/auth_form.dart';
 import 'package:flutter/gestures.dart';
@@ -44,50 +43,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => locator<AuthBloc>(),
-      child: BlocConsumer<AuthBloc, AuthState>(
+      child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          state.status.maybeWhen(
-            loading: () => context.loaderOverlay.show(),
-            success: () {
+          switch (state.status) {
+            case AuthStatus.loading:
+              context.loaderOverlay.show();
+              break;
+            case AuthStatus.success:
               context.loaderOverlay.hide();
               context.pop();
-            },
-            failure: () {
+              break;
+            case AuthStatus.failure:
               context.loaderOverlay.hide();
               BASnackBar.buildErrorSnackbar(context, state.errorMessage ?? '');
-            },
-            orElse: () => context.loaderOverlay.hide(),
-          );
+              break;
+            case AuthStatus.initial:
+              context.loaderOverlay.hide();
+              break;
+          }
         },
-        builder: (context, state) {
-          return LoaderOverlay(
-            child: BAScaffold(
-              body: GestureDetector(
-                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                child: Container(
-                  color: context.colorScheme.secondary,
-                  child: Column(
-                    children: [
-                      BAAppBar(
-                        title: S.current.signUpTitle,
-                        alignment: BAAppBarAlignment.left,
-                        titleColor: context.colorScheme.onPrimary,
-                        iconColor: context.colorScheme.onPrimary,
-                        backgroundColor: context.colorScheme.secondary,
-                      ),
-                      SignUpBody(
-                        usernameController: _usernameController,
-                        emailController: _emailController,
-                        passwordController: _passwordController,
-                        isFormValid: state.isFormValid,
-                      ),
-                    ],
+        child: BlocBuilder<AuthBloc, AuthState>(
+          buildWhen: (previous, current) =>
+              previous.isFormValid != current.isFormValid ||
+              previous.isTermsAccepted != current.isTermsAccepted,
+          builder: (context, state) {
+            return LoaderOverlay(
+              child: BAScaffold(
+                body: GestureDetector(
+                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                  child: Container(
+                    color: context.colorScheme.secondary,
+                    child: Column(
+                      children: [
+                        BAAppBar(
+                          title: S.current.signUpTitle,
+                          alignment: BAAppBarAlignment.left,
+                          titleColor: context.colorScheme.onPrimary,
+                          iconColor: context.colorScheme.onPrimary,
+                          backgroundColor: context.colorScheme.secondary,
+                        ),
+                        SignUpBody(
+                          usernameController: _usernameController,
+                          emailController: _emailController,
+                          passwordController: _passwordController,
+                          isFormValid: state.isFormValid,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -129,16 +137,16 @@ class SignUpBody extends StatelessWidget {
             textFields: _buildTextFields(),
             onValidate: (isValid) {
               context.read<AuthBloc>().add(
-                SignUpFormValidateChangedEvt(
-                  isValidate: isValid,
-                  username: usernameController.text.trim(),
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                ),
-              );
+                    SignUpFormValidateChanged(
+                      isValidate: isValid,
+                      username: usernameController.text.trim(),
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    ),
+                  );
             },
             onSubmit: () {
-              context.read<AuthBloc>().add(const SignUpButtonPressedEvt());
+              context.read<AuthBloc>().add(SignUpButtonPressed());
             },
             submitText: S.current.signUpButton,
             isSubmitEnabled:
@@ -150,8 +158,8 @@ class SignUpBody extends StatelessWidget {
             ),
             onTermsChanged: (value) {
               context.read<AuthBloc>().add(
-                SignUpTermsChangedEvt(isAccepted: value ?? false),
-              );
+                    SignUpTermsChanged(isAccepted: value ?? false),
+                  );
             },
             footer: _buildFooter(context),
           ),
