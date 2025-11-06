@@ -20,61 +20,38 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 ///
 /// This screen has two tabs: one for accounts and one for bank cards.
 /// It uses a [AccountAndCardCubit] to manage the state.
-class AccountAndCardScreen extends StatefulWidget {
+class AccountAndCardScreen extends StatelessWidget {
   /// Creates an [AccountAndCardScreen] object.
   const AccountAndCardScreen({super.key});
-
-  @override
-  State<AccountAndCardScreen> createState() => _AccountAndCardScreenState();
-}
-
-class _AccountAndCardScreenState extends State<AccountAndCardScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    // The listener is used to rebuild the widget when the tab changes.
-    // This is to ensure that the correct tab is highlighted.
-    _tabController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => locator<AccountAndCardCubit>()..accountAndCardInitialize(),
-      child: BAScaffold(
-        appBar: BAAppBar(
-          title: S.current.accountAndCardTitle,
-          titleColor: context.colorScheme.scrim,
-          alignment: BAAppBarAlignment.left,
-          iconColor: context.colorScheme.scrim,
-        ),
-        body: Column(
-          children: [
-            const SizedBox(height: 16),
-            BATabBar(
-              controller: _tabController,
-              tabs: [S.current.accountTitle, S.current.accountCardTitle],
-              containerPadding: const EdgeInsets.symmetric(horizontal: 24),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: const [AccountListSection(), BankCardListSection()],
+      child: DefaultTabController(
+        length: 2,
+        child: BAScaffold(
+          appBar: BAAppBar(
+            title: S.current.accountAndCardTitle,
+            titleColor: context.colorScheme.scrim,
+            alignment: BAAppBarAlignment.left,
+            iconColor: context.colorScheme.scrim,
+          ),
+          body: Column(
+            children: [
+              const SizedBox(height: 16),
+              BATabBar(
+                
+                tabs: [S.current.accountTitle, S.current.accountCardTitle],
+                containerPadding: const EdgeInsets.symmetric(horizontal: 24),
               ),
-            ),
-          ],
+              const Expanded(
+                child: TabBarView(
+                  children: [AccountListSection(), BankCardListSection()],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -150,7 +127,7 @@ class AccountListSection extends StatelessWidget {
           previous.accounts != current.accounts,
       builder: (context, state) {
         // Show a skeleton loading indicator while the data is being fetched.
-        if (state.status is AccountAndCardStatusLoading) {
+        if (state.status == AccountAndCardStatus.loading) {
           return const AccountListSkeleton();
         }
         return Column(

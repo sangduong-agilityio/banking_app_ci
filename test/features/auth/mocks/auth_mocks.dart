@@ -1,7 +1,6 @@
 import 'package:banking_app/core/data/services/biometric_service.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
-import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -15,31 +14,47 @@ class BiometricServiceMock extends Mock implements BiometricService {}
 class PrivateKeyMock extends Mock implements SharedPreferences {}
 
 class AuthMocks {
-  static final signUpForm = SignUpFormValidateChangedEvt(
+  // Sign Up Form Events
+  static final signUpForm = SignUpFormValidateChanged(
     isValidate: true,
     username: 'test_user',
     email: 'test@example.com',
     password: 'password123',
   );
 
-  static final signInForm = SignInFormValidateChangedEvt(
+  static final signUpFormEmpty = SignUpFormValidateChanged(
+    isValidate: false,
+  );
+
+  static final signUpButtonPressed = SignUpButtonPressed();
+
+  // Sign In Form Events
+  static final signInForm = SignInFormValidateChanged(
     isValidate: true,
     email: 'test@example.com',
     password: 'password123',
   );
 
-  static final signInFormEmpty = SignInFormValidateChangedEvt(
+  static final signInFormEmpty = SignInFormValidateChanged(
     isValidate: false,
   );
 
-  static final signUpFormEmpty = SignUpFormValidateChangedEvt(
-    isValidate: false,
-  );
+  static final signInButtonPressed = SignInButtonPressed();
 
-  static final signUpButtonPressed = SignUpButtonPressedEvt();
+  // Biometric Events
+  static final signInWithBiometric = SignInWithBiometric();
 
-  static final signInButtonPressed = SignInButtonPressedEvt();
+  static final checkBiometricAvailability = CheckBiometricAvailability();
 
+  // Terms & Conditions Events
+  static final signUpTermsChanged = SignUpTermsChanged(isAccepted: true);
+
+  static final signUpTermsChangedFalse = SignUpTermsChanged(isAccepted: false);
+
+  // User Events
+  static final getCurrentUser = GetCurrentUser();
+
+  // Supabase User & Session
   static final User user = User(
     id: 'test_id',
     email: 'test@example.com',

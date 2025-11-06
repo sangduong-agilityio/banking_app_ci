@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:logging/logging.dart';
 import 'package:banking_app/features/bill_payment/data/models/company_model.dart';
 import 'package:banking_app/features/home/data/models/account_model.dart';
 import 'package:banking_app/features/home/data/models/card_model.dart';
@@ -117,8 +118,9 @@ class BillPaymentRepositoryImpl implements BillPaymentRepository {
       'userId': _currentUser.id,
       'isUsed': false,
     });
-    print('OTP sent to: ${_currentUser.email}');
-    print('OTP Code: $otpCode');
+    final logger = Logger('BillPaymentRepository');
+    logger.info('OTP sent to: ${_currentUser.email}');
+    logger.info('OTP Code: $otpCode');
 
     return otpCode;
   }

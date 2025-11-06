@@ -51,7 +51,7 @@ class FormatterUtils {
     }
   }
 
-  /// Formats a balance with a currency code and locale-specific formatting.
+  /// Formats a balance with a currency symbol and locale-specific formatting.
   static String formatBalance(
     double amount, {
     String currencyCode = 'USD',
@@ -60,14 +60,27 @@ class FormatterUtils {
   }) {
     final format = NumberFormat.currency(
       locale: locale,
-      symbol: '',
+      symbol: _getCurrencySymbol(currencyCode),
       decimalDigits: showDecimalAlways ? 2 : 0,
     );
 
-    final formatted = format.format(amount);
+    return format.format(amount);
+  }
 
-    // Add currency code before the amount
-    return '$currencyCode $formatted';
+  /// Gets the currency symbol for a given currency code
+  static String _getCurrencySymbol(String code) {
+    switch (code.toUpperCase()) {
+      case 'USD':
+        return '\$';
+      case 'EUR':
+        return '€';
+      case 'GBP':
+        return '£';
+      case 'JPY':
+        return '¥';
+      default:
+        return code; // Fallback to currency code if symbol not known
+    }
   }
 
   /// Formats a [DateTime] object as a relative time string (e.g., "Just now", "5 minutes ago").

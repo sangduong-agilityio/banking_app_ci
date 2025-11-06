@@ -1,7 +1,6 @@
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
-import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:banking_app/features/setting/data/models/user_model.dart';
 import 'package:banking_app/features/setting/presentation/blocs/setting_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +19,7 @@ class SettingCubit extends Cubit<SettingState> {
 
   /// Fetch user profile + biometric info
   Future<void> fetchProfile() async {
-    emit(state.copyWith(status: const SettingStatus.loading()));
+    emit(state.copyWith(status: SettingStatus.loading));
     try {
       final currentUser = supabase.auth.currentUser;
 
@@ -45,7 +44,7 @@ class SettingCubit extends Cubit<SettingState> {
       emit(
         state.copyWith(
           user: user,
-          status: const SettingStatus.success(),
+          status: SettingStatus.success,
           isBiometricEnabled: isEnabled,
           hasSavedBiometricCredentials: hasSaved,
           isBiometricAvailable: isAvailable,
@@ -55,7 +54,7 @@ class SettingCubit extends Cubit<SettingState> {
     } catch (e) {
       emit(
         state.copyWith(
-          status: const SettingStatus.failure(),
+          status: SettingStatus.failure,
           errorMessage: e.toString(),
         ),
       );
@@ -69,7 +68,7 @@ class SettingCubit extends Cubit<SettingState> {
       if (!capability.isAvailable) {
         emit(
           state.copyWith(
-            status: const SettingStatus.failure(),
+            status: SettingStatus.failure,
             errorMessage:
                 'Biometric authentication is not available on this device',
           ),
@@ -92,14 +91,14 @@ class SettingCubit extends Cubit<SettingState> {
         state.copyWith(
           isBiometricEnabled: true,
           hasSavedBiometricCredentials: true,
-          status: const SettingStatus.success(),
+          status: SettingStatus.success,
         ),
       );
 
       // Show success message
       emit(
         state.copyWith(
-          status: const SettingStatus.success(),
+          status: SettingStatus.success,
           errorMessage: capability.enabledMessage,
         ),
       );
@@ -111,13 +110,13 @@ class SettingCubit extends Cubit<SettingState> {
         state.copyWith(
           isBiometricEnabled: false,
           hasSavedBiometricCredentials: false,
-          status: const SettingStatus.success(),
+          status: SettingStatus.success,
           errorMessage: capability.disabledMessage,
         ),
       );
     }
 
-    locator<AuthBloc>().add(const CheckBiometricAvailabilityEvt());
+    locator<AuthBloc>().add(CheckBiometricAvailability());
   }
 
   /// Logout app
@@ -130,6 +129,6 @@ class SettingCubit extends Cubit<SettingState> {
       await biometricService.clearRefreshToken();
     }
 
-    locator<AuthBloc>().add(const CheckBiometricAvailabilityEvt());
+    locator<AuthBloc>().add(CheckBiometricAvailability());
   }
 }

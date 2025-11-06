@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:logging/logging.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banking_app/features/home/data/models/account_model.dart';
@@ -200,7 +201,8 @@ class TransferRepositoryImpl implements TransferRepository {
         'userId': currentUser.id,
         'isUsed': false,
       });
-      print('OTP $otpCode sent to ${currentUser.email ?? ''}');
+      final logger = Logger('TransferRepository');
+      logger.info('OTP $otpCode sent to ${currentUser.email ?? ''}');
     } catch (e) {
       throw OtpSendFailedException('Failed to send OTP: ${e.toString()}');
     }

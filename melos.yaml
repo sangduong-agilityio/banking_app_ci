@@ -6,22 +6,22 @@ packages:
 
 scripts:
   postbootstrap: >
-    melos exec -- puro flutter pub get &&
-    puro pub global activate git_hooks &&
-    puro dart pub global activate full_coverage &&
-    puro dart pub global activate flutter_gen &&
-    puro dart pub global activate test_cov_console &&
+    melos exec -- flutter pub get &&
+    dart pub global activate git_hooks &&
+    dart pub global activate full_coverage &&
+    dart pub global activate flutter_gen &&
+    dart pub global activate test_cov_console &&
     melos run dev:generate:native_splash &&
     melos run build_runner
 
-  postclean: melos exec -- puro flutter clean
+  postclean: melos exec -- flutter clean
 
   analyze:
-    run: melos exec -- puro flutter analyze .
+    run: melos exec -- flutter analyze .
     description: Run `flutter analyze` in all packages.
 
   dev:generate:i18n:
-    run: melos exec --scope="banking_app" -- "puro flutter pub run intl_utils:generate"
+    run: melos exec --scope="banking_app" -- "flutter pub run intl_utils:generate"
     description: Generate localization files
     packageFilters:
       flutter: true
@@ -29,60 +29,69 @@ scripts:
         - banking_app
 
   generate:icon_launcher_dev:
-    run: melos exec --scope="banking_app" -- puro flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons_dev.yaml
+    run: melos exec --scope="banking_app" -- flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons_dev.yaml
     description: Generate DEV launcher icons
 
   generate:icon_launcher:
-    run: melos exec --scope="banking_app" -- puro flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons_prod.yaml
+    run: melos exec --scope="banking_app" -- flutter pub run flutter_launcher_icons:main -f flutter_launcher_icons_prod.yaml
     description: Generate PROD launcher icons
 
   dev:generate:native_splash:
-    run: melos exec --scope="banking_app" -- puro flutter pub run flutter_native_splash:create
+    run: melos exec --scope="banking_app" -- flutter pub run flutter_native_splash:create
     description: Generate splash screen
 
   build_runner:
-    run: melos exec --depends-on=build_runner -- "puro flutter pub run build_runner build --delete-conflicting-outputs"
+    run: melos exec --depends-on=build_runner -- "flutter pub run build_runner build --delete-conflicting-outputs"
     description: Run build_runner to generate code
 
   codegen:
     run: melos run build_runner
     description: Generate all necessary code for development
+    
+  test:selective_unit_test: >
+    cd apps/banking_app 2>$null || cd .
 
-  test:selective_unit_test:
-    run: |
-      cd apps/banking_app || cd . # adjust if main app at root
-      echo "→ Generating full_coverage stubs..."
-      full_coverage
+    echo "→ Generating full_coverage stubs..."
+    full_coverage
 
-      echo "→ Running tests with coverage..."
-      puro flutter test --no-pub --coverage -r expanded
+    echo "→ Running tests with coverage..."
+    flutter test --no-pub --coverage -r expanded
 
-      echo "→ Filtering unwanted files from lcov.info..."
-      lcov --remove coverage/lcov.info \
-        'lib/main*.dart' \
-        'lib/app/**' \
-        'lib/core/**' \
-        'lib/**/models/**' \
-        'lib/**/repositories/**' \
-        'lib/**/entities/**' \
-        'lib/features/account/**' \
-        'lib/features/home/**' \
-        'lib/features/setting/**' \
-        'lib/features/auth/views/**' \
-        'lib/features/auth/widgets/**' \
-        'lib/features/search/states/**' \
-        'lib/features/message/**' \
-        'lib/features/transactions/states/**' \
-        -o coverage/lcov_filtered.info
+    echo "→ Normalizing Windows paths in lcov.info..."
+    (Get-Content coverage\lcov.info) -replace '\\', '/' | Set-Content coverage\lcov.info
 
+    echo "→ Filtering unwanted files from lcov.info..."
+    $patterns = @(
+      "lib/main*.dart",
+      "lib/app/*",
+      "lib/core/*",
+      "lib/core/*/*",
+      "lib/**/models/*",
+      "lib/**/repositories/*",
+      "lib/**/entities/*",
+      "lib/features/account/*",
+      "lib/features/home/*",
+      "lib/features/setting/*",
+      "lib/features/auth/views/*",
+      "lib/features/auth/widgets/*",
+      "lib/features/search/states/*",
+      "lib/features/message/*",
+      "lib/features/transactions/states/*"
+    )
 
-      echo "→ Generating HTML coverage report..."
-      genhtml coverage/lcov_filtered.info --output-directory coverage/html
-      echo "Coverage report generated at coverage/html/index.html"
-      open coverage/html/index.html
-    description: Run Flutter unit tests and generate filtered coverage report
-    packageFilters:
-      flutter: true
-      dirExists: test
-      scope:
-        - banking_app
+    foreach ($pattern in $patterns) {
+      Write-Host "Removing: $pattern"
+      lcov --remove coverage/lcov.info "$pattern" -o coverage/lcov_temp.info | Out-Null
+      Move-Item -Force coverage/lcov_temp.info coverage/lcov.info
+    }
+
+    echo "→ Generating HTML coverage report..."
+    perl "C:\ProgramData\chocolatey\lib\lcov\tools\bin\genhtml" coverage\lcov.info -o coverage\html
+
+    $reportPath = "coverage\html\index.html"
+    if (Test-Path $reportPath) {
+      echo "✅ Coverage report generated successfully!"
+      start "$reportPath"
+    } else {
+      echo "❌ Coverage report not found: $reportPath"
+    }

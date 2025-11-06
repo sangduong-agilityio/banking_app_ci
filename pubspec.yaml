@@ -18,6 +18,8 @@ dependencies:
 
   # State management library based on BLoC pattern
   flutter_bloc: ^9.1.0
+  
+  bloc: ^9.0.0
 
   # Renders SVG images in Flutter
   flutter_svg: ^2.0.17
@@ -45,6 +47,12 @@ dependencies:
 
   # Persistent storage for simple data
   shared_preferences: ^2.5.3
+
+  # Logging framework
+  logging: ^1.2.0
+
+  # Vector math utilities
+  vector_math: ^2.1.4
 
   # Freezed annotations for code generation
   freezed_annotation: ^2.4.4
@@ -122,6 +130,8 @@ dev_dependencies:
 
   # Linting rules for Flutter projects
   flutter_lints: ^5.0.0
+
+  bloc_lint: ^0.3.3
 
   # JSON serialization
   json_serializable: ^6.7.1
