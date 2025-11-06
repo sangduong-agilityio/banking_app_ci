@@ -14,7 +14,7 @@ class AccountAndCardCubit extends Cubit<AccountAndCardState> {
 
   /// Initializes the account and card feature by fetching the user, cards, and accounts.
   Future<void> accountAndCardInitialize() async {
-    emit(state.copyWith(status: const AccountAndCardStatus.loading()));
+    emit(state.copyWith(status: AccountAndCardStatus.loading));
     try {
       final user = await repo.fetchCurrentUser();
       final cards = await repo.fetchCards();
@@ -25,13 +25,13 @@ class AccountAndCardCubit extends Cubit<AccountAndCardState> {
           user: user,
           cards: cards,
           accounts: accounts,
-          status: const AccountAndCardStatus.success(),
+          status: AccountAndCardStatus.success,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          status: const AccountAndCardStatus.failure(),
+          status: AccountAndCardStatus.failure,
           errorMessage: e.toString(),
         ),
       );

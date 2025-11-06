@@ -1,58 +1,54 @@
-import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_state.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/core/data/services/biometric_service.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/error_handling/error_sanitizer.dart';
+import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:banking_app/core/common/utils/pref_keys.dart';
 
+part 'auth_event.dart';
+
 /// Bloc for handling authentication events and states.
-class AuthBloc extends Bloc<AuthEvt, AuthState> {
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({
     required this.repo,
     required this.biometricService,
     required this.prefs,
   }) : super(const AuthState()) {
-    on<SignInFormValidateChangedEvt>(_onSignInFormValidateChanged);
-    on<SignInButtonPressedEvt>(_onSignInPressed);
-    on<SignInWithBiometricEvt>(_onSignInWithBiometric);
-    on<CheckBiometricAvailabilityEvt>(_onCheckBiometricAvailability);
-    on<SignUpFormValidateChangedEvt>(_onSignUpFormValidateChanged);
-    on<SignUpButtonPressedEvt>(_onSignUpPressed);
-    on<SignUpTermsChangedEvt>(_onSignUpTermsChanged);
-    on<GetCurrentUserEvt>(_onGetCurrentUser);
+    on<SignInFormValidateChanged>(_onSignInFormValidateChanged);
+    on<SignInButtonPressed>(_onSignInPressed);
+    on<SignInWithBiometric>(_onSignInWithBiometric);
+    on<CheckBiometricAvailability>(_onCheckBiometricAvailability);
+    on<SignUpFormValidateChanged>(_onSignUpFormValidateChanged);
+    on<SignUpButtonPressed>(_onSignUpPressed);
+    on<SignUpTermsChanged>(_onSignUpTermsChanged);
+    on<GetCurrentUser>(_onGetCurrentUser);
   }
 
   final AuthRepository repo;
   final BiometricService biometricService;
   final SharedPreferences prefs;
 
-  /// Handles changes in the sign-in form validation state.
   void _onSignInFormValidateChanged(
-    SignInFormValidateChangedEvt event,
+    SignInFormValidateChanged event,
     Emitter<AuthState> emit,
   ) {
     emit(
       state.copyWith(
         isFormValid: event.isValidate,
-        email: event.email,
-        password: event.password,
+        email: event.email ??'',
+        password: event.password ??'',
       ),
     );
   }
 
-  /// Handles the sign-in button press event.
-  ///
-  /// This method attempts to sign in the user with the provided email and password.
-  /// If successful, it saves the session token and emits a success state.
-  /// If it fails, it logs the error and emits a failure state with a sanitized error message.
   Future<void> _onSignInPressed(
-    SignInButtonPressedEvt event,
+    SignInButtonPressed event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: const AuthStatus.loading()));
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
       final response = await repo.signIn(
         email: state.email,
@@ -66,7 +62,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         );
         emit(
           state.copyWith(
-            status: const AuthStatus.success(),
+            status: AuthStatus.success,
             sessionToken: response.session?.accessToken,
             errorMessage: '',
           ),
@@ -74,7 +70,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
       } else {
         emit(
           state.copyWith(
-            status: const AuthStatus.failure(),
+            status: AuthStatus.failure,
             errorMessage: S.current.authErrorLoginFailed,
           ),
         );
@@ -95,29 +91,24 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
 
       emit(
         state.copyWith(
-          status: const AuthStatus.failure(),
+          status: AuthStatus.failure,
           errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }
   }
 
-  /// Handles biometric sign-in.
-  ///
-  /// This method attempts to sign in the user with biometrics.
-  /// If successful, it saves the session token and emits a success state.
-  /// If it fails, it logs the error and emits a failure state with a sanitized error message.
   Future<void> _onSignInWithBiometric(
-    SignInWithBiometricEvt event,
+    SignInWithBiometric event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: const AuthStatus.loading()));
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
       final canLogin = await biometricService.canLoginWithBiometrics();
       if (!canLogin) {
         emit(
           state.copyWith(
-            status: const AuthStatus.failure(),
+            status: AuthStatus.failure,
             errorMessage: S.current.authErrorBiometricNotEnabled,
           ),
         );
@@ -128,7 +119,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
       if (token == null) {
         emit(
           state.copyWith(
-            status: const AuthStatus.failure(),
+            status: AuthStatus.failure,
             errorMessage: S.current.authErrorBiometricFailed,
           ),
         );
@@ -143,7 +134,7 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         );
         emit(
           state.copyWith(
-            status: const AuthStatus.success(),
+            status: AuthStatus.success,
             sessionToken: response.session?.accessToken,
             errorMessage: '',
           ),
@@ -151,13 +142,12 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
       } else {
         emit(
           state.copyWith(
-            status: const AuthStatus.failure(),
+            status: AuthStatus.failure,
             errorMessage: S.current.authErrorNoSavedCredentials,
           ),
         );
       }
     } catch (e, stackTrace) {
-      // Log biometric sign-in errors with context
       await ErrorSanitizer.logSecureError(
         e,
         stackTrace,
@@ -167,22 +157,20 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
           'biometric_enabled': state.isBiometricEnabled,
           'has_saved_credentials': state.hasSavedBiometricCredentials,
         },
-        // Biometric system failures are critical
         isCritical: true,
       );
 
       emit(
         state.copyWith(
-          status: const AuthStatus.failure(),
+          status: AuthStatus.failure,
           errorMessage: S.current.authErrorUnknown,
         ),
       );
     }
   }
 
-  /// Checks the availability and status of biometric authentication.
   Future<void> _onCheckBiometricAvailability(
-    CheckBiometricAvailabilityEvt event,
+    CheckBiometricAvailability event,
     Emitter<AuthState> emit,
   ) async {
     try {
@@ -200,16 +188,13 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
         ),
       );
     } catch (e, stackTrace) {
-      // Log biometric check errors
       await ErrorSanitizer.logSecureError(
         e,
         stackTrace,
         context: {'action': 'check_biometric_availability'},
-        // Check failures are not critical
         isCritical: false,
       );
 
-      // Don't show error to user, just disable biometric
       emit(
         state.copyWith(
           isBiometricAvailable: false,
@@ -220,16 +205,11 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
     }
   }
 
-  /// Handles the sign-up button press event.
-  ///
-  /// This method attempts to sign up the user with the provided email, password, and username.
-  /// If successful, it emits a success state.
-  /// If it fails, it logs the error and emits a failure state with a sanitized error message.
   Future<void> _onSignUpPressed(
-    SignUpButtonPressedEvt event,
+    SignUpButtonPressed event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: const AuthStatus.loading()));
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
       final response = await repo.signUp(
         email: state.email,
@@ -244,12 +224,12 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
           email: state.email,
         );
         emit(
-          state.copyWith(status: const AuthStatus.success(), errorMessage: ''),
+          state.copyWith(status: AuthStatus.success, errorMessage: ''),
         );
       } else {
         emit(
           state.copyWith(
-            status: const AuthStatus.failure(),
+            status: AuthStatus.failure,
             errorMessage: S.current.authErrorSignupFailed,
           ),
         );
@@ -265,44 +245,41 @@ class AuthBloc extends Bloc<AuthEvt, AuthState> {
           'has_username': state.username.isNotEmpty,
           'terms_accepted': state.isTermsAccepted,
         },
-        // Sign up failures are expected
         isCritical: false,
       );
 
       emit(
         state.copyWith(
-          status: const AuthStatus.failure(),
+          status: AuthStatus.failure,
           errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
     }
   }
 
-  /// Handles changes in the terms acceptance state during sign-up.
   void _onSignUpTermsChanged(
-    SignUpTermsChangedEvt event,
+    SignUpTermsChanged event,
     Emitter<AuthState> emit,
   ) {
     emit(state.copyWith(isTermsAccepted: event.isAccepted));
   }
 
-  /// Handles changes in the sign-up form validation state.
   void _onSignUpFormValidateChanged(
-    SignUpFormValidateChangedEvt event,
+    SignUpFormValidateChanged event,
     Emitter<AuthState> emit,
   ) {
     emit(
       state.copyWith(
         isFormValid: event.isValidate,
-        username: event.username,
-        email: event.email,
-        password: event.password,
+        username: event.username ?? '',
+        email: event.email ?? '',
+        password: event.password ?? '',
       ),
     );
   }
 
   Future<void> _onGetCurrentUser(
-    GetCurrentUserEvt event,
+    GetCurrentUser event,
     Emitter<AuthState> emit,
   ) async {
     try {

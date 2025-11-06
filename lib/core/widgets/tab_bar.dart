@@ -9,7 +9,7 @@ class BATabBar extends StatelessWidget {
   /// Creates a [BATabBar] widget.
   const BATabBar({
     super.key,
-    required this.controller,
+     this.controller,
     required this.tabs,
     this.height = 50,
     this.borderRadius = 16,
@@ -18,7 +18,7 @@ class BATabBar extends StatelessWidget {
   });
 
   /// The controller for the tab bar.
-  final TabController controller;
+  final TabController? controller;
 
   /// The list of tab names.
   final List<String> tabs;
@@ -62,27 +62,25 @@ class BATabBar extends StatelessWidget {
           splashFactory: NoSplash.splashFactory,
           overlayColor: WidgetStateProperty.all(Colors.transparent),
           tabs: tabs.asMap().entries.map((entry) {
-            final index = entry.key;
             final tabName = entry.value;
 
             return AnimatedBuilder(
-              animation: controller.animation ?? kAlwaysCompleteAnimation,
+              animation: controller?.animation ?? kAlwaysCompleteAnimation,
               builder: (context, child) {
-                final isSelected = controller.index == index;
 
                 return Tab(
                   child: Container(
                     width: double.infinity,
                     height: double.infinity,
                     alignment: Alignment.center,
-                    decoration: !isSelected
-                        ? BoxDecoration(
-                            color: context.colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(
-                              borderRadius ?? 16,
-                            ),
-                          )
-                        : null,
+                    // decoration: !isSelected
+                    //     ? BoxDecoration(
+                    //         color: context.colorScheme.surfaceContainerHighest,
+                    //         borderRadius: BorderRadius.circular(
+                    //           borderRadius ?? 16,
+                    //         ),
+                    //       )
+                    //     : null,
                     child: Text(tabName),
                   ),
                 );

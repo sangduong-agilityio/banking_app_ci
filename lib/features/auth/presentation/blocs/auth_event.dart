@@ -1,17 +1,14 @@
-import 'package:equatable/equatable.dart';
+part of 'auth_bloc.dart';
 
-/// Base class for all authentication events.
-/// Extends [Equatable] to enable value comparison.
-class AuthEvt extends Equatable {
-  const AuthEvt();
+sealed class AuthEvent extends Equatable {
+  const AuthEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-/// Event triggered when the sign-in form validation state changes.
-class SignInFormValidateChangedEvt extends AuthEvt {
-  const SignInFormValidateChangedEvt({
+class SignInFormValidateChanged extends AuthEvent {
+  const SignInFormValidateChanged({
     required this.isValidate,
     this.email,
     this.password,
@@ -22,36 +19,17 @@ class SignInFormValidateChangedEvt extends AuthEvt {
   final String? password;
 
   @override
-  List<Object?> get props => [email, password, isValidate];
+  List<Object?> get props => [isValidate, email, password];
 }
 
-/// Event triggered when the sign-in button is pressed.
-class SignInButtonPressedEvt extends AuthEvt {
-  const SignInButtonPressedEvt();
+class SignInButtonPressed extends AuthEvent {}
 
-  @override
-  List<Object?> get props => [];
-}
+class SignInWithBiometric extends AuthEvent {}
 
-/// Event triggered to initiate biometric sign-in.
-class SignInWithBiometricEvt extends AuthEvt {
-  const SignInWithBiometricEvt();
+class CheckBiometricAvailability extends AuthEvent {}
 
-  @override
-  List<Object?> get props => [];
-}
-
-/// Event triggered to check biometric availability.
-class CheckBiometricAvailabilityEvt extends AuthEvt {
-  const CheckBiometricAvailabilityEvt();
-
-  @override
-  List<Object?> get props => [];
-}
-
-/// Event triggered when the sign-up form validation state changes.
-class SignUpFormValidateChangedEvt extends AuthEvt {
-  const SignUpFormValidateChangedEvt({
+class SignUpFormValidateChanged extends AuthEvent {
+  const SignUpFormValidateChanged({
     required this.isValidate,
     this.username,
     this.email,
@@ -67,28 +45,15 @@ class SignUpFormValidateChangedEvt extends AuthEvt {
   List<Object?> get props => [isValidate, username, email, password];
 }
 
-/// Event triggered when the sign-up button is pressed.
-class SignUpButtonPressedEvt extends AuthEvt {
-  const SignUpButtonPressedEvt();
+class SignUpButtonPressed extends AuthEvent {}
 
-  @override
-  List<Object?> get props => [];
-}
-
-/// Event triggered when the terms acceptance state changes during sign-up.
-class SignUpTermsChangedEvt extends AuthEvt {
-  const SignUpTermsChangedEvt({required this.isAccepted});
+class SignUpTermsChanged extends AuthEvent {
+  const SignUpTermsChanged({required this.isAccepted});
 
   final bool isAccepted;
 
   @override
-  List<Object?> get props => [isAccepted];
+  List<Object> get props => [isAccepted];
 }
 
-/// Event triggered to get the current user.
-class GetCurrentUserEvt extends AuthEvt {
-  const GetCurrentUserEvt();
-
-  @override
-  List<Object?> get props => [];
-}
+class GetCurrentUser extends AuthEvent {}
