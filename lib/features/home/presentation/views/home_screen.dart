@@ -114,6 +114,9 @@ class CreditCardsSwiper extends StatelessWidget {
     return SizedBox(
       height: 204,
       child: BlocBuilder<HomeCubit, HomeState>(
+        buildWhen: (previous, current) =>
+            previous.cards != current.cards ||
+            previous.isBalanceVisible != current.isBalanceVisible,
         builder: (context, state) {
           final cards = state.cards;
           final shouldPlayAnimation = state.shouldPlayAnimation;
@@ -159,7 +162,7 @@ class HomeActionsGrid extends StatelessWidget {
     return BlocSelector<HomeCubit, HomeState, HomeStatus>(
       selector: (state) => state.status,
       builder: (context, status) {
-        if (status is HomeStatusLoading) {
+        if (status == HomeStatus.loading) {
           return const BAGridSkeleton();
         }
         return const ListViewActions();

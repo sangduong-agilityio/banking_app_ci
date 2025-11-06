@@ -18,6 +18,8 @@ dependencies:
 
   # State management library based on BLoC pattern
   flutter_bloc: ^9.1.0
+  
+  bloc: ^9.0.0
 
   # Renders SVG images in Flutter
   flutter_svg: ^2.0.17
@@ -128,6 +130,8 @@ dev_dependencies:
 
   # Linting rules for Flutter projects
   flutter_lints: ^5.0.0
+
+  bloc_lint: ^0.3.3
 
   # JSON serialization
   json_serializable: ^6.7.1

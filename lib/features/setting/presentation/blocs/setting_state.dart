@@ -1,14 +1,12 @@
 import 'package:banking_app/features/setting/data/models/user_model.dart';
 import 'package:banking_app/core/security/biometric_capability.dart';
-import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'setting_state.freezed.dart';
+enum SettingStatus { initial, loading, success, failure }
 
-final class SettingState extends Equatable {
+final class SettingState {
   const SettingState({
     this.user,
-    this.status = const SettingStatus.initial(),
+    this.status = SettingStatus.initial,
     this.errorMessage,
     this.isBiometricEnabled = false,
     this.hasSavedBiometricCredentials = false,
@@ -44,23 +42,4 @@ final class SettingState extends Equatable {
       biometricCapability: biometricCapability ?? this.biometricCapability,
     );
   }
-
-  @override
-  List<Object?> get props => [
-    user,
-    status,
-    errorMessage,
-    isBiometricEnabled,
-    hasSavedBiometricCredentials,
-    isBiometricAvailable,
-    biometricCapability,
-  ];
-}
-
-@freezed
-sealed class SettingStatus with _$SettingStatus {
-  const factory SettingStatus.initial() = SettingStatusInitial;
-  const factory SettingStatus.loading() = SettingStatusLoading;
-  const factory SettingStatus.success() = SettingStatusSuccess;
-  const factory SettingStatus.failure() = SettingStatusFailure;
 }

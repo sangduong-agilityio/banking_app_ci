@@ -2,7 +2,6 @@ import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/security/input_validator.dart';
 import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
-import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_state.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -35,16 +34,13 @@ class _SignInScreenState extends State<SignInScreen> {
   final _passwordController = TextEditingController();
   late final AuthBloc _authBloc;
 
-  /// Initializes the state of the sign-in screen.
-  /// This includes setting up the [AuthBloc] and checking for biometric availability.
-  /// The biometric availability check is performed after the first frame is rendered
   @override
   void initState() {
     super.initState();
     _authBloc = locator<AuthBloc>();
-    _authBloc.add(const GetCurrentUserEvt());
+    _authBloc.add(GetCurrentUser());
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _authBloc.add(const CheckBiometricAvailabilityEvt());
+      _authBloc.add(CheckBiometricAvailability());
     });
   }
 
@@ -59,17 +55,19 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<AuthBloc>.value(
       value: _authBloc,
-      child: BlocConsumer<AuthBloc, AuthState>(
+      child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          state.status.maybeWhen(
-            loading: () => context.loaderOverlay.show(),
-            success: () {
+          switch (state.status) {
+            case AuthStatus.loading:
+              context.loaderOverlay.show();
+              break;
+            case AuthStatus.success:
               if (context.mounted) {
                 context.pushNamed(BAPaths.home.name);
                 context.loaderOverlay.hide();
               }
-            },
-            failure: () {
+              break;
+            case AuthStatus.failure:
               if (context.mounted) {
                 BASnackBar.buildErrorSnackbar(
                   context,
@@ -77,52 +75,61 @@ class _SignInScreenState extends State<SignInScreen> {
                 );
                 context.loaderOverlay.hide();
               }
-            },
-            orElse: () {
+              break;
+            case AuthStatus.initial:
               if (context.mounted) {
                 context.loaderOverlay.hide();
               }
-            },
-          );
+              break;
+          }
         },
-        builder: (context, state) {
-          return LoaderOverlay(
-            child: BAScaffold(
-              body: GestureDetector(
-                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                child: Container(
-                  color: context.colorScheme.secondary,
-                  child: Column(
-                    children: [
-                      BAAppBar(
-                        title: S.current.signInTitle,
-                        alignment: BAAppBarAlignment.left,
-                        titleColor: context.colorScheme.onPrimary,
-                        iconColor: context.colorScheme.onPrimary,
-                        backgroundColor: context.colorScheme.secondary,
-                      ),
-                      SignInBody(
-                        emailController: _emailController,
-                        passwordController: _passwordController,
-                        isFormValid: state.isFormValid,
-                        isBiometricAvailable: state.isBiometricAvailable,
-                        isBiometricEnabled: state.isBiometricEnabled,
-                        hasSavedBiometricCredentials:
-                            state.hasSavedBiometricCredentials,
-                        onBiometricPressed: () {
-                          context.read<AuthBloc>().add(
-                            const SignInWithBiometricEvt(),
-                          );
-                        },
-                        username: state.username,
-                      ),
-                    ],
+        child: BlocBuilder<AuthBloc, AuthState>(
+          buildWhen: (previous, current) =>
+              previous.isFormValid != current.isFormValid ||
+              previous.isBiometricAvailable != current.isBiometricAvailable ||
+              previous.isBiometricEnabled != current.isBiometricEnabled ||
+              previous.hasSavedBiometricCredentials !=
+                  current.hasSavedBiometricCredentials ||
+              previous.username != current.username,
+          builder: (context, state) {
+            return LoaderOverlay(
+              child: BAScaffold(
+                body: GestureDetector(
+                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                  child: Container(
+                    color: context.colorScheme.secondary,
+                    child: Column(
+                      children: [
+                        BAAppBar(
+                          title: S.current.signInTitle,
+                          alignment: BAAppBarAlignment.left,
+                          titleColor: context.colorScheme.onPrimary,
+                          iconColor: context.colorScheme.onPrimary,
+                          backgroundColor: context.colorScheme.secondary,
+                        ),
+                        SignInBody(
+                          emailController: _emailController,
+                          passwordController: _passwordController,
+                          isFormValid: state.isFormValid,
+                          isBiometricAvailable: state.isBiometricAvailable,
+                          isBiometricEnabled: state.isBiometricEnabled,
+                          hasSavedBiometricCredentials:
+                              state.hasSavedBiometricCredentials,
+                          onBiometricPressed: () {
+                            context.read<AuthBloc>().add(
+                                  SignInWithBiometric(),
+                                );
+                          },
+                          username: state.username,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -177,15 +184,15 @@ class SignInBody extends StatelessWidget {
                 textFields: _buildTextFields(),
                 onValidate: (isValid) {
                   context.read<AuthBloc>().add(
-                    SignInFormValidateChangedEvt(
-                      isValidate: isValid,
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim(),
-                    ),
-                  );
+                        SignInFormValidateChanged(
+                          isValidate: isValid,
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        ),
+                      );
                 },
                 onSubmit: () {
-                  context.read<AuthBloc>().add(const SignInButtonPressedEvt());
+                  context.read<AuthBloc>().add( SignInButtonPressed());
                 },
                 submitText: S.current.signInButton,
                 isSubmitEnabled: isFormValid,

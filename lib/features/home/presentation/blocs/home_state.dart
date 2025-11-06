@@ -1,14 +1,17 @@
+import 'package:equatable/equatable.dart';
 import 'package:banking_app/features/home/data/models/card_model.dart';
 import 'package:banking_app/features/setting/data/models/user_model.dart';
-import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'home_state.freezed.dart';
-
+enum HomeStatus {
+  initial,
+  loading,
+  success,
+  failure,
+}
 /// Represents the state of the home screen.
 class HomeState extends Equatable {
   const HomeState({
-    this.status = const HomeStatus.initial(),
+    this.status = HomeStatus.initial,
     this.user,
     this.errorMessage,
     this.cards = const [],
@@ -28,8 +31,8 @@ class HomeState extends Equatable {
   HomeState copyWith({
     HomeStatus? status,
     UserModel? user,
-    String? errorMessage,
     List<CardModel>? cards,
+    String? errorMessage,
     int? currentCardIndex,
     bool? shouldPlayAnimation,
     bool? isBalanceVisible,
@@ -57,10 +60,3 @@ class HomeState extends Equatable {
   ];
 }
 
-@freezed
-sealed class HomeStatus with _$HomeStatus {
-  const factory HomeStatus.initial() = HomeStatusInitial;
-  const factory HomeStatus.loading() = HomeStatusLoading;
-  const factory HomeStatus.success() = HomeStatusSuccess;
-  const factory HomeStatus.failure() = HomeStatusFailure;
-}
