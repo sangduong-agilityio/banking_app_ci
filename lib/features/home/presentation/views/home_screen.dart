@@ -87,19 +87,49 @@ class HomeContent extends StatelessWidget {
             topRight: Radius.circular(24),
           ),
         ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: const [
-                SizedBox(height: 20),
-                CreditCardsSwiper(),
-                SizedBox(height: 24),
-                HomeActionsGrid(),
-                SizedBox(height: 40),
-              ],
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            // Spacing at top
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 20),
             ),
-          ),
+            
+            // Credit Cards Section
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: const CreditCardsSwiper(),
+              ),
+            ),
+            
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 24),
+            ),
+            
+            // Actions Grid using SliverPadding and Custom Grid
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              sliver: BlocSelector<HomeCubit, HomeState, HomeStatus>(
+                selector: (state) => state.status,
+                builder: (context, status) {
+                  if (status == HomeStatus.loading) {
+                    return const SliverToBoxAdapter(
+                      child: BAGridSkeleton(),
+                    );
+                  }
+                  return const SliverToBoxAdapter(
+                    child: ListViewActions(),
+                  );
+                },
+              ),
+            ),
+            
+            // Bottom spacing
+            const SliverToBoxAdapter(
+              child: SizedBox(height: 40),
+            ),
+          ],
         ),
       ),
     );
