@@ -439,6 +439,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferBeneficiaryBank": MessageLookupByLibrary.simpleMessage(
       "Beneficiary bank",
     ),
+    "transferBeneficiaryOrderUpdated": MessageLookupByLibrary.simpleMessage(
+      "Beneficiary order updated",
+    ),
     "transferBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Beneficiary",
     ),

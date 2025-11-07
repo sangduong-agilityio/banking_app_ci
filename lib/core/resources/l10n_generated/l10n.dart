@@ -1174,6 +1174,16 @@ class S {
     );
   }
 
+  /// `Beneficiary order updated`
+  String get transferBeneficiaryOrderUpdated {
+    return Intl.message(
+      'Beneficiary order updated',
+      name: 'transferBeneficiaryOrderUpdated',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Available balance: {type}`
   String transferAvailableBalanceTitle(String type) {
     return Intl.message(

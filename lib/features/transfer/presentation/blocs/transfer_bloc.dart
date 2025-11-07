@@ -37,6 +37,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     on<ConfirmWithBiometricEvt>(_onConfirmWithBiometric);
     on<OtpChangedEvt>(_onOtpChangedEvt);
     on<BiometricErrorMessageEvt>(_onClearErrorMessage);
+    on<ReorderBeneficiaryEvt>(_onReorderBeneficiary);
   }
 
   /// Loads the initial data required for the transfer feature.
@@ -750,4 +751,56 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   void _onOtpChangedEvt(OtpChangedEvt event, Emitter<TransferState> emit) {
     emit(state.copyWith(otp: event.otp));
   }
+
+  /// Handles reordering of beneficiaries in the list.
+  Future<void> _onReorderBeneficiary(
+    ReorderBeneficiaryEvt event,
+    Emitter<TransferState> emit,
+  ) async {
+    // Validate indices
+    if (event.oldIndex < 0 || 
+        event.oldIndex >= state.beneficiaries.length ||
+        event.newIndex < 0 || 
+        event.newIndex >= state.beneficiaries.length) {
+      return; // Invalid indices, do nothing
+    }
+
+    final beneficiaries = List<BeneficiaryModel>.from(state.beneficiaries);
+    
+    // Adjust indices for removal and insertion
+    int oldIndex = event.oldIndex;
+    int newIndex = event.newIndex;
+    
+    if (oldIndex < newIndex) {
+      newIndex -= 1;
+    }
+    
+    // Remove and reinsert the beneficiary
+    final beneficiary = beneficiaries.removeAt(oldIndex);
+    beneficiaries.insert(newIndex, beneficiary);
+
+    // Update state - filteredBeneficiaries will be recalculated if needed
+    emit(
+      state.copyWith(
+        beneficiaries: beneficiaries,
+        filteredBeneficiaries: state.searchQuery.isEmpty 
+            ? beneficiaries 
+            : state.filteredBeneficiaries,
+      ),
+    );
+
+    // Persist the new order to local storage/DB 
+    _persistBeneficiaryOrder(beneficiaries);
+  }
+
+  /// Persists the beneficiary order to local storage or database.
+  void _persistBeneficiaryOrder(
+    List<BeneficiaryModel> beneficiaries,
+  ) {
+    transferRepo.saveBeneficiaryOrder(beneficiaries).catchError((error) {
+     
+    
+    });
+  }
+
 }

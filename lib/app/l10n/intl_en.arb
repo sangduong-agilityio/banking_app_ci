@@ -196,6 +196,7 @@
   "transferChooseTransactionTitle": "Choose transaction",
   "transferChooseBeneficiaryTitle": "Choose beneficiary",
   "transferFindBeneficiaryTitle": "Find Beneficiary",
+  "transferBeneficiaryOrderUpdated": "Beneficiary order updated",
   "transferAvailableBalanceTitle": "Available balance: {type}",
   "transferSaveDirectoryButton":"Save to directory",
   "@transferAvailableBalanceTitle": {

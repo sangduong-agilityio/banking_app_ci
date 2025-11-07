@@ -41,8 +41,10 @@ class BeneficiaryCard extends StatelessWidget {
           color: isSelected
               ? colorScheme.secondary
               : colorScheme.outlineVariant,
+          width: isSelected ? 2 : 1,
         ),
       ),
+      clipBehavior: Clip.antiAlias,
       child: child,
     );
 

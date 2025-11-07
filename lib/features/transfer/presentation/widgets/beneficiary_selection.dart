@@ -2,6 +2,7 @@ import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/widgets/assets.dart';
+import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transfer/data/models/bank_model.dart';
 import 'package:banking_app/features/transfer/data/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// A widget for selecting a beneficiary.
 ///
 /// This widget displays a horizontal list of beneficiaries and allows the user
-/// to select one or add a new one.
+/// to select one or add a new one. Supports drag-and-drop reordering via long press.
 class BeneficiarySelection extends StatelessWidget {
   const BeneficiarySelection({
     super.key,
@@ -43,30 +44,74 @@ class BeneficiarySelection extends StatelessWidget {
                     style: context.bodyMedium,
                   ),
                 )
-              : ListView.separated(
+              : ReorderableListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: state.filteredBeneficiaries.length + 1,
-                  separatorBuilder: (_, __) => const SizedBox(width: 12),
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return _AddBeneficiaryCard(banks: state.banks);
+                  buildDefaultDragHandles: true,
+                  proxyDecorator: (child, index, animation) {
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (context, child) {
+                        final animValue =
+                            Curves.easeInOut.transform(animation.value);
+                        final scale = 1.0 + (animValue * 0.15);
+
+                        return Transform.scale(
+                          scale: scale,
+                          child: child,
+                        );
+                      },
+                      child: child,
+                    );
+                  },
+                  onReorder: (oldIndex, newIndex) {
+                    // Adjust indices because first item (index 0) is the Add button
+                    final adjustedOldIndex = oldIndex - 1;
+                    final adjustedNewIndex = newIndex - 1;
+
+                    // Only reorder if not trying to move to/from the Add button position
+                    if (adjustedOldIndex >= 0 && adjustedNewIndex >= 0) {
+                      context.read<TransferBloc>().add(
+                            ReorderBeneficiaryEvt(
+                              oldIndex: adjustedOldIndex,
+                              newIndex: adjustedNewIndex,
+                            ),
+                          );
+
+                      // Show success feedback
+                      BASnackBar.buildSuccessSnackbar(
+                        context,
+                        S.current.transferBeneficiaryOrderUpdated,
+                      );
                     }
-                    final beneficiary = state.filteredBeneficiaries[index - 1];
+                  },
+                  itemCount: state.filteredBeneficiaries.length + 1,
+                  itemBuilder: (context, index) {
+                    // Add beneficiary card (first item, not reorderable)
+                    if (index == 0) {
+                      return Container(
+                        key: const ValueKey('add_beneficiary'),
+                        width: 90,
+                        margin: const EdgeInsets.only(right: 12),
+                        child: _AddBeneficiaryCard(banks: state.banks),
+                      );
+                    }
+
+                    // Beneficiary cards (reorderable)
+                    final beneficiary =
+                        state.filteredBeneficiaries[index - 1];
                     final isSelected =
                         state.selectedBeneficiary?.id == beneficiary.id;
-                    final isEnabled = !state.disabledBeneficiaries.containsKey(
-                      beneficiary.id,
-                    );
-                    final disabledReason = isEnabled
-                        ? null
-                        : state.disabledBeneficiaries[beneficiary.id];
 
-                    return _BeneficiaryCardItem(
+                    return _DraggableBeneficiaryCard(
+                      key: ValueKey(beneficiary.id ?? index),
                       beneficiary: beneficiary,
                       isSelected: isSelected,
-                      isEnabled: isEnabled,
-                      disabledReason: disabledReason,
-                      onBeneficiarySelected: onBeneficiarySelected,
+                      onTap: () {
+                        context.read<TransferBloc>().add(
+                              SelectBeneficiaryEvt(beneficiary),
+                            );
+                        onBeneficiarySelected(beneficiary);
+                      },
                     );
                   },
                 ),
@@ -156,54 +201,6 @@ class _AddBeneficiaryCard extends StatelessWidget {
   }
 }
 
-/// A card item for displaying a single beneficiary.
-class _BeneficiaryCardItem extends StatelessWidget {
-  final BeneficiaryModel beneficiary;
-  final bool isSelected;
-  final bool isEnabled;
-  final String? disabledReason;
-  final Function(BeneficiaryModel) onBeneficiarySelected;
-
-  const _BeneficiaryCardItem({
-    required this.beneficiary,
-    required this.isSelected,
-    required this.isEnabled,
-    this.disabledReason,
-    required this.onBeneficiarySelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BeneficiaryCard(
-      isSelected: isSelected,
-      isEnabled: isEnabled,
-      disabledReason: disabledReason,
-      onTap: () {
-        context.read<TransferBloc>().add(SelectBeneficiaryEvt(beneficiary));
-        onBeneficiarySelected(beneficiary);
-      },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BeneficiaryAvatar(avatarUrl: beneficiary.avatarUrl),
-          const SizedBox(height: 8),
-          Text(
-            beneficiary.name,
-            style: context.bodyMedium?.copyWith(
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              color: isSelected
-                  ? context.colorScheme.onPrimary
-                  : context.colorScheme.scrim,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 /// A widget for displaying a beneficiary's avatar.
 class BeneficiaryAvatar extends StatelessWidget {
   final String? avatarUrl;
@@ -217,6 +214,54 @@ class BeneficiaryAvatar extends StatelessWidget {
       size: 60,
       backgroundColor: context.colorScheme.outlineVariant,
       iconColor: context.colorScheme.onPrimary,
+    );
+  }
+}
+
+/// Draggable beneficiary card for reorderable list
+class _DraggableBeneficiaryCard extends StatelessWidget {
+  const _DraggableBeneficiaryCard({
+    required super.key,
+    required this.beneficiary,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final BeneficiaryModel beneficiary;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 90,
+      margin: const EdgeInsets.only(right: 12),
+      child: Material(
+        type: MaterialType.transparency,
+        child: BeneficiaryCard(
+          isSelected: isSelected,
+          onTap: onTap,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BeneficiaryAvatar(avatarUrl: beneficiary.avatarUrl),
+              const SizedBox(height: 6),
+              Text(
+                beneficiary.name,
+                style: context.bodyMedium?.copyWith(
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  color: isSelected
+                      ? context.colorScheme.onSecondary
+                      : context.colorScheme.scrim,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

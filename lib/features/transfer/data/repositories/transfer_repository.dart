@@ -25,6 +25,7 @@ abstract class TransferRepository {
   /// Add / calculate
   Future<BeneficiaryModel> addNewBeneficiary(BeneficiaryModel beneficiary);
   Future<TransferFee> calculateFee(TransferModel request);
+  Future<void> saveBeneficiaryOrder(List<BeneficiaryModel> beneficiaries);
 
   /// Transfer actions
   Future<void> sendOtpEmail(String transferId);
@@ -175,6 +176,18 @@ class TransferRepositoryImpl implements TransferRepository {
     final fee = (request.amount ?? 0.0) * feePercentage;
     final total = (request.amount ?? 0.0) + fee;
     return TransferFee(amount: request.amount ?? 0.0, fee: fee, total: total);
+  }
+
+  /// Saves the beneficiary order to local storage/database.
+  @override
+
+  @override
+  Future<void> saveBeneficiaryOrder(
+    List<BeneficiaryModel> beneficiaries,
+  ) async {
+    // TODO: Implement persistence
+    
+   
   }
 
   /// Sends an OTP email for transfer authorization.
