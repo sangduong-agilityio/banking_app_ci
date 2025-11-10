@@ -48,7 +48,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignInButtonPressed event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    // Optimistic UI: Immediately show loading state
+    emit(state.toOptimistic(status: AuthStatus.loading));
+    
     try {
       final response = await repo.signIn(
         email: state.email,
@@ -60,17 +62,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           PrefKeys.sessionToken,
           response.session?.accessToken ?? '',
         );
+        
+        // Confirm optimistic update with real data from API
         emit(
-          state.copyWith(
-            status: AuthStatus.success,
+          state.confirm(
             sessionToken: response.session?.accessToken,
-            errorMessage: '',
           ),
         );
       } else {
+        // Rollback to previous state on failure
         emit(
-          state.copyWith(
-            status: AuthStatus.failure,
+          state.rollback(
             errorMessage: S.current.authErrorLoginFailed,
           ),
         );
@@ -89,9 +91,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         isCritical: false,
       );
 
+      // Rollback to previous state with error message
       emit(
-        state.copyWith(
-          status: AuthStatus.failure,
+        state.rollback(
           errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
@@ -102,13 +104,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignInWithBiometric event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    // Optimistic UI: Immediately show loading state
+    emit(state.toOptimistic(status: AuthStatus.loading));
+    
     try {
       final canLogin = await biometricService.canLoginWithBiometrics();
       if (!canLogin) {
+        // Rollback to previous state on failure
         emit(
-          state.copyWith(
-            status: AuthStatus.failure,
+          state.rollback(
             errorMessage: S.current.authErrorBiometricNotEnabled,
           ),
         );
@@ -117,9 +121,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       final token = await biometricService.loginWithBiometrics();
       if (token == null) {
+        // Rollback to previous state on failure
         emit(
-          state.copyWith(
-            status: AuthStatus.failure,
+          state.rollback(
             errorMessage: S.current.authErrorBiometricFailed,
           ),
         );
@@ -132,17 +136,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           PrefKeys.sessionToken,
           response.session?.accessToken ?? '',
         );
+        
+        // Confirm optimistic update with real data from API
         emit(
-          state.copyWith(
-            status: AuthStatus.success,
+          state.confirm(
             sessionToken: response.session?.accessToken,
-            errorMessage: '',
           ),
         );
       } else {
+        // Rollback to previous state on failure
         emit(
-          state.copyWith(
-            status: AuthStatus.failure,
+          state.rollback(
             errorMessage: S.current.authErrorNoSavedCredentials,
           ),
         );
@@ -160,9 +164,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         isCritical: true,
       );
 
+      // Rollback to previous state with error message
       emit(
-        state.copyWith(
-          status: AuthStatus.failure,
+        state.rollback(
           errorMessage: S.current.authErrorUnknown,
         ),
       );
