@@ -297,6 +297,11 @@
   "transferErrorCalculateFee": "Failed to calculate transaction fee",
   "transferErrorTransferFailed": "Transfer failed. Please try again.",
   "transferErrorAuthenticationRequired": "Please complete authentication before confirming transfer.",
+  "transferErrorLoadInitialData": "Failed to load initial data",
+  "transferErrorAddBeneficiary": "Failed to add beneficiary",
+  "transferErrorSendOtp": "Failed to send OTP",
+  "transferErrorUnexpected": "An unexpected error occurred.",
+  "transferErrorBiometricAuthFailed": "An unexpected error occurred during biometric authentication.",
   
   "@segmentSecurityErrors": {
     "description": "Store translations for security-related error messages"

@@ -1,23 +1,32 @@
 import 'package:banking_app/features/transfer/data/models/bank_model.dart';
 import 'package:banking_app/features/transfer/data/models/beneficiary_model.dart';
 import 'package:banking_app/features/transfer/data/models/branch_model.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:banking_app/features/transfer/data/models/transfer_model.dart';
 import 'package:banking_app/features/transfer/data/repositories/transfer_repository.dart';
+import 'package:banking_app/features/transfer/domain/services/beneficiary_filter_service.dart';
+import 'package:banking_app/features/transfer/domain/services/transfer_fee_service.dart';
+import 'package:banking_app/features/transfer/domain/services/transfer_validation_service.dart';
 import 'package:banking_app/core/common/bloc/base_bloc.dart';
 import 'package:banking_app/features/transactions/data/models/transaction_model.dart';
 import 'package:banking_app/core/data/services/biometric_service.dart';
-import 'package:banking_app/core/common/utils/beneficiary_utils.dart';
 import 'package:banking_app/core/error_handling/transfer_exceptions.dart';
+import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'transfer_event.dart';
 import 'transfer_state.dart';
 
 class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
-  final TransferRepository transferRepo;
-  final BiometricService biometricService;
-
-  TransferBloc({required this.transferRepo, required this.biometricService})
-    : super(TransferState(status: TransferStatus.initial())) {
+  TransferBloc({
+    required this.transferRepo,
+    required this.biometricService,
+    BeneficiaryFilterService? filterService,
+    TransferFeeService? feeService,
+    TransferValidationService? validationService,
+  }) : _filterService = filterService ?? const BeneficiaryFilterService(),
+       _feeService = feeService ?? TransferFeeService(transferRepo),
+       _validationService =
+           validationService ?? const TransferValidationService(),
+       super(const TransferState()) {
     on<TransferInitializeEvt>(_onTransferInitialize);
     on<BeneficiariesInitializeEvt>(_onBeneficiariesInitialize);
     on<SelectAccountEvt>(_onSelectAccount);
@@ -27,7 +36,7 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     on<SelectBankEvt>(_onSelectBank);
     on<SelectBranchEvt>(_onSelectBranch);
     on<AddNewBeneficiaryEvt>(_onAddNewBeneficiary);
-    on<UpdateTransferDetailsEvt>(_onUpdateTransferForm);
+    on<UpdateTransferDetailsEvt>(_onUpdateTransferDetails);
     on<FillTransferDetailsEvt>(_onFillTransferDetails);
     on<SearchBeneficiaryEvt>(_onSearchBeneficiaries);
     on<CalculateTransactionFeeEvt>(_onCalculateTransactionFee);
@@ -35,27 +44,44 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     on<SendOtpEvt>(_onSendOtp);
     on<ConfirmTransferWithOtpEvt>(_onConfirmTransferWithOtp);
     on<ConfirmWithBiometricEvt>(_onConfirmWithBiometric);
-    on<OtpChangedEvt>(_onOtpChangedEvt);
+    on<OtpChangedEvt>(_onOtpChanged);
     on<BiometricErrorMessageEvt>(_onClearErrorMessage);
     on<ReorderBeneficiaryEvt>(_onReorderBeneficiary);
   }
 
-  /// Loads the initial data required for the transfer feature.
+  final TransferRepository transferRepo;
+  final BiometricService biometricService;
+  final BeneficiaryFilterService _filterService;
+  final TransferFeeService _feeService;
+  final TransferValidationService _validationService;
+
+  // ==================== INITIALIZATION ====================
+
   Future<void> _onTransferInitialize(
     TransferInitializeEvt event,
     Emitter<TransferState> emit,
   ) async {
-    emit(state.copyWith(status: TransferStatus.loading()));
+    emit(state.copyWith(status: const TransferStatus.loading()));
 
     final result = await executeWithErrorHandling<Map<String, dynamic>>(
       () async {
-        final beneficiaries = await transferRepo.fetchBeneficiaries();
-        final banks = await transferRepo.fetchBanks();
-        final branches = await transferRepo.fetchBranches();
-        final accounts = await transferRepo.fetchAccounts();
-        final cards = await transferRepo.fetchCards();
-        final biometricAvailable = await biometricService.canCheckBiometrics();
-        final biometricEnabled = await biometricService.isBiometricEnabled();
+        final (
+          beneficiaries,
+          banks,
+          branches,
+          accounts,
+          cards,
+          biometricAvailable,
+          biometricEnabled,
+        ) = await (
+          transferRepo.fetchBeneficiaries(),
+          transferRepo.fetchBanks(),
+          transferRepo.fetchBranches(),
+          transferRepo.fetchAccounts(),
+          transferRepo.fetchCards(),
+          biometricService.canCheckBiometrics(),
+          biometricService.isBiometricEnabled(),
+        ).wait;
 
         return {
           'beneficiaries': beneficiaries,
@@ -72,228 +98,171 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       context: {'event_type': 'TransferInitializeEvt'},
     );
 
-    if (result != null) {
+    if (result == null) {
       emit(
         state.copyWith(
-          status: TransferStatus.initial(),
-          beneficiaries: result['beneficiaries'],
-          banks: result['banks'],
-          branches: result['branches'],
-          filteredBeneficiaries: result['beneficiaries'],
-          accounts: result['accounts'],
-          cards: result['cards'],
-          biometricAvailable: result['biometricAvailable'],
-          biometricEnabled: result['biometricEnabled'],
-        ),
-      );
-      _filterBeneficiaries(emit);
-    } else {
-      emit(
-        state.copyWith(
-          status: TransferStatus.failure(),
-          errorMessage: 'Failed to load initial data',
-        ),
-      );
-    }
-  }
-
-  /// Initializes the beneficiaries from the event.
-  void _onBeneficiariesInitialize(
-    BeneficiariesInitializeEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    emit(
-      state.copyWith(
-        beneficiaries: event.beneficiaries,
-        banks: event.banks,
-        filteredBeneficiaries: event.beneficiaries,
-      ),
-    );
-  }
-
-  /// Handles the selection of a bank account.
-  void _onSelectAccount(
-    SelectAccountEvt event,
-    Emitter<TransferState> emit,
-  ) async {
-    emit(state.copyWith(selectedAccount: event.account, clearCard: true));
-
-    final limit = await transferRepo.fetchAccountTransactionLimit(
-      event.account,
-    );
-    emit(state.copyWith(transactionLimit: limit));
-
-    _filterBeneficiaries(emit);
-    _recalculateFeeIfNeeded();
-  }
-
-  void _filterBeneficiaries(Emitter<TransferState> emit) {
-    final userAccount = state.selectedAccount;
-    final userCard = state.selectedCard;
-
-    if (userAccount == null && userCard == null) {
-      emit(
-        state.copyWith(
-          filteredBeneficiaries: state.beneficiaries,
-          viaCardBeneficiaries: state.beneficiaries
-              .where((b) => b.transferType == TransferType.cardNumber)
-              .toList(),
-          sameBankBeneficiaries: state.beneficiaries
-              .where(
-                (b) =>
-                    userAccount != null &&
-                    getTransferType(b, userAccount) == TransferType.sameBank,
-              )
-              .toList(),
-          otherBankBeneficiaries: state.beneficiaries
-              .where(
-                (b) =>
-                    userAccount != null &&
-                    getTransferType(b, userAccount) == TransferType.otherBank,
-              )
-              .toList(),
-          disabledBeneficiaries: {},
+          status: const TransferStatus.failure(),
+          errorMessage: S.current.transferErrorLoadInitialData,
         ),
       );
       return;
     }
 
-    final disabledBeneficiaries = <String, String>{};
-    final filteredBeneficiaries = <BeneficiaryModel>[];
-    final viaCardBeneficiaries = <BeneficiaryModel>[];
-    final sameBankBeneficiaries = <BeneficiaryModel>[];
-    final otherBankBeneficiaries = <BeneficiaryModel>[];
-
-    for (final beneficiary in state.beneficiaries) {
-      final transferType = userAccount != null
-          ? getTransferType(beneficiary, userAccount)
-          : null;
-      if (userAccount != null) {
-        if (transferType == state.selectedTransferType) {
-          filteredBeneficiaries.add(beneficiary);
-        }
-
-        if (transferType == TransferType.sameBank) {
-          sameBankBeneficiaries.add(beneficiary);
-        } else if (transferType == TransferType.otherBank) {
-          otherBankBeneficiaries.add(beneficiary);
-        } else {
-          disabledBeneficiaries[beneficiary.id ?? ''] =
-              'This beneficiary does not support the selected transfer type.';
-        }
-      } else if (userCard != null) {
-        if (beneficiary.transferType == TransferType.cardNumber) {
-          filteredBeneficiaries.add(beneficiary);
-          viaCardBeneficiaries.add(beneficiary);
-        } else {
-          disabledBeneficiaries[beneficiary.id ?? ''] =
-              'This beneficiary does not support card transfers.';
-        }
-      }
-    }
-
-    filteredBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
-    viaCardBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
-    sameBankBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
-    otherBankBeneficiaries.sort((a, b) => a.name.compareTo(b.name));
+    final beneficiaries = result['beneficiaries'] as List<BeneficiaryModel>;
+    final filterResult = _filterService.filterBeneficiaries(
+      allBeneficiaries: beneficiaries,
+      selectedTransferType: state.selectedTransferType,
+    );
 
     emit(
       state.copyWith(
-        filteredBeneficiaries: filteredBeneficiaries,
-        viaCardBeneficiaries: viaCardBeneficiaries,
-        sameBankBeneficiaries: sameBankBeneficiaries,
-        otherBankBeneficiaries: otherBankBeneficiaries,
-        disabledBeneficiaries: disabledBeneficiaries,
+        status: const TransferStatus.initial(),
+        beneficiaries: beneficiaries,
+        banks: result['banks'] as List<BankModel>,
+        branches: result['branches'] as List<BranchModel>,
+        accounts: result['accounts'],
+        cards: result['cards'],
+        biometricAvailable: result['biometricAvailable'] as bool,
+        biometricEnabled: result['biometricEnabled'] as bool,
+        filteredBeneficiaries: filterResult.filtered,
+        viaCardBeneficiaries: filterResult.viaCard,
+        sameBankBeneficiaries: filterResult.sameBank,
+        otherBankBeneficiaries: filterResult.otherBank,
+        disabledBeneficiaries: filterResult.disabled,
       ),
     );
   }
 
-  /// Handles the selection of a bank card."
-  void _onSelectCard(SelectCardEvt event, Emitter<TransferState> emit) async {
-    if (state.selectedTransferType == TransferType.sameBank ||
-        state.selectedTransferType == TransferType.otherBank) {
-      emit(
-        state.copyWith(
-          selectedCard: event.card,
-          clearAccount: true,
-          selectedTransferType: TransferType.cardNumber,
-        ),
-      );
-    } else {
-      emit(state.copyWith(selectedCard: event.card, clearAccount: true));
-    }
+  void _onBeneficiariesInitialize(
+    BeneficiariesInitializeEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    final filterResult = _filterService.filterBeneficiaries(
+      allBeneficiaries: event.beneficiaries,
+      selectedTransferType: state.selectedTransferType,
+      selectedAccount: state.selectedAccount,
+      selectedCard: state.selectedCard,
+    );
 
-    final limit = await transferRepo.fetchCardTransactionLimit(event.card);
-    emit(state.copyWith(transactionLimit: limit));
-
-    _filterBeneficiaries(emit);
-    _recalculateFeeIfNeeded();
+    emit(
+      state.copyWith(
+        beneficiaries: event.beneficiaries,
+        banks: event.banks,
+        filteredBeneficiaries: filterResult.filtered,
+        viaCardBeneficiaries: filterResult.viaCard,
+        sameBankBeneficiaries: filterResult.sameBank,
+        otherBankBeneficiaries: filterResult.otherBank,
+        disabledBeneficiaries: filterResult.disabled,
+      ),
+    );
   }
 
-  /// Handles the selection of a transfer type.
+  // ==================== SELECTION HANDLERS ====================
+
+  Future<void> _onSelectAccount(
+    SelectAccountEvt event,
+    Emitter<TransferState> emit,
+  ) async {
+    final limit = await _feeService.fetchTransactionLimit(
+      account: event.account,
+    );
+    final filterResult = _filterService.filterBeneficiaries(
+      allBeneficiaries: state.beneficiaries,
+      selectedTransferType: state.selectedTransferType,
+      selectedAccount: event.account,
+    );
+
+    emit(
+      state.copyWith(
+        selectedAccount: event.account,
+        clearCard: true,
+        transactionLimit: limit,
+        filteredBeneficiaries: filterResult.filtered,
+        viaCardBeneficiaries: filterResult.viaCard,
+        sameBankBeneficiaries: filterResult.sameBank,
+        otherBankBeneficiaries: filterResult.otherBank,
+        disabledBeneficiaries: filterResult.disabled,
+      ),
+    );
+
+    _triggerFeeCalculationIfNeeded();
+  }
+
+  Future<void> _onSelectCard(
+    SelectCardEvt event,
+    Emitter<TransferState> emit,
+  ) async {
+    final limit = await _feeService.fetchTransactionLimit(card: event.card);
+    final filterResult = _filterService.filterBeneficiaries(
+      allBeneficiaries: state.beneficiaries,
+      selectedTransferType: TransferType.cardNumber,
+      selectedCard: event.card,
+    );
+
+    final needsTypeChange =
+        state.selectedTransferType == TransferType.sameBank ||
+        state.selectedTransferType == TransferType.otherBank;
+
+    emit(
+      state.copyWith(
+        selectedCard: event.card,
+        clearAccount: true,
+        selectedTransferType: needsTypeChange ? TransferType.cardNumber : null,
+        transactionLimit: limit,
+        filteredBeneficiaries: filterResult.filtered,
+        viaCardBeneficiaries: filterResult.viaCard,
+        sameBankBeneficiaries: filterResult.sameBank,
+        otherBankBeneficiaries: filterResult.otherBank,
+        disabledBeneficiaries: filterResult.disabled,
+      ),
+    );
+
+    _triggerFeeCalculationIfNeeded();
+  }
+
   void _onSelectTransferType(
     SelectTransferTypeEvt event,
     Emitter<TransferState> emit,
   ) {
+    final filterResult = _filterService.filterBeneficiaries(
+      allBeneficiaries: state.beneficiaries,
+      selectedTransferType: event.transferType,
+      selectedAccount: state.selectedAccount,
+      selectedCard: state.selectedCard,
+    );
+
     emit(
       state.copyWith(
         selectedTransferType: event.transferType,
-        clearBeneficiary: true,
-        clearForm: true,
+        filteredBeneficiaries: filterResult.filtered,
+        viaCardBeneficiaries: filterResult.viaCard,
+        sameBankBeneficiaries: filterResult.sameBank,
+        otherBankBeneficiaries: filterResult.otherBank,
+        disabledBeneficiaries: filterResult.disabled,
       ),
     );
 
-    _filterBeneficiaries(emit);
+    _triggerFeeCalculationIfNeeded();
   }
 
-  /// Handles the selection of a beneficiary.
   void _onSelectBeneficiary(
     SelectBeneficiaryEvt event,
     Emitter<TransferState> emit,
   ) {
-    final beneficiary = event.beneficiary;
-    BankModel? bank;
-    BranchModel? branch;
-
-    if (beneficiary.bankId != null) {
-      for (final b in state.banks) {
-        if (b.id == beneficiary.bankId) {
-          bank = b;
-          break;
-        }
-      }
-    }
-
-    if (beneficiary.branch != null && beneficiary.bankId != null) {
-      for (final b in state.branches) {
-        if (b.name == beneficiary.branch && b.bankId == beneficiary.bankId) {
-          branch = b;
-          break;
-        }
-      }
-    }
-
-    emit(
-      state.copyWith(
-        selectedBeneficiary: beneficiary,
-        selectedBank: bank,
-        selectedBranch: branch,
-      ),
-    );
-    _recalculateFeeIfNeeded();
+    emit(state.copyWith(selectedBeneficiary: event.beneficiary));
+    _triggerFeeCalculationIfNeeded();
   }
 
-  /// Handles the selection of a bank.
   void _onSelectBank(SelectBankEvt event, Emitter<TransferState> emit) {
-    emit(state.copyWith(selectedBank: event.bank, selectedBranch: null));
+    emit(state.copyWith(selectedBank: event.bank));
   }
 
-  /// Handles the selection of a branch.
   void _onSelectBranch(SelectBranchEvt event, Emitter<TransferState> emit) {
     emit(state.copyWith(selectedBranch: event.branch));
   }
 
-  /// Handles the addition of a new beneficiary.
+  // ==================== BENEFICIARY MANAGEMENT ====================
+
   Future<void> _onAddNewBeneficiary(
     AddNewBeneficiaryEvt event,
     Emitter<TransferState> emit,
@@ -301,42 +270,128 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
     final result = await executeWithErrorHandling(
-      () async => await transferRepo.addNewBeneficiary(event.beneficiary),
+      () => transferRepo.addNewBeneficiary(event.beneficiary),
       operationName: 'add_new_beneficiary',
       isCritical: false,
-      context: {
-        'beneficiary_name': event.beneficiary.name,
-        'account_number': event.beneficiary.accountNumber,
-      },
+      context: {'beneficiary_id': event.beneficiary.id},
     );
 
     if (result != null) {
-      final updatedBeneficiaries = [...state.beneficiaries, result];
+      final updatedList = [...state.beneficiaries, result];
+      final filterResult = _filterService.filterBeneficiaries(
+        allBeneficiaries: updatedList,
+        selectedTransferType: state.selectedTransferType,
+        selectedAccount: state.selectedAccount,
+        selectedCard: state.selectedCard,
+      );
 
       emit(
         state.copyWith(
-          status: const TransferStatus.success(),
+          status: const TransferStatus.initial(),
+          beneficiaries: updatedList,
+          filteredBeneficiaries: filterResult.filtered,
+          viaCardBeneficiaries: filterResult.viaCard,
+          sameBankBeneficiaries: filterResult.sameBank,
+          otherBankBeneficiaries: filterResult.otherBank,
+          disabledBeneficiaries: filterResult.disabled,
           newBeneficiary: result,
-          beneficiaries: updatedBeneficiaries,
-          filteredBeneficiaries: updatedBeneficiaries,
-          clearName: true,
-          clearAvatar: true,
         ),
       );
-
-      _filterBeneficiaries(emit);
     } else {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'Failed to add beneficiary',
+          errorMessage: S.current.transferErrorAddBeneficiary,
         ),
       );
     }
   }
 
-  /// Updates the transfer form with new details.
-  void _onUpdateTransferForm(
+  void _onSearchBeneficiaries(
+    SearchBeneficiaryEvt event,
+    Emitter<TransferState> emit,
+  ) {
+    final filtered = _filterService.searchBeneficiaries(
+      state.beneficiaries,
+      event.query,
+    );
+
+    emit(
+      state.copyWith(searchQuery: event.query, filteredBeneficiaries: filtered),
+    );
+  }
+
+  Future<void> _onReorderBeneficiary(
+    ReorderBeneficiaryEvt event,
+    Emitter<TransferState> emit,
+  ) async {
+    // Validate indices
+    if (event.oldIndex < 0 ||
+        event.oldIndex >= state.beneficiaries.length ||
+        event.newIndex < 0 ||
+        event.newIndex >= state.beneficiaries.length) {
+      return;
+    }
+
+    // Store original state for rollback on failure
+    final originalBeneficiaries = state.beneficiaries;
+    final originalFiltered = state.filteredBeneficiaries;
+    final originalViaCard = state.viaCardBeneficiaries;
+    final originalSameBank = state.sameBankBeneficiaries;
+    final originalOtherBank = state.otherBankBeneficiaries;
+    final originalDisabled = state.disabledBeneficiaries;
+
+    // Optimistic update: apply reorder immediately for responsive UI
+    final reordered = List<BeneficiaryModel>.from(state.beneficiaries);
+    final item = reordered.removeAt(event.oldIndex);
+    reordered.insert(event.newIndex, item);
+
+    // Re-filter after reordering to keep UI consistent
+    final filterResult = _filterService.filterBeneficiaries(
+      allBeneficiaries: reordered,
+      selectedTransferType: state.selectedTransferType,
+      selectedAccount: state.selectedAccount,
+      selectedCard: state.selectedCard,
+    );
+
+    // Emit optimistic state
+    emit(
+      state.copyWith(
+        beneficiaries: reordered,
+        filteredBeneficiaries: filterResult.filtered,
+        viaCardBeneficiaries: filterResult.viaCard,
+        sameBankBeneficiaries: filterResult.sameBank,
+        otherBankBeneficiaries: filterResult.otherBank,
+        disabledBeneficiaries: filterResult.disabled,
+      ),
+    );
+
+    // Persist to repository with rollback on failure
+    try {
+      await executeWithErrorHandling(
+        () => transferRepo.saveBeneficiaryOrder(reordered),
+        operationName: 'reorder_beneficiary',
+        isCritical: false,
+        context: {'old_index': event.oldIndex, 'new_index': event.newIndex},
+      );
+    } catch (e) {
+      // Rollback to original state on persistence failure
+      emit(
+        state.copyWith(
+          beneficiaries: originalBeneficiaries,
+          filteredBeneficiaries: originalFiltered,
+          viaCardBeneficiaries: originalViaCard,
+          sameBankBeneficiaries: originalSameBank,
+          otherBankBeneficiaries: originalOtherBank,
+          disabledBeneficiaries: originalDisabled,
+        ),
+      );
+    }
+  }
+
+  // ==================== FORM UPDATES ====================
+
+  void _onUpdateTransferDetails(
     UpdateTransferDetailsEvt event,
     Emitter<TransferState> emit,
   ) {
@@ -353,86 +408,52 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
         clearForm: event.clearForm ?? state.clearForm,
       ),
     );
-    if (event.amount != null) _recalculateFeeIfNeeded();
+
+    if (event.amount != null) {
+      _triggerFeeCalculationIfNeeded();
+    }
   }
 
-  /// Fills the transfer details from the event.
   void _onFillTransferDetails(
     FillTransferDetailsEvt event,
     Emitter<TransferState> emit,
   ) {
     emit(state.copyWith(amount: event.amount, content: event.content));
-    _recalculateFeeIfNeeded();
+    _triggerFeeCalculationIfNeeded();
   }
 
-  /// Searches for beneficiaries based on a query.
-  void _onSearchBeneficiaries(
-    SearchBeneficiaryEvt event,
-    Emitter<TransferState> emit,
-  ) {
-    final query = event.query.trim().toLowerCase();
+  // ==================== FEE CALCULATION ====================
 
-    if (query.isEmpty) {
-      emit(
-        state.copyWith(
-          searchQuery: '',
-          filteredBeneficiaries: state.beneficiaries,
-        ),
-      );
-      return;
-    }
-
-    final filtered = state.beneficiaries.where((b) {
-      final name = b.name.toLowerCase();
-      final account = b.accountNumber.toLowerCase();
-      final bankName = b.bankName?.toLowerCase() ?? '';
-      final branch = b.branch?.toLowerCase() ?? '';
-      return name.contains(query) ||
-          account.contains(query) ||
-          bankName.contains(query) ||
-          branch.contains(query);
-    }).toList();
-
-    emit(
-      state.copyWith(searchQuery: event.query, filteredBeneficiaries: filtered),
-    );
-  }
-
-  /// Calculates the transaction fee for the transfer.
   Future<void> _onCalculateTransactionFee(
     CalculateTransactionFeeEvt event,
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    final result = await executeWithErrorHandling(
-      () async {
-        final request = TransferModel(
-          fromAccount: state.selectedAccount,
-          fromCard: state.selectedCard,
-          toBeneficiary: state.selectedBeneficiary,
-          amount: state.amount,
-          transactionFee: 0,
-          content: state.content ?? '',
-          transferType: state.selectedTransferType,
-        );
+    final transferRequest = TransferModel(
+      fromAccount: state.selectedAccount,
+      fromCard: state.selectedCard,
+      toBeneficiary: state.selectedBeneficiary,
+      amount: state.amount ?? 0,
+      transactionFee: 0,
+      content: state.content ?? '',
+      transferType: state.selectedTransferType,
+    );
 
-        return await transferRepo.calculateFee(request);
-      },
+    final fee = await executeWithErrorHandling(
+      () => _feeService.calculateFee(transferRequest),
       operationName: 'calculate_transaction_fee',
       isCritical: false,
       context: {
         'amount': state.amount,
         'transfer_type': state.selectedTransferType.name,
-        'has_account': state.selectedAccount != null,
-        'has_card': state.selectedCard != null,
       },
     );
 
-    if (result != null) {
+    if (fee != null) {
       emit(
         state.copyWith(
-          transactionFee: result.fee,
+          transactionFee: fee,
           status: const TransferStatus.initial(),
         ),
       );
@@ -440,24 +461,41 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'Failed to calculate transaction fee',
+          errorMessage: S.current.transferErrorCalculateFee,
         ),
       );
     }
   }
 
-  /// Initiates the transfer process.
+  void _triggerFeeCalculationIfNeeded() {
+    if (_feeService.shouldRecalculateFee(
+      hasSource: state.selectedAccount != null || state.selectedCard != null,
+      hasBeneficiary: state.selectedBeneficiary != null,
+      amount: state.amount,
+    )) {
+      add(CalculateTransactionFeeEvt());
+    }
+  }
+
+  // ==================== TRANSFER CONFIRMATION ====================
+
   Future<void> _onConfirmTransfer(
     ConfirmTransferEvt event,
     Emitter<TransferState> emit,
   ) async {
-    if (state.transactionLimit != null &&
-        (state.amount ?? 0) > state.transactionLimit!) {
+    final validation = _validationService.validateForConfirmation(
+      selectedAccount: state.selectedAccount,
+      selectedCard: state.selectedCard,
+      selectedBeneficiary: state.selectedBeneficiary,
+      amount: state.amount,
+      transactionLimit: state.transactionLimit,
+    );
+
+    if (!validation.isValid) {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage:
-              'Transfer amount exceeds the transaction limit for this card/account.',
+          errorMessage: validation.errorMessage,
         ),
       );
       return;
@@ -465,75 +503,60 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
 
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    final result = await executeWithErrorHandling(
-      () async {
-        final transferRequest = TransferModel(
-          fromAccount: state.selectedAccount,
-          fromCard: state.selectedCard,
-          toBeneficiary: state.selectedBeneficiary,
-          amount: state.amount ?? 0,
-          transactionFee: state.transactionFee,
-          content: state.content ?? '',
-          transferType: state.selectedTransferType,
-        );
+    final transferRequest = TransferModel(
+      fromAccount: state.selectedAccount,
+      fromCard: state.selectedCard,
+      toBeneficiary: state.selectedBeneficiary,
+      amount: state.amount ?? 0,
+      transactionFee: state.transactionFee,
+      content: state.content ?? '',
+      transferType: state.selectedTransferType,
+    );
 
-        return await transferRepo.initiateTransfer(transferRequest);
-      },
+    final result = await executeWithErrorHandling(
+      () => transferRepo.initiateTransfer(transferRequest),
       operationName: 'confirm_transfer',
       isCritical: true,
       context: {
         'amount': state.amount,
         'transfer_type': state.selectedTransferType.name,
-        'has_account': state.selectedAccount != null,
-        'has_card': state.selectedCard != null,
       },
     );
 
-    if (result != null) {
-      if (result.transferId.isEmpty) {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.failure(),
-            errorMessage:
-                'Transfer initiation failed: invalid response from server.',
-          ),
-        );
-        return;
-      }
-
-      emit(
-        state.copyWith(
-          status: const TransferStatus.initial(),
-          transferId: result.transferId,
-          otpSent: false,
-          transaction: TransactionModel(
-            id: result.transferId,
-            userId:
-                state.selectedAccount?.userId ??
-                state.selectedCard?.userId ??
-                '',
-            amount: state.amount ?? 0,
-            type: state.selectedTransferType,
-          ),
-        ),
-      );
-    } else {
+    if (result == null || result.transferId.isEmpty) {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'Transfer confirmation failed',
+          errorMessage: S.current.transferErrorNoPendingTransaction,
         ),
       );
+      return;
     }
+
+    emit(
+      state.copyWith(
+        status: const TransferStatus.initial(),
+        transferId: result.transferId,
+        otpSent: false,
+        transaction: TransactionModel(
+          id: result.transferId,
+          userId:
+              state.selectedAccount?.userId ?? state.selectedCard?.userId ?? '',
+          amount: state.amount ?? 0,
+          type: state.selectedTransferType,
+        ),
+      ),
+    );
   }
 
-  /// Sends an OTP to the user's email.
+  // ==================== AUTHENTICATION ====================
+
   Future<void> _onSendOtp(SendOtpEvt event, Emitter<TransferState> emit) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
     try {
       await executeWithErrorHandling(
-        () async => await transferRepo.sendOtpEmail(event.transferId),
+        () => transferRepo.sendOtpEmail(event.transferId),
         operationName: 'send_otp',
         isCritical: false,
         context: {'transfer_id': event.transferId},
@@ -556,18 +579,18 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'Failed to send OTP',
+          errorMessage: S.current.transferErrorSendOtp,
         ),
       );
     }
   }
 
-  /// Confirms the transfer with the provided OTP.
   Future<void> _onConfirmTransferWithOtp(
     ConfirmTransferWithOtpEvt event,
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
+
     try {
       final isValid = await transferRepo.verifyOTP(
         state.transferId ?? '',
@@ -578,27 +601,15 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
         throw const InvalidOtpException();
       }
 
-      final canUseBiometrics =
-          state.biometricAvailable && state.biometricEnabled;
+      final canUseBiometric = _validationService.canUseBiometric(
+        biometricAvailable: state.biometricAvailable,
+        biometricEnabled: state.biometricEnabled,
+      );
 
-      if (canUseBiometrics) {
+      if (canUseBiometric) {
         emit(state.copyWith(status: const TransferStatus.awaitingBiometric()));
       } else {
-        // If no biometrics, confirm transfer directly
-        await _confirmTransfer(
-          emit,
-          () async {
-            return await transferRepo.confirmTransfer(
-              state.transferId ?? '',
-              event.otpCode,
-            );
-          },
-          'confirm_transfer_with_otp',
-          {
-            'transfer_id': state.transferId,
-            'has_otp': event.otpCode.isNotEmpty,
-          },
-        );
+        await _completeTransfer(emit, event.otpCode);
       }
     } on InvalidOtpException catch (e) {
       emit(
@@ -611,36 +622,28 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage: 'An unexpected error occurred.',
+          errorMessage: S.current.transferErrorUnexpected,
         ),
       );
     }
   }
 
-  /// Confirms the transfer with biometric authentication.
   Future<void> _onConfirmWithBiometric(
     ConfirmWithBiometricEvt event,
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
+
     try {
       final canAuth = await biometricService.authenticate();
 
       if (canAuth) {
-        await _confirmTransfer(
-          emit,
-          () => transferRepo.confirmTransfer(
-            state.transferId ?? '',
-            'BIOMETRIC_AUTH',
-          ),
-          'confirm_with_biometric',
-          {'transfer_id': state.transferId, 'auth_method': 'biometric'},
-        );
+        await _completeTransfer(emit, 'BIOMETRIC_AUTH');
       } else {
         emit(
           state.copyWith(
             status: const TransferStatus.awaitingBiometric(),
-            errorMessage: 'Biometric authentication failed. Please try again.',
+            errorMessage: S.current.transferErrorBiometricFailed,
           ),
         );
       }
@@ -648,11 +651,39 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
-          errorMessage:
-              'An unexpected error occurred during biometric authentication.',
+          errorMessage: S.current.transferErrorBiometricAuthFailed,
         ),
       );
     }
+  }
+
+  Future<void> _completeTransfer(
+    Emitter<TransferState> emit,
+    String authCode,
+  ) async {
+    final success = await executeWithErrorHandling(
+      () => transferRepo.confirmTransfer(state.transferId ?? '', authCode),
+      operationName: 'complete_transfer',
+      isCritical: true,
+      context: {'transfer_id': state.transferId},
+    );
+
+    if (success == true) {
+      emit(state.copyWith(status: const TransferStatus.success()));
+    } else {
+      emit(
+        state.copyWith(
+          status: const TransferStatus.failure(),
+          errorMessage: S.current.transferErrorTransferFailed,
+        ),
+      );
+    }
+  }
+
+  // ==================== UTILITY ====================
+
+  void _onOtpChanged(OtpChangedEvt event, Emitter<TransferState> emit) {
+    emit(state.copyWith(otp: event.otp));
   }
 
   void _onClearErrorMessage(
@@ -662,145 +693,8 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     emit(state.copyWith(errorMessage: null));
   }
 
-  /// A helper method to confirm the transfer.
-  Future<void> _confirmTransfer(
-    Emitter<TransferState> emit,
-    Future<bool> Function() confirmation,
-    String operationName,
-    Map<String, dynamic> context,
-  ) async {
-    emit(state.copyWith(status: const TransferStatus.loading()));
-
-    try {
-      final result = await executeWithErrorHandling(
-        confirmation,
-        operationName: operationName,
-        isCritical: true,
-        context: context,
-      );
-
-      if (result != null && result == true) {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.success(),
-            otpSent: false,
-            errorMessage: null,
-          ),
-        );
-      } else {
-        emit(
-          state.copyWith(
-            status: const TransferStatus.failure(),
-            errorMessage: 'Transfer confirmation failed',
-          ),
-        );
-      }
-    } on InvalidOtpException catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: e.message,
-        ),
-      );
-    } on InsufficientFundsException catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: e.message,
-        ),
-      );
-    } on InvalidTransferSourceException catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: e.message,
-        ),
-      );
-    } on UserNotLoggedInException catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: e.message,
-        ),
-      );
-    } catch (e) {
-      emit(
-        state.copyWith(
-          status: const TransferStatus.failure(),
-          errorMessage: 'Transfer confirmation failed: ${e.toString()}',
-        ),
-      );
-    }
-  }
-
-  /// Recalculates the transaction fee if needed.
-  void _recalculateFeeIfNeeded() {
-    if ((state.selectedAccount != null || state.selectedCard != null) &&
-        state.selectedBeneficiary != null &&
-        state.amount != null &&
-        state.amount! > 0) {
-      add(CalculateTransactionFeeEvt());
-    }
-  }
-
   @override
   String? getCurrentUserId() {
     return state.selectedAccount?.userId ?? state.selectedCard?.userId;
   }
-
-  void _onOtpChangedEvt(OtpChangedEvt event, Emitter<TransferState> emit) {
-    emit(state.copyWith(otp: event.otp));
-  }
-
-  /// Handles reordering of beneficiaries in the list.
-  Future<void> _onReorderBeneficiary(
-    ReorderBeneficiaryEvt event,
-    Emitter<TransferState> emit,
-  ) async {
-    // Validate indices
-    if (event.oldIndex < 0 || 
-        event.oldIndex >= state.beneficiaries.length ||
-        event.newIndex < 0 || 
-        event.newIndex >= state.beneficiaries.length) {
-      return; // Invalid indices, do nothing
-    }
-
-    final beneficiaries = List<BeneficiaryModel>.from(state.beneficiaries);
-    
-    // Adjust indices for removal and insertion
-    int oldIndex = event.oldIndex;
-    int newIndex = event.newIndex;
-    
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
-    }
-    
-    // Remove and reinsert the beneficiary
-    final beneficiary = beneficiaries.removeAt(oldIndex);
-    beneficiaries.insert(newIndex, beneficiary);
-
-    // Update state - filteredBeneficiaries will be recalculated if needed
-    emit(
-      state.copyWith(
-        beneficiaries: beneficiaries,
-        filteredBeneficiaries: state.searchQuery.isEmpty 
-            ? beneficiaries 
-            : state.filteredBeneficiaries,
-      ),
-    );
-
-    // Persist the new order to local storage/DB 
-    _persistBeneficiaryOrder(beneficiaries);
-  }
-
-  /// Persists the beneficiary order to local storage or database.
-  void _persistBeneficiaryOrder(
-    List<BeneficiaryModel> beneficiaries,
-  ) {
-    transferRepo.saveBeneficiaryOrder(beneficiaries).catchError((error) {
-     
-    
-    });
-  }
-
 }

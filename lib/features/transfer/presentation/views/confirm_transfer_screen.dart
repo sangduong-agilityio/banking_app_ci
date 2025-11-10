@@ -79,7 +79,17 @@ class _ConfirmTransferScreenState extends State<ConfirmTransferScreen> {
               initial: (_) => context.loaderOverlay.hide(),
             );
           },
-
+          buildWhen: (previous, current) =>
+              previous.selectedAccount != current.selectedAccount ||
+              previous.selectedCard != current.selectedCard ||
+              previous.selectedBeneficiary != current.selectedBeneficiary ||
+              previous.amount != current.amount ||
+              previous.transactionFee != current.transactionFee ||
+              previous.content != current.content ||
+              previous.otpSent != current.otpSent ||
+              previous.otp != current.otp ||
+              previous.biometricAvailable != current.biometricAvailable ||
+              previous.biometricEnabled != current.biometricEnabled,
           builder: (context, state) {
             return GestureDetector(
               onTap: () => FocusManager.instance.primaryFocus?.unfocus(),

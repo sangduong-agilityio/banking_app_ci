@@ -12,6 +12,7 @@ import 'package:banking_app/features/transfer/presentation/views/add_new_benific
 import 'package:banking_app/features/transfer/presentation/views/directory_beneficiary_screen.dart';
 import 'package:banking_app/features/transfer/presentation/widgets/beneficiary_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// A widget for selecting a beneficiary.
@@ -44,79 +45,102 @@ class BeneficiarySelection extends StatelessWidget {
                     style: context.bodyMedium,
                   ),
                 )
-              : ReorderableListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  buildDefaultDragHandles: true,
-                  proxyDecorator: (child, index, animation) {
-                    return AnimatedBuilder(
-                      animation: animation,
-                      builder: (context, child) {
-                        final animValue =
-                            Curves.easeInOut.transform(animation.value);
-                        final scale = 1.0 + (animValue * 0.15);
-
-                        return Transform.scale(
-                          scale: scale,
-                          child: child,
-                        );
-                      },
-                      child: child,
-                    );
-                  },
-                  onReorder: (oldIndex, newIndex) {
-                    // Adjust indices because first item (index 0) is the Add button
-                    final adjustedOldIndex = oldIndex - 1;
-                    final adjustedNewIndex = newIndex - 1;
-
-                    // Only reorder if not trying to move to/from the Add button position
-                    if (adjustedOldIndex >= 0 && adjustedNewIndex >= 0) {
-                      context.read<TransferBloc>().add(
-                            ReorderBeneficiaryEvt(
-                              oldIndex: adjustedOldIndex,
-                              newIndex: adjustedNewIndex,
-                            ),
-                          );
-
-                      // Show success feedback
-                      BASnackBar.buildSuccessSnackbar(
-                        context,
-                        S.current.transferBeneficiaryOrderUpdated,
-                      );
-                    }
-                  },
-                  itemCount: state.filteredBeneficiaries.length + 1,
-                  itemBuilder: (context, index) {
+              : Row(
+                  children: [
                     // Add beneficiary card (first item, not reorderable)
-                    if (index == 0) {
-                      return Container(
-                        key: const ValueKey('add_beneficiary'),
-                        width: 90,
-                        margin: const EdgeInsets.only(right: 12),
-                        child: _AddBeneficiaryCard(banks: state.banks),
-                      );
-                    }
+                    Container(
+                      width: 90,
+                      margin: const EdgeInsets.only(right: 12),
+                      child: _AddBeneficiaryCard(banks: state.banks),
+                    ),
+                    // Reorderable beneficiaries list (separated for cleaner logic)
+                    Expanded(
+                      child: ReorderableListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        buildDefaultDragHandles: true,
+                        // Enhanced proxy decorator with elevation and shadow
+                        proxyDecorator: _buildDragProxyDecorator,
+                        onReorderStart: _handleReorderStart,
+                        onReorder: (oldIndex, newIndex) =>
+                            _handleReorder(context, oldIndex, newIndex),
+                        itemCount: state.filteredBeneficiaries.length,
+                        itemBuilder: (context, index) {
+                          final beneficiary = state.filteredBeneficiaries[index];
+                          final isSelected =
+                              state.selectedBeneficiary?.id == beneficiary.id;
 
-                    // Beneficiary cards (reorderable)
-                    final beneficiary =
-                        state.filteredBeneficiaries[index - 1];
-                    final isSelected =
-                        state.selectedBeneficiary?.id == beneficiary.id;
-
-                    return _DraggableBeneficiaryCard(
-                      key: ValueKey(beneficiary.id ?? index),
-                      beneficiary: beneficiary,
-                      isSelected: isSelected,
-                      onTap: () {
-                        context.read<TransferBloc>().add(
-                              SelectBeneficiaryEvt(beneficiary),
-                            );
-                        onBeneficiarySelected(beneficiary);
-                      },
-                    );
-                  },
+                          return _DraggableBeneficiaryCard(
+                            key: ValueKey(beneficiary.id ?? index),
+                            beneficiary: beneficiary,
+                            isSelected: isSelected,
+                            onTap: () {
+                              context.read<TransferBloc>().add(
+                                    SelectBeneficiaryEvt(beneficiary),
+                                  );
+                              onBeneficiarySelected(beneficiary);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
         ),
       ],
+    );
+  }
+
+  /// Builds enhanced drag proxy with elevation and shadow for better UX
+  Widget _buildDragProxyDecorator(
+    Widget child,
+    int index,
+    Animation<double> animation,
+  ) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        final animValue = Curves.easeInOut.transform(animation.value);
+        final scale = 1.0 + (animValue * 0.15);
+        final elevation = animValue * 8.0;
+
+        return Transform.scale(
+          scale: scale,
+          child: Material(
+            elevation: elevation,
+            borderRadius: BorderRadius.circular(12),
+            shadowColor: context.colorScheme.shadow.withOpacity(0.3),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+
+  /// Handles reorder start with haptic feedback
+  void _handleReorderStart(int index) {
+    HapticFeedback.mediumImpact();
+  }
+
+  /// Handles reorder with validation and user feedback
+  void _handleReorder(BuildContext context, int oldIndex, int newIndex) {
+    // Adjust newIndex if moving down (ReorderableListView behavior)
+    final adjustedNewIndex = newIndex > oldIndex ? newIndex - 1 : newIndex;
+
+    context.read<TransferBloc>().add(
+          ReorderBeneficiaryEvt(
+            oldIndex: oldIndex,
+            newIndex: adjustedNewIndex,
+          ),
+        );
+
+    // Haptic feedback on successful reorder
+    HapticFeedback.lightImpact();
+
+    // Show success feedback
+    BASnackBar.buildSuccessSnackbar(
+      context,
+      S.current.transferBeneficiaryOrderUpdated,
     );
   }
 }

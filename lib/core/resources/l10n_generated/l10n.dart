@@ -1954,6 +1954,56 @@ class S {
     );
   }
 
+  /// `Failed to load initial data`
+  String get transferErrorLoadInitialData {
+    return Intl.message(
+      'Failed to load initial data',
+      name: 'transferErrorLoadInitialData',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to add beneficiary`
+  String get transferErrorAddBeneficiary {
+    return Intl.message(
+      'Failed to add beneficiary',
+      name: 'transferErrorAddBeneficiary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failed to send OTP`
+  String get transferErrorSendOtp {
+    return Intl.message(
+      'Failed to send OTP',
+      name: 'transferErrorSendOtp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred.`
+  String get transferErrorUnexpected {
+    return Intl.message(
+      'An unexpected error occurred.',
+      name: 'transferErrorUnexpected',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred during biometric authentication.`
+  String get transferErrorBiometricAuthFailed {
+    return Intl.message(
+      'An unexpected error occurred during biometric authentication.',
+      name: 'transferErrorBiometricAuthFailed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Invalid email or password. Please try again.`
   String get authErrorInvalidCredentials {
     return Intl.message(
