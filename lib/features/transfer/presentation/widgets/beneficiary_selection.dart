@@ -49,7 +49,7 @@ class BeneficiarySelection extends StatelessWidget {
                   children: [
                     // Add beneficiary card (first item, not reorderable)
                     Container(
-                      width: 90,
+                      width: 100,
                       margin: const EdgeInsets.only(right: 12),
                       child: _AddBeneficiaryCard(banks: state.banks),
                     ),
@@ -57,7 +57,7 @@ class BeneficiarySelection extends StatelessWidget {
                     Expanded(
                       child: ReorderableListView.builder(
                         scrollDirection: Axis.horizontal,
-                        buildDefaultDragHandles: true,
+                        buildDefaultDragHandles: false,
                         // Enhanced proxy decorator with elevation and shadow
                         proxyDecorator: _buildDragProxyDecorator,
                         onReorderStart: _handleReorderStart,
@@ -69,16 +69,19 @@ class BeneficiarySelection extends StatelessWidget {
                           final isSelected =
                               state.selectedBeneficiary?.id == beneficiary.id;
 
-                          return _DraggableBeneficiaryCard(
+                          return ReorderableDelayedDragStartListener(
                             key: ValueKey(beneficiary.id ?? index),
-                            beneficiary: beneficiary,
-                            isSelected: isSelected,
-                            onTap: () {
-                              context.read<TransferBloc>().add(
-                                    SelectBeneficiaryEvt(beneficiary),
-                                  );
-                              onBeneficiarySelected(beneficiary);
-                            },
+                            index: index,
+                            child: _DraggableBeneficiaryCard(
+                              beneficiary: beneficiary,
+                              isSelected: isSelected,
+                              onTap: () {
+                                context.read<TransferBloc>().add(
+                                      SelectBeneficiaryEvt(beneficiary),
+                                    );
+                                onBeneficiarySelected(beneficiary);
+                              },
+                            ),
                           );
                         },
                       ),
@@ -245,7 +248,6 @@ class BeneficiaryAvatar extends StatelessWidget {
 /// Draggable beneficiary card for reorderable list
 class _DraggableBeneficiaryCard extends StatelessWidget {
   const _DraggableBeneficiaryCard({
-    required super.key,
     required this.beneficiary,
     required this.isSelected,
     required this.onTap,
@@ -258,11 +260,12 @@ class _DraggableBeneficiaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90,
+      width: 100,
       margin: const EdgeInsets.only(right: 12),
       child: Material(
         type: MaterialType.transparency,
         child: BeneficiaryCard(
+          width: 100,
           isSelected: isSelected,
           onTap: onTap,
           child: Column(

@@ -1,4 +1,5 @@
 import 'package:banking_app/app/router/router_guard.dart';
+import 'package:banking_app/core/observers/debug_navigation_observer.dart';
 import 'package:banking_app/core/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
@@ -15,6 +16,7 @@ import 'package:banking_app/features/search/presentation/views/search_screen.dar
 import 'package:banking_app/features/setting/presentation/views/setting_screen.dart';
 import 'package:banking_app/features/transactions/presentation/views/transaction_report_screen.dart';
 import 'package:banking_app/features/transfer/presentation/views/transfer_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,9 +27,12 @@ class BAAppRouter {
   static final messageNavigatorKey = GlobalKey<NavigatorState>();
   static final settingNavigatorKey = GlobalKey<NavigatorState>();
 
+  static final _debugObserver = DebugNavigationObserver();
+
   static final router = GoRouter(
     initialLocation: BAPaths.signIn.path,
     navigatorKey: rootNavigatorKey,
+    observers: kDebugMode ? [_debugObserver] : [],
     routes: [
       GoRoute(
         path: BAPaths.signIn.path,
@@ -146,8 +151,20 @@ class BAAppRouter {
         ],
       ),
     ],
-    redirect: (context, state) => RouterGuard.authGuard(context, state),
-    errorBuilder: (context, state) => const NotFoundScreen(),
+    redirect: (context, state) {
+      // Log redirect events
+      if (kDebugMode) {
+        debugPrint('[NAV] REDIRECT: ${state.matchedLocation}');
+      }
+      return RouterGuard.authGuard(context, state);
+    },
+    errorBuilder: (context, state) {
+      // Log errors
+      if (kDebugMode) {
+        debugPrint('[NAV]ERROR: ${state.error} at ${state.matchedLocation}');
+      }
+      return const NotFoundScreen();
+    },
   );
 }
 
