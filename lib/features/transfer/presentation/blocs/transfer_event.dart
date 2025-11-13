@@ -223,3 +223,18 @@ class BiometricErrorMessageEvt extends TransferEvt {
   @override
   List<Object?> get props => [];
 }
+
+/// Event to reorder beneficiaries.
+class ReorderBeneficiaryEvt extends TransferEvt {
+  const ReorderBeneficiaryEvt({
+    required this.oldIndex,
+    required this.newIndex,
+  });
+
+  final int oldIndex;
+  final int newIndex;
+
+  @override
+  List<Object?> get props => [oldIndex, newIndex];
+}
+

@@ -54,6 +54,11 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(24),
           child: BlocBuilder<TransferBloc, TransferState>(
+            buildWhen: (previous, current) =>
+                previous.selectedAccount != current.selectedAccount ||
+                previous.viaCardBeneficiaries != current.viaCardBeneficiaries ||
+                previous.sameBankBeneficiaries != current.sameBankBeneficiaries ||
+                previous.otherBankBeneficiaries != current.otherBankBeneficiaries,
             builder: (context, state) {
               final userAccount = state.selectedAccount;
               if (userAccount == null) {
@@ -130,6 +135,9 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
       context: context,
       builder: (_) => BlocBuilder<TransferBloc, TransferState>(
         bloc: transferBloc,
+        buildWhen: (previous, current) =>
+            previous.filteredBeneficiaries != current.filteredBeneficiaries ||
+            previous.beneficiaries != current.beneficiaries,
         builder: (context, state) {
           final items = state.filteredBeneficiaries.isNotEmpty
               ? state.filteredBeneficiaries
