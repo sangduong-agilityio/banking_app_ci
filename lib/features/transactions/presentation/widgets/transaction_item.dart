@@ -40,6 +40,7 @@ class TransactionItem extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 if (title != null)
                   Text(
@@ -47,6 +48,8 @@ class TransactionItem extends StatelessWidget {
                     style: context.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 if (subtitle != null) ...[
                   const SizedBox(height: 2),
@@ -56,6 +59,8 @@ class TransactionItem extends StatelessWidget {
                       color: context.colorScheme.inverseSurface,
                       fontWeight: FontWeight.w400,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ],
