@@ -35,6 +35,9 @@ class TransactionTypeSelection extends StatelessWidget {
     ];
 
     return BlocBuilder<TransferBloc, TransferState>(
+      buildWhen: (previous, current) =>
+          previous.selectedTransferType != current.selectedTransferType ||
+          previous.selectedCard != current.selectedCard,
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

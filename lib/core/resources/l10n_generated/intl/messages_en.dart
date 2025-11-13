@@ -439,6 +439,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferBeneficiaryBank": MessageLookupByLibrary.simpleMessage(
       "Beneficiary bank",
     ),
+    "transferBeneficiaryOrderUpdated": MessageLookupByLibrary.simpleMessage(
+      "Beneficiary order updated",
+    ),
     "transferBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Beneficiary",
     ),
@@ -470,8 +473,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferEnterOtpCodeTitle": MessageLookupByLibrary.simpleMessage(
       "Please enter the OTP code",
     ),
+    "transferErrorAddBeneficiary": MessageLookupByLibrary.simpleMessage(
+      "Failed to add beneficiary",
+    ),
     "transferErrorAuthenticationRequired": MessageLookupByLibrary.simpleMessage(
       "Please complete authentication before confirming transfer.",
+    ),
+    "transferErrorBiometricAuthFailed": MessageLookupByLibrary.simpleMessage(
+      "An unexpected error occurred during biometric authentication.",
     ),
     "transferErrorBiometricFailed": MessageLookupByLibrary.simpleMessage(
       "Biometric authentication failed",
@@ -482,14 +491,23 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferErrorCalculateFee": MessageLookupByLibrary.simpleMessage(
       "Failed to calculate transaction fee",
     ),
+    "transferErrorLoadInitialData": MessageLookupByLibrary.simpleMessage(
+      "Failed to load initial data",
+    ),
     "transferErrorNoPendingTransaction": MessageLookupByLibrary.simpleMessage(
       "No pending transfer found to confirm.",
     ),
     "transferErrorOtpInvalid": MessageLookupByLibrary.simpleMessage(
       "Invalid OTP. Please try again",
     ),
+    "transferErrorSendOtp": MessageLookupByLibrary.simpleMessage(
+      "Failed to send OTP",
+    ),
     "transferErrorTransferFailed": MessageLookupByLibrary.simpleMessage(
       "Transfer failed. Please try again.",
+    ),
+    "transferErrorUnexpected": MessageLookupByLibrary.simpleMessage(
+      "An unexpected error occurred.",
     ),
     "transferFindBeneficiaryTitle": MessageLookupByLibrary.simpleMessage(
       "Find Beneficiary",
