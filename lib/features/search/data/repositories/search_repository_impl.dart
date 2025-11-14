@@ -44,10 +44,10 @@ class SearchRepositoryImpl implements SearchRepository {
 
     try {
       final rates = await _retry<List<ExchangeRateModel>>(() async {
-        final apiUrl = '${Env.endPoint}exchange_rates';
+        final apiUrl = '${Env.endPoint}/exchange_rates';
         final response = await _client.get(
           apiUrl,
-          queryParams: {'select': 'country,flag,buy,sell,base,target,rate'},
+          queryParams: {'select': 'country,flag,buy,sell'},
         );
 
         final jsonData = response.data;
@@ -88,7 +88,7 @@ class SearchRepositoryImpl implements SearchRepository {
   Future<List<InterestRateModel>> fetchInterestRates() async {
     try {
       final rates = await _retry<List<InterestRateModel>>(() async {
-        final apiUrl = '${Env.endPoint}interest_rates';
+        final apiUrl = '${Env.endPoint}/interest_rates';
         final response = await _client.get(
           apiUrl,
           queryParams: {'select': 'id,type,period,rate'},
@@ -122,7 +122,7 @@ class SearchRepositoryImpl implements SearchRepository {
   }) async {
     try {
       final exchange = await _retry<ExchangeModel>(() async {
-        final apiUrl = '${Env.endPoint}exchange';
+        final apiUrl = '${Env.endPoint}/exchange';
 
         final response = await _client.get(
           apiUrl,
@@ -181,7 +181,7 @@ class SearchRepositoryImpl implements SearchRepository {
   Future<List<CurrencyModel>> fetchCurrencies() async {
     try {
       final currencies = await _retry<List<CurrencyModel>>(() async {
-        final apiUrl = '${Env.endPoint}currencies';
+        final apiUrl = '${Env.endPoint}/currencies';
         final response = await _client.get(
           apiUrl,
           queryParams: {'select': 'code,name'},
