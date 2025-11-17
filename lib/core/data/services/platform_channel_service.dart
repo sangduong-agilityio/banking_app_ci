@@ -43,4 +43,18 @@ class PlatformChannelService {
       throw 'Failed to send data: ${e.message}';
     }
   }
+
+  /// Send "Hello World" to native and receive response
+  /// Returns a greeting message from native platform
+  Future<String> sendHelloWorld() async {
+    try {
+      final String response = await _channel.invokeMethod('sendHelloWorld', {
+        'message': 'Hello World',
+        'fromFlutter': true,
+      });
+      return response;
+    } on PlatformException catch (e) {
+      throw 'Failed to send Hello World: ${e.message}';
+    }
+  }
 }

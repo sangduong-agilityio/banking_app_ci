@@ -56,6 +56,26 @@ import UIKit
                     ))
                 }
                 
+            case "sendHelloWorld":
+                // Receive Hello World from Flutter
+                if let args = call.arguments as? [String: Any],
+                   let message = args["message"] as? String,
+                   let fromFlutter = args["fromFlutter"] as? Bool {
+                    
+                    // Process and send response back to Flutter
+                    let response = fromFlutter 
+                        ? "iOS says: Received '\(message)' from Flutter!"
+                        : "iOS says: Hello!"
+                    
+                    result(response)
+                } else {
+                    result(FlutterError(
+                        code: "INVALID_ARGUMENT",
+                        message: "Invalid arguments for sendHelloWorld",
+                        details: nil
+                    ))
+                }
+                
             default:
                 result(FlutterMethodNotImplemented)
             }

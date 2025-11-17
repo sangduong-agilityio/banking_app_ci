@@ -20,6 +20,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
   
   String _systemVersion = 'Unknown';
   int _batteryLevel = 0;
+  String _helloWorldResponse = '';
   bool _isLoading = false;
 
   @override
@@ -66,6 +67,38 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
             content: Text(
               S.current.platformChannelErrorMessage(e.toString()),
             ),
+            backgroundColor: context.colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _sendHelloWorld() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final response = await _platformService.sendHelloWorld();
+      setState(() {
+        _helloWorldResponse = response;
+        _isLoading = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Native Response: $response'),
+            backgroundColor: context.colorScheme.secondary,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
             backgroundColor: context.colorScheme.error,
           ),
         );
@@ -214,6 +247,65 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
               ),
             ),
             
+            const SizedBox(height: 16),
+            
+            // Hello World Card
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hello World Demo',
+                      style: context.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: context.colorScheme.secondary,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.message_outlined,
+                          size: 24,
+                          color: context.colorScheme.secondary,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Native Response',
+                                style: context.bodySmall?.copyWith(
+                                  color: context.colorScheme.scrim.withOpacity(0.6),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _helloWorldResponse.isEmpty 
+                                    ? 'Not sent yet' 
+                                    : _helloWorldResponse,
+                                style: context.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: context.colorScheme.scrim,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            
             const SizedBox(height: 24),
             
             // Action Buttons
@@ -230,6 +322,14 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
               height: 50,
               text: S.current.platformChannelGetBatteryButton,
               onPressed: _isLoading ? null : _getBatteryLevel,
+            ),
+            
+            const SizedBox(height: 12),
+            
+            BAElevatedButton(
+              height: 50,
+              text: 'Send Hello World',
+              onPressed: _isLoading ? null : _sendHelloWorld,
             ),
             
             const SizedBox(height: 24),

@@ -39,6 +39,20 @@ class MainActivity : FlutterFragmentActivity() {
                     val processedData = "Processed: $inputData at $timestamp"
                     result.success(processedData)
                 }
+                "sendHelloWorld" -> {
+                    // Receive Hello World from Flutter
+                    val message = call.argument<String>("message")
+                    val fromFlutter = call.argument<Boolean>("fromFlutter") ?: false
+                    
+                    // Process and send response back to Flutter
+                    val response = if (fromFlutter) {
+                        "Android says: Received '$message' from Flutter!"
+                    } else {
+                        "Android says: Hello!"
+                    }
+                    
+                    result.success(response)
+                }
                 else -> {
                     result.notImplemented()
                 }
