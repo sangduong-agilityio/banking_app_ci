@@ -2214,6 +2214,116 @@ class S {
     );
   }
 
+  /// `Platform Channel Demo`
+  String get platformChannelTitle {
+    return Intl.message(
+      'Platform Channel Demo',
+      name: 'platformChannelTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `System Information`
+  String get platformChannelSystemInfoTitle {
+    return Intl.message(
+      'System Information',
+      name: 'platformChannelSystemInfoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Battery Information`
+  String get platformChannelBatteryInfoTitle {
+    return Intl.message(
+      'Battery Information',
+      name: 'platformChannelBatteryInfoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OS Version`
+  String get platformChannelOsVersionLabel {
+    return Intl.message(
+      'OS Version',
+      name: 'platformChannelOsVersionLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Battery Level`
+  String get platformChannelBatteryLevelLabel {
+    return Intl.message(
+      'Battery Level',
+      name: 'platformChannelBatteryLevelLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not checked`
+  String get platformChannelNotChecked {
+    return Intl.message(
+      'Not checked',
+      name: 'platformChannelNotChecked',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refresh System Version`
+  String get platformChannelRefreshButton {
+    return Intl.message(
+      'Refresh System Version',
+      name: 'platformChannelRefreshButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get Battery Level`
+  String get platformChannelGetBatteryButton {
+    return Intl.message(
+      'Get Battery Level',
+      name: 'platformChannelGetBatteryButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This demo uses Platform Channels to communicate with native Android/iOS code.`
+  String get platformChannelInfoMessage {
+    return Intl.message(
+      'This demo uses Platform Channels to communicate with native Android/iOS code.',
+      name: 'platformChannelInfoMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Battery Level: {level}%`
+  String platformChannelBatteryLevelSnackbar(int level) {
+    return Intl.message(
+      'Battery Level: $level%',
+      name: 'platformChannelBatteryLevelSnackbar',
+      desc: '',
+      args: [level],
+    );
+  }
+
+  /// `Error: {error}`
+  String platformChannelErrorMessage(String error) {
+    return Intl.message(
+      'Error: $error',
+      name: 'platformChannelErrorMessage',
+      desc: '',
+      args: [error],
+    );
+  }
+
   /// `1 {fromCurrency} = {rate} {toCurrency}`
   String searchExchangeRate(
     String fromCurrency,

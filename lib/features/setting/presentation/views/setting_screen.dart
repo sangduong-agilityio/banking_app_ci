@@ -133,6 +133,13 @@ class SettingContent extends StatelessWidget {
                       },
                     ),
                     SettingSelection(
+                      title:S.current.platformChannelTitle,
+                      textColor: context.colorScheme.inverseSurface,
+                      onTap: () {
+                        context.pushNamed(BAPaths.platformChannelDemo.name);
+                      },
+                    ),
+                    SettingSelection(
                       title: S.current.settingCustomerCareTitle,
                       subtitle: S.current.settingCustomerCareSubtitle,
                       textColor: context.colorScheme.inverseSurface,

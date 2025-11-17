@@ -30,16 +30,20 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(type) => "${type} fee";
 
-  static String m5(type) => "Cached data • Updated: ${type}";
+  static String m5(level) => "Battery Level: ${level}%";
 
-  static String m6(fromCurrency, rate, toCurrency) =>
+  static String m6(error) => "Error: ${error}";
+
+  static String m7(type) => "Cached data • Updated: ${type}";
+
+  static String m8(fromCurrency, rate, toCurrency) =>
       "1 ${fromCurrency} = ${rate} ${toCurrency}";
 
-  static String m7(type) => "Fresh data • Updated: ${type}";
+  static String m9(type) => "Fresh data • Updated: ${type}";
 
-  static String m8(type) => "Offline rate ${type}";
+  static String m10(type) => "Offline rate ${type}";
 
-  static String m9(type) => "Available balance: ${type}";
+  static String m11(type) => "Available balance: ${type}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -241,13 +245,42 @@ class MessageLookup extends MessageLookupByLibrary {
       "Pay water bill this month",
     ),
     "payBillWaterTitle": MessageLookupByLibrary.simpleMessage("Water bill"),
+    "platformChannelBatteryInfoTitle": MessageLookupByLibrary.simpleMessage(
+      "Battery Information",
+    ),
+    "platformChannelBatteryLevelLabel": MessageLookupByLibrary.simpleMessage(
+      "Battery Level",
+    ),
+    "platformChannelBatteryLevelSnackbar": m5,
+    "platformChannelErrorMessage": m6,
+    "platformChannelGetBatteryButton": MessageLookupByLibrary.simpleMessage(
+      "Get Battery Level",
+    ),
+    "platformChannelInfoMessage": MessageLookupByLibrary.simpleMessage(
+      "This demo uses Platform Channels to communicate with native Android/iOS code.",
+    ),
+    "platformChannelNotChecked": MessageLookupByLibrary.simpleMessage(
+      "Not checked",
+    ),
+    "platformChannelOsVersionLabel": MessageLookupByLibrary.simpleMessage(
+      "OS Version",
+    ),
+    "platformChannelRefreshButton": MessageLookupByLibrary.simpleMessage(
+      "Refresh System Version",
+    ),
+    "platformChannelSystemInfoTitle": MessageLookupByLibrary.simpleMessage(
+      "System Information",
+    ),
+    "platformChannelTitle": MessageLookupByLibrary.simpleMessage(
+      "Platform Channel Demo",
+    ),
     "searchAmoutTitle": MessageLookupByLibrary.simpleMessage("Amount"),
     "searchBranchDescription": MessageLookupByLibrary.simpleMessage(
       "Search for branch",
     ),
     "searchBranchSelectedTitle": MessageLookupByLibrary.simpleMessage("Branch"),
     "searchBuyTitle": MessageLookupByLibrary.simpleMessage("Buy"),
-    "searchCachedDataTitle": m5,
+    "searchCachedDataTitle": m7,
     "searchCancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
     "searchContinueButton": MessageLookupByLibrary.simpleMessage("Continue"),
     "searchCountryTitle": MessageLookupByLibrary.simpleMessage("Country"),
@@ -262,7 +295,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchExchangeDescription": MessageLookupByLibrary.simpleMessage(
       "Exchange amount of money",
     ),
-    "searchExchangeRate": m6,
+    "searchExchangeRate": m8,
     "searchExchangeRateDescription": MessageLookupByLibrary.simpleMessage(
       "Search for exchange rate",
     ),
@@ -271,7 +304,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "searchExchangeTitle": MessageLookupByLibrary.simpleMessage("Exchange"),
     "searchFormTitle": MessageLookupByLibrary.simpleMessage("From"),
-    "searchFreshDataTitle": m7,
+    "searchFreshDataTitle": m9,
     "searchInterestKindTitle": MessageLookupByLibrary.simpleMessage(
       "Interest kind",
     ),
@@ -289,7 +322,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "searchOfflineExchangeTitle": MessageLookupByLibrary.simpleMessage(
       "Offline Exchange",
     ),
-    "searchOfflineRateTitle": m8,
+    "searchOfflineRateTitle": m10,
     "searchPerformExchangeStatusOffline": MessageLookupByLibrary.simpleMessage(
       "Transaction completed with offline rate",
     ),
@@ -435,7 +468,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "transferAnotherBankTitle": MessageLookupByLibrary.simpleMessage(
       "Transfer to another bank",
     ),
-    "transferAvailableBalanceTitle": m9,
+    "transferAvailableBalanceTitle": m11,
     "transferBeneficiaryBank": MessageLookupByLibrary.simpleMessage(
       "Beneficiary bank",
     ),
