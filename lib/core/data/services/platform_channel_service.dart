@@ -57,4 +57,37 @@ class PlatformChannelService {
       throw 'Failed to send Hello World: ${e.message}';
     }
   }
+
+  /// Check if biometric authentication is available
+  /// Returns true if device has biometric hardware and enrolled biometrics
+  Future<bool> isBiometricAvailable() async {
+    try {
+      final bool isAvailable = await _channel.invokeMethod('isBiometricAvailable');
+      return isAvailable;
+    } on PlatformException catch (e) {
+      throw 'Failed to check biometric availability: ${e.message}';
+    }
+  }
+
+  /// Authenticate using biometric (fingerprint/face)
+  /// Returns true if authentication successful, false otherwise
+  Future<Map<String, dynamic>> authenticateWithBiometric({
+    String reason = 'Please authenticate to continue',
+  }) async {
+    try {
+      final Map<dynamic, dynamic> result = await _channel.invokeMethod(
+        'authenticateWithBiometric',
+        {'reason': reason},
+      );
+      return {
+        'success': result['success'] as bool,
+        'message': result['message'] as String,
+      };
+    } on PlatformException catch (e) {
+      return {
+        'success': false,
+        'message': 'Authentication failed: ${e.message}',
+      };
+    }
+  }
 }

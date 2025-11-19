@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import LocalAuthentication
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -76,6 +77,18 @@ import UIKit
                     ))
                 }
                 
+            case "isBiometricAvailable":
+                let isAvailable = self.isBiometricAvailable()
+                result(isAvailable)
+                
+            case "authenticateWithBiometric":
+                if let args = call.arguments as? [String: Any],
+                   let reason = args["reason"] as? String {
+                    self.authenticateWithBiometric(reason: reason, result: result)
+                } else {
+                    self.authenticateWithBiometric(reason: "Authenticate to continue", result: result)
+                }
+                
             default:
                 result(FlutterMethodNotImplemented)
             }
@@ -109,6 +122,49 @@ import UIKit
         } else {
             let batteryLevel = Int(device.batteryLevel * 100)
             return batteryLevel
+        }
+    }
+    
+    /**
+     * Check if biometric authentication is available
+     */
+    private func isBiometricAvailable() -> Bool {
+        let context = LAContext()
+        var error: NSError?
+        
+        return context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+    }
+    
+    /**
+     * Authenticate using biometric (Face ID / Touch ID)
+     */
+    private func authenticateWithBiometric(reason: String, result: @escaping FlutterResult) {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        result([
+                            "success": true,
+                            "message": "Authentication successful! 🎉"
+                        ])
+                    } else {
+                        let errorMessage = authenticationError?.localizedDescription ?? "Authentication failed"
+                        result([
+                            "success": false,
+                            "message": "Authentication error: \(errorMessage)"
+                        ])
+                    }
+                }
+            }
+        } else {
+            let errorMessage = error?.localizedDescription ?? "Biometric authentication not available"
+            result([
+                "success": false,
+                "message": errorMessage
+            ])
         }
     }
 }
