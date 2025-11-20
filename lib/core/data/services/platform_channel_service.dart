@@ -52,7 +52,7 @@ class PlatformChannelService {
         'message': 'Hello World',
         'fromFlutter': true,
       });
-      return response;
+      return response;  
     } on PlatformException catch (e) {
       throw 'Failed to send Hello World: ${e.message}';
     }
@@ -88,6 +88,29 @@ class PlatformChannelService {
         'success': false,
         'message': 'Authentication failed: ${e.message}',
       };
+    }
+  }
+
+  /// Add app shortcuts dynamically
+  /// Shortcuts appear when long-pressing the app icon
+  Future<void> addAppShortcuts(List<Map<String, String>> shortcuts) async {
+    try {
+      await _channel.invokeMethod('addAppShortcuts', {
+        'shortcuts': shortcuts,
+      });
+    } on PlatformException catch (e) {
+      throw 'Failed to add app shortcuts: ${e.message}';
+    }
+  }
+
+  /// Get the shortcut action that launched the app
+  /// Returns shortcut ID or null if app was launched normally
+  Future<String?> getShortcutAction() async {
+    try {
+      final String? action = await _channel.invokeMethod('getShortcutAction');
+      return action;
+    } on PlatformException catch (e) {
+      throw 'Failed to get shortcut action: ${e.message}';
     }
   }
 }

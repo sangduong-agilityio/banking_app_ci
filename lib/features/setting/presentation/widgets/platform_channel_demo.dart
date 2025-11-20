@@ -23,6 +23,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
   String _helloWorldResponse = '';
   bool _isBiometricAvailable = false;
   String _biometricResult = '';
+  String _shortcutResult = 'No shortcut used';
   bool _isLoading = false;
 
   @override
@@ -30,6 +31,8 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
     super.initState();
     _getSystemVersion();
     _checkBiometricAvailability();
+    _setupAppShortcuts();
+    _checkShortcutLaunch();
   }
 
   Future<void> _getSystemVersion() async {
@@ -156,6 +159,46 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> _setupAppShortcuts() async {
+    try {
+      await _platformService.addAppShortcuts([
+        {
+          'id': 'quick_transfer',
+          'label': 'Quick Transfer',
+          'icon': 'ic_send',
+        },
+        {
+          'id': 'check_balance',
+          'label': 'Check Balance',
+          'icon': 'ic_account',
+        },
+      ]);
+    } catch (e) {
+      // Silent fail - shortcuts are optional
+      debugPrint('Failed to setup shortcuts: $e');
+    }
+  }
+
+  Future<void> _checkShortcutLaunch() async {
+    try {
+      final action = await _platformService.getShortcutAction();
+      if (action != null && mounted) {
+        setState(() {
+          _shortcutResult = 'Launched from: $action';
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('App launched from shortcut: $action'),
+            backgroundColor: context.colorScheme.secondary,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Failed to check shortcut: $e');
     }
   }
 
@@ -423,6 +466,71 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                     ),
                                   ),
                                 ],
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // App Shortcuts Card
+              Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'App Shortcuts',
+                        style: context.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: context.colorScheme.secondary,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.touch_app,
+                            size: 24,
+                            color: context.colorScheme.secondary,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Long press app icon',
+                                  style: context.bodySmall?.copyWith(
+                                    color: context.colorScheme.scrim.withOpacity(0.6),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  _shortcutResult,
+                                  style: context.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: context.colorScheme.scrim,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  '• Quick Transfer\n• Check Balance',
+                                  style: context.bodySmall?.copyWith(
+                                    color: context.colorScheme.secondary,
+                                    height: 1.5,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

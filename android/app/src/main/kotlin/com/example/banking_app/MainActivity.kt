@@ -3,8 +3,12 @@ package com.example.banking_app
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.drawable.Icon
 import android.os.BatteryManager
 import android.os.Build
+import android.util.Log
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -15,61 +19,118 @@ import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.Executor
 
 class MainActivity : FlutterFragmentActivity() {
+    companion object {
+        private const val TAG = "PlatformChannel"
+    }
+    
     // Define the channel name (must match the Dart side)
     private val CHANNEL = "system_info"
+    private var shortcutAction: String? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        Log.d(TAG, "Configuring Flutter engine and setting up MethodChannel")
 
         // Set up the MethodChannel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+            val startTime = System.currentTimeMillis()
+            Log.i(TAG, "Method called: ${call.method}")
+            
             when (call.method) {
                 "getSystemVersion" -> {
+                    Log.d(TAG, "Getting system version...")
                     val version = getSystemVersion()
+                    Log.d(TAG, "System version: $version")
                     result.success(version)
                 }
                 "getBatteryLevel" -> {
+                    Log.d(TAG, "Getting battery level...")
                     val batteryLevel = getBatteryLevel()
                     if (batteryLevel != -1) {
+                        Log.d(TAG, "Battery level: $batteryLevel%")
                         result.success(batteryLevel)
                     } else {
+                        Log.e(TAG, "Battery level unavailable")
                         result.error("UNAVAILABLE", "Battery level not available.", null)
                     }
                 }
                 "processData" -> {
-                    // Example of receiving arguments from Dart
                     val inputData = call.argument<String>("inputData")
                     val timestamp = call.argument<Long>("timestamp")
+                    Log.d(TAG, "Processing data: $inputData at $timestamp")
                     
                     val processedData = "Processed: $inputData at $timestamp"
                     result.success(processedData)
                 }
                 "sendHelloWorld" -> {
-                    // Receive Hello World from Flutter
                     val message = call.argument<String>("message")
                     val fromFlutter = call.argument<Boolean>("fromFlutter") ?: false
+                    Log.d(TAG, "Received Hello World: message='$message', fromFlutter=$fromFlutter")
                     
-                    // Process and send response back to Flutter
                     val response = if (fromFlutter) {
                         "Android says: Received '$message' from Flutter!"
                     } else {
                         "Android says: Hello!"
                     }
-                    
+                    Log.d(TAG, "Sending response: $response")
                     result.success(response)
                 }
                 "isBiometricAvailable" -> {
+                    Log.d(TAG, "Checking biometric availability...")
                     val isAvailable = isBiometricAvailable()
+                    Log.i(TAG, "Biometric available: $isAvailable")
                     result.success(isAvailable)
                 }
                 "authenticateWithBiometric" -> {
                     val reason = call.argument<String>("reason") ?: "Authenticate to continue"
+                    Log.i(TAG, "Starting biometric authentication with reason: $reason")
                     authenticateWithBiometric(reason, result)
                 }
+                "addAppShortcuts" -> {
+                    val shortcuts = call.argument<List<Map<String, String>>>("shortcuts")
+                    Log.d(TAG, "Adding ${shortcuts?.size ?: 0} app shortcuts")
+                    if (shortcuts != null) {
+                        addAppShortcuts(shortcuts)
+                        Log.i(TAG, "App shortcuts added successfully")
+                        result.success(null)
+                    } else {
+                        Log.e(TAG, "Shortcuts list is null")
+                        result.error("INVALID_ARGUMENT", "Shortcuts list is null", null)
+                    }
+                }
+                "getShortcutAction" -> {
+                    Log.d(TAG, "Getting shortcut action: $shortcutAction")
+                    result.success(shortcutAction)
+                    shortcutAction = null
+                }
                 else -> {
+                    Log.w(TAG, "Method not implemented: ${call.method}")
                     result.notImplemented()
                 }
             }
+            
+            val duration = System.currentTimeMillis() - startTime
+            Log.i(TAG, "Method '${call.method}' completed in ${duration}ms")
+        }
+    }
+
+    override fun onCreate(savedInstanceState: android.os.Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.i(TAG, "MainActivity onCreate")
+        handleShortcutIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        Log.i(TAG, "MainActivity onNewIntent")
+        handleShortcutIntent(intent)
+    }
+
+    private fun handleShortcutIntent(intent: Intent) {
+        val action = intent.getStringExtra("shortcut_action")
+        if (action != null) {
+            Log.i(TAG, "Shortcut action detected: $action")
+            shortcutAction = action
         }
     }
 
@@ -110,11 +171,13 @@ class MainActivity : FlutterFragmentActivity() {
      * Authenticate using biometric
      */
     private fun authenticateWithBiometric(reason: String, result: MethodChannel.Result) {
+        Log.d(TAG, "Setting up biometric prompt...")
         val executor: Executor = ContextCompat.getMainExecutor(this)
         val biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
+                    Log.e(TAG, "Biometric authentication error: $errString (code: $errorCode)")
                     result.success(mapOf(
                         "success" to false,
                         "message" to "Authentication error: $errString"
@@ -123,15 +186,16 @@ class MainActivity : FlutterFragmentActivity() {
 
                 override fun onAuthenticationSucceeded(authResult: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(authResult)
+                    Log.i(TAG, "Biometric authentication succeeded!")
                     result.success(mapOf(
                         "success" to true,
-                        "message" to "Authentication successful! 🎉"
+                        "message" to "Authentication successful!"
                     ))
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    // Don't call result here - let user try again
+                    Log.w(TAG, "Biometric authentication failed (user can retry)")
                 }
             })
 
@@ -141,6 +205,40 @@ class MainActivity : FlutterFragmentActivity() {
             .setNegativeButtonText("Cancel")
             .build()
 
+        Log.d(TAG, "Showing biometric prompt to user...")
         biometricPrompt.authenticate(promptInfo)
+    }
+
+    /**
+     * Add dynamic app shortcuts
+     */
+    private fun addAppShortcuts(shortcuts: List<Map<String, String>>) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            Log.d(TAG, "Creating ${shortcuts.size} dynamic shortcuts...")
+            val shortcutManager = getSystemService(ShortcutManager::class.java)
+            val shortcutInfoList = shortcuts.mapIndexed { index, shortcut ->
+                val id = shortcut["id"] ?: "shortcut_$index"
+                val label = shortcut["label"] ?: "Shortcut"
+                val icon = shortcut["icon"] ?: "ic_launcher"
+                
+                Log.d(TAG, "  - Creating shortcut: id=$id, label=$label")
+                
+                val intent = Intent(this, MainActivity::class.java)
+                intent.action = Intent.ACTION_VIEW
+                intent.putExtra("shortcut_action", id)
+                
+                ShortcutInfo.Builder(this, id)
+                    .setShortLabel(label)
+                    .setLongLabel(label)
+                    .setIcon(Icon.createWithResource(this, android.R.drawable.ic_menu_send))
+                    .setIntent(intent)
+                    .build()
+            }
+            
+            shortcutManager?.dynamicShortcuts = shortcutInfoList
+            Log.i(TAG, "${shortcutInfoList.size} shortcuts registered with ShortcutManager")
+        } else {
+            Log.w(TAG, "Dynamic shortcuts not supported on API ${Build.VERSION.SDK_INT}")
+        }
     }
 }
