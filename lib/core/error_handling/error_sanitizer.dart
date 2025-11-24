@@ -2,7 +2,7 @@ import 'package:banking_app/core/error_handling/failure.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:dio/dio.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 /// A utility class for sanitizing and logging errors securely.
 class ErrorSanitizer {
@@ -135,7 +135,7 @@ class ErrorSanitizer {
     return S.current.applicationErrorGeneric;
   }
 
-  /// Logs errors securely to Sentry with context sanitization.
+  /// Logs errors securely to Firebase Crashlytics with context sanitization.
   static Future<void> logSecureError(
     Object error,
     StackTrace? stackTrace, {
@@ -145,32 +145,38 @@ class ErrorSanitizer {
   }) async {
     final sanitizedContext = _sanitizeContext(context);
 
-    // Log to Sentry with sanitized details
-    await Sentry.captureException(
+    // Set user ID if provided
+    if (userId != null) {
+      await FirebaseCrashlytics.instance.setUserIdentifier(userId);
+    }
+
+    // Add custom keys for context
+    FirebaseCrashlytics.instance.setCustomKey(
+      'error_type',
+      error.runtimeType.toString(),
+    );
+    FirebaseCrashlytics.instance.setCustomKey('is_critical', isCritical);
+    FirebaseCrashlytics.instance.setCustomKey(
+      'environment',
+      const bool.fromEnvironment('dart.vm.product')
+          ? 'production'
+          : 'development',
+    );
+
+    // Add sanitized context as custom keys
+    for (final entry in sanitizedContext.entries) {
+      FirebaseCrashlytics.instance.setCustomKey(
+        'context_${entry.key}',
+        entry.value,
+      );
+    }
+
+    // Record the error to Crashlytics
+    await FirebaseCrashlytics.instance.recordError(
       error,
-      stackTrace: stackTrace,
-      withScope: (scope) {
-        scope.setTag('error_type', error.runtimeType.toString());
-
-        // Set severity level
-        scope.level = isCritical ? SentryLevel.fatal : SentryLevel.error;
-
-        // Add tags for filtering
-        scope.setTag('is_critical', isCritical.toString());
-        scope.setTag(
-          'environment',
-          const bool.fromEnvironment('dart.vm.product')
-              ? 'production'
-              : 'development',
-        );
-
-        if (userId != null) {
-          scope.setUser(SentryUser(id: userId));
-        }
-        if (sanitizedContext.isNotEmpty) {
-          scope.setContexts('error_context', sanitizedContext);
-        }
-      },
+      stackTrace,
+      fatal: isCritical,
+      reason: 'Secure error logged with sanitized context',
     );
 
     // Also log to console in development mode

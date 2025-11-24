@@ -1,4 +1,4 @@
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 /// A unified monitoring service for crash, performance, and analytics tracking.
 class MonitoringService {
@@ -10,40 +10,55 @@ class MonitoringService {
     dynamic error, {
     StackTrace? stackTrace,
     String? hint,
+    bool fatal = false,
   }) async {
-    await Sentry.captureException(
+    await FirebaseCrashlytics.instance.recordError(
       error,
-      stackTrace: stackTrace,
-      hint: hint != null ? Hint.withMap({'hint': hint}) : null,
+      stackTrace,
+      fatal: fatal,
+      reason: hint,
     );
   }
 
   /// Record a user event (e.g., button click, flow success).
   Future<void> logEvent(String eventName, {Map<String, dynamic>? data}) async {
-    await Sentry.captureMessage(
-      'UserEvent: $eventName',
-      withScope: (scope) {
-        scope.setContexts('event_data', data ?? {});
-      },
-    );
+    // Log as breadcrumb/custom log in Crashlytics
+    FirebaseCrashlytics.instance.log('UserEvent: $eventName');
+    
+    // Optionally set custom keys for the event data
+    if (data != null) {
+      for (final entry in data.entries) {
+        FirebaseCrashlytics.instance.setCustomKey(entry.key, entry.value);
+      }
+    }
   }
 
   /// Track performance of a specific code block.
+  /// Note: For detailed performance tracking, use Firebase Performance Monitoring
   Future<void> tracePerformance(
     String name,
     Future<void> Function() action,
   ) async {
-    final transaction = Sentry.startTransaction(name, 'performance');
+    final startTime = DateTime.now();
+    FirebaseCrashlytics.instance.log('Performance trace started: $name');
+    
     try {
       await action();
-      transaction.finish(status: const SpanStatus.ok());
+      final duration = DateTime.now().difference(startTime);
+      FirebaseCrashlytics.instance.log(
+        'Performance trace completed: $name (${duration.inMilliseconds}ms)',
+      );
     } catch (e, st) {
-      transaction.finish(status: const SpanStatus.internalError());
+      final duration = DateTime.now().difference(startTime);
+      FirebaseCrashlytics.instance.log(
+        'Performance trace failed: $name (${duration.inMilliseconds}ms)',
+      );
       await logError(
         e,
         stackTrace: st,
         hint: 'Performance trace failed: $name',
       );
+      rethrow;
     }
   }
 
@@ -53,11 +68,33 @@ class MonitoringService {
     required num value,
     Map<String, dynamic>? tags,
   }) async {
-    await Sentry.captureMessage(
-      'BusinessMetric: $metricName = $value',
-      withScope: (scope) {
-        scope.setContexts('metric_tags', tags ?? {});
-      },
-    );
+    FirebaseCrashlytics.instance.log('BusinessMetric: $metricName = $value');
+    
+    // Set as custom keys
+    FirebaseCrashlytics.instance.setCustomKey('metric_$metricName', value);
+    if (tags != null) {
+      for (final entry in tags.entries) {
+        FirebaseCrashlytics.instance.setCustomKey(
+          'metric_tag_${entry.key}',
+          entry.value,
+        );
+      }
+    }
+  }
+
+  /// Set user identifier for crash reports
+  Future<void> setUserId(String userId) async {
+    await FirebaseCrashlytics.instance.setUserIdentifier(userId);
+  }
+
+  /// Set custom key-value pair for crash context
+  void setCustomKey(String key, dynamic value) {
+    FirebaseCrashlytics.instance.setCustomKey(key, value);
+  }
+
+  /// Log a message (breadcrumb)
+  void log(String message) {
+    FirebaseCrashlytics.instance.log(message);
   }
 }
+

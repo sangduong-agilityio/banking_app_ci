@@ -3,41 +3,103 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banking_app/app/app.dart';
 import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
-import 'package:banking_app/core/error_handling/error_sanitizer.dart';
 import 'package:banking_app/core/observers/debug_bloc_observer.dart';
 
 Future<void> main() async {
-  SentryWidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // Enable BLoC debugging in debug mode
-  if (kDebugMode) {
-    Bloc.observer = DebugBlocObserver(
-      enableLogging: true,
-      enableAnalysis: true,
+  // Initialize Firebase
+  await Firebase.initializeApp();
+
+  // Configure Crashlytics for production-ready error tracking
+  await _configureCrashlytics();
+
+  // Enable BLoC debugging with Crashlytics integration
+  Bloc.observer = DebugBlocObserver(
+    enableLogging: kDebugMode,
+    enableAnalysis: kDebugMode,
+    onBlocError: (bloc, error, stackTrace) {
+      // Automatically log BLoC errors to Crashlytics
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        stackTrace,
+        reason: 'BLoC Error in ${bloc.runtimeType}',
+        fatal: false,
+      );
+    },
+  );
+
+  _runApp();
+}
+
+/// Determine if an error should be marked as fatal
+bool _isFatalError(Object error) {
+  // Network errors are usually non-fatal (user can retry)
+  if (error.toString().toLowerCase().contains('socket')) return false;
+  if (error.toString().toLowerCase().contains('network')) return false;
+  if (error.toString().toLowerCase().contains('timeout')) return false;
+  
+  // Type errors are usually fatal
+  if (error is TypeError) return true;
+  if (error is NoSuchMethodError) return true;
+  
+  // Null errors are fatal
+  if (error.toString().contains('Null check operator')) return true;
+  
+  // Default: treat as fatal
+  return true;
+}
+
+/// Configure Firebase Crashlytics with enhanced error tracking
+Future<void> _configureCrashlytics() async {
+  // Set Crashlytics collection enabled
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+
+  // Enhanced Flutter error handler with context
+  FlutterError.onError = (FlutterErrorDetails details) {
+    // Log to console in debug mode
+    if (kDebugMode) {
+      FlutterError.presentError(details);
+    }
+
+    // Always report to Crashlytics with full context
+    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+    
+    // Add breadcrumb for context
+    FirebaseCrashlytics.instance.log(
+      'Flutter Error: ${details.exception.runtimeType} in ${details.library ?? "unknown"}',
     );
-  }
+  };
 
-  await SentryFlutter.init((options) {
-    options
-      ..dsn = Env.sentryDsn
-      ..environment = Env.sentryEnv
-      ..tracesSampleRate = 1.0
-      ..enableAutoPerformanceTracing = true
-      ..enableAppLifecycleBreadcrumbs = true
-      ..debug = Env.sentryEnv != 'production'
-      ..beforeSend = (event, hint) {
-        if (Env.sentryEnv == 'development') {
-          final msg = event.message?.formatted ?? '';
-          if (msg.contains('Hot reload')) return null;
-        }
-        return event;
-      };
-  }, appRunner: _runApp);
+  // Enhanced async error handler
+  PlatformDispatcher.instance.onError = (error, stack) {
+    // Determine if error is fatal
+    final isFatal = _isFatalError(error);
+    
+    // Log breadcrumb
+    FirebaseCrashlytics.instance.log(
+      'Async Error: ${error.runtimeType} - Fatal: $isFatal',
+    );
+    
+    // Record to Crashlytics
+    FirebaseCrashlytics.instance.recordError(
+      error,
+      stack,
+      fatal: isFatal,
+      reason: 'Uncaught async error',
+    );
+    
+    return true;
+  };
+
+  // Log app start
+  FirebaseCrashlytics.instance.log('App started successfully');
 }
 
 Future<void> _runApp() async {
@@ -55,30 +117,10 @@ Future<void> _runApp() async {
 }
 
 void _setupGlobalErrorHandlers() {
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-    ErrorSanitizer.logSecureError(
-      details.exception,
-      details.stack,
-      context: {
-        'library': details.library ?? 'unknown',
-        'context': details.context?.toString(),
-      },
-      isCritical: !details.silent,
-    );
-
-    /// Capture to Sentry as well
-    Sentry.captureException(details.exception, stackTrace: details.stack);
-  };
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    ErrorSanitizer.logSecureError(
-      error,
-      stack,
-      context: {'source': 'PlatformDispatcher'},
-      isCritical: true,
-    );
-    Sentry.captureException(error, stackTrace: stack);
-    return true;
-  };
+  // Set custom keys for all crashes
+  FirebaseCrashlytics.instance.setCustomKey('app_environment', kDebugMode ? 'debug' : 'production');
+  FirebaseCrashlytics.instance.setCustomKey('flutter_version', 'Flutter 3.x');
+  
+  // Log initialization complete
+  FirebaseCrashlytics.instance.log('Global error handlers configured');
 }

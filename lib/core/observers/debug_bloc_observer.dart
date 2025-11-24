@@ -3,11 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../data/services/bloc_debug_service.dart';
 
+/// Callback for BLoC errors
+typedef BlocErrorCallback = void Function(
+  BlocBase bloc,
+  Object error,
+  StackTrace stackTrace,
+);
+
 /// Enhanced BLoC observer with debugging and visualization
 class DebugBlocObserver extends BlocObserver {
   final BlocDebugService _debugService = BlocDebugService.instance;
   final bool enableLogging;
   final bool enableAnalysis;
+  final BlocErrorCallback? onBlocError;
   
   // Auto-print analysis every N events
   final Map<String, int> _eventCounts = {};
@@ -16,6 +24,7 @@ class DebugBlocObserver extends BlocObserver {
   DebugBlocObserver({
     this.enableLogging = true,
     this.enableAnalysis = true,
+    this.onBlocError,
   });
 
   @override
@@ -82,9 +91,14 @@ class DebugBlocObserver extends BlocObserver {
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
+    
     if (enableLogging) {
       debugPrint('Error in ${bloc.runtimeType}: $error');
+      debugPrint('Stack trace: $stackTrace');
     }
+    
+    // Call custom error callback (e.g., Crashlytics reporting)
+    onBlocError?.call(bloc, error, stackTrace);
   }
 
   @override
