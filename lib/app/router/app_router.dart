@@ -14,6 +14,7 @@ import 'package:banking_app/features/search/presentation/views/exchange_screen.d
 import 'package:banking_app/features/search/presentation/views/interest_rate_screen.dart';
 import 'package:banking_app/features/search/presentation/views/search_screen.dart';
 import 'package:banking_app/features/setting/presentation/views/setting_screen.dart';
+import 'package:banking_app/features/setting/presentation/widgets/platform_channel_demo.dart';
 import 'package:banking_app/features/transactions/presentation/views/transaction_report_screen.dart';
 import 'package:banking_app/features/transfer/presentation/views/transfer_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -145,6 +146,14 @@ class BAAppRouter {
                 path: BAPaths.setting.path,
                 name: BAPaths.setting.name,
                 builder: (context, state) => const SettingScreen(),
+                routes: [
+                  GoRoute(
+                    path: BAPaths.platformChannelDemo.path,
+                    name: BAPaths.platformChannelDemo.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const PlatformChannelDemo(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -181,7 +190,8 @@ enum BAPaths {
   exchangeRate(name: 'exchangeRate', path: '/exchangeRate'),
   exchange(name: 'exchange', path: '/exchange'),
   message(name: 'message', path: '/message'),
-  setting(name: 'setting', path: '/setting');
+  setting(name: 'setting', path: '/setting'),
+  platformChannelDemo(name: 'platformChannelDemo', path: '/platformChannelDemo');
 
   const BAPaths({required this.name, required this.path});
   final String name;
