@@ -12,6 +12,7 @@ import 'package:banking_app/core/data/services/biometric_service.dart';
 import 'package:banking_app/core/error_handling/transfer_exceptions.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:async';
 import 'transfer_event.dart';
 import 'transfer_state.dart';
 
@@ -63,42 +64,27 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    final result = await executeWithErrorHandling<Map<String, dynamic>>(
+    
+    final criticalResult = await executeWithErrorHandling<Map<String, dynamic>>(
       () async {
-        final (
-          beneficiaries,
-          banks,
-          branches,
-          accounts,
-          cards,
-          biometricAvailable,
-          biometricEnabled,
-        ) = await (
-          transferRepo.fetchBeneficiaries(),
-          transferRepo.fetchBanks(),
-          transferRepo.fetchBranches(),
+        final (accounts, cards, beneficiaries) = await (
           transferRepo.fetchAccounts(),
           transferRepo.fetchCards(),
-          biometricService.canCheckBiometrics(),
-          biometricService.isBiometricEnabled(),
+          transferRepo.fetchBeneficiaries(),
         ).wait;
 
         return {
-          'beneficiaries': beneficiaries,
-          'banks': banks,
-          'branches': branches,
           'accounts': accounts,
           'cards': cards,
-          'biometricAvailable': biometricAvailable,
-          'biometricEnabled': biometricEnabled,
+          'beneficiaries': beneficiaries,
         };
       },
-      operationName: 'transfer_initialize',
+      operationName: 'transfer_initialize_phase1',
       isCritical: true,
-      context: {'event_type': 'TransferInitializeEvt'},
+      context: {'phase': 'critical'},
     );
 
-    if (result == null) {
+    if (criticalResult == null) {
       emit(
         state.copyWith(
           status: const TransferStatus.failure(),
@@ -108,7 +94,8 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       return;
     }
 
-    final beneficiaries = result['beneficiaries'] as List<BeneficiaryModel>;
+    // Emit partial state - UI renders immediately
+    final beneficiaries = criticalResult['beneficiaries'] as List<BeneficiaryModel>;
     final filterResult = _filterService.filterBeneficiaries(
       allBeneficiaries: beneficiaries,
       selectedTransferType: state.selectedTransferType,
@@ -117,13 +104,9 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     emit(
       state.copyWith(
         status: const TransferStatus.initial(),
+        accounts: criticalResult['accounts'],
+        cards: criticalResult['cards'],
         beneficiaries: beneficiaries,
-        banks: result['banks'] as List<BankModel>,
-        branches: result['branches'] as List<BranchModel>,
-        accounts: result['accounts'],
-        cards: result['cards'],
-        biometricAvailable: result['biometricAvailable'] as bool,
-        biometricEnabled: result['biometricEnabled'] as bool,
         filteredBeneficiaries: filterResult.filtered,
         viaCardBeneficiaries: filterResult.viaCard,
         sameBankBeneficiaries: filterResult.sameBank,
@@ -131,6 +114,41 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
         disabledBeneficiaries: filterResult.disabled,
       ),
     );
+
+    // Load secondary data in background (banks, branches, biometric)
+    // These are only needed for specific transfer types
+    final secondaryResult = await executeWithErrorHandling<Map<String, dynamic>>(
+      () async {
+        final (banks, branches, biometricAvailable, biometricEnabled) = await (
+          transferRepo.fetchBanks(),
+          transferRepo.fetchBranches(),
+          biometricService.canCheckBiometrics(),
+          biometricService.isBiometricEnabled(),
+        ).wait;
+
+        return {
+          'banks': banks,
+          'branches': branches,
+          'biometricAvailable': biometricAvailable,
+          'biometricEnabled': biometricEnabled,
+        };
+      },
+      operationName: 'transfer_initialize_phase2',
+      isCritical: false,
+      context: {'phase': 'secondary'},
+    );
+
+    // Update with secondary data (if successful)
+    if (secondaryResult != null) {
+      emit(
+        state.copyWith(
+          banks: secondaryResult['banks'] as List<BankModel>,
+          branches: secondaryResult['branches'] as List<BranchModel>,
+          biometricAvailable: secondaryResult['biometricAvailable'] as bool,
+          biometricEnabled: secondaryResult['biometricEnabled'] as bool,
+        ),
+      );
+    }
   }
 
   void _onBeneficiariesInitialize(
@@ -185,7 +203,10 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       ),
     );
 
-    _triggerFeeCalculationIfNeeded();
+    // Calculate fee if needed
+    if (_shouldCalculateFee()) {
+      await _calculateFeeDirectly(emit);
+    }
   }
 
   Future<void> _onSelectCard(
@@ -217,13 +238,16 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       ),
     );
 
-    _triggerFeeCalculationIfNeeded();
+    // Calculate fee if needed
+    if (_shouldCalculateFee()) {
+      await _calculateFeeDirectly(emit);
+    }
   }
 
-  void _onSelectTransferType(
+  Future<void> _onSelectTransferType(
     SelectTransferTypeEvt event,
     Emitter<TransferState> emit,
-  ) {
+  ) async {
     final filterResult = _filterService.filterBeneficiaries(
       allBeneficiaries: state.beneficiaries,
       selectedTransferType: event.transferType,
@@ -242,15 +266,22 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       ),
     );
 
-    _triggerFeeCalculationIfNeeded();
+    // Calculate fee if needed
+    if (_shouldCalculateFee()) {
+      await _calculateFeeDirectly(emit);
+    }
   }
 
-  void _onSelectBeneficiary(
+  Future<void> _onSelectBeneficiary(
     SelectBeneficiaryEvt event,
     Emitter<TransferState> emit,
-  ) {
+  ) async {
     emit(state.copyWith(selectedBeneficiary: event.beneficiary));
-    _triggerFeeCalculationIfNeeded();
+    
+    // Calculate fee if needed
+    if (_shouldCalculateFee()) {
+      await _calculateFeeDirectly(emit);
+    }
   }
 
   void _onSelectBank(SelectBankEvt event, Emitter<TransferState> emit) {
@@ -391,10 +422,11 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
 
   // ==================== FORM UPDATES ====================
 
-  void _onUpdateTransferDetails(
+  Future<void> _onUpdateTransferDetails(
     UpdateTransferDetailsEvt event,
     Emitter<TransferState> emit,
-  ) {
+  ) async {
+    
     emit(
       state.copyWith(
         amount: event.amount ?? state.amount,
@@ -409,17 +441,55 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
       ),
     );
 
-    if (event.amount != null) {
-      _triggerFeeCalculationIfNeeded();
+    //Calculate fee directly if amount changed (instead of triggering event)
+    if (event.amount != null && _shouldCalculateFee()) {
+      await _calculateFeeDirectly(emit);
     }
   }
 
-  void _onFillTransferDetails(
+  Future<void> _onFillTransferDetails(
     FillTransferDetailsEvt event,
     Emitter<TransferState> emit,
-  ) {
+  ) async {
     emit(state.copyWith(amount: event.amount, content: event.content));
-    _triggerFeeCalculationIfNeeded();
+    
+    // Calculate fee directly
+    if (_shouldCalculateFee()) {
+      await _calculateFeeDirectly(emit);
+    }
+  }
+
+  // Helper: Check if fee calculation is needed
+  bool _shouldCalculateFee() {
+    return _feeService.shouldRecalculateFee(
+      hasSource: state.selectedAccount != null || state.selectedCard != null,
+      hasBeneficiary: state.selectedBeneficiary != null,
+      amount: state.amount,
+    );
+  }
+
+  // Helper: Calculate fee and emit state
+  Future<void> _calculateFeeDirectly(Emitter<TransferState> emit) async {
+    final transferRequest = TransferModel(
+      fromAccount: state.selectedAccount,
+      fromCard: state.selectedCard,
+      toBeneficiary: state.selectedBeneficiary,
+      amount: state.amount ?? 0,
+      transactionFee: 0,
+      content: state.content ?? '',
+      transferType: state.selectedTransferType,
+    );
+
+    final fee = await executeWithErrorHandling(
+      () => _feeService.calculateFee(transferRequest),
+      operationName: 'calculate_fee_inline',
+      isCritical: false,
+      context: {'amount': state.amount},
+    );
+
+    if (fee != null) {
+      emit(state.copyWith(transactionFee: fee));
+    }
   }
 
   // ==================== FEE CALCULATION ====================
@@ -464,16 +534,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
           errorMessage: S.current.transferErrorCalculateFee,
         ),
       );
-    }
-  }
-
-  void _triggerFeeCalculationIfNeeded() {
-    if (_feeService.shouldRecalculateFee(
-      hasSource: state.selectedAccount != null || state.selectedCard != null,
-      hasBeneficiary: state.selectedBeneficiary != null,
-      amount: state.amount,
-    )) {
-      add(CalculateTransactionFeeEvt());
     }
   }
 

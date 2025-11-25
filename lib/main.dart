@@ -1,5 +1,7 @@
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -7,9 +9,18 @@ import 'package:banking_app/app/app.dart';
 import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
 import 'package:banking_app/core/error_handling/error_sanitizer.dart';
+import 'package:banking_app/core/observers/debug_bloc_observer.dart';
 
 Future<void> main() async {
   SentryWidgetsFlutterBinding.ensureInitialized();
+
+  // Enable BLoC debugging in debug mode
+  if (kDebugMode) {
+    Bloc.observer = DebugBlocObserver(
+      enableLogging: true,
+      enableAnalysis: true,
+    );
+  }
 
   await SentryFlutter.init((options) {
     options
