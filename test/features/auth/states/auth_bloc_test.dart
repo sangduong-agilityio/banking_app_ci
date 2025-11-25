@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
-import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -48,12 +47,12 @@ void main() {
             description: '''
               Scenario: SignIn form validation with valid data
               Given a AuthBloc instance
-              When SignInFormValidateChangedEvt is added with valid credentials
+              When SignInFormValidateChanged is added with valid credentials
               Then the state should reflect the updated form validation status
             ''',
             build: () => authBloc,
             act: (bloc) => bloc.add(
-              SignInFormValidateChangedEvt(
+              SignInFormValidateChanged(
                 isValidate: true,
                 email: 'test@example.com',
                 password: 'password123',
@@ -61,7 +60,7 @@ void main() {
             ),
             expect: () => [
               AuthState(
-                status: const AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isFormValid: true,
                 email: 'test@example.com',
                 password: 'password123',
@@ -72,12 +71,12 @@ void main() {
             description: '''
               Scenario: SignIn form validation with invalid data
               Given a AuthBloc instance
-              When SignInFormValidateChangedEvt is added with invalid data
+              When SignInFormValidateChanged is added with invalid data
               Then the state should reflect invalid form status
             ''',
             build: () => authBloc,
             act: (bloc) => bloc.add(
-              SignInFormValidateChangedEvt(
+              SignInFormValidateChanged(
                 isValidate: false,
                 email: 'invalid',
                 password: '123',
@@ -85,7 +84,7 @@ void main() {
             ),
             expect: () => [
               AuthState(
-                status: const AuthStatus.initial(),
+                status: AuthStatus.initial,
                 email: 'invalid',
                 password: '123',
                 isFormValid: false,
@@ -96,12 +95,12 @@ void main() {
             description: '''
               Scenario: SignIn form validation with empty fields
               Given a AuthBloc instance
-              When SignInFormValidateChangedEvt is added with empty fields
+              When SignInFormValidateChanged is added with empty fields
               Then the state should reflect invalid form status
             ''',
             build: () => authBloc,
             act: (bloc) => bloc.add(
-              SignInFormValidateChangedEvt(
+              SignInFormValidateChanged(
                 isValidate: false,
                 email: '',
                 password: '',
@@ -109,7 +108,7 @@ void main() {
             ),
             expect: () => [
               AuthState(
-                status: const AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isFormValid: false,
                 email: '',
                 password: '',
@@ -127,7 +126,7 @@ void main() {
             description: '''
               Scenario: SignIn button pressed with valid credentials
               Given a AuthBloc with valid form data
-              When SignInButtonPressedEvt is added
+              When SignInButtonPressed is added
               Then the authentication should succeed
             ''',
             setUp: () {
@@ -156,16 +155,16 @@ void main() {
               password: 'password123',
               isFormValid: true,
             ),
-            act: (bloc) => bloc.add(SignInButtonPressedEvt()),
+            act: (bloc) => bloc.add(SignInButtonPressed()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.loading(),
+                status: AuthStatus.loading,
                 email: 'test@example.com',
                 password: 'password123',
                 isFormValid: true,
               ),
               AuthState(
-                status: const AuthStatus.success(),
+                status: AuthStatus.success,
                 email: 'test@example.com',
                 password: 'password123',
                 isFormValid: true,
@@ -183,7 +182,7 @@ void main() {
             description: '''
               Scenario: SignIn button pressed with authentication error
               Given a AuthBloc with valid form data
-              When SignInButtonPressedEvt is added and repo throws error
+              When SignInButtonPressed is added and repo throws error
               Then the authentication should fail with error message
             ''',
             setUp: () {
@@ -200,16 +199,16 @@ void main() {
               password: 'wrong_password',
               isFormValid: true,
             ),
-            act: (bloc) => bloc.add(SignInButtonPressedEvt()),
+            act: (bloc) => bloc.add(SignInButtonPressed()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.loading(),
+                status: AuthStatus.loading,
                 email: 'test@example.com',
                 password: 'wrong_password',
                 isFormValid: true,
               ),
               AuthState(
-                status: const AuthStatus.failure(),
+                status: AuthStatus.failure,
                 email: 'test@example.com',
                 password: 'wrong_password',
                 isFormValid: true,
@@ -222,7 +221,7 @@ void main() {
             description: '''
               Scenario: SignIn button pressed but no user returned
               Given a AuthBloc with valid form data
-              When SignInButtonPressedEvt is added but response has no user
+              When SignInButtonPressed is added but response has no user
               Then the authentication should fail
             ''',
             setUp: () {
@@ -239,16 +238,16 @@ void main() {
               password: 'password123',
               isFormValid: true,
             ),
-            act: (bloc) => bloc.add(SignInButtonPressedEvt()),
+            act: (bloc) => bloc.add(SignInButtonPressed()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.loading(),
+                status: AuthStatus.loading,
                 email: 'test@example.com',
                 password: 'password123',
                 isFormValid: true,
               ),
               AuthState(
-                status: const AuthStatus.failure(),
+                status: AuthStatus.failure,
                 email: 'test@example.com',
                 password: 'password123',
                 isFormValid: true,
@@ -267,12 +266,12 @@ void main() {
             description: '''
               Scenario: SignUp form validation with valid data
               Given a AuthBloc instance
-              When SignUpFormValidateChangedEvt is added with valid data
+              When SignUpFormValidateChanged is added with valid data
               Then the state should reflect the updated form validation status
             ''',
             build: () => authBloc,
             act: (bloc) => bloc.add(
-              SignUpFormValidateChangedEvt(
+              SignUpFormValidateChanged(
                 isValidate: true,
                 username: 'test_user',
                 email: 'test@example.com',
@@ -281,7 +280,7 @@ void main() {
             ),
             expect: () => [
               AuthState(
-                status: const AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isFormValid: true,
                 username: 'test_user',
                 email: 'test@example.com',
@@ -293,12 +292,12 @@ void main() {
             description: '''
               Scenario: SignUp form validation with invalid data
               Given a AuthBloc instance
-              When SignUpFormValidateChangedEvt is added with invalid data
+              When SignUpFormValidateChanged is added with invalid data
               Then the state should reflect invalid form status
             ''',
             build: () => authBloc,
             act: (bloc) => bloc.add(
-              SignUpFormValidateChangedEvt(
+              SignUpFormValidateChanged(
                 isValidate: false,
                 username: '',
                 email: '',
@@ -307,7 +306,7 @@ void main() {
             ),
             expect: () => [
               AuthState(
-                status: const AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isFormValid: false,
                 username: '',
                 email: '',
@@ -326,7 +325,7 @@ void main() {
             description: '''
               Scenario: SignUp button pressed with valid data
               Given a AuthBloc with valid form data
-              When SignUpButtonPressedEvt is added
+              When SignUpButtonPressed is added
               Then the registration should succeed
             ''',
             setUp: () {
@@ -353,10 +352,10 @@ void main() {
               isFormValid: true,
               isTermsAccepted: true,
             ),
-            act: (bloc) => bloc.add(SignUpButtonPressedEvt()),
+            act: (bloc) => bloc.add(SignUpButtonPressed()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.loading(),
+                status: AuthStatus.loading,
                 username: 'test_user',
                 email: 'test@example.com',
                 password: 'password123',
@@ -364,7 +363,7 @@ void main() {
                 isTermsAccepted: true,
               ),
               AuthState(
-                status: const AuthStatus.success(),
+                status: AuthStatus.success,
                 username: 'test_user',
                 email: 'test@example.com',
                 password: 'password123',
@@ -387,7 +386,7 @@ void main() {
             description: '''
               Scenario: SignUp button pressed with error
               Given a AuthBloc with valid form data
-              When SignUpButtonPressedEvt is added and repo throws error
+              When SignUpButtonPressed is added and repo throws error
               Then the registration should fail
             ''',
             setUp: () {
@@ -406,17 +405,17 @@ void main() {
               password: 'password123',
               isFormValid: true,
             ),
-            act: (bloc) => bloc.add(SignUpButtonPressedEvt()),
+            act: (bloc) => bloc.add(SignUpButtonPressed()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.loading(),
+                status: AuthStatus.loading,
                 username: 'test_user',
                 email: 'existing@example.com',
                 password: 'password123',
                 isFormValid: true,
               ),
               AuthState(
-                status: const AuthStatus.failure(),
+                status: AuthStatus.failure,
                 username: 'test_user',
                 email: 'existing@example.com',
                 password: 'password123',
@@ -437,14 +436,14 @@ void main() {
             description: '''
               Scenario: SignUp terms acceptance changed
               Given a AuthBloc instance
-              When SignUpTermsChangedEvt is added
+              When SignUpTermsChanged is added
               Then the state should reflect the terms acceptance status
             ''',
             build: () => authBloc,
-            act: (bloc) => bloc.add(SignUpTermsChangedEvt(isAccepted: true)),
+            act: (bloc) => bloc.add(SignUpTermsChanged(isAccepted: true)),
             expect: () => [
               const AuthState(
-                status: AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isTermsAccepted: true,
               ),
             ],
@@ -453,14 +452,14 @@ void main() {
             description: '''
               Scenario: SignUp terms unacceptance changed
               Given a AuthBloc instance
-              When SignUpTermsChangedEvt is added with false
+              When SignUpTermsChanged is added with false
               Then the state should reflect the terms unacceptance status
             ''',
             build: () => authBloc,
-            act: (bloc) => bloc.add(SignUpTermsChangedEvt(isAccepted: false)),
+            act: (bloc) => bloc.add(SignUpTermsChanged(isAccepted: false)),
             expect: () => [
               const AuthState(
-                status: AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isTermsAccepted: false,
               ),
             ],
@@ -476,7 +475,7 @@ void main() {
             description: '''
               Scenario: Check biometric availability successfully
               Given a device with biometric capabilities
-              When CheckBiometricAvailabilityEvt is added
+              When CheckBiometricAvailability is added
               Then the state should reflect biometric availability
             ''',
             setUp: () {
@@ -491,10 +490,10 @@ void main() {
               ).thenAnswer((_) async => 'refresh_token');
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(CheckBiometricAvailabilityEvt()),
+            act: (bloc) => bloc.add(CheckBiometricAvailability()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isBiometricAvailable: true,
                 isBiometricEnabled: true,
                 hasSavedBiometricCredentials: true,
@@ -505,7 +504,7 @@ void main() {
             description: '''
               Scenario: Check biometric availability - device supports but not enabled
               Given a device with biometric capabilities but not enabled
-              When CheckBiometricAvailabilityEvt is added
+              When CheckBiometricAvailability is added
               Then the state should reflect biometric not enabled
             ''',
             setUp: () {
@@ -520,10 +519,10 @@ void main() {
               ).thenAnswer((_) async => null);
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(CheckBiometricAvailabilityEvt()),
+            act: (bloc) => bloc.add(CheckBiometricAvailability()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isBiometricAvailable: true,
                 isBiometricEnabled: false,
                 hasSavedBiometricCredentials: false,
@@ -534,7 +533,7 @@ void main() {
             description: '''
               Scenario: Check biometric availability with error
               Given a biometric service that throws error
-              When CheckBiometricAvailabilityEvt is added
+              When CheckBiometricAvailability is added
               Then the state should show biometric as unavailable
             ''',
             setUp: () {
@@ -543,10 +542,10 @@ void main() {
               ).thenThrow(Exception('Biometric not supported'));
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(CheckBiometricAvailabilityEvt()),
+            act: (bloc) => bloc.add(CheckBiometricAvailability()),
             expect: () => [
               const AuthState(
-                status: AuthStatus.initial(),
+                status: AuthStatus.initial,
                 isBiometricAvailable: false,
                 isBiometricEnabled: false,
                 hasSavedBiometricCredentials: false,
@@ -557,7 +556,7 @@ void main() {
             description: '''
               Scenario: SignIn with biometric successfully
               Given a user with biometric enabled
-              When SignInWithBiometricEvt is added
+              When SignInWithBiometric is added
               Then the authentication should succeed
             ''',
             setUp: () {
@@ -579,11 +578,11 @@ void main() {
               );
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(SignInWithBiometricEvt()),
+            act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading()),
+              const AuthState(status: AuthStatus.loading),
               AuthState(
-                status: const AuthStatus.success(),
+                status: AuthStatus.success,
                 sessionToken: 'test_token',
                 errorMessage: '',
               ),
@@ -593,7 +592,7 @@ void main() {
             description: '''
               Scenario: SignIn with biometric not enabled
               Given biometric is not enabled
-              When SignInWithBiometricEvt is added
+              When SignInWithBiometric is added
               Then the authentication should fail with appropriate message
             ''',
             setUp: () {
@@ -602,11 +601,11 @@ void main() {
               ).thenAnswer((_) async => false);
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(SignInWithBiometricEvt()),
+            act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading()),
+              const AuthState(status: AuthStatus.loading),
               AuthState(
-                status: const AuthStatus.failure(),
+                status: AuthStatus.failure,
                 errorMessage: S.current.authErrorBiometricNotEnabled,
               ),
             ],
@@ -615,7 +614,7 @@ void main() {
             description: '''
               Scenario: SignIn with biometric returns no token
               Given biometric authentication fails to return token
-              When SignInWithBiometricEvt is added
+              When SignInWithBiometric is added
               Then the authentication should fail
             ''',
             setUp: () {
@@ -627,11 +626,11 @@ void main() {
               ).thenAnswer((_) async => null);
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(SignInWithBiometricEvt()),
+            act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading()),
+              const AuthState(status: AuthStatus.loading),
               AuthState(
-                status: const AuthStatus.failure(),
+                status: AuthStatus.failure,
                 errorMessage: S.current.authErrorBiometricFailed,
               ),
             ],
@@ -640,7 +639,7 @@ void main() {
             description: '''
               Scenario: SignIn with biometric throws error
               Given biometric service throws error
-              When SignInWithBiometricEvt is added
+              When SignInWithBiometric is added
               Then the authentication should fail with unknown error
             ''',
             setUp: () {
@@ -649,11 +648,11 @@ void main() {
               ).thenThrow(Exception('Biometric error'));
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(SignInWithBiometricEvt()),
+            act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading()),
+              const AuthState(status: AuthStatus.loading),
               AuthState(
-                status: const AuthStatus.failure(),
+                status: AuthStatus.failure,
                 errorMessage: S.current.authErrorUnknown,
               ),
             ],
@@ -662,7 +661,7 @@ void main() {
             description: '''
               Scenario: SignIn with Touch ID successfully
               Given a user with Touch ID enabled
-              When SignInWithBiometricEvt is added
+              When SignInWithBiometric is added
               Then the authentication should succeed
             ''',
             setUp: () {
@@ -690,11 +689,11 @@ void main() {
               ).thenAnswer((_) async => true);
             },
             build: () => authBloc,
-            act: (bloc) => bloc.add(const SignInWithBiometricEvt()),
+            act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading()),
+              const AuthState(status: AuthStatus.loading),
               AuthState(
-                status: const AuthStatus.success(),
+                status: AuthStatus.success,
                 sessionToken: 'test_token',
                 errorMessage: '',
               ),

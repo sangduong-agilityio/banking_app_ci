@@ -90,4 +90,28 @@ class PlatformChannelService {
       };
     }
   }
+
+  /// Add app shortcuts for quick actions
+  /// Returns true if shortcuts were added successfully
+  Future<bool> addAppShortcuts(List<Map<String, String>> shortcuts) async {
+    try {
+      await _channel.invokeMethod('addAppShortcuts', {
+        'shortcuts': shortcuts,
+      });
+      return true;
+    } on PlatformException catch (e) {
+      throw 'Failed to add app shortcuts: ${e.message}';
+    }
+  }
+
+  /// Get the shortcut action that was used to launch the app
+  /// Returns null if app was not launched from a shortcut
+  Future<String?> getShortcutAction() async {
+    try {
+      final String? action = await _channel.invokeMethod('getShortcutAction');
+      return action;
+    } on PlatformException catch (e) {
+      throw 'Failed to get shortcut action: ${e.message}';
+    }
+  }
 }

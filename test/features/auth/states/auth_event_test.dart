@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
-import 'package:banking_app/features/auth/presentation/blocs/auth_event.dart';
+import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../helpers/utils.dart';
@@ -16,12 +16,12 @@ void main() {
     await S.load(const Locale('en'));
   });
   BAUnitTest(
-    description: 'AuthEvt Tests',
+    description: 'AuthEvent Tests',
     features: [
-      BAUTFeature(description: 'AuthEvt', scenarios: [AuthEvtPropsScenario()]),
+      BAUTFeature(description: 'AuthEvent', scenarios: [AuthEventPropsScenario()]),
 
       BAUTFeature(
-        description: 'SignInFormValidateChangedEvt',
+        description: 'SignInFormValidateChanged',
         scenarios: [
           SignInFormValidateChangedPropsScenario(),
           SignInFormValidateChangedSuccessScenario(),
@@ -31,7 +31,7 @@ void main() {
         ],
       ),
       BAUTFeature(
-        description: 'SignUpFormValidateChangedEvt',
+        description: 'SignUpFormValidateChanged',
         scenarios: [
           SignUpFormValidateChangedPropsScenario(),
           SignUpFormValidateChangedSuccessScenario(),
@@ -41,14 +41,14 @@ void main() {
         ],
       ),
       BAUTFeature(
-        description: 'SignInButtonPressedEvt',
+        description: 'SignInButtonPressed',
         scenarios: [
           SignInButtonPressedSuccessScenario(),
           SignInButtonPressedEqualityScenario(),
         ],
       ),
       BAUTFeature(
-        description: 'SignUpButtonPressedEvt',
+        description: 'SignUpButtonPressed',
         scenarios: [
           SignUpButtonPressedSuccessScenario(),
           SignUpButtonPressedEqualityScenario(),
@@ -56,7 +56,7 @@ void main() {
       ),
       // NEW: Missing event tests
       BAUTFeature(
-        description: 'SignInWithBiometricEvt',
+        description: 'SignInWithBiometric',
         scenarios: [
           SignInWithBiometricSuccessScenario(),
           SignInWithBiometricPropsScenario(),
@@ -64,7 +64,7 @@ void main() {
         ],
       ),
       BAUTFeature(
-        description: 'CheckBiometricAvailabilityEvt',
+        description: 'CheckBiometricAvailability',
         scenarios: [
           CheckBiometricAvailabilitySuccessScenario(),
           CheckBiometricAvailabilityPropsScenario(),
@@ -72,7 +72,7 @@ void main() {
         ],
       ),
       BAUTFeature(
-        description: 'SignUpTermsChangedEvt',
+        description: 'SignUpTermsChanged',
         scenarios: [
           SignUpTermsChangedPropsScenario(),
           SignUpTermsChangedSuccessScenario(),
@@ -80,7 +80,7 @@ void main() {
         ],
       ),
       BAUTFeature(
-        description: 'GetCurrentUserEvt',
+        description: 'GetCurrentUser',
         scenarios: [
           GetCurrentUserSuccessScenario(),
           GetCurrentUserPropsScenario(),
@@ -91,17 +91,17 @@ void main() {
   ).test();
 }
 
-class AuthEvtPropsScenario extends BAUTScenario<AuthEvt, List<Object?>> {
-  AuthEvtPropsScenario()
+class AuthEventPropsScenario extends BAUTScenario<AuthEvent, List<Object?>> {
+  AuthEventPropsScenario()
       : super(
           description: '''
-          Scenario: Test AuthEvt Props
-            Given AuthEvt event
-            When creating a AuthEvt event and accessing props
+          Scenario: Test AuthEvent Props
+            Given AuthEvent event
+            When creating a AuthEvent event and accessing props
             Then the props should be empty
             ''',
           when: () async {
-            return AuthEvt();
+            return SignInButtonPressed();
           },
           act: (event) => event.props,
           expect: (List<Object?> result) {
@@ -111,66 +111,66 @@ class AuthEvtPropsScenario extends BAUTScenario<AuthEvt, List<Object?>> {
 }
 
 class SignInFormValidateChangedPropsScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignInFormValidateChangedPropsScenario()
       : super(
           description: '''
-          Scenario: Test SignInFormValidateChangedEvt Props
-          Given a SignInFormValidateChangedEvt
+          Scenario: Test SignInFormValidateChanged Props
+          Given a SignInFormValidateChanged
           When the event is triggered
           Then the event's properties should match the provided values
           ''',
           when: () async => AuthMocks.signInForm,
           act: (event) => event.props,
           expect: (List<Object?> result) {
-            expect(result, equals(['test@example.com', 'password123', true]));
+            expect(result, equals([true, 'test@example.com', 'password123']));
           },
         );
 }
 
 class SignInFormValidateChangedSuccessScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignInFormValidateChangedSuccessScenario()
       : super(
           description: '''
-          Scenario: Test SignInFormValidateChangedEvt Success
-          Given a SignInFormValidateChangedEvt
+          Scenario: Test SignInFormValidateChanged Success
+          Given a SignInFormValidateChanged
           When the event is triggered
-          Then the event should be a SignInFormValidateChangedEvt
+          Then the event should be a SignInFormValidateChanged
           ''',
           when: () async => AuthMocks.signInForm,
           act: (event) => event.props,
           expect: (List<Object?> result) {
-            expect(result, equals(['test@example.com', 'password123', true]));
+            expect(result, equals([true, 'test@example.com', 'password123']));
           },
         );
 }
 
 class SignInFormValidateChangedFailureScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignInFormValidateChangedFailureScenario()
       : super(
           description: '''
-          Scenario: Test SignInFormValidateChangedEvt Failure
-          Given a SignInFormValidateChangedEvt with invalid data
+          Scenario: Test SignInFormValidateChanged Failure
+          Given a SignInFormValidateChanged with invalid data
           When the event is triggered
           Then it should not be valid
           ''',
           when: () async => AuthMocks.signInFormEmpty,
           act: (event) => event.props,
           expect: (List<Object?> result) {
-            expect(result, equals([null, null, false]));
+            expect(result, equals([false, null, null]));
           },
         );
 }
 
 class SignInFormValidateChangedEmptyScenario
-    extends BAUTScenario<AuthEvt, bool> {
+    extends BAUTScenario<AuthEvent, bool> {
   SignInFormValidateChangedEmptyScenario()
       : super(
           description: '''
-          Scenario: Test SignInFormValidateChangedEvt Empty
-          Given an empty SignInFormValidateChangedEvt
+          Scenario: Test SignInFormValidateChanged Empty
+          Given an empty SignInFormValidateChanged
           When the event is triggered
           Then it should not be valid
           ''',
@@ -183,12 +183,12 @@ class SignInFormValidateChangedEmptyScenario
 }
 
 class SignInFormValidateChangedEqualityScenario
-    extends BAUTScenario<AuthEvt, bool> {
+    extends BAUTScenario<AuthEvent, bool> {
   SignInFormValidateChangedEqualityScenario()
       : super(
           description: '''
-          Scenario: Test SignInFormValidateChangedEvt Equality
-          Given two SignInFormValidateChangedEvt instances with the same properties
+          Scenario: Test SignInFormValidateChanged Equality
+          Given two SignInFormValidateChanged instances with the same properties
           When comparing them
           Then they should be equal
           ''',
@@ -203,14 +203,14 @@ class SignInFormValidateChangedEqualityScenario
         );
 }
 
-class SignInButtonPressedSuccessScenario extends BAUTScenario<AuthEvt, bool> {
+class SignInButtonPressedSuccessScenario extends BAUTScenario<AuthEvent, bool> {
   SignInButtonPressedSuccessScenario()
       : super(
           description: '''
-          Scenario: Test SignInButtonPressedEvt Success
-          Given a SignInButtonPressedEvt
+          Scenario: Test SignInButtonPressed Success
+          Given a SignInButtonPressed
           When the event is triggered
-          Then the event should be a SignInButtonPressedEvt
+          Then the event should be a SignInButtonPressed
           ''',
           when: () async => AuthMocks.signInButtonPressed,
           act: (event) => event.props.isEmpty,
@@ -220,12 +220,12 @@ class SignInButtonPressedSuccessScenario extends BAUTScenario<AuthEvt, bool> {
         );
 }
 
-class SignInButtonPressedEqualityScenario extends BAUTScenario<AuthEvt, bool> {
+class SignInButtonPressedEqualityScenario extends BAUTScenario<AuthEvent, bool> {
   SignInButtonPressedEqualityScenario()
       : super(
           description: '''
-          Scenario: Test SignInButtonPressedEvt Equality
-          Given two SignInButtonPressedEvt instances
+          Scenario: Test SignInButtonPressed Equality
+          Given two SignInButtonPressed instances
           When comparing them
           Then they should be equal
           ''',
@@ -241,12 +241,12 @@ class SignInButtonPressedEqualityScenario extends BAUTScenario<AuthEvt, bool> {
 }
 
 class SignUpFormValidateChangedPropsScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignUpFormValidateChangedPropsScenario()
       : super(
           description: '''
-            Scenario: Test SignUpFormValidateChangedEvt Props
-            Given a SignUpFormValidateChangedEvt
+            Scenario: Test SignUpFormValidateChanged Props
+            Given a SignUpFormValidateChanged
             When the event is triggered
             Then the event's properties should match the provided values
             ''',
@@ -262,12 +262,12 @@ class SignUpFormValidateChangedPropsScenario
 }
 
 class SignUpFormValidateChangedSuccessScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignUpFormValidateChangedSuccessScenario()
       : super(
           description: '''
-            Scenario: Test SignUpFormValidateChangedEvt Success
-            Given a SignUpFormValidateChangedEvt with valid data
+            Scenario: Test SignUpFormValidateChanged Success
+            Given a SignUpFormValidateChanged with valid data
             When the event is triggered
             Then the event's properties should match the provided values
             ''',
@@ -283,12 +283,12 @@ class SignUpFormValidateChangedSuccessScenario
 }
 
 class SignUpFormValidateChangedFailureScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignUpFormValidateChangedFailureScenario()
       : super(
           description: '''
-            Scenario: Test SignUpFormValidateChangedEvt Failure
-            Given a SignUpFormValidateChangedEvt with invalid data
+            Scenario: Test SignUpFormValidateChanged Failure
+            Given a SignUpFormValidateChanged with invalid data
             When the event is triggered
             Then the event's properties should match the provided values
             ''',
@@ -304,12 +304,12 @@ class SignUpFormValidateChangedFailureScenario
 }
 
 class SignUpFormValidateChangedEmptyScenario
-    extends BAUTScenario<AuthEvt, bool> {
+    extends BAUTScenario<AuthEvent, bool> {
   SignUpFormValidateChangedEmptyScenario()
       : super(
           description: '''
-            Scenario: Test SignUpFormValidateChangedEvt Empty
-            Given a SignUpFormValidateChangedEvt with no data
+            Scenario: Test SignUpFormValidateChanged Empty
+            Given a SignUpFormValidateChanged with no data
             When the event is triggered
             Then the event's properties should be empty
             ''',
@@ -322,12 +322,12 @@ class SignUpFormValidateChangedEmptyScenario
 }
 
 class SignUpFormValidateChangedEqualityScenario
-    extends BAUTScenario<AuthEvt, bool> {
+    extends BAUTScenario<AuthEvent, bool> {
   SignUpFormValidateChangedEqualityScenario()
       : super(
           description: '''
-            Scenario: Test SignUpFormValidateChangedEvt Equality
-            Given two SignUpFormValidateChangedEvt with the same data
+            Scenario: Test SignUpFormValidateChanged Equality
+            Given two SignUpFormValidateChanged with the same data
             When the events are compared
             Then they should be equal
             ''',
@@ -342,12 +342,12 @@ class SignUpFormValidateChangedEqualityScenario
         );
 }
 
-class SignUpButtonPressedEqualityScenario extends BAUTScenario<AuthEvt, bool> {
+class SignUpButtonPressedEqualityScenario extends BAUTScenario<AuthEvent, bool> {
   SignUpButtonPressedEqualityScenario()
       : super(
           description: '''
-            Scenario: Test SignUpButtonPressedEvt Equality
-            Given two SignUpButtonPressedEvt
+            Scenario: Test SignUpButtonPressed Equality
+            Given two SignUpButtonPressed
             When the events are compared
             Then they should be equal
             ''',
@@ -362,12 +362,12 @@ class SignUpButtonPressedEqualityScenario extends BAUTScenario<AuthEvt, bool> {
         );
 }
 
-class SignUpButtonPressedSuccessScenario extends BAUTScenario<AuthEvt, bool> {
+class SignUpButtonPressedSuccessScenario extends BAUTScenario<AuthEvent, bool> {
   SignUpButtonPressedSuccessScenario()
       : super(
           description: '''
-            Scenario: Test SignUpButtonPressedEvt Success
-            Given a SignUpButtonPressedEvt
+            Scenario: Test SignUpButtonPressed Success
+            Given a SignUpButtonPressed
             When the event is triggered
             Then the event's properties should be empty
             ''',
@@ -383,13 +383,13 @@ class SignUpButtonPressedSuccessScenario extends BAUTScenario<AuthEvt, bool> {
 // NEW TEST SCENARIOS FOR MISSING EVENTS
 // ============================================================================
 
-// SignInWithBiometricEvt Tests
-class SignInWithBiometricSuccessScenario extends BAUTScenario<AuthEvt, bool> {
+// SignInWithBiometric Tests
+class SignInWithBiometricSuccessScenario extends BAUTScenario<AuthEvent, bool> {
   SignInWithBiometricSuccessScenario()
       : super(
           description: '''
-            Scenario: Test SignInWithBiometricEvt Success
-            Given a SignInWithBiometricEvt
+            Scenario: Test SignInWithBiometric Success
+            Given a SignInWithBiometric
             When the event is triggered
             Then the event's properties should be empty
             ''',
@@ -402,12 +402,12 @@ class SignInWithBiometricSuccessScenario extends BAUTScenario<AuthEvt, bool> {
 }
 
 class SignInWithBiometricPropsScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignInWithBiometricPropsScenario()
       : super(
           description: '''
-            Scenario: Test SignInWithBiometricEvt Props
-            Given a SignInWithBiometricEvt
+            Scenario: Test SignInWithBiometric Props
+            Given a SignInWithBiometric
             When accessing the props
             Then the props should be empty
             ''',
@@ -420,12 +420,12 @@ class SignInWithBiometricPropsScenario
 }
 
 class SignInWithBiometricEqualityScenario
-    extends BAUTScenario<AuthEvt, bool> {
+    extends BAUTScenario<AuthEvent, bool> {
   SignInWithBiometricEqualityScenario()
       : super(
           description: '''
-            Scenario: Test SignInWithBiometricEvt Equality
-            Given two SignInWithBiometricEvt instances
+            Scenario: Test SignInWithBiometric Equality
+            Given two SignInWithBiometric instances
             When comparing them
             Then they should be equal
             ''',
@@ -440,14 +440,14 @@ class SignInWithBiometricEqualityScenario
         );
 }
 
-// CheckBiometricAvailabilityEvt Tests
+// CheckBiometricAvailability Tests
 class CheckBiometricAvailabilitySuccessScenario
-    extends BAUTScenario<AuthEvt, bool> {
+    extends BAUTScenario<AuthEvent, bool> {
   CheckBiometricAvailabilitySuccessScenario()
       : super(
           description: '''
-            Scenario: Test CheckBiometricAvailabilityEvt Success
-            Given a CheckBiometricAvailabilityEvt
+            Scenario: Test CheckBiometricAvailability Success
+            Given a CheckBiometricAvailability
             When the event is triggered
             Then the event's properties should be empty
             ''',
@@ -460,12 +460,12 @@ class CheckBiometricAvailabilitySuccessScenario
 }
 
 class CheckBiometricAvailabilityPropsScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   CheckBiometricAvailabilityPropsScenario()
       : super(
           description: '''
-            Scenario: Test CheckBiometricAvailabilityEvt Props
-            Given a CheckBiometricAvailabilityEvt
+            Scenario: Test CheckBiometricAvailability Props
+            Given a CheckBiometricAvailability
             When accessing the props
             Then the props should be empty
             ''',
@@ -478,12 +478,12 @@ class CheckBiometricAvailabilityPropsScenario
 }
 
 class CheckBiometricAvailabilityEqualityScenario
-    extends BAUTScenario<AuthEvt, bool> {
+    extends BAUTScenario<AuthEvent, bool> {
   CheckBiometricAvailabilityEqualityScenario()
       : super(
           description: '''
-            Scenario: Test CheckBiometricAvailabilityEvt Equality
-            Given two CheckBiometricAvailabilityEvt instances
+            Scenario: Test CheckBiometricAvailability Equality
+            Given two CheckBiometricAvailability instances
             When comparing them
             Then they should be equal
             ''',
@@ -498,14 +498,14 @@ class CheckBiometricAvailabilityEqualityScenario
         );
 }
 
-// SignUpTermsChangedEvt Tests
+// SignUpTermsChanged Tests
 class SignUpTermsChangedPropsScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   SignUpTermsChangedPropsScenario()
       : super(
           description: '''
-            Scenario: Test SignUpTermsChangedEvt Props
-            Given a SignUpTermsChangedEvt
+            Scenario: Test SignUpTermsChanged Props
+            Given a SignUpTermsChanged
             When accessing the props
             Then the props should contain isAccepted
             ''',
@@ -517,12 +517,12 @@ class SignUpTermsChangedPropsScenario
         );
 }
 
-class SignUpTermsChangedSuccessScenario extends BAUTScenario<AuthEvt, bool> {
+class SignUpTermsChangedSuccessScenario extends BAUTScenario<AuthEvent, bool> {
   SignUpTermsChangedSuccessScenario()
       : super(
           description: '''
-            Scenario: Test SignUpTermsChangedEvt Success
-            Given a SignUpTermsChangedEvt with isAccepted true
+            Scenario: Test SignUpTermsChanged Success
+            Given a SignUpTermsChanged with isAccepted true
             When the event is triggered
             Then the event's properties should be non-empty
             ''',
@@ -534,12 +534,12 @@ class SignUpTermsChangedSuccessScenario extends BAUTScenario<AuthEvt, bool> {
         );
 }
 
-class SignUpTermsChangedEqualityScenario extends BAUTScenario<AuthEvt, bool> {
+class SignUpTermsChangedEqualityScenario extends BAUTScenario<AuthEvent, bool> {
   SignUpTermsChangedEqualityScenario()
       : super(
           description: '''
-            Scenario: Test SignUpTermsChangedEvt Equality
-            Given two SignUpTermsChangedEvt with the same isAccepted
+            Scenario: Test SignUpTermsChanged Equality
+            Given two SignUpTermsChanged with the same isAccepted
             When comparing them
             Then they should be equal
             ''',
@@ -554,13 +554,13 @@ class SignUpTermsChangedEqualityScenario extends BAUTScenario<AuthEvt, bool> {
         );
 }
 
-// GetCurrentUserEvt Tests
-class GetCurrentUserSuccessScenario extends BAUTScenario<AuthEvt, bool> {
+// GetCurrentUser Tests
+class GetCurrentUserSuccessScenario extends BAUTScenario<AuthEvent, bool> {
   GetCurrentUserSuccessScenario()
       : super(
           description: '''
-            Scenario: Test GetCurrentUserEvt Success
-            Given a GetCurrentUserEvt
+            Scenario: Test GetCurrentUser Success
+            Given a GetCurrentUser
             When the event is triggered
             Then the event's properties should be empty
             ''',
@@ -573,12 +573,12 @@ class GetCurrentUserSuccessScenario extends BAUTScenario<AuthEvt, bool> {
 }
 
 class GetCurrentUserPropsScenario
-    extends BAUTScenario<AuthEvt, List<Object?>> {
+    extends BAUTScenario<AuthEvent, List<Object?>> {
   GetCurrentUserPropsScenario()
       : super(
           description: '''
-            Scenario: Test GetCurrentUserEvt Props
-            Given a GetCurrentUserEvt
+            Scenario: Test GetCurrentUser Props
+            Given a GetCurrentUser
             When accessing the props
             Then the props should be empty
             ''',
@@ -590,12 +590,12 @@ class GetCurrentUserPropsScenario
         );
 }
 
-class GetCurrentUserEqualityScenario extends BAUTScenario<AuthEvt, bool> {
+class GetCurrentUserEqualityScenario extends BAUTScenario<AuthEvent, bool> {
   GetCurrentUserEqualityScenario()
       : super(
           description: '''
-            Scenario: Test GetCurrentUserEvt Equality
-            Given two GetCurrentUserEvt instances
+            Scenario: Test GetCurrentUser Equality
+            Given two GetCurrentUser instances
             When comparing them
             Then they should be equal
             ''',

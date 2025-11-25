@@ -1,9 +1,10 @@
 import 'package:banking_app/core/data/services/biometric_service.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:banking_app/features/auth/presentation/blocs/auth_state.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 class AuthRepositoryMock extends Mock implements AuthRepository {}
 
@@ -79,4 +80,19 @@ class AuthMocks {
   );
 
   static final AuthResponse authResponseNoUser = AuthResponse();
+}
+
+/// Helper function to compare AuthStates ignoring previousState and isOptimistic
+bool authStateEquals(AuthState a, AuthState b) {
+  return a.status == b.status &&
+      a.username == b.username &&
+      a.email == b.email &&
+      a.password == b.password &&
+      a.isFormValid == b.isFormValid &&
+      a.isTermsAccepted == b.isTermsAccepted &&
+      a.errorMessage == b.errorMessage &&
+      a.sessionToken == b.sessionToken &&
+      a.isBiometricAvailable == b.isBiometricAvailable &&
+      a.isBiometricEnabled == b.isBiometricEnabled &&
+      a.hasSavedBiometricCredentials == b.hasSavedBiometricCredentials;
 }

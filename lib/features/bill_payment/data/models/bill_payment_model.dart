@@ -8,13 +8,13 @@ part 'bill_payment_model.g.dart';
 
 @JsonEnum(alwaysCreate: true)
 enum BillType {
-  @JsonValue("water")
+  @JsonValue('water')
   water,
 
-  @JsonValue("internet")
+  @JsonValue('internet')
   internet,
 
-  @JsonValue("electric")
+  @JsonValue('electric')
   electric,
 }
 
@@ -22,11 +22,11 @@ extension BillTypeExtension on BillType {
   String get displayName {
     switch (this) {
       case BillType.water:
-        return "Water Bill";
+        return 'Water Bill';
       case BillType.internet:
-        return "Internet Bill";
+        return 'Internet Bill';
       case BillType.electric:
-        return "Electric Bill";
+        return 'Electric Bill';
     }
   }
 }

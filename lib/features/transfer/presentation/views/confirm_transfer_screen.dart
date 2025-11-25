@@ -191,7 +191,7 @@ class ConfirmTransactionDetail extends StatelessWidget {
           name: S.current.transferTransactionFeeLabel,
           label: S.current.transferTransactionFeeLabel,
           controller: TextEditingController(
-            text: "${FormatterUtils.formatAmount(state.transactionFee)}\$",
+            text: '${FormatterUtils.formatAmount(state.transactionFee)}\$',
           ),
           readOnly: true,
         ),
@@ -211,7 +211,7 @@ class ConfirmTransactionDetail extends StatelessWidget {
           name: S.current.transferAmountLabel,
           label: S.current.transferAmountLabel,
           controller: TextEditingController(
-            text: "\$${FormatterUtils.formatAmount(state.amount ?? 0)}",
+            text: '\$${FormatterUtils.formatAmount(state.amount ?? 0)}',
           ),
           readOnly: true,
         ),
