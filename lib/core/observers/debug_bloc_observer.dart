@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../data/services/bloc_debug_service.dart';
+import '../data/services/api/bloc_debug_service.dart';
 
 /// Enhanced BLoC observer with debugging and visualization
 class DebugBlocObserver extends BlocObserver {

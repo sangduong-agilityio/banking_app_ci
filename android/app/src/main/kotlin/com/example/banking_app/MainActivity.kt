@@ -3,12 +3,17 @@ package com.example.banking_app
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+<<<<<<< HEAD
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.os.BatteryManager
 import android.os.Build
 import android.util.Log
+=======
+import android.os.BatteryManager
+import android.os.Build
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -19,6 +24,7 @@ import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.Executor
 
 class MainActivity : FlutterFragmentActivity() {
+<<<<<<< HEAD
     companion object {
         private const val TAG = "PlatformChannel"
     }
@@ -51,27 +57,62 @@ class MainActivity : FlutterFragmentActivity() {
                         result.success(batteryLevel)
                     } else {
                         Log.e(TAG, "Battery level unavailable")
+=======
+    // Define the channel name (must match the Dart side)
+    private val CHANNEL = "system_info"
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+
+        // Set up the MethodChannel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "getSystemVersion" -> {
+                    val version = getSystemVersion()
+                    result.success(version)
+                }
+                "getBatteryLevel" -> {
+                    val batteryLevel = getBatteryLevel()
+                    if (batteryLevel != -1) {
+                        result.success(batteryLevel)
+                    } else {
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
                         result.error("UNAVAILABLE", "Battery level not available.", null)
                     }
                 }
                 "processData" -> {
+<<<<<<< HEAD
                     val inputData = call.argument<String>("inputData")
                     val timestamp = call.argument<Long>("timestamp")
                     Log.d(TAG, "Processing data: $inputData at $timestamp")
+=======
+                    // Example of receiving arguments from Dart
+                    val inputData = call.argument<String>("inputData")
+                    val timestamp = call.argument<Long>("timestamp")
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
                     
                     val processedData = "Processed: $inputData at $timestamp"
                     result.success(processedData)
                 }
                 "sendHelloWorld" -> {
+<<<<<<< HEAD
                     val message = call.argument<String>("message")
                     val fromFlutter = call.argument<Boolean>("fromFlutter") ?: false
                     Log.d(TAG, "Received Hello World: message='$message', fromFlutter=$fromFlutter")
                     
+=======
+                    // Receive Hello World from Flutter
+                    val message = call.argument<String>("message")
+                    val fromFlutter = call.argument<Boolean>("fromFlutter") ?: false
+                    
+                    // Process and send response back to Flutter
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
                     val response = if (fromFlutter) {
                         "Android says: Received '$message' from Flutter!"
                     } else {
                         "Android says: Hello!"
                     }
+<<<<<<< HEAD
                     Log.d(TAG, "Sending response: $response")
                     result.success(response)
                 }
@@ -79,10 +120,18 @@ class MainActivity : FlutterFragmentActivity() {
                     Log.d(TAG, "Checking biometric availability...")
                     val isAvailable = isBiometricAvailable()
                     Log.i(TAG, "Biometric available: $isAvailable")
+=======
+                    
+                    result.success(response)
+                }
+                "isBiometricAvailable" -> {
+                    val isAvailable = isBiometricAvailable()
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
                     result.success(isAvailable)
                 }
                 "authenticateWithBiometric" -> {
                     val reason = call.argument<String>("reason") ?: "Authenticate to continue"
+<<<<<<< HEAD
                     Log.i(TAG, "Starting biometric authentication with reason: $reason")
                     authenticateWithBiometric(reason, result)
                 }
@@ -131,6 +180,14 @@ class MainActivity : FlutterFragmentActivity() {
         if (action != null) {
             Log.i(TAG, "Shortcut action detected: $action")
             shortcutAction = action
+=======
+                    authenticateWithBiometric(reason, result)
+                }
+                else -> {
+                    result.notImplemented()
+                }
+            }
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
         }
     }
 
@@ -171,13 +228,19 @@ class MainActivity : FlutterFragmentActivity() {
      * Authenticate using biometric
      */
     private fun authenticateWithBiometric(reason: String, result: MethodChannel.Result) {
+<<<<<<< HEAD
         Log.d(TAG, "Setting up biometric prompt...")
+=======
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
         val executor: Executor = ContextCompat.getMainExecutor(this)
         val biometricPrompt = BiometricPrompt(this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
+<<<<<<< HEAD
                     Log.e(TAG, "Biometric authentication error: $errString (code: $errorCode)")
+=======
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
                     result.success(mapOf(
                         "success" to false,
                         "message" to "Authentication error: $errString"
@@ -186,16 +249,26 @@ class MainActivity : FlutterFragmentActivity() {
 
                 override fun onAuthenticationSucceeded(authResult: BiometricPrompt.AuthenticationResult) {
                     super.onAuthenticationSucceeded(authResult)
+<<<<<<< HEAD
                     Log.i(TAG, "Biometric authentication succeeded!")
                     result.success(mapOf(
                         "success" to true,
                         "message" to "Authentication successful!"
+=======
+                    result.success(mapOf(
+                        "success" to true,
+                        "message" to "Authentication successful! 🎉"
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
                     ))
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
+<<<<<<< HEAD
                     Log.w(TAG, "Biometric authentication failed (user can retry)")
+=======
+                    // Don't call result here - let user try again
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
                 }
             })
 
@@ -205,6 +278,7 @@ class MainActivity : FlutterFragmentActivity() {
             .setNegativeButtonText("Cancel")
             .build()
 
+<<<<<<< HEAD
         Log.d(TAG, "Showing biometric prompt to user...")
         biometricPrompt.authenticate(promptInfo)
     }
@@ -241,4 +315,8 @@ class MainActivity : FlutterFragmentActivity() {
             Log.w(TAG, "Dynamic shortcuts not supported on API ${Build.VERSION.SDK_INT}")
         }
     }
+=======
+        biometricPrompt.authenticate(promptInfo)
+    }
+>>>>>>> b809db52c8320cb0078995620a649233a6517937
 }
