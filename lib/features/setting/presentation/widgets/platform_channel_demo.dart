@@ -406,8 +406,8 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 const SizedBox(height: 4),
                                 Text(
                                   _isBiometricAvailable 
-                                      ? 'Available ✅' 
-                                      : 'Not Available ❌',
+                                      ? 'Available' 
+                                      : 'Not Available ',
                                   style: context.titleSmall?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: context.colorScheme.scrim,
