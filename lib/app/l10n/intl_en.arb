@@ -330,6 +330,31 @@
   "applicationErrorGeneric": "An unexpected error occurred. Please contact support if this persists.",
   "offline_text": "You are currently offline.",
   "searchUsingCachedRates": "Using cached rates",
+
+  "@segmentPlatformChannel": {
+    "description": "Store translations for Platform Channel demo"
+  },
+  "platformChannelTitle": "Platform Channel Demo",
+  "platformChannelSystemInfoTitle": "System Information",
+  "platformChannelBatteryInfoTitle": "Battery Information",
+  "platformChannelOsVersionLabel": "OS Version",
+  "platformChannelBatteryLevelLabel": "Battery Level",
+  "platformChannelNotChecked": "Not checked",
+  "platformChannelRefreshButton": "Refresh System Version",
+  "platformChannelGetBatteryButton": "Get Battery Level",
+  "platformChannelInfoMessage": "This demo uses Platform Channels to communicate with native Android/iOS code.",
+  "platformChannelBatteryLevelSnackbar": "Battery Level: {level}%",
+  "@platformChannelBatteryLevelSnackbar": {
+    "placeholders": {
+      "level": { "type": "int" }
+    }
+  },
+  "platformChannelErrorMessage": "Error: {error}",
+  "@platformChannelErrorMessage": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
   "searchExchangeRate": "1 {fromCurrency} = {rate} {toCurrency}",
   "@searchExchangeRate": {
       "placeholders": {
