@@ -50,6 +50,8 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
         alignment: BAAppBarAlignment.left,
         iconColor: context.colorScheme.scrim,
       ),
+
+      // NEW APPROACH: CustomMultiChildLayout
       body: SizedBox.expand(
         child: CustomMultiChildLayout(
           delegate: _TransferSuccessLayoutDelegate(
@@ -132,11 +134,77 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
           ],
         ),
       ),
+    // OLD APPROACH: SingleChildScrollView
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     children: [
+      //       const SizedBox(height: 25),
+      //       BAAssets.transferSuccess(),
+      //       const SizedBox(height: 30),
+      //       Text(
+      //         S.current.payBillTransactionSuccess,
+      //         style: context.titleMedium?.copyWith(
+      //           fontWeight: FontWeight.w600,
+      //           color: context.colorScheme.secondary,
+      //         ),
+      //       ),
+      //       const SizedBox(height: 24),
+      //       SelectionContainer.disabled(
+      //         child: RichText(
+      //           textAlign: TextAlign.center,
+      //           text: TextSpan(
+      //             style: DefaultTextStyle.of(context).style.copyWith(
+      //               fontSize: 16,
+      //               decoration: TextDecoration.none,
+      //             ),
+      //             children: [
+      //               TextSpan(
+      //                 text: S.current.transferSuccessDescription,
+      //                 style: context.titleSmall?.copyWith(
+      //                   color: context.colorScheme.scrim,
+      //                 ),
+      //               ),
+      //               TextSpan(
+      //                 text: '\$${FormatterUtils.formatAmount(widget.amount)} ',
+      //                 style: context.titleSmall?.copyWith(
+      //                   color: context.colorScheme.error,
+      //                   fontWeight: FontWeight.bold,
+      //                 ),
+      //               ),
+      //               TextSpan(
+      //                 text: S.current.transferToLabel.toLowerCase(),
+      //                 style: context.titleSmall?.copyWith(
+      //                   color: context.colorScheme.scrim,
+      //                 ),
+      //               ),
+      //               TextSpan(
+      //                 text: ' ${widget.beneficiaryName}!',
+      //                 style: context.titleSmall?.copyWith(
+      //                   color: context.colorScheme.secondary,
+      //                   fontWeight: FontWeight.bold,
+      //                 ),
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       ),
+      //       const SizedBox(height: 55),
+      //       BAElevatedButton(
+      //         height: 44,
+      //         text: S.current.payBillConfirmButton,
+      //         onPressed: () {
+      //           Navigator.popUntil(context, (route) => route.isFirst);
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      // ),
+    
     );
   }
 }
 
-// Layout delegate for success screen
+
 class _TransferSuccessLayoutDelegate extends MultiChildLayoutDelegate {
   final BuildContext context;
 

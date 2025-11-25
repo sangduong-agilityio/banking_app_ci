@@ -3,11 +3,9 @@ import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transactions/data/models/balance_summary_model.dart';
-import 'package:banking_app/features/transactions/data/models/transaction_model.dart';
-import 'package:banking_app/features/transactions/data/models/transaction_report_model.dart';
 import 'package:banking_app/features/transactions/presentation/widgets/chart.dart';
 import 'package:banking_app/features/transactions/presentation/widgets/header.dart';
-import 'package:banking_app/features/transactions/presentation/widgets/transaction_item.dart';
+import 'package:banking_app/features/transactions/presentation/widgets/transaction_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
@@ -34,8 +32,29 @@ class TransactionReportScreen extends StatelessWidget {
       child: LoaderOverlay(
         child: BAScaffold(
           backgroundColor: context.colorScheme.secondary,
-          body: CustomScrollView(
-            slivers: [
+          body: Stack(
+            children: [
+              // Background layer - ALWAYS white below fold
+              Positioned.fill(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 280,
+                      color: context.colorScheme.secondary,
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: context.colorScheme.onPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              
+              // Scrollable content on top
+              CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
               /// Sliver App Bar
               SliverAppBar(
                 expandedHeight: 10,
@@ -65,12 +84,12 @@ class TransactionReportScreen extends StatelessWidget {
                 pinned: false,
                 floating: false,
                 delegate: CardPersistentHeaderDelegate(
-                  minHeight: 120,
+                  minHeight: 20,
                   maxHeight: 220,
                 ),
               ),
 
-              /// Sliver List for content
+              /// Sliver Content with overlap and BlocConsumer
               BlocConsumer<TransactionReportBloc, TransactionReportState>(
                 listener: (context, state) {
                   state.status.maybeWhen(
@@ -91,13 +110,10 @@ class TransactionReportScreen extends StatelessWidget {
                 builder: (context, state) {
                   final report = state.transactionReport;
 
-                  return SliverList(
-                    delegate: SliverChildListDelegate([
-                      Container(
-                        transform: Matrix4.translationValues(0, -100, 0),
-                        constraints: BoxConstraints(
-                          minHeight: MediaQuery.of(context).size.height,
-                        ),
+                  return SliverToBoxAdapter(
+                    child: Transform.translate(
+                      offset: const Offset(0, -100),
+                      child: Container(
                         decoration: BoxDecoration(
                           color: context.colorScheme.onPrimary,
                           borderRadius: const BorderRadius.only(
@@ -105,10 +121,12 @@ class TransactionReportScreen extends StatelessWidget {
                             topRight: Radius.circular(24),
                           ),
                         ),
+                        padding: const EdgeInsets.only(top: 120, bottom: 100),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            const SizedBox(height: 120),
-
+                            /// Balance Chart Section
                             if (report == null)
                               Container(
                                 height: 200,
@@ -125,31 +143,51 @@ class TransactionReportScreen extends StatelessWidget {
                                 balanceSummary: report.balanceHistory,
                               ),
 
-                            if (report == null)
-                              Container(
-                                height: 200,
-                                margin: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: context
-                                      .colorScheme
-                                      .surfaceContainerHighest,
-                                  borderRadius: BorderRadius.circular(16),
+                            /// Transaction History Section
+                            if (report != null) ...[
+                              if (report.todayTransactions.isNotEmpty) ...[
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+                                  child: SectionHeader(
+                                    title: S.current.transactionTodayTitle,
+                                  ),
                                 ),
-                              )
-                            else
-                              TransactionHistory(report: report),
+                                ...report.todayTransactions.map(
+                                  (transaction) => TransactionListItem(
+                                    transaction: transaction,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                              ],
+                              if (report.yesterdayTransactions.isNotEmpty) ...[
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                                  child: SectionHeader(
+                                    title: S.current.transactionYesterdayTitle,
+                                  ),
+                                ),
+                                ...report.yesterdayTransactions.map(
+                                  (transaction) => TransactionListItem(
+                                    transaction: transaction,
+                                  ),
+                                ),
+                              ],
+                            ],
+                            const SizedBox(height: 100),
                           ],
                         ),
                       ),
-                    ]),
+                    ),
                   );
                 },
               ),
             ],
           ),
-        ),
+        ],
       ),
-    );
+    ),
+  ),
+);
   }
 }
 
@@ -157,7 +195,7 @@ class CardPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double minHeight;
   final double maxHeight;
 
-  CardPersistentHeaderDelegate({
+  const CardPersistentHeaderDelegate({
     required this.minHeight,
     required this.maxHeight,
   });
@@ -174,18 +212,26 @@ class CardPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
       maxHeight,
     );
 
-    return SizedBox(
-      height: currentHeight,
-      child: OverflowBox(
-        maxHeight: currentHeight,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Transform.scale(
-            scale: (1 - progress * 0.3).clamp(0.7, 1.0),
+    return RepaintBoundary(
+      child: SizedBox(
+        height: currentHeight,
+        child: ClipRect(
+          child: OverflowBox(
+            maxHeight: maxHeight,
             alignment: Alignment.topCenter,
-            child: Opacity(
-              opacity: (1 - progress * 1.2).clamp(0.0, 1.0),
-              child: const CreditCardsSwiper(),
+            child: SizedBox(
+              height: maxHeight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Transform.scale(
+                  scale: (1 - progress * 0.3).clamp(0.7, 1.0),
+                  alignment: Alignment.topCenter,
+                  child: Opacity(
+                    opacity: (1 - progress * 1.2).clamp(0.0, 1.0),
+                    child: const CreditCardsSwiper(),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
@@ -200,8 +246,10 @@ class CardPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => minHeight;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
-      true;
+  bool shouldRebuild(CardPersistentHeaderDelegate oldDelegate) {
+    return oldDelegate.minHeight != minHeight ||
+           oldDelegate.maxHeight != maxHeight;
+  }
 }
 
 class CreditCardsSwiper extends StatelessWidget {
@@ -245,58 +293,6 @@ class CreditCardsSwiper extends StatelessWidget {
   }
 }
 
-class TransactionHistory extends StatelessWidget {
-  final TransactionReportModel report;
-
-  const TransactionHistory({super.key, required this.report});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (report.todayTransactions.isNotEmpty) ...[
-            SectionHeader(title: S.current.transactionTodayTitle),
-            ...report.todayTransactions.map(
-              (transaction) => TransactionItem(
-                icon: transaction.displayIcon,
-                iconColor: transaction.displayColor,
-                title: transaction.displayTitle,
-                subtitle: transaction.displaySubtitle,
-                amount:
-                    '${transaction.amount > 0 ? '+' : '-'}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
-                amountColor: transaction.amount < 0
-                    ? context.colorScheme.error
-                    : context.colorScheme.secondary,
-              ),
-            ),
-            const SizedBox(height: 24),
-          ],
-          if (report.yesterdayTransactions.isNotEmpty) ...[
-            SectionHeader(title: S.current.transactionYesterdayTitle),
-            ...report.yesterdayTransactions.map(
-              (transaction) => TransactionItem(
-                icon: transaction.displayIcon,
-                iconColor: transaction.displayColor,
-                title: transaction.displayTitle,
-                subtitle: transaction.displaySubtitle,
-                amount:
-                    '${transaction.amount > 0 ? '+' : '-'}\$${FormatterUtils.formatAmount(transaction.amount.abs())}',
-                amountColor: transaction.amount < 0
-                    ? context.colorScheme.error
-                    : context.colorScheme.secondary,
-              ),
-            ),
-            const SizedBox(height: 100),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
 /// Balance History Chart
 class BalanceHistoryChart extends StatelessWidget {
   final List<BalanceSummaryModel> balanceSummary;
@@ -305,60 +301,63 @@ class BalanceHistoryChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(24),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: context.colorScheme.onPrimary,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withAlpha(12),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            S.current.transactionBalanceTitle,
-            style: context.bodySmall?.copyWith(
-              color: context.colorScheme.scrim,
-              fontWeight: FontWeight.w600,
+    return RepaintBoundary(
+      child: Container(
+        margin: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: context.colorScheme.onPrimary,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(12),
+              blurRadius: 20,
+              offset: const Offset(0, 4),
             ),
-          ),
-          const SizedBox(height: 8),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                balanceSummary.isNotEmpty
-                    ? FormatterUtils.formatAmount(
-                        balanceSummary.last.endingBalance,
-                      )
-                    : '0.00',
-                style: context.displayLarge?.copyWith(
-                  color: context.colorScheme.secondary,
-                  fontWeight: FontWeight.w600,
-                ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              S.current.transactionBalanceTitle,
+              style: context.bodySmall?.copyWith(
+                color: context.colorScheme.scrim,
+                fontWeight: FontWeight.w600,
               ),
-              const SizedBox(width: 6),
-              SizedBox(
-                height: 22,
-                child: Text(
-                  "USD",
-                  style: context.bodySmall?.copyWith(
+            ),
+            const SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  balanceSummary.isNotEmpty
+                      ? FormatterUtils.formatAmount(
+                          balanceSummary.last.endingBalance,
+                        )
+                      : '0.00',
+                  style: context.displayLarge?.copyWith(
+                    color: context.colorScheme.secondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          SizedBox(height: 220, child: BABalanceChart(data: balanceSummary)),
-        ],
+                const SizedBox(width: 6),
+                SizedBox(
+                  height: 22,
+                  child: Text(
+                    'USD',
+                    style: context.bodySmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            SizedBox(height: 220, child: BABalanceChart(data: balanceSummary)),
+          ],
+        ),
       ),
     );
   }
