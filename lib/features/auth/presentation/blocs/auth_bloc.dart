@@ -213,7 +213,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignUpButtonPressed event,
     Emitter<AuthState> emit,
   ) async {
-    emit(state.copyWith(status: AuthStatus.loading));
+    // Optimistic UI: Immediately show loading state
+    emit(state.toOptimistic(status: AuthStatus.loading));
+    
     try {
       final response = await repo.signUp(
         email: state.email,
@@ -227,13 +229,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           username: state.username,
           email: state.email,
         );
-        emit(
-          state.copyWith(status: AuthStatus.success, errorMessage: ''),
-        );
+        
+        // Confirm optimistic update
+        emit(state.confirm());
       } else {
+        // Rollback to previous state on failure
         emit(
-          state.copyWith(
-            status: AuthStatus.failure,
+          state.rollback(
             errorMessage: S.current.authErrorSignupFailed,
           ),
         );
@@ -252,9 +254,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         isCritical: false,
       );
 
+      // Rollback to previous state with error message
       emit(
-        state.copyWith(
-          status: AuthStatus.failure,
+        state.rollback(
           errorMessage: ErrorSanitizer.sanitize(e),
         ),
       );
