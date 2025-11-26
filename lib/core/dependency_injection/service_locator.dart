@@ -1,5 +1,6 @@
 import 'package:banking_app/core/data/services/api/api_client.dart';
 import 'package:banking_app/core/data/database/objectbox_setup.dart';
+import 'package:banking_app/core/data/services/graphql/graphql_client.dart';
 import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/data/services/biometric_service.dart';
 import 'package:banking_app/core/data/services/currency_cache_service.dart';
@@ -22,7 +23,9 @@ import 'package:banking_app/features/search/domain/repositories/search_repositor
 import 'package:banking_app/features/search/presentation/blocs/search_bloc.dart';
 import 'package:banking_app/features/setting/presentation/blocs/setting_cubit.dart';
 import 'package:banking_app/features/transactions/data/repositories/transaction_repository.dart';
+import 'package:banking_app/features/transactions/data/repositories/graphql_transaction_repository.dart';
 import 'package:banking_app/features/transactions/presentation/blocs/transaction_bloc.dart';
+import 'package:banking_app/features/transactions/presentation/blocs/graphql/graphql_transaction_bloc.dart';
 import 'package:banking_app/features/transfer/data/repositories/transfer_repository.dart';
 import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
 
@@ -159,6 +162,25 @@ class AppLocators {
 
     locator.registerFactory<TransactionReportBloc>(
       () => TransactionReportBloc(repo: locator<TransactionReportRepository>()),
+    );
+
+    // GraphQL Client
+    locator.registerLazySingleton<BankingGraphQLClient>(
+      () => BankingGraphQLClient(),
+    );
+
+    // GraphQL Repository
+    locator.registerLazySingleton<GraphQLTransactionRepository>(
+      () => GraphQLTransactionRepositoryImpl(
+        client: locator<BankingGraphQLClient>(),
+      ),
+    );
+
+    // GraphQL BLoC
+    locator.registerFactory<GraphQLTransactionBloc>(
+      () => GraphQLTransactionBloc(
+        repository: locator<GraphQLTransactionRepository>(),
+      ),
     );
   }
 }

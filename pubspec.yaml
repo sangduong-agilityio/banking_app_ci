@@ -13,6 +13,9 @@ dependencies:
   # Http client library for making API calls
   dio: ^5.5.0+1
 
+  # GraphQL client for Flutter
+  graphql_flutter: ^5.2.0
+
   # Helps implement value-based equality
   equatable: ^2.0.7
 

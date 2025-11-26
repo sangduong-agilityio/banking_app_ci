@@ -15,6 +15,7 @@ import 'package:banking_app/features/search/presentation/views/interest_rate_scr
 import 'package:banking_app/features/search/presentation/views/search_screen.dart';
 import 'package:banking_app/features/setting/presentation/views/setting_screen.dart';
 import 'package:banking_app/features/setting/presentation/widgets/platform_channel_demo.dart';
+import 'package:banking_app/features/transactions/presentation/views/graphql_transaction_demo_screen.dart';
 import 'package:banking_app/features/transactions/presentation/views/transaction_report_screen.dart';
 import 'package:banking_app/features/transfer/presentation/views/transfer_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -92,7 +93,7 @@ class BAAppRouter {
                     name: BAPaths.transactionReport.name,
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
                     builder: (context, state) {
-                      return TransactionReportScreen();
+                      return GraphQLTransactionDemoScreen();
                     },
                   ),
                 ],

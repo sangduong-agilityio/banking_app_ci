@@ -18,4 +18,7 @@ abstract class Env {
 
   @EnviedField(varName: 'SENTRY_ENV', obfuscate: true)
   static String sentryEnv = _Env.sentryEnv;
+
+  @EnviedField(varName: 'SUPABASE_GRAPHQL_ENDPOINT', obfuscate: true)
+  static String supabaseGraphQLEndpoint = _Env.supabaseGraphQLEndpoint;
 }
