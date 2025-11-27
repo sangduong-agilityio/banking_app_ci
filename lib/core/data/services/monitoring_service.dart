@@ -1,4 +1,4 @@
-import 'package:sentry_flutter/sentry_flutter.dart';
+// import 'package:sentry_flutter/sentry_flutter.dart';
 
 /// A unified monitoring service for crash, performance, and analytics tracking.
 class MonitoringService {
@@ -11,21 +11,12 @@ class MonitoringService {
     StackTrace? stackTrace,
     String? hint,
   }) async {
-    await Sentry.captureException(
-      error,
-      stackTrace: stackTrace,
-      hint: hint != null ? Hint.withMap({'hint': hint}) : null,
-    );
+      // Sentry captureException removed
   }
 
   /// Record a user event (e.g., button click, flow success).
   Future<void> logEvent(String eventName, {Map<String, dynamic>? data}) async {
-    await Sentry.captureMessage(
-      'UserEvent: $eventName',
-      withScope: (scope) {
-        scope.setContexts('event_data', data ?? {});
-      },
-    );
+    // Sentry captureMessage removed
   }
 
   /// Track performance of a specific code block.
@@ -33,17 +24,12 @@ class MonitoringService {
     String name,
     Future<void> Function() action,
   ) async {
-    final transaction = Sentry.startTransaction(name, 'performance');
+      // Sentry startTransaction removed
     try {
       await action();
-      transaction.finish(status: const SpanStatus.ok());
-    } catch (e, st) {
-      transaction.finish(status: const SpanStatus.internalError());
-      await logError(
-        e,
-        stackTrace: st,
-        hint: 'Performance trace failed: $name',
-      );
+        // transaction.finish removed
+    } catch (e) {
+        // logError removed
     }
   }
 
@@ -53,11 +39,6 @@ class MonitoringService {
     required num value,
     Map<String, dynamic>? tags,
   }) async {
-    await Sentry.captureMessage(
-      'BusinessMetric: $metricName = $value',
-      withScope: (scope) {
-        scope.setContexts('metric_tags', tags ?? {});
-      },
-    );
+      // Sentry captureMessage removed
   }
 }
