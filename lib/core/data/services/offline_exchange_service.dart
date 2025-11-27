@@ -20,14 +20,12 @@ class OfflineExchangeService {
       return;
     }
 
-  
-      // Cache forward direction (A → B)
-      _cacheOneDirection(from: fromCurrency, to: toCurrency, rate: rate);
+    // Cache forward direction (A → B)
+    _cacheOneDirection(from: fromCurrency, to: toCurrency, rate: rate);
 
-      // Cache reverse direction (B → A)
-      final reverseRate = 1.0 / rate;
-      _cacheOneDirection(from: toCurrency, to: fromCurrency, rate: reverseRate);
-    
+    // Cache reverse direction (B → A)
+    final reverseRate = 1.0 / rate;
+    _cacheOneDirection(from: toCurrency, to: fromCurrency, rate: reverseRate);
   }
 
   /// Cache rate in one direction only (internal helper).

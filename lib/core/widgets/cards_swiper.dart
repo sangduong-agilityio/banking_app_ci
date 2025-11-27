@@ -582,7 +582,13 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
           alignment: Alignment.center,
           transform: Matrix4.identity()
             ..translateByVector3(Vector3(0.0, yOffset, 0.0))
-            ..translateByVector3(Vector3(0.0, _isCardSwitched ? _calculateSwitchOffset(rotation) : 0, 0.0))
+            ..translateByVector3(
+              Vector3(
+                0.0,
+                _isCardSwitched ? _calculateSwitchOffset(rotation) : 0,
+                0.0,
+              ),
+            )
             ..setEntry(3, 2, 0.001)
             ..rotateX(rotation * pi / 180)
             ..scaleByVector3(Vector3(scale, scale, 1.0)),

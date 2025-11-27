@@ -204,8 +204,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   S.current.platformChannelOsVersionLabel,
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim
-                                        .withAlpha(0x99),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -275,8 +276,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   S.current.platformChannelBatteryLevelLabel,
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim
-                                        .withAlpha(0x99),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -335,8 +337,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   'Native Response',
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim
-                                        .withAlpha(0x99),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -399,8 +402,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   'Status',
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim
-                                        .withAlpha(0x99),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
