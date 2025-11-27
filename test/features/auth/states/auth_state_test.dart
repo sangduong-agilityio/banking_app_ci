@@ -60,6 +60,8 @@ class AuthStatePropScenario extends BAUTScenario<AuthState, List<Object?>> {
               false,
               false,
               false,
+              null,
+              false
             ]),
           );
         },

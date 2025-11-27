@@ -34,7 +34,7 @@ class BillPaymentStatePropsScenario
         when: () async => const BillPaymentState(),
         act: (state) => state.props,
         expect: (List<Object?> result) {
-          expect(result, hasLength(21));
+          expect(result, hasLength(23));
         },
       );
 }

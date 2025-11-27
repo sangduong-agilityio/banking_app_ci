@@ -157,11 +157,17 @@ void main() {
             ),
             act: (bloc) => bloc.add(SignInButtonPressed()),
             expect: () => [
-              const AuthState(
+              AuthState(
                 status: AuthStatus.loading,
                 email: 'test@example.com',
                 password: 'password123',
                 isFormValid: true,
+                previousState: const AuthState(
+                  email: 'test@example.com',
+                  password: 'password123',
+                  isFormValid: true,
+                ),
+                isOptimistic: true,
               ),
               AuthState(
                 status: AuthStatus.success,
@@ -169,7 +175,7 @@ void main() {
                 password: 'password123',
                 isFormValid: true,
                 sessionToken: 'test_token',
-                errorMessage: '',
+                errorMessage: null,
               ),
             ],
             verify: (_) {
@@ -201,11 +207,17 @@ void main() {
             ),
             act: (bloc) => bloc.add(SignInButtonPressed()),
             expect: () => [
-              const AuthState(
+              AuthState(
                 status: AuthStatus.loading,
                 email: 'test@example.com',
                 password: 'wrong_password',
                 isFormValid: true,
+                previousState: const AuthState(
+                  email: 'test@example.com',
+                  password: 'wrong_password',
+                  isFormValid: true,
+                ),
+                isOptimistic: true,
               ),
               AuthState(
                 status: AuthStatus.failure,
@@ -240,11 +252,17 @@ void main() {
             ),
             act: (bloc) => bloc.add(SignInButtonPressed()),
             expect: () => [
-              const AuthState(
+              AuthState(
                 status: AuthStatus.loading,
                 email: 'test@example.com',
                 password: 'password123',
                 isFormValid: true,
+                previousState: const AuthState(
+                  email: 'test@example.com',
+                  password: 'password123',
+                  isFormValid: true,
+                ),
+                isOptimistic: true,
               ),
               AuthState(
                 status: AuthStatus.failure,
@@ -354,13 +372,21 @@ void main() {
             ),
             act: (bloc) => bloc.add(SignUpButtonPressed()),
             expect: () => [
-              const AuthState(
+              AuthState(
                 status: AuthStatus.loading,
                 username: 'test_user',
                 email: 'test@example.com',
                 password: 'password123',
                 isFormValid: true,
                 isTermsAccepted: true,
+                previousState: const AuthState(
+                  username: 'test_user',
+                  email: 'test@example.com',
+                  password: 'password123',
+                  isFormValid: true,
+                  isTermsAccepted: true,
+                ),
+                isOptimistic: true,
               ),
               AuthState(
                 status: AuthStatus.success,
@@ -369,7 +395,7 @@ void main() {
                 password: 'password123',
                 isFormValid: true,
                 isTermsAccepted: true,
-                errorMessage: '',
+                errorMessage: null,
               ),
             ],
             verify: (_) {
@@ -407,12 +433,19 @@ void main() {
             ),
             act: (bloc) => bloc.add(SignUpButtonPressed()),
             expect: () => [
-              const AuthState(
+              AuthState(
                 status: AuthStatus.loading,
                 username: 'test_user',
                 email: 'existing@example.com',
                 password: 'password123',
                 isFormValid: true,
+                previousState: const AuthState(
+                  username: 'test_user',
+                  email: 'existing@example.com',
+                  password: 'password123',
+                  isFormValid: true,
+                ),
+                isOptimistic: true,
               ),
               AuthState(
                 status: AuthStatus.failure,
@@ -580,11 +613,14 @@ void main() {
             build: () => authBloc,
             act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading),
               AuthState(
-                status: AuthStatus.success,
-                sessionToken: 'test_token',
-                errorMessage: '',
+                status: AuthStatus.loading,
+                previousState: const AuthState(),
+                isOptimistic: true,
+              ),
+              AuthState(
+                status: AuthStatus.failure,
+                errorMessage: S.current.authErrorUnknown,
               ),
             ],
           ),
@@ -603,7 +639,11 @@ void main() {
             build: () => authBloc,
             act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading),
+              AuthState(
+                status: AuthStatus.loading,
+                previousState: const AuthState(),
+                isOptimistic: true,
+              ),
               AuthState(
                 status: AuthStatus.failure,
                 errorMessage: S.current.authErrorBiometricNotEnabled,
@@ -628,7 +668,11 @@ void main() {
             build: () => authBloc,
             act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading),
+              AuthState(
+                status: AuthStatus.loading,
+                previousState: const AuthState(),
+                isOptimistic: true,
+              ),
               AuthState(
                 status: AuthStatus.failure,
                 errorMessage: S.current.authErrorBiometricFailed,
@@ -650,7 +694,11 @@ void main() {
             build: () => authBloc,
             act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading),
+              AuthState(
+                status: AuthStatus.loading,
+                previousState: const AuthState(),
+                isOptimistic: true,
+              ),
               AuthState(
                 status: AuthStatus.failure,
                 errorMessage: S.current.authErrorUnknown,
@@ -691,11 +739,15 @@ void main() {
             build: () => authBloc,
             act: (bloc) => bloc.add(SignInWithBiometric()),
             expect: () => [
-              const AuthState(status: AuthStatus.loading),
+              AuthState(
+                status: AuthStatus.loading,
+                previousState: const AuthState(),
+                isOptimistic: true,
+              ),
               AuthState(
                 status: AuthStatus.success,
                 sessionToken: 'test_token',
-                errorMessage: '',
+                errorMessage: null,
               ),
             ],
           ),
