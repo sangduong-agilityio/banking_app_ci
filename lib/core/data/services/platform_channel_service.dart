@@ -62,7 +62,9 @@ class PlatformChannelService {
   /// Returns true if device has biometric hardware and enrolled biometrics
   Future<bool> isBiometricAvailable() async {
     try {
-      final bool isAvailable = await _channel.invokeMethod('isBiometricAvailable');
+      final bool isAvailable = await _channel.invokeMethod(
+        'isBiometricAvailable',
+      );
       return isAvailable;
     } on PlatformException catch (e) {
       throw 'Failed to check biometric availability: ${e.message}';
@@ -95,9 +97,7 @@ class PlatformChannelService {
   /// Returns true if shortcuts were added successfully
   Future<bool> addAppShortcuts(List<Map<String, String>> shortcuts) async {
     try {
-      await _channel.invokeMethod('addAppShortcuts', {
-        'shortcuts': shortcuts,
-      });
+      await _channel.invokeMethod('addAppShortcuts', {'shortcuts': shortcuts});
       return true;
     } on PlatformException catch (e) {
       throw 'Failed to add app shortcuts: ${e.message}';

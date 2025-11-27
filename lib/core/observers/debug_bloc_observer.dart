@@ -8,15 +8,12 @@ class DebugBlocObserver extends BlocObserver {
   final BlocDebugService _debugService = BlocDebugService.instance;
   final bool enableLogging;
   final bool enableAnalysis;
-  
+
   // Auto-print analysis every N events
   final Map<String, int> _eventCounts = {};
   static const int _printAnalysisEvery = 10;
 
-  DebugBlocObserver({
-    this.enableLogging = true,
-    this.enableAnalysis = true,
-  });
+  DebugBlocObserver({this.enableLogging = true, this.enableAnalysis = true});
 
   @override
   void onCreate(BlocBase bloc) {
@@ -29,13 +26,13 @@ class DebugBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    
+
     if (event == null) return;
-    
+
     if (enableLogging) {
       debugPrint('Event: ${event.runtimeType} → ${bloc.runtimeType}');
     }
-    
+
     if (enableAnalysis) {
       _debugService.onEventStarted(bloc, event);
     }
@@ -44,16 +41,20 @@ class DebugBlocObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    
+
     // Check if state actually changed (Equatable may skip emission)
     final stateChanged = transition.currentState != transition.nextState;
-    
+
     if (enableLogging) {
       if (!stateChanged) {
         // REDUNDANT STATE SKIPPED BY EQUATABLE!
-        debugPrint('[REDUNDANT SKIPPED] ${bloc.runtimeType} - Equatable prevented duplicate state emission');
+        debugPrint(
+          '[REDUNDANT SKIPPED] ${bloc.runtimeType} - Equatable prevented duplicate state emission',
+        );
         debugPrint('   Event: ${transition.event.runtimeType}');
-        debugPrint('   State unchanged: ${_formatState(transition.currentState)}');
+        debugPrint(
+          '   State unchanged: ${_formatState(transition.currentState)}',
+        );
       } else {
         debugPrint('Transition: ${bloc.runtimeType}');
         debugPrint('   Event: ${transition.event.runtimeType}');
@@ -61,17 +62,19 @@ class DebugBlocObserver extends BlocObserver {
         debugPrint('   To: ${_formatState(transition.nextState)}');
       }
     }
-    
+
     if (enableAnalysis && stateChanged) {
       _debugService.onTransition(bloc, transition);
-      
+
       // Auto-print analysis every N transitions
       final blocName = bloc.runtimeType.toString();
       _eventCounts[blocName] = (_eventCounts[blocName] ?? 0) + 1;
-      
+
       if (_eventCounts[blocName]! % _printAnalysisEvery == 0) {
         debugPrint('\n${'=' * 70}');
-        debugPrint(' AUTO ANALYSIS REPORT (after ${_eventCounts[blocName]} transitions)');
+        debugPrint(
+          ' AUTO ANALYSIS REPORT (after ${_eventCounts[blocName]} transitions)',
+        );
         debugPrint('=' * 70);
         _debugService.printAnalysis(blocName);
         debugPrint('=' * 70 + '\n');
@@ -98,9 +101,7 @@ class DebugBlocObserver extends BlocObserver {
   String _formatState(dynamic state) {
     final stateStr = state.toString();
     // Truncate long states
-    return stateStr.length > 100 
-        ? '${stateStr.substring(0, 97)}...' 
-        : stateStr;
+    return stateStr.length > 100 ? '${stateStr.substring(0, 97)}...' : stateStr;
   }
 
   /// Print analysis for a specific BLoC

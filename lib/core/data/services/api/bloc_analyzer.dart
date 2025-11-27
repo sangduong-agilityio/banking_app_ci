@@ -16,13 +16,15 @@ class BlocAnalyzer {
     required dynamic currentState,
     required Duration duration,
   }) {
-    _stateChanges.add(_StateChange(
-      event: event,
-      previousState: previousState.toString(),
-      currentState: currentState.toString(),
-      duration: duration,
-      timestamp: DateTime.now(),
-    ));
+    _stateChanges.add(
+      _StateChange(
+        event: event,
+        previousState: previousState.toString(),
+        currentState: currentState.toString(),
+        duration: duration,
+        timestamp: DateTime.now(),
+      ),
+    );
 
     _eventDurations.putIfAbsent(event, () => []).add(duration);
 
@@ -52,12 +54,14 @@ class BlocAnalyzer {
     if (_eventDurations.isEmpty) return;
 
     developer.log('\nEvent Performance:', name: 'BlocAnalyzer');
-    
+
     final sorted = _eventDurations.entries.toList()
       ..sort((a, b) {
-        final avgA = a.value.fold<int>(0, (sum, d) => sum + d.inMilliseconds) /
+        final avgA =
+            a.value.fold<int>(0, (sum, d) => sum + d.inMilliseconds) /
             a.value.length;
-        final avgB = b.value.fold<int>(0, (sum, d) => sum + d.inMilliseconds) /
+        final avgB =
+            b.value.fold<int>(0, (sum, d) => sum + d.inMilliseconds) /
             b.value.length;
         return avgB.compareTo(avgA);
       });
@@ -66,14 +70,18 @@ class BlocAnalyzer {
       final durations = entry.value;
       final total = durations.fold<int>(0, (sum, d) => sum + d.inMilliseconds);
       final avg = total / durations.length;
-      final max = durations.map((d) => d.inMilliseconds).reduce((a, b) => a > b ? a : b);
-      final min = durations.map((d) => d.inMilliseconds).reduce((a, b) => a < b ? a : b);
+      final max = durations
+          .map((d) => d.inMilliseconds)
+          .reduce((a, b) => a > b ? a : b);
+      final min = durations
+          .map((d) => d.inMilliseconds)
+          .reduce((a, b) => a < b ? a : b);
 
       final performance = avg < 16
           ? 'Good'
           : avg < 100
-              ? 'Medium'
-              : 'Slow';
+          ? 'Medium'
+          : 'Slow';
 
       developer.log(
         '  ${entry.key}:\n'
@@ -87,15 +95,12 @@ class BlocAnalyzer {
 
   void _printRedundantEmissions() {
     if (_redundantEmissions.isEmpty) {
-      developer.log(
-        '\nNo Redundant Emissions Detected',
-        name: 'BlocAnalyzer',
-      );
+      developer.log('\nNo Redundant Emissions Detected', name: 'BlocAnalyzer');
       return;
     }
 
     developer.log('\nRedundant Emissions:', name: 'BlocAnalyzer');
-    
+
     final sorted = _redundantEmissions.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
@@ -137,7 +142,8 @@ class BlocAnalyzer {
     final recommendations = <String>[];
 
     _eventDurations.forEach((event, durations) {
-      final avg = durations.fold<int>(0, (sum, d) => sum + d.inMilliseconds) /
+      final avg =
+          durations.fold<int>(0, (sum, d) => sum + d.inMilliseconds) /
           durations.length;
       if (avg > 100) {
         recommendations.add(
@@ -171,10 +177,7 @@ class BlocAnalyzer {
     });
 
     if (recommendations.isEmpty) {
-      developer.log(
-        '\nNo Performance Issues Detected',
-        name: 'BlocAnalyzer',
-      );
+      developer.log('\nNo Performance Issues Detected', name: 'BlocAnalyzer');
       return;
     }
 

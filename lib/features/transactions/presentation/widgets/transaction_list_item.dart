@@ -8,10 +8,7 @@ import 'package:flutter/material.dart';
 class TransactionListItem extends StatelessWidget {
   final TransactionModel transaction;
 
-  const TransactionListItem({
-    super.key,
-    required this.transaction,
-  });
+  const TransactionListItem({super.key, required this.transaction});
 
   @override
   Widget build(BuildContext context) {

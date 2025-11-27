@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 class DebugNavigationObserver extends NavigatorObserver {
   final bool enableLogging;
 
-  DebugNavigationObserver({
-    this.enableLogging = kDebugMode,
-  });
+  DebugNavigationObserver({this.enableLogging = kDebugMode});
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
@@ -55,7 +53,9 @@ class DebugNavigationObserver extends NavigatorObserver {
 
   @override
   void didStartUserGesture(
-      Route<dynamic> route, Route<dynamic>? previousRoute) {
+    Route<dynamic> route,
+    Route<dynamic>? previousRoute,
+  ) {
     super.didStartUserGesture(route, previousRoute);
 
     if (enableLogging && kDebugMode) {

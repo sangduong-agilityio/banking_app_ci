@@ -18,19 +18,19 @@ Future<void> main() async {
 
   if (!_sentryInitialized) {
     await SentryFlutter.init((options) {
-    // Don't send events from device-preview / local runs. Only enable DSN in production.
-    options
-      ..dsn = Env.sentryEnv == 'production' ? Env.sentryDsn : ''
-      ..environment = '${Env.sentryEnv}-device-preview'
-      ..tracesSampleRate = 1.0
-      ..enableAutoPerformanceTracing = true
-      ..enableAppLifecycleBreadcrumbs = true
-      ..debug = Env.sentryEnv != 'production'
-      ..beforeSend = (event, hint) {
-        final msg = event.message?.formatted ?? '';
-        if (msg.contains('Hot reload')) return null;
-        return event;
-      };
+      // Don't send events from device-preview / local runs. Only enable DSN in production.
+      options
+        ..dsn = Env.sentryEnv == 'production' ? Env.sentryDsn : ''
+        ..environment = '${Env.sentryEnv}-device-preview'
+        ..tracesSampleRate = 1.0
+        ..enableAutoPerformanceTracing = true
+        ..enableAppLifecycleBreadcrumbs = true
+        ..debug = Env.sentryEnv != 'production'
+        ..beforeSend = (event, hint) {
+          final msg = event.message?.formatted ?? '';
+          if (msg.contains('Hot reload')) return null;
+          return event;
+        };
     }, appRunner: _runApp);
     _sentryInitialized = true;
   } else {
@@ -50,10 +50,7 @@ Future<void> _runApp() async {
   await locator.allReady();
 
   runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) => const BankingApp(),
-    ),
+    DevicePreview(enabled: true, builder: (context) => const BankingApp()),
   );
 }
 

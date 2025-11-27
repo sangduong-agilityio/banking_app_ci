@@ -57,8 +57,10 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.selectedAccount != current.selectedAccount ||
                 previous.viaCardBeneficiaries != current.viaCardBeneficiaries ||
-                previous.sameBankBeneficiaries != current.sameBankBeneficiaries ||
-                previous.otherBankBeneficiaries != current.otherBankBeneficiaries,
+                previous.sameBankBeneficiaries !=
+                    current.sameBankBeneficiaries ||
+                previous.otherBankBeneficiaries !=
+                    current.otherBankBeneficiaries,
             builder: (context, state) {
               final userAccount = state.selectedAccount;
               if (userAccount == null) {

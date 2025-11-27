@@ -8,7 +8,6 @@ import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 
-
 final exceptionMock = Exception('oops');
 final requestOptionsMock = RequestOptions(path: faker.lorem.word());
 
@@ -91,9 +90,7 @@ class BAWidgetTestScenario {
       flutter_test.WidgetTester tester,
     ) async {
       if (setUp != null) await setUp!(tester);
-      await tester.pumpWidget(
-        buildWidget(),
-      );
+      await tester.pumpWidget(buildWidget());
       if (interactions != null) {
         for (final interaction in interactions!) {
           await interaction.execute(tester);
@@ -107,8 +104,6 @@ class BAWidgetTestScenario {
       if (tearDown != null) await tearDown!(tester);
     }, timeout: const flutter_test.Timeout(Duration(seconds: 5)));
   }
-
- 
 }
 
 abstract class BAWidgetInteraction {

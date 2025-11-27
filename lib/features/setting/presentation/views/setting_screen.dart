@@ -133,7 +133,7 @@ class SettingContent extends StatelessWidget {
                       },
                     ),
                     SettingSelection(
-                      title:S.current.platformChannelTitle,
+                      title: S.current.platformChannelTitle,
                       textColor: context.colorScheme.inverseSurface,
                       onTap: () {
                         context.pushNamed(BAPaths.platformChannelDemo.name);

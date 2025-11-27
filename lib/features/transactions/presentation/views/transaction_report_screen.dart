@@ -43,151 +43,165 @@ class TransactionReportScreen extends StatelessWidget {
                       color: context.colorScheme.secondary,
                     ),
                     Expanded(
-                      child: Container(
-                        color: context.colorScheme.onPrimary,
-                      ),
+                      child: Container(color: context.colorScheme.onPrimary),
                     ),
                   ],
                 ),
               ),
-              
+
               // Scrollable content on top
               CustomScrollView(
                 physics: const BouncingScrollPhysics(),
                 slivers: [
-              /// Sliver App Bar
-              SliverAppBar(
-                expandedHeight: 10,
-                pinned: true,
-                titleSpacing: 0,
-                backgroundColor: context.colorScheme.secondary,
-                elevation: 0,
-                title: Text(
-                  S.current.transactionReportTitle,
-                  style: context.headlineMedium?.copyWith(
-                    color: context.colorScheme.onPrimary,
-                  ),
-                ),
-                centerTitle: false,
-                leading: IconButton(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: context.colorScheme.onPrimary,
-                  ),
-                  onPressed: () => context.pop(),
-                ),
-              ),
-
-              /// Sliver Persistent Header for Card
-              SliverPersistentHeader(
-                pinned: false,
-                floating: false,
-                delegate: CardPersistentHeaderDelegate(
-                  minHeight: 20,
-                  maxHeight: 220,
-                ),
-              ),
-
-              /// Sliver Content with overlap and BlocConsumer
-              BlocConsumer<TransactionReportBloc, TransactionReportState>(
-                listener: (context, state) {
-                  state.status.maybeWhen(
-                    loading: () => context.loaderOverlay.show(),
-                    success: () {
-                      if (context.mounted) context.loaderOverlay.hide();
-                    },
-                    failure: () {
-                      context.loaderOverlay.hide();
-                      BASnackBar.buildErrorSnackbar(
-                        context,
-                        state.errorMessage ?? '',
-                      );
-                    },
-                    orElse: () {},
-                  );
-                },
-                builder: (context, state) {
-                  final report = state.transactionReport;
-
-                  return SliverToBoxAdapter(
-                    child: Transform.translate(
-                      offset: const Offset(0, -100),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: context.colorScheme.onPrimary,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(24),
-                            topRight: Radius.circular(24),
-                          ),
-                        ),
-                        padding: const EdgeInsets.only(top: 120, bottom: 100),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            /// Balance Chart Section
-                            if (report == null)
-                              Container(
-                                height: 200,
-                                margin: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: context
-                                      .colorScheme
-                                      .surfaceContainerHighest,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              )
-                            else
-                              BalanceHistoryChart(
-                                balanceSummary: report.balanceHistory,
-                              ),
-
-                            /// Transaction History Section
-                            if (report != null) ...[
-                              if (report.todayTransactions.isNotEmpty) ...[
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                                  child: SectionHeader(
-                                    title: S.current.transactionTodayTitle,
-                                  ),
-                                ),
-                                ...report.todayTransactions.map(
-                                  (transaction) => TransactionListItem(
-                                    transaction: transaction,
-                                  ),
-                                ),
-                                const SizedBox(height: 24),
-                              ],
-                              if (report.yesterdayTransactions.isNotEmpty) ...[
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                                  child: SectionHeader(
-                                    title: S.current.transactionYesterdayTitle,
-                                  ),
-                                ),
-                                ...report.yesterdayTransactions.map(
-                                  (transaction) => TransactionListItem(
-                                    transaction: transaction,
-                                  ),
-                                ),
-                              ],
-                            ],
-                            const SizedBox(height: 100),
-                          ],
-                        ),
+                  /// Sliver App Bar
+                  SliverAppBar(
+                    expandedHeight: 10,
+                    pinned: true,
+                    titleSpacing: 0,
+                    backgroundColor: context.colorScheme.secondary,
+                    elevation: 0,
+                    title: Text(
+                      S.current.transactionReportTitle,
+                      style: context.headlineMedium?.copyWith(
+                        color: context.colorScheme.onPrimary,
                       ),
                     ),
-                  );
-                },
+                    centerTitle: false,
+                    leading: IconButton(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: context.colorScheme.onPrimary,
+                      ),
+                      onPressed: () => context.pop(),
+                    ),
+                  ),
+
+                  /// Sliver Persistent Header for Card
+                  SliverPersistentHeader(
+                    pinned: false,
+                    floating: false,
+                    delegate: CardPersistentHeaderDelegate(
+                      minHeight: 20,
+                      maxHeight: 220,
+                    ),
+                  ),
+
+                  /// Sliver Content with overlap and BlocConsumer
+                  BlocConsumer<TransactionReportBloc, TransactionReportState>(
+                    listener: (context, state) {
+                      state.status.maybeWhen(
+                        loading: () => context.loaderOverlay.show(),
+                        success: () {
+                          if (context.mounted) context.loaderOverlay.hide();
+                        },
+                        failure: () {
+                          context.loaderOverlay.hide();
+                          BASnackBar.buildErrorSnackbar(
+                            context,
+                            state.errorMessage ?? '',
+                          );
+                        },
+                        orElse: () {},
+                      );
+                    },
+                    builder: (context, state) {
+                      final report = state.transactionReport;
+
+                      return SliverToBoxAdapter(
+                        child: Transform.translate(
+                          offset: const Offset(0, -100),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: context.colorScheme.onPrimary,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(24),
+                                topRight: Radius.circular(24),
+                              ),
+                            ),
+                            padding: const EdgeInsets.only(
+                              top: 120,
+                              bottom: 100,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                /// Balance Chart Section
+                                if (report == null)
+                                  Container(
+                                    height: 200,
+                                    margin: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: context
+                                          .colorScheme
+                                          .surfaceContainerHighest,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                  )
+                                else
+                                  BalanceHistoryChart(
+                                    balanceSummary: report.balanceHistory,
+                                  ),
+
+                                /// Transaction History Section
+                                if (report != null) ...[
+                                  if (report.todayTransactions.isNotEmpty) ...[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                        24,
+                                        24,
+                                        24,
+                                        0,
+                                      ),
+                                      child: SectionHeader(
+                                        title: S.current.transactionTodayTitle,
+                                      ),
+                                    ),
+                                    ...report.todayTransactions.map(
+                                      (transaction) => TransactionListItem(
+                                        transaction: transaction,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 24),
+                                  ],
+                                  if (report
+                                      .yesterdayTransactions
+                                      .isNotEmpty) ...[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                        24,
+                                        0,
+                                        24,
+                                        0,
+                                      ),
+                                      child: SectionHeader(
+                                        title:
+                                            S.current.transactionYesterdayTitle,
+                                      ),
+                                    ),
+                                    ...report.yesterdayTransactions.map(
+                                      (transaction) => TransactionListItem(
+                                        transaction: transaction,
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                                const SizedBox(height: 100),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
-    ),
-  ),
-);
+    );
   }
 }
 
@@ -248,7 +262,7 @@ class CardPersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(CardPersistentHeaderDelegate oldDelegate) {
     return oldDelegate.minHeight != minHeight ||
-           oldDelegate.maxHeight != maxHeight;
+        oldDelegate.maxHeight != maxHeight;
   }
 }
 

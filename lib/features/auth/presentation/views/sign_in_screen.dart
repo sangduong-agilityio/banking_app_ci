@@ -116,9 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           hasSavedBiometricCredentials:
                               state.hasSavedBiometricCredentials,
                           onBiometricPressed: () {
-                            context.read<AuthBloc>().add(
-                                  SignInWithBiometric(),
-                                );
+                            context.read<AuthBloc>().add(SignInWithBiometric());
                           },
                           username: state.username,
                         ),
@@ -184,15 +182,15 @@ class SignInBody extends StatelessWidget {
                 textFields: _buildTextFields(),
                 onValidate: (isValid) {
                   context.read<AuthBloc>().add(
-                        SignInFormValidateChanged(
-                          isValidate: isValid,
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
-                        ),
-                      );
+                    SignInFormValidateChanged(
+                      isValidate: isValid,
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    ),
+                  );
                 },
                 onSubmit: () {
-                  context.read<AuthBloc>().add( SignInButtonPressed());
+                  context.read<AuthBloc>().add(SignInButtonPressed());
                 },
                 submitText: S.current.signInButton,
                 isSubmitEnabled: isFormValid,

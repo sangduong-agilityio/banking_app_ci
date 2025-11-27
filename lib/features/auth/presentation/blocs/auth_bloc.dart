@@ -38,8 +38,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(
       state.copyWith(
         isFormValid: event.isValidate,
-        email: event.email ??'',
-        password: event.password ??'',
+        email: event.email ?? '',
+        password: event.password ?? '',
       ),
     );
   }
@@ -50,7 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     // Optimistic UI: Immediately show loading state
     emit(state.toOptimistic(status: AuthStatus.loading));
-    
+
     try {
       final response = await repo.signIn(
         email: state.email,
@@ -62,20 +62,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           PrefKeys.sessionToken,
           response.session?.accessToken ?? '',
         );
-        
+
         // Confirm optimistic update with real data from API
-        emit(
-          state.confirm(
-            sessionToken: response.session?.accessToken,
-          ),
-        );
+        emit(state.confirm(sessionToken: response.session?.accessToken));
       } else {
         // Rollback to previous state on failure
-        emit(
-          state.rollback(
-            errorMessage: S.current.authErrorLoginFailed,
-          ),
-        );
+        emit(state.rollback(errorMessage: S.current.authErrorLoginFailed));
       }
     } catch (e, stackTrace) {
       await ErrorSanitizer.logSecureError(
@@ -92,11 +84,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       // Rollback to previous state with error message
-      emit(
-        state.rollback(
-          errorMessage: ErrorSanitizer.sanitize(e),
-        ),
-      );
+      emit(state.rollback(errorMessage: ErrorSanitizer.sanitize(e)));
     }
   }
 
@@ -106,15 +94,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     // Optimistic UI: Immediately show loading state
     emit(state.toOptimistic(status: AuthStatus.loading));
-    
+
     try {
       final canLogin = await biometricService.canLoginWithBiometrics();
       if (!canLogin) {
         // Rollback to previous state on failure
         emit(
-          state.rollback(
-            errorMessage: S.current.authErrorBiometricNotEnabled,
-          ),
+          state.rollback(errorMessage: S.current.authErrorBiometricNotEnabled),
         );
         return;
       }
@@ -122,11 +108,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final token = await biometricService.loginWithBiometrics();
       if (token == null) {
         // Rollback to previous state on failure
-        emit(
-          state.rollback(
-            errorMessage: S.current.authErrorBiometricFailed,
-          ),
-        );
+        emit(state.rollback(errorMessage: S.current.authErrorBiometricFailed));
         return;
       }
 
@@ -136,19 +118,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           PrefKeys.sessionToken,
           response.session?.accessToken ?? '',
         );
-        
+
         // Confirm optimistic update with real data from API
-        emit(
-          state.confirm(
-            sessionToken: response.session?.accessToken,
-          ),
-        );
+        emit(state.confirm(sessionToken: response.session?.accessToken));
       } else {
         // Rollback to previous state on failure
         emit(
-          state.rollback(
-            errorMessage: S.current.authErrorNoSavedCredentials,
-          ),
+          state.rollback(errorMessage: S.current.authErrorNoSavedCredentials),
         );
       }
     } catch (e, stackTrace) {
@@ -165,11 +141,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       // Rollback to previous state with error message
-      emit(
-        state.rollback(
-          errorMessage: S.current.authErrorUnknown,
-        ),
-      );
+      emit(state.rollback(errorMessage: S.current.authErrorUnknown));
     }
   }
 
@@ -215,7 +187,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     // Optimistic UI: Immediately show loading state
     emit(state.toOptimistic(status: AuthStatus.loading));
-    
+
     try {
       final response = await repo.signUp(
         email: state.email,
@@ -229,16 +201,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           username: state.username,
           email: state.email,
         );
-        
+
         // Confirm optimistic update
         emit(state.confirm());
       } else {
         // Rollback to previous state on failure
-        emit(
-          state.rollback(
-            errorMessage: S.current.authErrorSignupFailed,
-          ),
-        );
+        emit(state.rollback(errorMessage: S.current.authErrorSignupFailed));
       }
     } catch (e, stackTrace) {
       await ErrorSanitizer.logSecureError(
@@ -255,11 +223,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       // Rollback to previous state with error message
-      emit(
-        state.rollback(
-          errorMessage: ErrorSanitizer.sanitize(e),
-        ),
-      );
+      emit(state.rollback(errorMessage: ErrorSanitizer.sanitize(e)));
     }
   }
 

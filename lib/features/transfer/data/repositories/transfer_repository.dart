@@ -180,14 +180,11 @@ class TransferRepositoryImpl implements TransferRepository {
 
   /// Saves the beneficiary order to local storage/database.
   @override
-
   @override
   Future<void> saveBeneficiaryOrder(
     List<BeneficiaryModel> beneficiaries,
   ) async {
     // TODO: Implement persistence
-    
-   
   }
 
   /// Sends an OTP email for transfer authorization.

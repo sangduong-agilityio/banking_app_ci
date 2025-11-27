@@ -44,7 +44,8 @@ class _TransferScreenState extends State<TransferScreen> {
             iconColor: context.colorScheme.scrim,
           ),
           body: BlocConsumer<TransferBloc, TransferState>(
-            listenWhen: (previous, current) => previous.status != current.status,
+            listenWhen: (previous, current) =>
+                previous.status != current.status,
             listener: (context, state) {
               state.status.maybeWhen(
                 loading: () => context.loaderOverlay.show(),
@@ -94,8 +95,11 @@ class _TransferScreenState extends State<TransferScreen> {
 
   /// Builds the widget for selecting an account or a card.
   Widget _buildAccountOrCardSelector(BuildContext context) {
-    return BlocSelector<TransferBloc, TransferState,
-        (List<AccountModel>, List<CardModel>, AccountModel?, CardModel?)>(
+    return BlocSelector<
+      TransferBloc,
+      TransferState,
+      (List<AccountModel>, List<CardModel>, AccountModel?, CardModel?)
+    >(
       selector: (state) => (
         state.accounts,
         state.cards,

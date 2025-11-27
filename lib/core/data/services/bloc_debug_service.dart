@@ -6,9 +6,9 @@ import 'bloc_analyzer.dart';
 /// Centralized BLoC debugging and analysis service
 class BlocDebugService {
   BlocDebugService._();
-  
+
   static final instance = BlocDebugService._();
-  
+
   final _analyzers = <String, BlocAnalyzer>{};
   final _eventTimestamps = <String, DateTime>{};
 
@@ -34,9 +34,9 @@ class BlocDebugService {
     final blocName = bloc.runtimeType.toString();
     final eventName = transition.event.runtimeType.toString();
     final key = '${blocName}_${eventName}_${transition.event.hashCode}';
-    
+
     final startTime = _eventTimestamps.remove(key);
-    final duration = startTime != null 
+    final duration = startTime != null
         ? DateTime.now().difference(startTime)
         : Duration.zero;
 

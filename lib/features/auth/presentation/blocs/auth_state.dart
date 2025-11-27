@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 enum AuthStatus { initial, loading, success, failure }
@@ -31,29 +30,29 @@ class AuthState extends Equatable {
   final bool isBiometricAvailable;
   final bool isBiometricEnabled;
   final bool hasSavedBiometricCredentials;
-  
+
   /// Snapshot of the previous state for rollback on optimistic update failure
   final AuthState? previousState;
-  
+
   /// Indicates if this state is an optimistic update
   final bool isOptimistic;
 
   @override
   List<Object?> get props => [
-        status,
-        username,
-        email,
-        password,
-        isFormValid,
-        isTermsAccepted,
-        errorMessage,
-        sessionToken,
-        isBiometricAvailable,
-        isBiometricEnabled,
-        hasSavedBiometricCredentials,
-        previousState,
-        isOptimistic,
-      ];
+    status,
+    username,
+    email,
+    password,
+    isFormValid,
+    isTermsAccepted,
+    errorMessage,
+    sessionToken,
+    isBiometricAvailable,
+    isBiometricEnabled,
+    hasSavedBiometricCredentials,
+    previousState,
+    isOptimistic,
+  ];
 
   AuthState copyWith({
     AuthStatus? status,
@@ -85,11 +84,13 @@ class AuthState extends Equatable {
       isBiometricEnabled: isBiometricEnabled ?? this.isBiometricEnabled,
       hasSavedBiometricCredentials:
           hasSavedBiometricCredentials ?? this.hasSavedBiometricCredentials,
-      previousState: clearPreviousState ? null : (previousState ?? this.previousState),
+      previousState: clearPreviousState
+          ? null
+          : (previousState ?? this.previousState),
       isOptimistic: isOptimistic ?? this.isOptimistic,
     );
   }
-  
+
   /// Creates an optimistic state with a snapshot of the current state
   AuthState toOptimistic({
     required AuthStatus status,
@@ -112,7 +113,7 @@ class AuthState extends Equatable {
       isOptimistic: true,
     );
   }
-  
+
   /// Rolls back to the previous state with an error message
   AuthState rollback({required String errorMessage}) {
     if (previousState != null) {
@@ -130,12 +131,9 @@ class AuthState extends Equatable {
       isOptimistic: false,
     );
   }
-  
+
   /// Confirms the optimistic update with real data
-  AuthState confirm({
-    String? sessionToken,
-    String? username,
-  }) {
+  AuthState confirm({String? sessionToken, String? username}) {
     return copyWith(
       status: AuthStatus.success,
       sessionToken: sessionToken ?? this.sessionToken,

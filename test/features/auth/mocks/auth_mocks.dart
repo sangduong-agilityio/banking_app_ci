@@ -23,9 +23,7 @@ class AuthMocks {
     password: 'password123',
   );
 
-  static final signUpFormEmpty = SignUpFormValidateChanged(
-    isValidate: false,
-  );
+  static final signUpFormEmpty = SignUpFormValidateChanged(isValidate: false);
 
   static final signUpButtonPressed = SignUpButtonPressed();
 
@@ -36,9 +34,7 @@ class AuthMocks {
     password: 'password123',
   );
 
-  static final signInFormEmpty = SignInFormValidateChanged(
-    isValidate: false,
-  );
+  static final signInFormEmpty = SignInFormValidateChanged(isValidate: false);
 
   static final signInButtonPressed = SignInButtonPressed();
 

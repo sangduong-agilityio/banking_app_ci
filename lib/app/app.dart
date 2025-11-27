@@ -40,16 +40,8 @@ class _BankingAppState extends State<BankingApp> with WidgetsBindingObserver {
   Future<void> _setupAppShortcuts() async {
     try {
       await _platformService.addAppShortcuts([
-        {
-          'id': 'quick_transfer',
-          'label': 'Quick Transfer',
-          'icon': 'ic_send',
-        },
-        {
-          'id': 'check_balance',
-          'label': 'Check Balance',
-          'icon': 'ic_account',
-        },
+        {'id': 'quick_transfer', 'label': 'Quick Transfer', 'icon': 'ic_send'},
+        {'id': 'check_balance', 'label': 'Check Balance', 'icon': 'ic_account'},
       ]);
       debugPrint('[SHORTCUT] App shortcuts added');
     } catch (e) {
@@ -60,7 +52,7 @@ class _BankingAppState extends State<BankingApp> with WidgetsBindingObserver {
   Future<void> _checkShortcutLaunch() async {
     // Wait a bit for the app to be fully initialized
     await Future.delayed(const Duration(milliseconds: 500));
-    
+
     try {
       final action = await _platformService.getShortcutAction();
       if (action != null && mounted) {
@@ -76,9 +68,9 @@ class _BankingAppState extends State<BankingApp> with WidgetsBindingObserver {
 
   void _handleShortcutAction(String action) {
     if (!mounted) return;
-    
+
     debugPrint('[SHORTCUT] Handling action: $action');
-    
+
     try {
       switch (action) {
         case 'quick_transfer':

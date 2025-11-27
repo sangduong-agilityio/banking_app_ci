@@ -91,10 +91,8 @@ class HomeContent extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           slivers: [
             // Spacing at top
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 20),
-            ),
-            
+            const SliverToBoxAdapter(child: SizedBox(height: 20)),
+
             // Credit Cards Section
             SliverToBoxAdapter(
               child: Padding(
@@ -102,11 +100,9 @@ class HomeContent extends StatelessWidget {
                 child: const CreditCardsSwiper(),
               ),
             ),
-            
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 24),
-            ),
-            
+
+            const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
             // Actions Grid using SliverPadding and Custom Grid
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -114,21 +110,15 @@ class HomeContent extends StatelessWidget {
                 selector: (state) => state.status,
                 builder: (context, status) {
                   if (status == HomeStatus.loading) {
-                    return const SliverToBoxAdapter(
-                      child: BAGridSkeleton(),
-                    );
+                    return const SliverToBoxAdapter(child: BAGridSkeleton());
                   }
-                  return const SliverToBoxAdapter(
-                    child: ListViewActions(),
-                  );
+                  return const SliverToBoxAdapter(child: ListViewActions());
                 },
               ),
             ),
-            
+
             // Bottom spacing
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 40),
-            ),
+            const SliverToBoxAdapter(child: SizedBox(height: 40)),
           ],
         ),
       ),

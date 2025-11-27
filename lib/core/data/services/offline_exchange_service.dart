@@ -27,10 +27,7 @@ class OfflineExchangeService {
       // Cache reverse direction (B → A)
       final reverseRate = 1.0 / rate;
       _cacheOneDirection(from: toCurrency, to: fromCurrency, rate: reverseRate);
-    } catch (e) {
-      
-      
-    }
+    } catch (e) {}
   }
 
   /// Cache rate in one direction only (internal helper).

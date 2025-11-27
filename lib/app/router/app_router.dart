@@ -191,7 +191,10 @@ enum BAPaths {
   exchange(name: 'exchange', path: '/exchange'),
   message(name: 'message', path: '/message'),
   setting(name: 'setting', path: '/setting'),
-  platformChannelDemo(name: 'platformChannelDemo', path: '/platformChannelDemo');
+  platformChannelDemo(
+    name: 'platformChannelDemo',
+    path: '/platformChannelDemo',
+  );
 
   const BAPaths({required this.name, required this.path});
   final String name;

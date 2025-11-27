@@ -11,24 +11,17 @@ class HomeCubit extends Cubit<HomeState> {
 
   /// Initializes the home screen by fetching the user and card data.
   Future<void> homeInitialize() async {
-    emit(state.copyWith(status:  HomeStatus.loading));
+    emit(state.copyWith(status: HomeStatus.loading));
     try {
       final user = await repo.fetchCurrentUser();
       final cards = await repo.fetchCards();
 
       emit(
-        state.copyWith(
-          user: user,
-          cards: cards,
-          status:  HomeStatus.success,
-        ),
+        state.copyWith(user: user, cards: cards, status: HomeStatus.success),
       );
     } catch (e) {
       emit(
-        state.copyWith(
-          status:  HomeStatus.failure,
-          errorMessage: e.toString(),
-        ),
+        state.copyWith(status: HomeStatus.failure, errorMessage: e.toString()),
       );
     }
   }
