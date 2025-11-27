@@ -11,7 +11,7 @@ class MonitoringService {
     StackTrace? stackTrace,
     String? hint,
   }) async {
-      // Sentry captureException removed
+    // Sentry captureException removed
   }
 
   /// Record a user event (e.g., button click, flow success).
@@ -24,12 +24,12 @@ class MonitoringService {
     String name,
     Future<void> Function() action,
   ) async {
-      // Sentry startTransaction removed
+    // Sentry startTransaction removed
     try {
       await action();
-        // transaction.finish removed
+      // transaction.finish removed
     } catch (e) {
-        // logError removed
+      // logError removed
     }
   }
 
@@ -39,6 +39,6 @@ class MonitoringService {
     required num value,
     Map<String, dynamic>? tags,
   }) async {
-      // Sentry captureMessage removed
+    // Sentry captureMessage removed
   }
 }

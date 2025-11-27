@@ -13,7 +13,6 @@ Future<void> main() async {
   await _runApp();
 }
 
-
 Future<void> _runApp() async {
   _setupGlobalErrorHandlers();
 
@@ -42,7 +41,6 @@ void _setupGlobalErrorHandlers() {
       },
       isCritical: !details.silent,
     );
-
   };
 
   PlatformDispatcher.instance.onError = (error, stack) {

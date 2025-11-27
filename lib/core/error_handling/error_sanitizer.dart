@@ -144,10 +144,6 @@ class ErrorSanitizer {
   }) async {
     _sanitizeContext(context);
 
-
-
-
-
     // Sentry removed: log locally or to Firebase Crashlytics if needed
     // Also log to console in development mode
     assert(() {
