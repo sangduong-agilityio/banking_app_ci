@@ -115,7 +115,7 @@ class AccountCard extends StatelessWidget {
         _cardInformation(
           context,
           label: S.current.accountInterestRateTitle,
-          value: account.interestRate != null ? "${account.interestRate}%" : "",
+          value: account.interestRate != null ? '${account.interestRate}%' : '',
         ),
       ],
     );

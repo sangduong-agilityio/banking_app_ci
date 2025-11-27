@@ -184,7 +184,6 @@ class TransferRepositoryImpl implements TransferRepository {
   Future<void> saveBeneficiaryOrder(
     List<BeneficiaryModel> beneficiaries,
   ) async {
-    // TODO: Implement persistence
   }
 
   /// Sends an OTP email for transfer authorization.

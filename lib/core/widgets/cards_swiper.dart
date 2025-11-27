@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vector_math/vector_math_64.dart';
 
 /// A widget that displays a stack of cards and allows the user to swipe
 /// through them with a 3D animation.
@@ -580,14 +581,11 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
         return Transform(
           alignment: Alignment.center,
           transform: Matrix4.identity()
-            ..translate(0.0, yOffset)
-            ..translate(
-              0.0,
-              _isCardSwitched ? _calculateSwitchOffset(rotation) : 0,
-            )
+            ..translateByVector3(Vector3(0.0, yOffset, 0.0))
+            ..translateByVector3(Vector3(0.0, _isCardSwitched ? _calculateSwitchOffset(rotation) : 0, 0.0))
             ..setEntry(3, 2, 0.001)
             ..rotateX(rotation * pi / 180)
-            ..scale(scale, scale),
+            ..scaleByVector3(Vector3(scale, scale, 1.0)),
           child: child,
         );
       },
@@ -638,8 +636,8 @@ class _CardsSwiperWidgetState<T> extends State<CardsSwiperWidget<T>>
         return Transform(
           alignment: Alignment.center,
           transform: Matrix4.identity()
-            ..translate(0.0, transforms.yOffset)
-            ..scale(transforms.scale, transforms.scale),
+            ..translateByVector3(Vector3(0.0, transforms.yOffset, 0.0))
+            ..scaleByVector3(Vector3(transforms.scale, transforms.scale, 1.0)),
           child: child,
         );
       },

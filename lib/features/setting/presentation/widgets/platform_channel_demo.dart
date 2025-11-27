@@ -205,7 +205,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                   S.current.platformChannelOsVersionLabel,
                                   style: context.bodySmall?.copyWith(
                                     color: context.colorScheme.scrim
-                                        .withOpacity(0.6),
+                                        .withAlpha(0x99),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -276,7 +276,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                   S.current.platformChannelBatteryLevelLabel,
                                   style: context.bodySmall?.copyWith(
                                     color: context.colorScheme.scrim
-                                        .withOpacity(0.6),
+                                        .withAlpha(0x99),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -336,7 +336,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                   'Native Response',
                                   style: context.bodySmall?.copyWith(
                                     color: context.colorScheme.scrim
-                                        .withOpacity(0.6),
+                                        .withAlpha(0x99),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -389,7 +389,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                             size: 24,
                             color: _isBiometricAvailable
                                 ? context.colorScheme.secondary
-                                : context.colorScheme.scrim.withOpacity(0.5),
+                                : context.colorScheme.scrim.withAlpha(0x80),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -400,7 +400,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                   'Status',
                                   style: context.bodySmall?.copyWith(
                                     color: context.colorScheme.scrim
-                                        .withOpacity(0.6),
+                                        .withAlpha(0x99),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -474,11 +474,11 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
               // Info Text
               Card(
                 elevation: 2,
-                color: context.colorScheme.secondary.withOpacity(0.1),
+                color: context.colorScheme.secondary.withAlpha(0x1A),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(
-                    color: context.colorScheme.secondary.withOpacity(0.3),
+                    color: context.colorScheme.secondary.withAlpha(0x4D),
                     width: 1,
                   ),
                 ),

@@ -55,7 +55,7 @@ class BillDetailCard extends StatelessWidget {
 
           _buildAmount(
             S.current.payBillTypeTitle(bill.billType?.displayName ?? ''),
-            "\$${bill.amount?.toStringAsFixed(2)}",
+            '\$${bill.amount?.toStringAsFixed(2)}',
             valueColor: context.colorScheme.secondary,
           ),
           Divider(color: Colors.grey.shade300),
@@ -63,14 +63,14 @@ class BillDetailCard extends StatelessWidget {
           if ((bill.tax ?? 0) > 0)
             _buildAmount(
               S.current.payBillTaxTitle,
-              "\$${bill.tax?.toStringAsFixed(2)}",
+              '\$${bill.tax?.toStringAsFixed(2)}',
               valueColor: context.colorScheme.secondary,
             ),
           Divider(color: Colors.grey.shade300),
 
           _buildAmount(
             S.current.payBillTotalTitle,
-            "\$${((bill.amount ?? 0) + (bill.tax ?? 0)).toStringAsFixed(2)}",
+            '\$${((bill.amount ?? 0) + (bill.tax ?? 0)).toStringAsFixed(2)}',
             isBold: true,
             valueColor: context.colorScheme.error,
           ),

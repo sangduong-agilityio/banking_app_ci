@@ -150,7 +150,7 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
             items: items,
             selectedValue: selectedBeneficiary?.id,
             value: (b) => b.id ?? '',
-            label: (b) => "${b.name} • ${b.accountNumber}",
+            label: (b) => '${b.name} • ${b.accountNumber}',
             onSelected: (b) {
               onSelected(b);
               Navigator.of(context, rootNavigator: true).pop();

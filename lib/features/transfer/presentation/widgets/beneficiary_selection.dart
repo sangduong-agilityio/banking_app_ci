@@ -112,7 +112,7 @@ class BeneficiarySelection extends StatelessWidget {
           child: Material(
             elevation: elevation,
             borderRadius: BorderRadius.circular(12),
-            shadowColor: context.colorScheme.shadow.withOpacity(0.3),
+            shadowColor: context.colorScheme.shadow.withAlpha(0x4D),
             child: child,
           ),
         );
