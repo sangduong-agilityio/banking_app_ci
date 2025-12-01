@@ -6,14 +6,21 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "program": "lib/main.dart",
+            "program": "lib/main.dart"
         },
         {
             "name": "[BankingApp][Dev] Start development with Device Preview",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
-            "program": "lib/main_device_preview.dart",
+            "program": "lib/main_device_preview.dart"
         },
+        {
+            "name": "[BankingApp][Profile] Performance Test",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "lib/main.dart"
+        }
     ]
 }
