@@ -1,7 +1,6 @@
 import 'package:banking_app/app/themes/app_theme.dart';
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
 import 'package:banking_app/core/common/utils/responsive.dart';
-import 'package:banking_app/core/data/services/monitoring_service.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:banking_app/core/common/utils/formatters.dart';
 import 'package:banking_app/core/widgets/assets.dart';
@@ -29,16 +28,7 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
   void initState() {
     super.initState();
 
-    MonitoringService.instance.logEvent(
-      'transfer_success',
-      data: {'amount': widget.amount, 'beneficiary': widget.beneficiaryName},
-    );
-
-    MonitoringService.instance.logBusinessMetric(
-      'total_transfer_amount',
-      value: widget.amount,
-      tags: {'beneficiary': widget.beneficiaryName},
-    );
+   
   }
 
   @override
