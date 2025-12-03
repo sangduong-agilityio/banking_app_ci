@@ -3,6 +3,7 @@ import 'package:banking_app/core/widgets/card.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/transactions/data/models/balance_summary_model.dart';
+import 'package:banking_app/features/transactions/data/models/transaction_report_model.dart';
 import 'package:banking_app/features/transactions/presentation/widgets/chart.dart';
 import 'package:banking_app/features/transactions/presentation/widgets/header.dart';
 import 'package:banking_app/features/transactions/presentation/widgets/transaction_list_item.dart';
@@ -87,27 +88,146 @@ class TransactionReportScreen extends StatelessWidget {
                     ),
                   ),
 
-                  /// Sliver Content with overlap and BlocConsumer
-                  BlocConsumer<TransactionReportBloc, TransactionReportState>(
-                    listener: (context, state) {
-                      state.status.maybeWhen(
-                        loading: () => context.loaderOverlay.show(),
-                        success: () {
-                          if (context.mounted) context.loaderOverlay.hide();
-                        },
-                        failure: () {
-                          context.loaderOverlay.hide();
-                          BASnackBar.buildErrorSnackbar(
-                            context,
-                            state.errorMessage ?? '',
-                          );
-                        },
-                        orElse: () {},
-                      );
-                    },
-                    builder: (context, state) {
-                      final report = state.transactionReport;
+                
+                  
+                  // BlocConsumer<TransactionReportBloc, TransactionReportState>(
+                  //   listener: (context, state) {
+                  //     state.status.maybeWhen(
+                  //       loading: () => context.loaderOverlay.show(),
+                  //       success: () {
+                  //         if (context.mounted) context.loaderOverlay.hide();
+                  //       },
+                  //       failure: () {
+                  //         context.loaderOverlay.hide();
+                  //         BASnackBar.buildErrorSnackbar(
+                  //           context,
+                  //           state.errorMessage ?? '',
+                  //         );
+                  //       },
+                  //       orElse: () {},
+                  //     );
+                  //   },
+                  //   builder: (context, state) {
+                  //     final report = state.transactionReport;
+                  
+                  //     return SliverToBoxAdapter(
+                  //       child: Transform.translate(
+                  //         offset: const Offset(0, -100),
+                  //         child: Container(
+                  //           decoration: BoxDecoration(
+                  //             color: context.colorScheme.onPrimary,
+                  //             borderRadius: const BorderRadius.only(
+                  //               topLeft: Radius.circular(24),
+                  //               topRight: Radius.circular(24),
+                  //             ),
+                  //           ),
+                  //           padding: const EdgeInsets.only(
+                  //             top: 120,
+                  //             bottom: 100,
+                  //           ),
+                  //           child: Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             mainAxisSize: MainAxisSize.min,
+                  //             children: [
+                  //               /// Balance Chart Section
+                  //               if (report == null)
+                  //                 Container(
+                  //                   height: 200,
+                  //                   margin: const EdgeInsets.all(16),
+                  //                   decoration: BoxDecoration(
+                  //                     color: context
+                  //                         .colorScheme
+                  //                         .surfaceContainerHighest,
+                  //                     borderRadius: BorderRadius.circular(16),
+                  //                   ),
+                  //                 )
+                  //               else
+                  //                 BalanceHistoryChart(
+                  //                   balanceSummary: report.balanceHistory,
+                  //                 ),
+                  
+                  //               /// Transaction History Section
+                  //               if (report != null) ...[
+                  //                 if (report.todayTransactions.isNotEmpty) ...[
+                  //                   Padding(
+                  //                     padding: const EdgeInsets.fromLTRB(
+                  //                       24,
+                  //                       24,
+                  //                       24,
+                  //                       0,
+                  //                     ),
+                  //                     child: SectionHeader(
+                  //                       title: S.current.transactionTodayTitle,
+                  //                     ),
+                  //                   ),
+                  //                   ...report.todayTransactions.map(
+                  //                     (transaction) => TransactionListItem(
+                  //                       transaction: transaction,
+                  //                     ),
+                  //                   ),
+                  //                   const SizedBox(height: 24),
+                  //                 ],
+                  //                 if (report
+                  //                     .yesterdayTransactions
+                  //                     .isNotEmpty) ...[
+                  //                   Padding(
+                  //                     padding: const EdgeInsets.fromLTRB(
+                  //                       24,
+                  //                       0,
+                  //                       24,
+                  //                       0,
+                  //                     ),
+                  //                     child: SectionHeader(
+                  //                       title:
+                  //                           S.current.transactionYesterdayTitle,
+                  //                     ),
+                  //                   ),
+                  //                   ...report.yesterdayTransactions.map(
+                  //                     (transaction) => TransactionListItem(
+                  //                       transaction: transaction,
+                  //                     ),
+                  //                   ),
+                  //                 ],
+                  //               ],
+                  //               const SizedBox(height: 100),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
+                
+                
+                  /// BlocListener for side effects only (loading overlay, error snackbar)
+                  SliverToBoxAdapter(
+                    child: BlocListener<TransactionReportBloc, TransactionReportState>(
+                      listenWhen: (previous, current) => 
+                          previous.status != current.status,
+                      listener: (context, state) {
+                        state.status.maybeWhen(
+                          loading: () => context.loaderOverlay.show(),
+                          success: () {
+                            if (context.mounted) context.loaderOverlay.hide();
+                          },
+                          failure: () {
+                            context.loaderOverlay.hide();
+                            BASnackBar.buildErrorSnackbar(
+                              context,
+                              state.errorMessage ?? '',
+                            );
+                          },
+                          orElse: () {},
+                        );
+                      },
+                      child: const SizedBox.shrink(),
+                    ),
+                  ),
 
+                  /// Content with BlocSelector - only rebuilds when transactionReport changes
+                  BlocSelector<TransactionReportBloc, TransactionReportState, TransactionReportModel?>(
+                    selector: (state) => state.transactionReport,
+                    builder: (context, report) {
                       return SliverToBoxAdapter(
                         child: Transform.translate(
                           offset: const Offset(0, -100),

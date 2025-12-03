@@ -1,5 +1,4 @@
 import 'package:banking_app/app/router/router_guard.dart';
-import 'package:banking_app/core/observers/debug_navigation_observer.dart';
 import 'package:banking_app/core/widgets/layouts/bottom_navigation_bar.dart';
 import 'package:banking_app/core/widgets/layouts/not_found.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
@@ -28,12 +27,10 @@ class BAAppRouter {
   static final messageNavigatorKey = GlobalKey<NavigatorState>();
   static final settingNavigatorKey = GlobalKey<NavigatorState>();
 
-  static final _debugObserver = DebugNavigationObserver();
 
   static final router = GoRouter(
     initialLocation: BAPaths.signIn.path,
     navigatorKey: rootNavigatorKey,
-    observers: kDebugMode ? [_debugObserver] : [],
     routes: [
       GoRoute(
         path: BAPaths.signIn.path,
