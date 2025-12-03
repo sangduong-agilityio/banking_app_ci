@@ -10,6 +10,7 @@ class MonitoringService {
     dynamic error, {
     StackTrace? stackTrace,
     String? hint,
+    bool fatal = false,
   }) async {
     // Sentry captureException removed
   }
@@ -20,6 +21,7 @@ class MonitoringService {
   }
 
   /// Track performance of a specific code block.
+  /// Note: For detailed performance tracking, use Firebase Performance Monitoring
   Future<void> tracePerformance(
     String name,
     Future<void> Function() action,
@@ -42,3 +44,4 @@ class MonitoringService {
     // Sentry captureMessage removed
   }
 }
+

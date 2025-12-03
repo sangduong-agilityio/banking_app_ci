@@ -199,9 +199,11 @@ class TransactionReportScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
+      
       ),
-    );
+    ),
+  );
+
   }
 }
 

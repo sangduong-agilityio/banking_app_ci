@@ -8,7 +8,6 @@ class DebugBlocObserver extends BlocObserver {
   final BlocDebugService _debugService = BlocDebugService.instance;
   final bool enableLogging;
   final bool enableAnalysis;
-
   // Auto-print analysis every N events
   final Map<String, int> _eventCounts = {};
   static const int _printAnalysisEvery = 10;

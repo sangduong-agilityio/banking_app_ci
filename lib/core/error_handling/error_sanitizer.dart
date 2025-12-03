@@ -134,7 +134,7 @@ class ErrorSanitizer {
     return S.current.applicationErrorGeneric;
   }
 
-  /// Logs errors securely to Sentry with context sanitization.
+  /// Logs errors securely to Firebase Crashlytics with context sanitization.
   static Future<void> logSecureError(
     Object error,
     StackTrace? stackTrace, {

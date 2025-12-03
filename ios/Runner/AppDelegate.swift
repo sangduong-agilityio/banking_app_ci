@@ -4,7 +4,11 @@ import LocalAuthentication
 <<<<<<< HEAD
 import os.log
 =======
+<<<<<<< HEAD
+import os.log
+=======
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -14,7 +18,12 @@ import os.log
     private var shortcutAction: String?
     private let logger = Logger(subsystem: "com.example.banking_app", category: "PlatformChannel")
 =======
+<<<<<<< HEAD
+    private var shortcutAction: String?
+    private let logger = Logger(subsystem: "com.example.banking_app", category: "PlatformChannel")
+=======
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
     
     override func application(
         _ application: UIApplication,
@@ -24,7 +33,12 @@ import os.log
         logger.info("AppDelegate didFinishLaunchingWithOptions")
         logger.debug("Setting up MethodChannel: \(self.CHANNEL)")
 =======
+<<<<<<< HEAD
+        logger.info("AppDelegate didFinishLaunchingWithOptions")
+        logger.debug("Setting up MethodChannel: \(self.CHANNEL)")
+=======
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
         
         // Get the FlutterViewController
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
@@ -39,6 +53,9 @@ import os.log
             guard let self = self else { return }
             
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
             let startTime = Date()
             self.logger.info(" Method called: \(call.method)")
             
@@ -57,6 +74,8 @@ import os.log
                     result(batteryLevel)
                 } else {
                     self.logger.error("Battery level unavailable")
+<<<<<<< HEAD
+=======
 =======
             switch call.method {
             case "getSystemVersion":
@@ -69,6 +88,7 @@ import os.log
                     result(batteryLevel)
                 } else {
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
                     result(FlutterError(
                         code: "UNAVAILABLE",
                         message: "Battery level not available.",
@@ -78,6 +98,9 @@ import os.log
                 
             case "processData":
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
                 if let args = call.arguments as? [String: Any],
                    let inputData = args["inputData"] as? String,
                    let timestamp = args["timestamp"] as? Int64 {
@@ -86,6 +109,8 @@ import os.log
                     result(processedData)
                 } else {
                     self.logger.error("Invalid arguments for processData")
+<<<<<<< HEAD
+=======
 =======
                 // Example of receiving arguments from Dart
                 if let args = call.arguments as? [String: Any],
@@ -96,6 +121,7 @@ import os.log
                     result(processedData)
                 } else {
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
                     result(FlutterError(
                         code: "INVALID_ARGUMENT",
                         message: "Invalid arguments",
@@ -105,6 +131,9 @@ import os.log
                 
             case "sendHelloWorld":
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
                 if let args = call.arguments as? [String: Any],
                    let message = args["message"] as? String,
                    let fromFlutter = args["fromFlutter"] as? Bool {
@@ -116,6 +145,8 @@ import os.log
                     result(response)
                 } else {
                     self.logger.error("Invalid arguments for sendHelloWorld")
+<<<<<<< HEAD
+=======
 =======
                 // Receive Hello World from Flutter
                 if let args = call.arguments as? [String: Any],
@@ -130,6 +161,7 @@ import os.log
                     result(response)
                 } else {
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
                     result(FlutterError(
                         code: "INVALID_ARGUMENT",
                         message: "Invalid arguments for sendHelloWorld",
@@ -139,6 +171,9 @@ import os.log
                 
             case "isBiometricAvailable":
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
                 self.logger.debug("Checking biometric availability...")
                 let isAvailable = self.isBiometricAvailable()
                 self.logger.info("Biometric available: \(isAvailable)")
@@ -183,6 +218,8 @@ import os.log
             
             let duration = Date().timeIntervalSince(startTime)
             self.logger.info("Method '\(call.method)' completed in \(String(format: "%.2f", duration * 1000))ms")
+<<<<<<< HEAD
+=======
 =======
                 let isAvailable = self.isBiometricAvailable()
                 result(isAvailable)
@@ -199,6 +236,7 @@ import os.log
                 result(FlutterMethodNotImplemented)
             }
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
         }
         
         GeneratedPluginRegistrant.register(with: self)
@@ -249,12 +287,19 @@ import os.log
 <<<<<<< HEAD
         logger.debug("Setting up biometric authentication context...")
 =======
+<<<<<<< HEAD
+        logger.debug("Setting up biometric authentication context...")
+=======
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
         let context = LAContext()
         var error: NSError?
         
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
             logger.debug("Showing biometric prompt to user...")
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
                 DispatchQueue.main.async {
@@ -267,6 +312,8 @@ import os.log
                     } else {
                         let errorMessage = authenticationError?.localizedDescription ?? "Authentication failed"
                         self.logger.error("Biometric authentication error: \(errorMessage)")
+<<<<<<< HEAD
+=======
 =======
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
                 DispatchQueue.main.async {
@@ -278,6 +325,7 @@ import os.log
                     } else {
                         let errorMessage = authenticationError?.localizedDescription ?? "Authentication failed"
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
                         result([
                             "success": false,
                             "message": "Authentication error: \(errorMessage)"
@@ -290,7 +338,11 @@ import os.log
 <<<<<<< HEAD
             logger.error("❌ Biometric not available: \(errorMessage)")
 =======
+<<<<<<< HEAD
+            logger.error("❌ Biometric not available: \(errorMessage)")
+=======
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
             result([
                 "success": false,
                 "message": errorMessage
@@ -298,6 +350,9 @@ import os.log
         }
     }
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
     
     /**
      * Add quick actions (app shortcuts)
@@ -339,6 +394,9 @@ import os.log
         shortcutAction = shortcutItem.type
         completionHandler(true)
     }
+<<<<<<< HEAD
+=======
 =======
 >>>>>>> b809db52c8320cb0078995620a649233a6517937
+>>>>>>> 5b4c83195d9c1bd12740ad982531454f1d50c14a
 }
