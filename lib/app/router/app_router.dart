@@ -16,6 +16,10 @@ import 'package:banking_app/features/setting/presentation/views/setting_screen.d
 import 'package:banking_app/features/setting/presentation/widgets/platform_channel_demo.dart';
 import 'package:banking_app/features/transactions/presentation/views/transaction_report_screen.dart';
 import 'package:banking_app/features/transfer/presentation/views/transfer_screen.dart';
+import 'package:banking_app/features/users/presentation/bloc/users_bloc.dart';
+import 'package:banking_app/features/users/presentation/pages/users_page.dart';
+import 'package:banking_app/core/dependency_injection/service_locator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +30,6 @@ class BAAppRouter {
   static final searchNavigatorKey = GlobalKey<NavigatorState>();
   static final messageNavigatorKey = GlobalKey<NavigatorState>();
   static final settingNavigatorKey = GlobalKey<NavigatorState>();
-
 
   static final router = GoRouter(
     initialLocation: BAPaths.signIn.path,
@@ -150,6 +153,15 @@ class BAAppRouter {
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
                     builder: (context, state) => const PlatformChannelDemo(),
                   ),
+                  GoRoute(
+                    path: BAPaths.usersDemo.path,
+                    name: BAPaths.usersDemo.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => BlocProvider(
+                      create: (_) => locator<UsersBloc>(),
+                      child: const UsersPage(),
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -191,7 +203,8 @@ enum BAPaths {
   platformChannelDemo(
     name: 'platformChannelDemo',
     path: '/platformChannelDemo',
-  );
+  ),
+  usersDemo(name: 'usersDemo', path: '/usersDemo');
 
   const BAPaths({required this.name, required this.path});
   final String name;

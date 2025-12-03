@@ -9,7 +9,6 @@ import 'package:banking_app/core/error_handling/error_sanitizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
 
   PlatformDispatcher.instance.onError = (error, stack) {
     ErrorSanitizer.logSecureError(
@@ -25,13 +24,11 @@ Future<void> main() async {
 }
 
 Future<void> _runApp() async {
-
   await Future.wait([
     Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseKey),
     AppLocators.setupLocators(),
     initializeDateFormatting('en_US'),
   ]);
-
 
   runApp(const BankingApp());
 }

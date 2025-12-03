@@ -7,11 +7,9 @@ import 'search_event.dart';
 import 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvt, SearchState> {
-  SearchBloc({
-    required this.repo,
-    required ExchangeCacheManager cacheManager,
-  })  : _cacheManager = cacheManager,
-        super(const SearchState()) {
+  SearchBloc({required this.repo, required ExchangeCacheManager cacheManager})
+    : _cacheManager = cacheManager,
+      super(const SearchState()) {
     on<InterestRateInitializeEvt>(_onInitializeInterestRate);
     on<ExchangeRateInitializeEvt>(_onInitializeExchangeRate);
     on<ExchangeRateRefreshEvt>(_onRefreshExchangeRate);
@@ -227,8 +225,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
 
       final rateStatus =
           _cacheManager.hasOfflineRate(event.fromCurrency, event.toCurrency)
-              ? ExchangeRateStatus.fresh
-              : ExchangeRateStatus.stale;
+          ? ExchangeRateStatus.fresh
+          : ExchangeRateStatus.stale;
       final lastUpdate = _cacheManager.rateCacheLastUpdated;
 
       emit(
@@ -251,8 +249,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       if (cachedRate != null) {
         final rateStatus =
             _cacheManager.hasOfflineRate(event.fromCurrency, event.toCurrency)
-                ? ExchangeRateStatus.fresh
-                : ExchangeRateStatus.stale;
+            ? ExchangeRateStatus.fresh
+            : ExchangeRateStatus.stale;
         final lastUpdate = _cacheManager.rateCacheLastUpdated;
 
         emit(
@@ -341,8 +339,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       if (cachedRate != null) {
         final rateStatus =
             _cacheManager.hasOfflineRate(fromCurrency, toCurrency)
-                ? ExchangeRateStatus.fresh
-                : ExchangeRateStatus.stale;
+            ? ExchangeRateStatus.fresh
+            : ExchangeRateStatus.stale;
 
         emit(
           state.copyWith(

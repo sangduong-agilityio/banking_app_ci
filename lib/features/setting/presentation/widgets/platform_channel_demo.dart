@@ -441,6 +441,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
               // Action Buttons
               BAElevatedButton(
+                padding: EdgeInsets.zero,
                 height: 50,
                 text: S.current.platformChannelRefreshButton,
 
@@ -450,6 +451,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
               const SizedBox(height: 12),
 
               BAElevatedButton(
+                padding: EdgeInsets.zero,
                 height: 50,
                 text: S.current.platformChannelGetBatteryButton,
                 onPressed: _isLoading ? null : _getBatteryLevel,
@@ -458,6 +460,8 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
               const SizedBox(height: 12),
 
               BAElevatedButton(
+                padding: EdgeInsets.zero,
+
                 height: 50,
                 text: 'Send Hello World',
                 onPressed: _isLoading ? null : _sendHelloWorld,
@@ -466,6 +470,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
               const SizedBox(height: 12),
 
               BAElevatedButton(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 height: 50,
                 text: 'Authenticate with Biometric',
                 onPressed: _isLoading || !_isBiometricAvailable
@@ -473,40 +478,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                     : _authenticateWithBiometric,
               ),
 
-              const SizedBox(height: 24),
-
-              // Info Text
-              Card(
-                elevation: 2,
-                color: context.colorScheme.secondary.withAlpha(0x1A),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(
-                    color: context.colorScheme.secondary.withAlpha(0x4D),
-                    width: 1,
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.lightbulb_outline,
-                        color: context.colorScheme.secondary,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          S.current.platformChannelInfoMessage,
-                          style: context.bodyMedium?.copyWith(
-                            color: context.colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const SizedBox(height: 40),
             ],
           ),
         ),

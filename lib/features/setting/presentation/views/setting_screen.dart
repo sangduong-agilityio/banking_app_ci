@@ -134,9 +134,14 @@ class SettingContent extends StatelessWidget {
                     ),
                     SettingSelection(
                       title: S.current.platformChannelTitle,
-                      textColor: context.colorScheme.inverseSurface,
                       onTap: () {
                         context.pushNamed(BAPaths.platformChannelDemo.name);
+                      },
+                    ),
+                    SettingSelection(
+                      title: 'GraphQL Users Demo',
+                      onTap: () {
+                        context.pushNamed(BAPaths.usersDemo.name);
                       },
                     ),
                     SettingSelection(
