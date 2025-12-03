@@ -10,9 +10,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
   SearchBloc({
     required this.repo,
     required ExchangeCacheManager cacheManager,
-    Stream<bool>? connectivityStream,
-  }) : _cacheManager = cacheManager,
-       super(const SearchState()) {
+  })  : _cacheManager = cacheManager,
+        super(const SearchState()) {
     on<InterestRateInitializeEvt>(_onInitializeInterestRate);
     on<ExchangeRateInitializeEvt>(_onInitializeExchangeRate);
     on<ExchangeRateRefreshEvt>(_onRefreshExchangeRate);
@@ -23,11 +22,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     on<SelectCurrencyEvt>(_onSelectCurrency);
     on<CheckConnectivityEvt>(_onCheckConnectivity);
 
-    if (connectivityStream != null) {
-      _connectivitySub = connectivityStream.listen((isOnline) {
-        add(CheckConnectivityEvt(isOnline));
-      });
-    }
+    // REMOVED: Immediate stream subscription
+    // The connectivity stream will be subscribed to only when needed
   }
 
   final SearchRepository repo;
@@ -35,6 +31,16 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
 
   Timer? _refreshTimer;
   StreamSubscription<bool>? _connectivitySub;
+
+  /// Call this method to start listening to connectivity changes
+  /// Only call this when the search screen is actually opened
+  void startConnectivityListener(Stream<bool> connectivityStream) {
+    if (_connectivitySub != null) return; // Already subscribed
+
+    _connectivitySub = connectivityStream.listen((isOnline) {
+      add(CheckConnectivityEvt(isOnline));
+    });
+  }
 
   Future<void> _onInitializeInterestRate(
     InterestRateInitializeEvt event,
@@ -183,7 +189,6 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
-  /// Main handler for exchange rate changes - ALWAYS recalculates amounts
   Future<void> _onExchangeRateChanged(
     ExchangeRateChangedEvt event,
     Emitter<SearchState> emit,
@@ -222,8 +227,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
 
       final rateStatus =
           _cacheManager.hasOfflineRate(event.fromCurrency, event.toCurrency)
-          ? ExchangeRateStatus.fresh
-          : ExchangeRateStatus.stale;
+              ? ExchangeRateStatus.fresh
+              : ExchangeRateStatus.stale;
       final lastUpdate = _cacheManager.rateCacheLastUpdated;
 
       emit(
@@ -246,8 +251,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       if (cachedRate != null) {
         final rateStatus =
             _cacheManager.hasOfflineRate(event.fromCurrency, event.toCurrency)
-            ? ExchangeRateStatus.fresh
-            : ExchangeRateStatus.stale;
+                ? ExchangeRateStatus.fresh
+                : ExchangeRateStatus.stale;
         final lastUpdate = _cacheManager.rateCacheLastUpdated;
 
         emit(
@@ -274,7 +279,6 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
     }
   }
 
-  /// Swap currencies and amounts, then fetch new rate WITHOUT recalculating
   Future<void> _onSwapCurrencies(
     SwapCurrenciesEvt event,
     Emitter<SearchState> emit,
@@ -337,8 +341,8 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
       if (cachedRate != null) {
         final rateStatus =
             _cacheManager.hasOfflineRate(fromCurrency, toCurrency)
-            ? ExchangeRateStatus.fresh
-            : ExchangeRateStatus.stale;
+                ? ExchangeRateStatus.fresh
+                : ExchangeRateStatus.stale;
 
         emit(
           state.copyWith(

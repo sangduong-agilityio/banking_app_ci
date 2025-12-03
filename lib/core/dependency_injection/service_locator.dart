@@ -141,8 +141,7 @@ class AppLocators {
       () => SearchBloc(
         repo: locator<SearchRepository>(),
         cacheManager: locator<ExchangeCacheManager>(),
-        connectivityStream:
-            locator<ConnectivityService>().connectionStatusStream,
+      
       ),
     );
 

@@ -1,7 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -9,7 +7,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banking_app/app/app.dart';
 import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
-import 'package:banking_app/core/observers/debug_bloc_observer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,12 +17,7 @@ Future<void> main() async {
   // Configure Crashlytics for production-ready error tracking
   await _configureCrashlytics();
 
-  // Enable BLoC debugging with Crashlytics integration
-  Bloc.observer = DebugBlocObserver(
-    enableLogging: kDebugMode,
-    enableAnalysis: kDebugMode,
  
-  );
 
   _runApp();
 }
@@ -116,3 +108,4 @@ void _setupGlobalErrorHandlers() {
   // Log initialization complete
   FirebaseCrashlytics.instance.log('Global error handlers configured');
 }
+
