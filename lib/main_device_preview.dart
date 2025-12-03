@@ -3,13 +3,34 @@ import 'dart:ui';
 import 'package:banking_app/app/app.dart';
 import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
-import 'package:banking_app/core/error_handling/error_sanitizer.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// Guard to avoid initializing Firebase multiple times
+bool _firebaseInitialized = false;
+
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if (!_firebaseInitialized) {
+    await Firebase.initializeApp();
+    
+    // Enable Crashlytics collection
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    
+    // Pass all uncaught asynchronous errors to Crashlytics
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+    
+    _firebaseInitialized = true;
+  }
+
   await _runApp();
 }
 
@@ -30,26 +51,6 @@ Future<void> _runApp() async {
 }
 
 void _setupGlobalErrorHandlers() {
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.presentError(details);
-    ErrorSanitizer.logSecureError(
-      details.exception,
-      details.stack,
-      context: {
-        'library': details.library ?? 'unknown',
-        'context': details.context?.toString(),
-      },
-      isCritical: !details.silent,
-    );
-  };
-
-  PlatformDispatcher.instance.onError = (error, stack) {
-    ErrorSanitizer.logSecureError(
-      error,
-      stack,
-      context: {'source': 'PlatformDispatcher'},
-      isCritical: true,
-    );
-    return true;
-  };
+  // Firebase Crashlytics is already set up in main()
+  // Additional error handling can be added here if needed
 }

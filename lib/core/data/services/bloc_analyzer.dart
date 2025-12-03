@@ -100,7 +100,6 @@ class BlocAnalyzer {
     }
 
     developer.log('\nRedundant Emissions:', name: 'BlocAnalyzer');
-
     final sorted = _redundantEmissions.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
