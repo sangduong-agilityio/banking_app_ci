@@ -1,4 +1,5 @@
 import 'package:banking_app/app/themes/app_theme.dart';
+import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:banking_app/core/data/services/platform_channel_service.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
@@ -54,20 +55,17 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.current.platformChannelBatteryLevelSnackbar(level)),
-          ),
+        BASnackBar.buildSuccessSnackbar(
+          context,
+          S.current.platformChannelBatteryLevelSnackbar(level),
         );
       }
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(S.current.platformChannelErrorMessage(e.toString())),
-            backgroundColor: context.colorScheme.error,
-          ),
+        BASnackBar.buildErrorSnackbar(
+          context,
+          S.current.platformChannelErrorMessage(e.toString()),
         );
       }
     }
@@ -84,22 +82,17 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Native Response: $response'),
-            backgroundColor: context.colorScheme.secondary,
-            duration: const Duration(seconds: 3),
-          ),
+        BASnackBar.buildSuccessSnackbar(
+          context,
+          'Native response: $response',
         );
       }
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: context.colorScheme.error,
-          ),
+        BASnackBar.buildErrorSnackbar(
+          context,
+          'Error: $e',
         );
       }
     }
@@ -132,6 +125,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
       });
 
       if (mounted) {
+        
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(result['message'] as String),
@@ -436,41 +430,31 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
-
               // Action Buttons
               BAElevatedButton(
                 padding: EdgeInsets.zero,
                 height: 50,
                 text: S.current.platformChannelRefreshButton,
-
                 onPressed: _isLoading ? null : _getSystemVersion,
               ),
-
               const SizedBox(height: 12),
-
               BAElevatedButton(
                 padding: EdgeInsets.zero,
                 height: 50,
                 text: S.current.platformChannelGetBatteryButton,
                 onPressed: _isLoading ? null : _getBatteryLevel,
               ),
-
               const SizedBox(height: 12),
-
               BAElevatedButton(
                 padding: EdgeInsets.zero,
-
                 height: 50,
                 text: 'Send Hello World',
                 onPressed: _isLoading ? null : _sendHelloWorld,
               ),
-
               const SizedBox(height: 12),
-
               BAElevatedButton(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.zero,
                 height: 50,
                 text: 'Authenticate with Biometric',
                 onPressed: _isLoading || !_isBiometricAvailable
