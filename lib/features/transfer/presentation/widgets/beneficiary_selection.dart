@@ -65,7 +65,8 @@ class BeneficiarySelection extends StatelessWidget {
                             _handleReorder(context, oldIndex, newIndex),
                         itemCount: state.filteredBeneficiaries.length,
                         itemBuilder: (context, index) {
-                          final beneficiary = state.filteredBeneficiaries[index];
+                          final beneficiary =
+                              state.filteredBeneficiaries[index];
                           final isSelected =
                               state.selectedBeneficiary?.id == beneficiary.id;
 
@@ -77,8 +78,8 @@ class BeneficiarySelection extends StatelessWidget {
                               isSelected: isSelected,
                               onTap: () {
                                 context.read<TransferBloc>().add(
-                                      SelectBeneficiaryEvt(beneficiary),
-                                    );
+                                  SelectBeneficiaryEvt(beneficiary),
+                                );
                                 onBeneficiarySelected(beneficiary);
                               },
                             ),
@@ -111,7 +112,7 @@ class BeneficiarySelection extends StatelessWidget {
           child: Material(
             elevation: elevation,
             borderRadius: BorderRadius.circular(12),
-            shadowColor: context.colorScheme.shadow.withOpacity(0.3),
+            shadowColor: context.colorScheme.shadow.withAlpha(0x4D),
             child: child,
           ),
         );
@@ -131,11 +132,8 @@ class BeneficiarySelection extends StatelessWidget {
     final adjustedNewIndex = newIndex > oldIndex ? newIndex - 1 : newIndex;
 
     context.read<TransferBloc>().add(
-          ReorderBeneficiaryEvt(
-            oldIndex: oldIndex,
-            newIndex: adjustedNewIndex,
-          ),
-        );
+      ReorderBeneficiaryEvt(oldIndex: oldIndex, newIndex: adjustedNewIndex),
+    );
 
     // Haptic feedback on successful reorder
     HapticFeedback.lightImpact();

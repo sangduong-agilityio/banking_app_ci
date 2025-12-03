@@ -45,14 +45,14 @@ class SettingSelection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            Expanded(
-      child: Text(
-        title,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-        style: context.titleMedium?.copyWith(color: textColor),
-      ),
-    ),
+              Expanded(
+                child: Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: context.titleMedium?.copyWith(color: textColor),
+                ),
+              ),
               if (hasSwitch)
                 Switch(
                   value: isEnabled ?? false,

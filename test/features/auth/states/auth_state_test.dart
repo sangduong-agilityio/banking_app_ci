@@ -49,7 +49,7 @@ class AuthStatePropScenario extends BAUTScenario<AuthState, List<Object?>> {
           expect(
             result,
             equals([
-              AuthStatus.initial(),
+              AuthStatus.initial,
               '',
               '',
               '',
@@ -59,6 +59,8 @@ class AuthStatePropScenario extends BAUTScenario<AuthState, List<Object?>> {
               null,
               false,
               false,
+              false,
+              null,
               false,
             ]),
           );
@@ -97,9 +99,9 @@ class AuthStateCopyWithScenario extends BAUTScenario<AuthState, AuthState> {
         when: () async {
           return const AuthState();
         },
-        act: (state) => state.copyWith(status: const AuthStatus.loading()),
+        act: (state) => state.copyWith(status: AuthStatus.loading),
         expect: (AuthState result) {
-          expect(result.status, equals(const AuthStatus.loading()));
+          expect(result.status, equals(AuthStatus.loading));
         },
       );
 }
@@ -140,9 +142,9 @@ class AuthStateCopyWithStatusScenario
         when: () async {
           return const AuthState();
         },
-        act: (state) => state.copyWith(status: const AuthStatus.success()),
+        act: (state) => state.copyWith(status: AuthStatus.success),
         expect: (AuthState result) {
-          expect(result.status, equals(const AuthStatus.success()));
+          expect(result.status, equals(AuthStatus.success));
         },
       );
 }
@@ -162,7 +164,7 @@ class AuthStateCopyWithNullStatusScenario
         },
         act: (state) => state.copyWith(status: null),
         expect: (AuthState result) {
-          expect(result.status, equals(const AuthStatus.initial()));
+          expect(result.status, equals(AuthStatus.initial));
           expect(result.email, equals(''));
           expect(result.password, equals(''));
           expect(result.isFormValid, isFalse);

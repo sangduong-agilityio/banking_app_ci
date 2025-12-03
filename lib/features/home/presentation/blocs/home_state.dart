@@ -2,12 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:banking_app/features/home/data/models/card_model.dart';
 import 'package:banking_app/features/setting/data/models/user_model.dart';
 
-enum HomeStatus {
-  initial,
-  loading,
-  success,
-  failure,
-}
+enum HomeStatus { initial, loading, success, failure }
+
 /// Represents the state of the home screen.
 class HomeState extends Equatable {
   const HomeState({
@@ -59,4 +55,3 @@ class HomeState extends Equatable {
     isBalanceVisible,
   ];
 }
-

@@ -2,7 +2,6 @@ import 'package:banking_app/core/error_handling/failure.dart';
 import 'package:banking_app/core/resources/l10n_generated/l10n.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 /// A utility class for sanitizing and logging errors securely.
 class ErrorSanitizer {
@@ -143,42 +142,9 @@ class ErrorSanitizer {
     Map<String, dynamic>? context,
     bool isCritical = false,
   }) async {
-    final sanitizedContext = _sanitizeContext(context);
+    _sanitizeContext(context);
 
-    // Set user ID if provided
-    if (userId != null) {
-      await FirebaseCrashlytics.instance.setUserIdentifier(userId);
-    }
-
-    // Add custom keys for context
-    FirebaseCrashlytics.instance.setCustomKey(
-      'error_type',
-      error.runtimeType.toString(),
-    );
-    FirebaseCrashlytics.instance.setCustomKey('is_critical', isCritical);
-    FirebaseCrashlytics.instance.setCustomKey(
-      'environment',
-      const bool.fromEnvironment('dart.vm.product')
-          ? 'production'
-          : 'development',
-    );
-
-    // Add sanitized context as custom keys
-    for (final entry in sanitizedContext.entries) {
-      FirebaseCrashlytics.instance.setCustomKey(
-        'context_${entry.key}',
-        entry.value,
-      );
-    }
-
-    // Record the error to Crashlytics
-    await FirebaseCrashlytics.instance.recordError(
-      error,
-      stackTrace,
-      fatal: isCritical,
-      reason: 'Secure error logged with sanitized context',
-    );
-
+    // Sentry removed: log locally or to Firebase Crashlytics if needed
     // Also log to console in development mode
     assert(() {
       return true;

@@ -130,13 +130,13 @@ class CurrencyUtils {
     required double? amount,
     required double balance,
   }) {
-    if (amount == null) return "Amount cannot be empty";
-    if (amount <= 0) return "Amount must be greater than 0";
-    if (amount > balance) return "Amount exceeds available balance";
+    if (amount == null) return 'Amount cannot be empty';
+    if (amount <= 0) return 'Amount must be greater than 0';
+    if (amount > balance) return 'Amount exceeds available balance';
 
     final parts = amount.toString().split('.');
     if (parts.length == 2 && parts[1].length > 2) {
-      return "Amount can have at most 2 decimal places";
+      return 'Amount can have at most 2 decimal places';
     }
 
     return null;

@@ -57,8 +57,10 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.selectedAccount != current.selectedAccount ||
                 previous.viaCardBeneficiaries != current.viaCardBeneficiaries ||
-                previous.sameBankBeneficiaries != current.sameBankBeneficiaries ||
-                previous.otherBankBeneficiaries != current.otherBankBeneficiaries,
+                previous.sameBankBeneficiaries !=
+                    current.sameBankBeneficiaries ||
+                previous.otherBankBeneficiaries !=
+                    current.otherBankBeneficiaries,
             builder: (context, state) {
               final userAccount = state.selectedAccount;
               if (userAccount == null) {
@@ -148,7 +150,7 @@ class DirectoryBeneficiaryScreen extends StatelessWidget {
             items: items,
             selectedValue: selectedBeneficiary?.id,
             value: (b) => b.id ?? '',
-            label: (b) => "${b.name} • ${b.accountNumber}",
+            label: (b) => '${b.name} • ${b.accountNumber}',
             onSelected: (b) {
               onSelected(b);
               Navigator.of(context, rootNavigator: true).pop();

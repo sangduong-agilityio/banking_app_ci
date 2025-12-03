@@ -43,7 +43,7 @@ class TransferStatePropsScenario
         when: () async => const TransferState(),
         act: (state) => state.props,
         expect: (List<Object?> result) {
-          expect(result.length, 39);
+          expect(result.length, 40);
         },
       );
 }

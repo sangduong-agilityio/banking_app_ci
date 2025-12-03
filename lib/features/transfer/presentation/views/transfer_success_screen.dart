@@ -54,16 +54,14 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
       // NEW APPROACH: CustomMultiChildLayout
       body: SizedBox.expand(
         child: CustomMultiChildLayout(
-          delegate: _TransferSuccessLayoutDelegate(
-            context,
-          ),
+          delegate: _TransferSuccessLayoutDelegate(context),
           children: [
             // Illustration
             LayoutId(
               id: _SuccessSlot.illustration,
               child: BAAssets.transferSuccess(),
             ),
-            
+
             // Success title
             LayoutId(
               id: _SuccessSlot.title,
@@ -75,7 +73,7 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
                 ),
               ),
             ),
-            
+
             // Description with amount and beneficiary
             LayoutId(
               id: _SuccessSlot.description,
@@ -95,7 +93,8 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: '\$${FormatterUtils.formatAmount(widget.amount)} ',
+                        text:
+                            '\$${FormatterUtils.formatAmount(widget.amount)} ',
                         style: context.titleSmall?.copyWith(
                           color: context.colorScheme.error,
                           fontWeight: FontWeight.bold,
@@ -119,7 +118,7 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
                 ),
               ),
             ),
-            
+
             // Confirm button
             LayoutId(
               id: _SuccessSlot.confirmButton,
@@ -134,7 +133,8 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
           ],
         ),
       ),
-    // OLD APPROACH: SingleChildScrollView
+
+      // OLD APPROACH: SingleChildScrollView
       // body: SingleChildScrollView(
       //   child: Column(
       //     children: [
@@ -199,11 +199,9 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
       //     ],
       //   ),
       // ),
-    
     );
   }
 }
-
 
 class _TransferSuccessLayoutDelegate extends MultiChildLayoutDelegate {
   final BuildContext context;
@@ -222,8 +220,10 @@ class _TransferSuccessLayoutDelegate extends MultiChildLayoutDelegate {
       );
       positionChild(
         _SuccessSlot.illustration,
-        Offset(centerX - illustrationSize.width / 2,
-            BAResponsive.value(context, mobile: 20, tablet: 40)),
+        Offset(
+          centerX - illustrationSize.width / 2,
+          BAResponsive.value(context, mobile: 20, tablet: 40),
+        ),
       );
     }
 
@@ -235,8 +235,10 @@ class _TransferSuccessLayoutDelegate extends MultiChildLayoutDelegate {
       );
       positionChild(
         _SuccessSlot.title,
-        Offset(centerX - titleSize.width / 2,
-            BAResponsive.value(context, mobile: 350, tablet: 400)),
+        Offset(
+          centerX - titleSize.width / 2,
+          BAResponsive.value(context, mobile: 350, tablet: 400),
+        ),
       );
     }
 
@@ -248,8 +250,10 @@ class _TransferSuccessLayoutDelegate extends MultiChildLayoutDelegate {
       );
       positionChild(
         _SuccessSlot.description,
-        Offset(centerX - descriptionSize.width / 2,
-            BAResponsive.value(context, mobile: 400, tablet: 450)),
+        Offset(
+          centerX - descriptionSize.width / 2,
+          BAResponsive.value(context, mobile: 400, tablet: 450),
+        ),
       );
     }
 
@@ -261,10 +265,7 @@ class _TransferSuccessLayoutDelegate extends MultiChildLayoutDelegate {
       );
       positionChild(
         _SuccessSlot.confirmButton,
-        Offset(
-          24,
-          BAResponsive.value(context, mobile: 495, tablet: 550),
-        ),
+        Offset(24, BAResponsive.value(context, mobile: 495, tablet: 550)),
       );
     }
   }
@@ -274,9 +275,4 @@ class _TransferSuccessLayoutDelegate extends MultiChildLayoutDelegate {
 }
 
 // Enum for layout slots
-enum _SuccessSlot {
-  illustration,
-  title,
-  description,
-  confirmButton,
-}
+enum _SuccessSlot { illustration, title, description, confirmButton }

@@ -64,7 +64,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
   ) async {
     emit(state.copyWith(status: const TransferStatus.loading()));
 
-    
     final criticalResult = await executeWithErrorHandling<Map<String, dynamic>>(
       () async {
         final (accounts, cards, beneficiaries) = await (
@@ -95,7 +94,8 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     }
 
     // Emit partial state - UI renders immediately
-    final beneficiaries = criticalResult['beneficiaries'] as List<BeneficiaryModel>;
+    final beneficiaries =
+        criticalResult['beneficiaries'] as List<BeneficiaryModel>;
     final filterResult = _filterService.filterBeneficiaries(
       allBeneficiaries: beneficiaries,
       selectedTransferType: state.selectedTransferType,
@@ -117,26 +117,32 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
 
     // Load secondary data in background (banks, branches, biometric)
     // These are only needed for specific transfer types
-    final secondaryResult = await executeWithErrorHandling<Map<String, dynamic>>(
-      () async {
-        final (banks, branches, biometricAvailable, biometricEnabled) = await (
-          transferRepo.fetchBanks(),
-          transferRepo.fetchBranches(),
-          biometricService.canCheckBiometrics(),
-          biometricService.isBiometricEnabled(),
-        ).wait;
+    final secondaryResult =
+        await executeWithErrorHandling<Map<String, dynamic>>(
+          () async {
+            final (
+              banks,
+              branches,
+              biometricAvailable,
+              biometricEnabled,
+            ) = await (
+              transferRepo.fetchBanks(),
+              transferRepo.fetchBranches(),
+              biometricService.canCheckBiometrics(),
+              biometricService.isBiometricEnabled(),
+            ).wait;
 
-        return {
-          'banks': banks,
-          'branches': branches,
-          'biometricAvailable': biometricAvailable,
-          'biometricEnabled': biometricEnabled,
-        };
-      },
-      operationName: 'transfer_initialize_phase2',
-      isCritical: false,
-      context: {'phase': 'secondary'},
-    );
+            return {
+              'banks': banks,
+              'branches': branches,
+              'biometricAvailable': biometricAvailable,
+              'biometricEnabled': biometricEnabled,
+            };
+          },
+          operationName: 'transfer_initialize_phase2',
+          isCritical: false,
+          context: {'phase': 'secondary'},
+        );
 
     // Update with secondary data (if successful)
     if (secondaryResult != null) {
@@ -277,7 +283,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(selectedBeneficiary: event.beneficiary));
-    
     // Calculate fee if needed
     if (_shouldCalculateFee()) {
       await _calculateFeeDirectly(emit);
@@ -426,7 +431,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     UpdateTransferDetailsEvt event,
     Emitter<TransferState> emit,
   ) async {
-    
     emit(
       state.copyWith(
         amount: event.amount ?? state.amount,
@@ -452,7 +456,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(amount: event.amount, content: event.content));
-    
     // Calculate fee directly
     if (_shouldCalculateFee()) {
       await _calculateFeeDirectly(emit);

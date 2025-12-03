@@ -105,7 +105,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
               ? (state.fromCurrency ?? '')
               : (state.toCurrency ?? ''),
           value: (c) => c.code,
-          label: (c) => "${c.code} (${c.name})",
+          label: (c) => '${c.code} (${c.name})',
           enableSearch: false,
           enableDivider: false,
           onSelected: (currency) {

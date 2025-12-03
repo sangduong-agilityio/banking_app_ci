@@ -24,15 +24,7 @@ Future<void> main() async {
   Bloc.observer = DebugBlocObserver(
     enableLogging: kDebugMode,
     enableAnalysis: kDebugMode,
-    onBlocError: (bloc, error, stackTrace) {
-      // Automatically log BLoC errors to Crashlytics
-      FirebaseCrashlytics.instance.recordError(
-        error,
-        stackTrace,
-        reason: 'BLoC Error in ${bloc.runtimeType}',
-        fatal: false,
-      );
-    },
+ 
   );
 
   _runApp();

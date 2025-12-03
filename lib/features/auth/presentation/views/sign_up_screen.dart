@@ -137,13 +137,13 @@ class SignUpBody extends StatelessWidget {
             textFields: _buildTextFields(),
             onValidate: (isValid) {
               context.read<AuthBloc>().add(
-                    SignUpFormValidateChanged(
-                      isValidate: isValid,
-                      username: usernameController.text.trim(),
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim(),
-                    ),
-                  );
+                SignUpFormValidateChanged(
+                  isValidate: isValid,
+                  username: usernameController.text.trim(),
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                ),
+              );
             },
             onSubmit: () {
               context.read<AuthBloc>().add(SignUpButtonPressed());
@@ -158,8 +158,8 @@ class SignUpBody extends StatelessWidget {
             ),
             onTermsChanged: (value) {
               context.read<AuthBloc>().add(
-                    SignUpTermsChanged(isAccepted: value ?? false),
-                  );
+                SignUpTermsChanged(isAccepted: value ?? false),
+              );
             },
             footer: _buildFooter(context),
           ),

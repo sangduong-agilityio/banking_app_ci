@@ -46,10 +46,7 @@ Future<void> _runApp() async {
   await locator.allReady();
 
   runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) => const BankingApp(),
-    ),
+    DevicePreview(enabled: true, builder: (context) => const BankingApp()),
   );
 }
 

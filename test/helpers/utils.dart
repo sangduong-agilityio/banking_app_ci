@@ -7,9 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
-import '../features/transfer/mocks/mock_transfer_bloc.dart';
 
 final exceptionMock = Exception('oops');
 final requestOptionsMock = RequestOptions(path: faker.lorem.word());
@@ -78,7 +75,6 @@ class BAWidgetTestScenario {
     this.verifications,
     this.tearDown,
     this.timeout,
-    this.mockTransferBloc,
   });
 
   final String description;
@@ -88,16 +84,13 @@ class BAWidgetTestScenario {
   final List<BAWidgetVerification>? verifications;
   final FutureOr<void> Function(flutter_test.WidgetTester)? tearDown;
   final Duration? timeout;
-  final MockTransferBloc? mockTransferBloc;
 
   Future<void> test() async {
     flutter_test.testWidgets(description, (
       flutter_test.WidgetTester tester,
     ) async {
       if (setUp != null) await setUp!(tester);
-      await tester.pumpWidget(
-        _wrapWidget(buildWidget(), mockTransferBloc: mockTransferBloc),
-      );
+      await tester.pumpWidget(buildWidget());
       if (interactions != null) {
         for (final interaction in interactions!) {
           await interaction.execute(tester);
@@ -110,23 +103,6 @@ class BAWidgetTestScenario {
       }
       if (tearDown != null) await tearDown!(tester);
     }, timeout: const flutter_test.Timeout(Duration(seconds: 5)));
-  }
-
-  Widget _wrapWidget(Widget child, {MockTransferBloc? mockTransferBloc}) {
-    return MaterialApp(
-      home: ResponsiveBreakpoints.builder(
-        child: BlocProvider<TransferBloc>(
-          create: (context) => mockTransferBloc ?? MockTransferBloc(),
-          child: Scaffold(body: child),
-        ),
-        breakpoints: const [
-          Breakpoint(start: 0, end: 450, name: MOBILE),
-          Breakpoint(start: 451, end: 800, name: TABLET),
-          Breakpoint(start: 801, end: 1920, name: DESKTOP),
-          Breakpoint(start: 1921, end: double.infinity, name: '4K'),
-        ],
-      ),
-    );
   }
 }
 

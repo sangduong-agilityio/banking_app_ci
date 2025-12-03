@@ -60,7 +60,18 @@ jobs:
 
       - name: Run unit tests
         run: flutter test --exclude-tags=failing
-        continue-on-error: true
+
+      - name: Lint code
+        run: flutter analyze
+
+      - name: Run coverage
+        run: flutter test --coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
@@ -87,17 +98,30 @@ jobs:
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
             --dart-define=SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
 
-      - name: Upload APK artifact
+      - name: Build Android APK (Release)
+        run: |
+          flutter build apk --release \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
+
+      - name: Upload APK artifact (Debug)
         uses: actions/upload-artifact@v4
         with:
           name: app-debug.apk
           path: build/app/outputs/apk/debug/app-debug.apk
+
+      - name: Upload APK artifact (Release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: build/app/outputs/apk/release/app-release.apk
 
   distribute:
     name: Distribute to Firebase
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
 
     steps:
       - name: Download APK artifact

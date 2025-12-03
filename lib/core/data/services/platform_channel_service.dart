@@ -52,7 +52,7 @@ class PlatformChannelService {
         'message': 'Hello World',
         'fromFlutter': true,
       });
-      return response;  
+      return response;
     } on PlatformException catch (e) {
       throw 'Failed to send Hello World: ${e.message}';
     }
@@ -62,7 +62,9 @@ class PlatformChannelService {
   /// Returns true if device has biometric hardware and enrolled biometrics
   Future<bool> isBiometricAvailable() async {
     try {
-      final bool isAvailable = await _channel.invokeMethod('isBiometricAvailable');
+      final bool isAvailable = await _channel.invokeMethod(
+        'isBiometricAvailable',
+      );
       return isAvailable;
     } on PlatformException catch (e) {
       throw 'Failed to check biometric availability: ${e.message}';
@@ -91,20 +93,19 @@ class PlatformChannelService {
     }
   }
 
-  /// Add app shortcuts dynamically
-  /// Shortcuts appear when long-pressing the app icon
-  Future<void> addAppShortcuts(List<Map<String, String>> shortcuts) async {
+  /// Add app shortcuts for quick actions
+  /// Returns true if shortcuts were added successfully
+  Future<bool> addAppShortcuts(List<Map<String, String>> shortcuts) async {
     try {
-      await _channel.invokeMethod('addAppShortcuts', {
-        'shortcuts': shortcuts,
-      });
+      await _channel.invokeMethod('addAppShortcuts', {'shortcuts': shortcuts});
+      return true;
     } on PlatformException catch (e) {
       throw 'Failed to add app shortcuts: ${e.message}';
     }
   }
 
-  /// Get the shortcut action that launched the app
-  /// Returns shortcut ID or null if app was launched normally
+  /// Get the shortcut action that was used to launch the app
+  /// Returns null if app was not launched from a shortcut
   Future<String?> getShortcutAction() async {
     try {
       final String? action = await _channel.invokeMethod('getShortcutAction');

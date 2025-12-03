@@ -75,10 +75,7 @@ class TransferValidationService {
 
 /// Validation result
 class TransferValidationResult {
-  const TransferValidationResult({
-    required this.isValid,
-    this.errorMessage,
-  });
+  const TransferValidationResult({required this.isValid, this.errorMessage});
 
   final bool isValid;
   final String? errorMessage;

@@ -106,9 +106,7 @@ class BeneficiaryFilterService {
     List<BeneficiaryModel> beneficiaries,
     TransferType type,
   ) {
-    return beneficiaries
-        .where((b) => b.transferType == type)
-        .toList();
+    return beneficiaries.where((b) => b.transferType == type).toList();
   }
 
   /// Helper: Sort beneficiaries alphabetically by name
@@ -124,7 +122,6 @@ class BeneficiaryFilterService {
     String query,
   ) {
     final normalizedQuery = query.trim().toLowerCase();
-    
     if (normalizedQuery.isEmpty) {
       return beneficiaries;
     }
@@ -134,7 +131,6 @@ class BeneficiaryFilterService {
       final account = b.accountNumber.toLowerCase();
       final bankName = b.bankName?.toLowerCase() ?? '';
       final branch = b.branch?.toLowerCase() ?? '';
-      
       return name.contains(normalizedQuery) ||
           account.contains(normalizedQuery) ||
           bankName.contains(normalizedQuery) ||

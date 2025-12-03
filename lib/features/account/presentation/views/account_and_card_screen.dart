@@ -41,7 +41,6 @@ class AccountAndCardScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
               BATabBar(
-                
                 tabs: [S.current.accountTitle, S.current.accountCardTitle],
                 containerPadding: const EdgeInsets.symmetric(horizontal: 24),
               ),

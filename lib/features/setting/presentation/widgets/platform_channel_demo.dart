@@ -17,13 +17,11 @@ class PlatformChannelDemo extends StatefulWidget {
 
 class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
   final PlatformChannelService _platformService = PlatformChannelService();
-  
   String _systemVersion = 'Unknown';
   int _batteryLevel = 0;
   String _helloWorldResponse = '';
   bool _isBiometricAvailable = false;
   String _biometricResult = '';
-  String _shortcutResult = 'No shortcut used';
   bool _isLoading = false;
 
   @override
@@ -31,15 +29,13 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
     super.initState();
     _getSystemVersion();
     _checkBiometricAvailability();
-    _setupAppShortcuts();
-    _checkShortcutLaunch();
   }
 
   Future<void> _getSystemVersion() async {
     setState(() => _isLoading = true);
-    
+
     final version = await _platformService.getSystemVersion();
-    
+
     setState(() {
       _systemVersion = version;
       _isLoading = false;
@@ -48,20 +44,17 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
   Future<void> _getBatteryLevel() async {
     setState(() => _isLoading = true);
-    
     try {
       final level = await _platformService.getBatteryLevel();
       setState(() {
         _batteryLevel = level;
         _isLoading = false;
       });
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              S.current.platformChannelBatteryLevelSnackbar(level),
-            ),
+            content: Text(S.current.platformChannelBatteryLevelSnackbar(level)),
           ),
         );
       }
@@ -70,9 +63,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              S.current.platformChannelErrorMessage(e.toString()),
-            ),
+            content: Text(S.current.platformChannelErrorMessage(e.toString())),
             backgroundColor: context.colorScheme.error,
           ),
         );
@@ -82,14 +73,12 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
   Future<void> _sendHelloWorld() async {
     setState(() => _isLoading = true);
-    
     try {
       final response = await _platformService.sendHelloWorld();
       setState(() {
         _helloWorldResponse = response;
         _isLoading = false;
       });
-      
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -127,17 +116,14 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
   Future<void> _authenticateWithBiometric() async {
     setState(() => _isLoading = true);
-    
     try {
       final result = await _platformService.authenticateWithBiometric(
         reason: 'Authenticate to verify your identity',
       );
-      
       setState(() {
         _biometricResult = result['message'] as String;
         _isLoading = false;
       });
-      
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -159,46 +145,6 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
           ),
         );
       }
-    }
-  }
-
-  Future<void> _setupAppShortcuts() async {
-    try {
-      await _platformService.addAppShortcuts([
-        {
-          'id': 'quick_transfer',
-          'label': 'Quick Transfer',
-          'icon': 'ic_send',
-        },
-        {
-          'id': 'check_balance',
-          'label': 'Check Balance',
-          'icon': 'ic_account',
-        },
-      ]);
-    } catch (e) {
-      // Silent fail - shortcuts are optional
-      debugPrint('Failed to setup shortcuts: $e');
-    }
-  }
-
-  Future<void> _checkShortcutLaunch() async {
-    try {
-      final action = await _platformService.getShortcutAction();
-      if (action != null && mounted) {
-        setState(() {
-          _shortcutResult = 'Launched from: $action';
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('App launched from shortcut: $action'),
-            backgroundColor: context.colorScheme.secondary,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      debugPrint('Failed to check shortcut: $e');
     }
   }
 
@@ -251,7 +197,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   S.current.platformChannelOsVersionLabel,
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim.withOpacity(0.6),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
@@ -280,9 +228,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Battery Level Card
               Card(
                 elevation: 2,
@@ -305,11 +253,11 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                       Row(
                         children: [
                           Icon(
-                            _batteryLevel > 20 
-                                ? Icons.battery_full 
+                            _batteryLevel > 20
+                                ? Icons.battery_full
                                 : Icons.battery_alert,
                             size: 24,
-                            color: _batteryLevel > 20 
+                            color: _batteryLevel > 20
                                 ? context.colorScheme.secondary
                                 : context.colorScheme.error,
                           ),
@@ -321,13 +269,15 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   S.current.platformChannelBatteryLevelLabel,
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim.withOpacity(0.6),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  _batteryLevel > 0 
-                                      ? '$_batteryLevel%' 
+                                  _batteryLevel > 0
+                                      ? '$_batteryLevel%'
                                       : S.current.platformChannelNotChecked,
                                   style: context.titleSmall?.copyWith(
                                     fontWeight: FontWeight.w500,
@@ -343,9 +293,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Hello World Card
               Card(
                 elevation: 2,
@@ -380,13 +330,15 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   'Native Response',
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim.withOpacity(0.6),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  _helloWorldResponse.isEmpty 
-                                      ? 'Not sent yet' 
+                                  _helloWorldResponse.isEmpty
+                                      ? 'Not sent yet'
                                       : _helloWorldResponse,
                                   style: context.titleSmall?.copyWith(
                                     fontWeight: FontWeight.w500,
@@ -402,9 +354,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Biometric Card
               Card(
                 elevation: 2,
@@ -427,13 +379,13 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                       Row(
                         children: [
                           Icon(
-                            _isBiometricAvailable 
-                                ? Icons.fingerprint 
+                            _isBiometricAvailable
+                                ? Icons.fingerprint
                                 : Icons.lock_outline,
                             size: 24,
                             color: _isBiometricAvailable
                                 ? context.colorScheme.secondary
-                                : context.colorScheme.scrim.withOpacity(0.5),
+                                : context.colorScheme.scrim.withAlpha(0x80),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -443,14 +395,16 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                                 Text(
                                   'Status',
                                   style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim.withOpacity(0.6),
+                                    color: context.colorScheme.scrim.withAlpha(
+                                      0x99,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  _isBiometricAvailable 
-                                      ? 'Available ✅' 
-                                      : 'Not Available ❌',
+                                  _isBiometricAvailable
+                                      ? 'Available'
+                                      : 'Not Available ',
                                   style: context.titleSmall?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: context.colorScheme.scrim,
@@ -475,118 +429,53 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                   ),
                 ),
               ),
-              
-              const SizedBox(height: 16),
-              
-              // App Shortcuts Card
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'App Shortcuts',
-                        style: context.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.colorScheme.secondary,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.touch_app,
-                            size: 24,
-                            color: context.colorScheme.secondary,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Long press app icon',
-                                  style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim.withOpacity(0.6),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _shortcutResult,
-                                  style: context.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: context.colorScheme.scrim,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  '• Quick Transfer\n• Check Balance',
-                                  style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.secondary,
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Action Buttons
               BAElevatedButton(
                 height: 50,
                 text: S.current.platformChannelRefreshButton,
-              
+
                 onPressed: _isLoading ? null : _getSystemVersion,
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               BAElevatedButton(
                 height: 50,
                 text: S.current.platformChannelGetBatteryButton,
                 onPressed: _isLoading ? null : _getBatteryLevel,
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               BAElevatedButton(
                 height: 50,
                 text: 'Send Hello World',
                 onPressed: _isLoading ? null : _sendHelloWorld,
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               BAElevatedButton(
                 height: 50,
                 text: 'Authenticate with Biometric',
-                onPressed: _isLoading || !_isBiometricAvailable 
-                    ? null 
+                onPressed: _isLoading || !_isBiometricAvailable
+                    ? null
                     : _authenticateWithBiometric,
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Info Text
               Card(
                 elevation: 2,
-                color: context.colorScheme.secondary.withOpacity(0.1),
+                color: context.colorScheme.secondary.withAlpha(0x1A),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(
-                    color: context.colorScheme.secondary.withOpacity(0.3),
+                    color: context.colorScheme.secondary.withAlpha(0x4D),
                     width: 1,
                   ),
                 ),

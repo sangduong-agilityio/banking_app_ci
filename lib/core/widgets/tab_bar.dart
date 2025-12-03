@@ -9,7 +9,7 @@ class BATabBar extends StatelessWidget {
   /// Creates a [BATabBar] widget.
   const BATabBar({
     super.key,
-     this.controller,
+    this.controller,
     required this.tabs,
     this.height = 50,
     this.borderRadius = 16,
@@ -67,7 +67,6 @@ class BATabBar extends StatelessWidget {
             return AnimatedBuilder(
               animation: controller?.animation ?? kAlwaysCompleteAnimation,
               builder: (context, child) {
-
                 return Tab(
                   child: Container(
                     width: double.infinity,

@@ -3,12 +3,8 @@ import 'package:banking_app/features/home/data/models/account_model.dart';
 import 'package:banking_app/features/home/data/models/card_model.dart';
 import 'package:banking_app/features/setting/data/models/user_model.dart';
 
-enum AccountAndCardStatus {
-  initial,
-  loading,
-  success,
-  failure,
-}
+enum AccountAndCardStatus { initial, loading, success, failure }
+
 /// Represents the state of the account and card feature.
 class AccountAndCardState extends Equatable {
   const AccountAndCardState({
@@ -39,9 +35,8 @@ class AccountAndCardState extends Equatable {
       cards: cards ?? this.cards,
       accounts: accounts ?? this.accounts,
     );
-}
+  }
 
   @override
   List<Object?> get props => [status, errorMessage, user, cards, accounts];
 }
-
