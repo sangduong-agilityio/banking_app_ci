@@ -187,7 +187,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     // Optimistic UI: Immediately show loading state
     emit(state.toOptimistic(status: AuthStatus.loading));
-
     try {
       final response = await repo.signUp(
         email: state.email,
@@ -201,7 +200,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           username: state.username,
           email: state.email,
         );
-
         // Confirm optimistic update
         emit(state.confirm());
       } else {

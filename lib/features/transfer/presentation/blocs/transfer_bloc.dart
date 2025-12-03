@@ -283,7 +283,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(selectedBeneficiary: event.beneficiary));
-
     // Calculate fee if needed
     if (_shouldCalculateFee()) {
       await _calculateFeeDirectly(emit);
@@ -457,7 +456,6 @@ class TransferBloc extends BaseBloc<TransferEvt, TransferState> {
     Emitter<TransferState> emit,
   ) async {
     emit(state.copyWith(amount: event.amount, content: event.content));
-
     // Calculate fee directly
     if (_shouldCalculateFee()) {
       await _calculateFeeDirectly(emit);
