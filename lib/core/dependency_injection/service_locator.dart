@@ -7,7 +7,7 @@ import 'package:banking_app/core/data/services/exchange_rate_cache_service.dart'
 import 'package:banking_app/core/data/services/offline_exchange_service.dart';
 import 'package:banking_app/core/data/services/exchange_cache_manager.dart';
 import 'package:banking_app/core/data/services/connectivity_service.dart';
-
+import 'package:banking_app/core/data/services/graphql/graphql_client.dart';
 import 'package:banking_app/features/account/presentation/blocs/account_and_card_cubit.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
@@ -25,6 +25,9 @@ import 'package:banking_app/features/transactions/data/repositories/transaction_
 import 'package:banking_app/features/transactions/presentation/blocs/transaction_bloc.dart';
 import 'package:banking_app/features/transfer/data/repositories/transfer_repository.dart';
 import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
+import 'package:banking_app/features/users/data/repositories/mock_users_repository.dart';
+import 'package:banking_app/features/users/domain/repositories/users_repository.dart';
+import 'package:banking_app/features/users/presentation/bloc/users_bloc.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
@@ -113,6 +116,11 @@ class AppLocators {
       () => TransactionReportRepositoryImpl(client: locator()),
     );
 
+    /// GraphQL Client for Users module
+    locator.registerLazySingleton<GraphQLClient>(() => GraphQLClient());
+
+    locator.registerLazySingleton<UsersRepository>(() => MockUsersRepository());
+
     /// Blocs / Cubits
     locator.registerFactory<AuthBloc>(
       () => AuthBloc(
@@ -158,6 +166,11 @@ class AppLocators {
 
     locator.registerFactory<TransactionReportBloc>(
       () => TransactionReportBloc(repo: locator<TransactionReportRepository>()),
+    );
+
+    /// Users BLoC (GraphQL Demo)
+    locator.registerFactory<UsersBloc>(
+      () => UsersBloc(repository: locator<UsersRepository>()),
     );
   }
 }
