@@ -27,6 +27,8 @@ class _TransferSuccessScreenState extends State<TransferSuccessScreen> {
   @override
   void initState() {
     super.initState();
+
+   
   }
 
   @override

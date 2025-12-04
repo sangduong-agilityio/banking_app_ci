@@ -88,6 +88,8 @@ class TransactionReportScreen extends StatelessWidget {
                     ),
                   ),
 
+                
+                  
                   // BlocConsumer<TransactionReportBloc, TransactionReportState>(
                   //   listener: (context, state) {
                   //     state.status.maybeWhen(
@@ -107,7 +109,7 @@ class TransactionReportScreen extends StatelessWidget {
                   //   },
                   //   builder: (context, state) {
                   //     final report = state.transactionReport;
-
+                  
                   //     return SliverToBoxAdapter(
                   //       child: Transform.translate(
                   //         offset: const Offset(0, -100),
@@ -143,7 +145,7 @@ class TransactionReportScreen extends StatelessWidget {
                   //                 BalanceHistoryChart(
                   //                   balanceSummary: report.balanceHistory,
                   //                 ),
-
+                  
                   //               /// Transaction History Section
                   //               if (report != null) ...[
                   //                 if (report.todayTransactions.isNotEmpty) ...[
@@ -195,43 +197,35 @@ class TransactionReportScreen extends StatelessWidget {
                   //     );
                   //   },
                   // ),
-
+                
+                
                   /// BlocListener for side effects only (loading overlay, error snackbar)
                   SliverToBoxAdapter(
-                    child:
-                        BlocListener<
-                          TransactionReportBloc,
-                          TransactionReportState
-                        >(
-                          listenWhen: (previous, current) =>
-                              previous.status != current.status,
-                          listener: (context, state) {
-                            state.status.maybeWhen(
-                              loading: () => context.loaderOverlay.show(),
-                              success: () {
-                                if (context.mounted)
-                                  context.loaderOverlay.hide();
-                              },
-                              failure: () {
-                                context.loaderOverlay.hide();
-                                BASnackBar.buildErrorSnackbar(
-                                  context,
-                                  state.errorMessage ?? '',
-                                );
-                              },
-                              orElse: () {},
+                    child: BlocListener<TransactionReportBloc, TransactionReportState>(
+                      listenWhen: (previous, current) => 
+                          previous.status != current.status,
+                      listener: (context, state) {
+                        state.status.maybeWhen(
+                          loading: () => context.loaderOverlay.show(),
+                          success: () {
+                            if (context.mounted) context.loaderOverlay.hide();
+                          },
+                          failure: () {
+                            context.loaderOverlay.hide();
+                            BASnackBar.buildErrorSnackbar(
+                              context,
+                              state.errorMessage ?? '',
                             );
                           },
-                          child: const SizedBox.shrink(),
-                        ),
+                          orElse: () {},
+                        );
+                      },
+                      child: const SizedBox.shrink(),
+                    ),
                   ),
 
                   /// Content with BlocSelector - only rebuilds when transactionReport changes
-                  BlocSelector<
-                    TransactionReportBloc,
-                    TransactionReportState,
-                    TransactionReportModel?
-                  >(
+                  BlocSelector<TransactionReportBloc, TransactionReportState, TransactionReportModel?>(
                     selector: (state) => state.transactionReport,
                     builder: (context, report) {
                       return SliverToBoxAdapter(
@@ -325,9 +319,11 @@ class TransactionReportScreen extends StatelessWidget {
               ),
             ],
           ),
-        ),
+      
       ),
-    );
+    ),
+  );
+
   }
 }
 

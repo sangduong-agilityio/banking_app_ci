@@ -18,7 +18,6 @@ class PlatformChannelDemo extends StatefulWidget {
 
 class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
   final PlatformChannelService _platformService = PlatformChannelService();
-
   String _systemVersion = 'Unknown';
   int _batteryLevel = 0;
   String _helloWorldResponse = '';
@@ -46,7 +45,6 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
   Future<void> _getBatteryLevel() async {
     setState(() => _isLoading = true);
-
     try {
       final level = await _platformService.getBatteryLevel();
       setState(() {
@@ -73,14 +71,12 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
   Future<void> _sendHelloWorld() async {
     setState(() => _isLoading = true);
-
     try {
       final response = await _platformService.sendHelloWorld();
       setState(() {
         _helloWorldResponse = response;
         _isLoading = false;
       });
-
       if (mounted) {
         BASnackBar.buildSuccessSnackbar(
           context,
@@ -113,17 +109,14 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
   Future<void> _authenticateWithBiometric() async {
     setState(() => _isLoading = true);
-
     try {
       final result = await _platformService.authenticateWithBiometric(
         reason: 'Authenticate to verify your identity',
       );
-
       setState(() {
         _biometricResult = result['message'] as String;
         _isLoading = false;
       });
-
       if (mounted) {
         
         ScaffoldMessenger.of(context).showSnackBar(

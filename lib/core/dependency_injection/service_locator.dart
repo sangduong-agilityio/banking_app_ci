@@ -149,6 +149,7 @@ class AppLocators {
       () => SearchBloc(
         repo: locator<SearchRepository>(),
         cacheManager: locator<ExchangeCacheManager>(),
+      
       ),
     );
 
