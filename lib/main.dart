@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:banking_app/app/app.dart';
 import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/dependency_injection/service_locator.dart';
+import 'package:banking_app/core/data/services/home_widget_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,7 +98,26 @@ Future<void> _runApp() async {
 
   await locator.allReady();
 
+  // Initialize home screen widget with API endpoint
+  _initializeHomeWidget();
+
   runApp(const BankingApp());
+}
+
+/// Initialize the home screen widget for exchange rates display
+Future<void> _initializeHomeWidget() async {
+  try {
+    final widgetService = locator<HomeWidgetService>();
+    final isSupported = await widgetService.isWidgetSupported();
+    
+    if (isSupported) {
+      await widgetService.initializeWidget(apiEndpoint: Env.endPoint);
+      FirebaseCrashlytics.instance.log('Home widget initialized');
+    }
+  } catch (e) {
+    // Widget initialization is not critical, just log the error
+    FirebaseCrashlytics.instance.log('Home widget initialization failed: $e');
+  }
 }
 
 void _setupGlobalErrorHandlers() {

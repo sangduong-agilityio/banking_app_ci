@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:banking_app/core/data/services/exchange_cache_manager.dart';
+import 'package:banking_app/core/data/services/home_widget_service.dart';
 import 'package:banking_app/core/common/utils/currency.dart';
 import 'package:banking_app/features/search/domain/repositories/search_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,9 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
   SearchBloc({
     required this.repo,
     required ExchangeCacheManager cacheManager,
+    HomeWidgetService? homeWidgetService,
   })  : _cacheManager = cacheManager,
+        _homeWidgetService = homeWidgetService ?? HomeWidgetService(),
         super(const SearchState()) {
     on<InterestRateInitializeEvt>(_onInitializeInterestRate);
     on<ExchangeRateInitializeEvt>(_onInitializeExchangeRate);
@@ -28,6 +31,7 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
 
   final SearchRepository repo;
   final ExchangeCacheManager _cacheManager;
+  final HomeWidgetService _homeWidgetService;
 
   Timer? _refreshTimer;
   StreamSubscription<bool>? _connectivitySub;
@@ -81,6 +85,9 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
           status: const SearchStatus.success(),
         ),
       );
+
+      // Update home screen widget with exchange rates
+      _updateHomeWidget(exchangeRates);
 
       _startAutoRefreshTimer();
     } catch (e) {
@@ -443,6 +450,28 @@ class SearchBloc extends Bloc<SearchEvt, SearchState> {
         add(const ExchangeRateRefreshEvt());
       }
     });
+  }
+
+  /// Updates the home screen widget with the latest exchange rates.
+  /// This is called whenever exchange rates are successfully fetched.
+  Future<void> _updateHomeWidget(
+    List<dynamic> exchangeRates,
+  ) async {
+    try {
+      // Import the model type to handle the conversion
+      final rates = exchangeRates
+          .whereType<
+              dynamic>() // Ensure we handle the exchange rate model correctly
+          .toList();
+
+      if (rates.isNotEmpty) {
+        await _homeWidgetService.updateExchangeRates(
+          rates.cast(),
+        );
+      }
+    } catch (e) {
+      // Silently fail - widget update is not critical
+    }
   }
 
   @override

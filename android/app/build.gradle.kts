@@ -46,4 +46,13 @@ flutter {
 
 dependencies {
     implementation("androidx.biometric:biometric:1.1.0")
+    
+    // WorkManager for background widget updates
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    
+    // Kotlin Coroutines for async work
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    
+    // Glide for image loading in widget
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

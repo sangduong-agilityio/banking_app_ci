@@ -4,6 +4,7 @@ import 'package:banking_app/app/env/env.dart';
 import 'package:banking_app/core/data/services/biometric_service.dart';
 import 'package:banking_app/core/data/services/currency_cache_service.dart';
 import 'package:banking_app/core/data/services/exchange_rate_cache_service.dart';
+import 'package:banking_app/core/data/services/home_widget_service.dart';
 import 'package:banking_app/core/data/services/offline_exchange_service.dart';
 import 'package:banking_app/core/data/services/exchange_cache_manager.dart';
 import 'package:banking_app/core/data/services/connectivity_service.dart';
@@ -88,6 +89,8 @@ class AppLocators {
 
     locator.registerLazySingleton<BiometricService>(() => BiometricService());
 
+    locator.registerLazySingleton<HomeWidgetService>(() => HomeWidgetService());
+
     /// Repositories
     locator.registerLazySingleton<AuthRepository>(
       () => AuthRepositoryImplement(client: locator()),
@@ -149,7 +152,7 @@ class AppLocators {
       () => SearchBloc(
         repo: locator<SearchRepository>(),
         cacheManager: locator<ExchangeCacheManager>(),
-      
+        homeWidgetService: locator<HomeWidgetService>(),
       ),
     );
 
