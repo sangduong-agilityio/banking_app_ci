@@ -13,6 +13,7 @@ import 'package:banking_app/features/search/presentation/views/exchange_screen.d
 import 'package:banking_app/features/search/presentation/views/interest_rate_screen.dart';
 import 'package:banking_app/features/search/presentation/views/search_screen.dart';
 import 'package:banking_app/features/setting/presentation/views/setting_screen.dart';
+import 'package:banking_app/features/setting/presentation/widgets/crash_demo_page.dart';
 import 'package:banking_app/features/setting/presentation/widgets/platform_channel_demo.dart';
 import 'package:banking_app/features/background_service/background_service_demo.dart';
 import 'package:banking_app/features/transactions/presentation/views/transaction_report_screen.dart';
@@ -169,6 +170,13 @@ class BAAppRouter {
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
                     builder: (context, state) => const BackgroundServiceDemo(),
                   ),
+                
+                  GoRoute(
+                    path: BAPaths.crashDemo.path,
+                    name: BAPaths.crashDemo.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const CrashDemoPage(),
+                  ),
                 ],
               ),
             ],
@@ -215,6 +223,10 @@ enum BAPaths {
   backgroundServiceDemo(
     name: 'backgroundServiceDemo',
     path: '/backgroundServiceDemo',
+  ),
+  crashDemo(
+    name: 'crashDemo',
+    path: '/crashDemo',
   );
 
   const BAPaths({required this.name, required this.path});

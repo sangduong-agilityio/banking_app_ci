@@ -151,6 +151,12 @@ class SettingContent extends StatelessWidget {
                       },
                     ),
                     SettingSelection(
+                      title: 'Firebase Crashlytics Demo',
+                      onTap: () {
+                        context.pushNamed(BAPaths.crashDemo.name);
+                      },
+                    ),
+                    SettingSelection(
                       title: S.current.settingCustomerCareTitle,
                       subtitle: S.current.settingCustomerCareSubtitle,
                       textColor: context.colorScheme.inverseSurface,
