@@ -19,6 +19,7 @@ import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.Executor
 import com.example.banking_app.widget.ExchangeRateWidgetProvider
 import com.example.banking_app.widget.WidgetWorkManager
+import com.example.banking_app.service.BackgroundTimerService
 
 class MainActivity : FlutterFragmentActivity() {
     companion object {
@@ -28,6 +29,7 @@ class MainActivity : FlutterFragmentActivity() {
     // Define the channel name (must match the Dart side)
     private val CHANNEL = "system_info"
     private val WIDGET_CHANNEL = "com.example.banking_app/widget"
+    private val BG_SERVICE_CHANNEL = "com.example.banking_app/bg_service"
     private var shortcutAction: String? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -155,6 +157,28 @@ class MainActivity : FlutterFragmentActivity() {
             
             val duration = System.currentTimeMillis() - startTime
             Log.i(TAG, "Widget method '${call.method}' completed in ${duration}ms")
+        }
+
+        // Set up the Background Service MethodChannel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, BG_SERVICE_CHANNEL).setMethodCallHandler { call, result ->
+            Log.i(TAG, "Background service method called: ${call.method}")
+            
+            when (call.method) {
+                "startService" -> {
+                    startService(Intent(this, BackgroundTimerService::class.java))
+                    Log.d(TAG, "Background service started")
+                    result.success("Service started")
+                }
+                "stopService" -> {
+                    stopService(Intent(this, BackgroundTimerService::class.java))
+                    Log.d(TAG, "Background service stopped")
+                    result.success("Service stopped")
+                }
+                else -> {
+                    Log.w(TAG, "Background service method not implemented: ${call.method}")
+                    result.notImplemented()
+                }
+            }
         }
     }
 
