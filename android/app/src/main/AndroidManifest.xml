@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:label="banking_app"
         android:name="${applicationName}"
@@ -50,6 +51,11 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_exchange_rate_info" />
         </receiver>
+
+        <!-- Background Timer Service -->
+        <service
+            android:name=".service.BackgroundTimerService"
+            android:exported="false" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
