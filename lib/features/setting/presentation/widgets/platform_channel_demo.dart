@@ -18,27 +18,22 @@ class PlatformChannelDemo extends StatefulWidget {
 
 class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
   final PlatformChannelService _platformService = PlatformChannelService();
-  String _systemVersion = 'Unknown';
   int _batteryLevel = 0;
   String _helloWorldResponse = '';
-  bool _isBiometricAvailable = false;
-  String _biometricResult = '';
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     _getSystemVersion();
-    _checkBiometricAvailability();
   }
 
   Future<void> _getSystemVersion() async {
     setState(() => _isLoading = true);
 
-    final version = await _platformService.getSystemVersion();
 
     setState(() {
-      _systemVersion = version;
+     
       _isLoading = false;
     });
   }
@@ -94,53 +89,8 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
     }
   }
 
-  Future<void> _checkBiometricAvailability() async {
-    try {
-      final isAvailable = await _platformService.isBiometricAvailable();
-      setState(() {
-        _isBiometricAvailable = isAvailable;
-      });
-    } catch (e) {
-      setState(() {
-        _isBiometricAvailable = false;
-      });
-    }
-  }
+ 
 
-  Future<void> _authenticateWithBiometric() async {
-    setState(() => _isLoading = true);
-    try {
-      final result = await _platformService.authenticateWithBiometric(
-        reason: 'Authenticate to verify your identity',
-      );
-      setState(() {
-        _biometricResult = result['message'] as String;
-        _isLoading = false;
-      });
-      if (mounted) {
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(result['message'] as String),
-            backgroundColor: result['success'] as bool
-                ? context.colorScheme.secondary
-                : context.colorScheme.error,
-            duration: const Duration(seconds: 3),
-          ),
-        );
-      }
-    } catch (e) {
-      setState(() => _isLoading = false);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: context.colorScheme.error,
-          ),
-        );
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,71 +107,7 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // System Version Card
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.current.platformChannelSystemInfoTitle,
-                        style: context.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.colorScheme.secondary,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.info_outline,
-                            size: 24,
-                            color: context.colorScheme.secondary,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  S.current.platformChannelOsVersionLabel,
-                                  style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim.withAlpha(
-                                      0x99,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                _isLoading
-                                    ? SizedBox(
-                                        height: 20,
-                                        width: 20,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: context.colorScheme.secondary,
-                                        ),
-                                      )
-                                    : Text(
-                                        _systemVersion,
-                                        style: context.titleSmall?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          color: context.colorScheme.scrim,
-                                        ),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+             
 
               const SizedBox(height: 16),
 
@@ -351,86 +237,9 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
 
               const SizedBox(height: 16),
 
-              // Biometric Card
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Biometric Authentication',
-                        style: context.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: context.colorScheme.secondary,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Icon(
-                            _isBiometricAvailable
-                                ? Icons.fingerprint
-                                : Icons.lock_outline,
-                            size: 24,
-                            color: _isBiometricAvailable
-                                ? context.colorScheme.secondary
-                                : context.colorScheme.scrim.withAlpha(0x80),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Status',
-                                  style: context.bodySmall?.copyWith(
-                                    color: context.colorScheme.scrim.withAlpha(
-                                      0x99,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _isBiometricAvailable
-                                      ? 'Available'
-                                      : 'Not Available ',
-                                  style: context.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    color: context.colorScheme.scrim,
-                                  ),
-                                ),
-                                if (_biometricResult.isNotEmpty) ...[
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    _biometricResult,
-                                    style: context.bodySmall?.copyWith(
-                                      color: context.colorScheme.secondary,
-                                      fontStyle: FontStyle.italic,
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
+           
               // Action Buttons
-              BAElevatedButton(
-                padding: EdgeInsets.zero,
-                height: 50,
-                text: S.current.platformChannelRefreshButton,
-                onPressed: _isLoading ? null : _getSystemVersion,
-              ),
+            
               const SizedBox(height: 12),
               BAElevatedButton(
                 padding: EdgeInsets.zero,
@@ -446,16 +255,8 @@ class _PlatformChannelDemoState extends State<PlatformChannelDemo> {
                 onPressed: _isLoading ? null : _sendHelloWorld,
               ),
               const SizedBox(height: 12),
-              BAElevatedButton(
-                padding: EdgeInsets.zero,
-                height: 50,
-                text: 'Authenticate with Biometric',
-                onPressed: _isLoading || !_isBiometricAvailable
-                    ? null
-                    : _authenticateWithBiometric,
-              ),
+              
 
-              const SizedBox(height: 40),
             ],
           ),
         ),

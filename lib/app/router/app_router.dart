@@ -16,6 +16,8 @@ import 'package:banking_app/features/setting/presentation/views/setting_screen.d
 import 'package:banking_app/features/setting/presentation/widgets/crash_demo_page.dart';
 import 'package:banking_app/features/setting/presentation/widgets/platform_channel_demo.dart';
 import 'package:banking_app/features/background_service/background_service_demo.dart';
+import 'package:banking_app/features/setting/presentation/widgets/optimistic_ui_demo.dart';
+import 'package:banking_app/features/setting/presentation/widgets/advanced_layout_demo.dart';
 import 'package:banking_app/features/transactions/presentation/views/transaction_report_screen.dart';
 import 'package:banking_app/features/transfer/presentation/views/transfer_screen.dart';
 import 'package:banking_app/features/users/presentation/bloc/users_bloc.dart';
@@ -177,6 +179,18 @@ class BAAppRouter {
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
                     builder: (context, state) => const CrashDemoPage(),
                   ),
+                  GoRoute(
+                    path: BAPaths.optimisticUIDemo.path,
+                    name: BAPaths.optimisticUIDemo.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const OptimisticUIDemo(),
+                  ),
+                  GoRoute(
+                    path: BAPaths.advancedLayoutDemo.path,
+                    name: BAPaths.advancedLayoutDemo.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const AdvancedLayoutDemo(),
+                  ),
                 ],
               ),
             ],
@@ -227,6 +241,14 @@ enum BAPaths {
   crashDemo(
     name: 'crashDemo',
     path: '/crashDemo',
+  ),
+  optimisticUIDemo(
+    name: 'optimisticUIDemo',
+    path: '/optimisticUIDemo',
+  ),
+  advancedLayoutDemo(
+    name: 'advancedLayoutDemo',
+    path: '/advancedLayoutDemo',
   );
 
   const BAPaths({required this.name, required this.path});

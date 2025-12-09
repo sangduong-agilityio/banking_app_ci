@@ -10,7 +10,6 @@ import 'package:banking_app/core/widgets/assets.dart';
 import 'package:banking_app/core/widgets/dialog.dart';
 import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
-import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/features/setting/data/models/user_model.dart';
 import 'package:banking_app/features/setting/presentation/blocs/setting_cubit.dart';
@@ -90,48 +89,21 @@ class SettingContent extends StatelessWidget {
                         color: context.colorScheme.secondary,
                         fontWeight: FontWeight.w600,
                       ),
-                    ),
+                    ), 
                     const SizedBox(height: 20),
                     SettingSelection(
-                      title: S.current.settingPasswordTitle,
-                      textColor: context.colorScheme.inverseSurface,
+                      title: 'Optimistic UI Demo',
                       onTap: () {
-                        BASnackBar.showNotSupported(
-                          context,
-                          S.current.pageNotSupportedYet,
-                        );
+                        context.pushNamed(BAPaths.optimisticUIDemo.name);
                       },
                     ),
                     SettingSelection(
-                      title: biometricCapability.settingsLabel,
-                      isEnabled:
-                          isBiometricEnabled && biometricCapability.isAvailable,
-                      onToggle: biometricCapability.isAvailable
-                          ? (value) => context
-                                .read<SettingCubit>()
-                                .toggleBiometric(value)
-                          : null,
-                    ),
-                    SettingSelection(
-                      title: S.current.settingLanguaguesTitle,
-                      textColor: context.colorScheme.inverseSurface,
+                      title: 'Advanced Layout Demo',
                       onTap: () {
-                        BASnackBar.showNotSupported(
-                          context,
-                          S.current.pageNotSupportedYet,
-                        );
+                        context.pushNamed(BAPaths.advancedLayoutDemo.name);
                       },
                     ),
-                    SettingSelection(
-                      title: S.current.settingAppInformationTitle,
-                      textColor: context.colorScheme.inverseSurface,
-                      onTap: () {
-                        BASnackBar.showNotSupported(
-                          context,
-                          S.current.pageNotSupportedYet,
-                        );
-                      },
-                    ),
+                  
                     SettingSelection(
                       title: S.current.platformChannelTitle,
                       onTap: () {
@@ -156,17 +128,8 @@ class SettingContent extends StatelessWidget {
                         context.pushNamed(BAPaths.crashDemo.name);
                       },
                     ),
-                    SettingSelection(
-                      title: S.current.settingCustomerCareTitle,
-                      subtitle: S.current.settingCustomerCareSubtitle,
-                      textColor: context.colorScheme.inverseSurface,
-                      onTap: () {
-                        BASnackBar.showNotSupported(
-                          context,
-                          S.current.pageNotSupportedYet,
-                        );
-                      },
-                    ),
+                   
+                   
                     SettingSelection(
                       title: S.current.settingLogoutTitle,
                       onTap: () => _showLogoutDialog(context),
