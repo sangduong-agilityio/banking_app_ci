@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/widget_background">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/widget_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Exchange Rates"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1E293B" />
+
+        <ImageView
+            android:id="@+id/refresh_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_rotate"
+            android:contentDescription="Refresh" />
+    </LinearLayout>
+
+    <!-- Divider - Using TextView instead of View for RemoteViews compatibility -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#E2E8F0" />
+
+    <!-- Column Headers -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Currency"
+            android:textSize="11sp"
+            android:textColor="#64748B" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Buy"
+            android:textSize="11sp"
+            android:textColor="#64748B"
+            android:gravity="end" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sell"
+            android:textSize="11sp"
+            android:textColor="#64748B"
+            android:gravity="end" />
+    </LinearLayout>
+
+    <!-- Exchange Rate List -->
+    <LinearLayout
+        android:id="@+id/rates_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Rate Item 1 -->
+        <LinearLayout
+            android:id="@+id/rate_row_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/flag_1"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Flag" />
+
+            <TextView
+                android:id="@+id/currency_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="8dp"
+                android:textSize="13sp"
+                android:textColor="#1E293B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/buy_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#16A34A"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/sell_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#DC2626"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <!-- Rate Item 2 -->
+        <LinearLayout
+            android:id="@+id/rate_row_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/flag_2"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Flag" />
+
+            <TextView
+                android:id="@+id/currency_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="8dp"
+                android:textSize="13sp"
+                android:textColor="#1E293B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/buy_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#16A34A"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/sell_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#DC2626"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <!-- Rate Item 3 -->
+        <LinearLayout
+            android:id="@+id/rate_row_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/flag_3"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Flag" />
+
+            <TextView
+                android:id="@+id/currency_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="8dp"
+                android:textSize="13sp"
+                android:textColor="#1E293B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/buy_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#16A34A"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/sell_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#DC2626"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <!-- Rate Item 4 -->
+        <LinearLayout
+            android:id="@+id/rate_row_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/flag_4"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Flag" />
+
+            <TextView
+                android:id="@+id/currency_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="8dp"
+                android:textSize="13sp"
+                android:textColor="#1E293B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/buy_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#16A34A"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/sell_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#DC2626"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <!-- Rate Item 5 -->
+        <LinearLayout
+            android:id="@+id/rate_row_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/flag_5"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="Flag" />
+
+            <TextView
+                android:id="@+id/currency_5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:layout_marginStart="8dp"
+                android:textSize="13sp"
+                android:textColor="#1E293B"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/buy_5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#16A34A"
+                android:gravity="end" />
+
+            <TextView
+                android:id="@+id/sell_5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#DC2626"
+                android:gravity="end" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Last Updated -->
+    <TextView
+        android:id="@+id/last_updated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Updated: --"
+        android:textSize="10sp"
+        android:textColor="#94A3B8"
+        android:gravity="end"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

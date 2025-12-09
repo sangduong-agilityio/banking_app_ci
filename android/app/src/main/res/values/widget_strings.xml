@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_name">Exchange Rates</string>
+    <string name="widget_description">Display live exchange rates from Banking App</string>
+    <string name="widget_no_data">No data available</string>
+    <string name="widget_tap_to_update">Tap to update</string>
+</resources>

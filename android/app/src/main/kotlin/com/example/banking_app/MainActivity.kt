@@ -17,6 +17,8 @@ import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.util.concurrent.Executor
+import com.example.banking_app.widget.ExchangeRateWidgetProvider
+import com.example.banking_app.widget.WidgetWorkManager
 
 class MainActivity : FlutterFragmentActivity() {
     companion object {
@@ -25,13 +27,14 @@ class MainActivity : FlutterFragmentActivity() {
     
     // Define the channel name (must match the Dart side)
     private val CHANNEL = "system_info"
+    private val WIDGET_CHANNEL = "com.example.banking_app/widget"
     private var shortcutAction: String? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        Log.d(TAG, "Configuring Flutter engine and setting up MethodChannel")
+        Log.d(TAG, "Configuring Flutter engine and setting up MethodChannels")
 
-        // Set up the MethodChannel
+        // Set up the main MethodChannel
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             val startTime = System.currentTimeMillis()
             Log.i(TAG, "Method called: ${call.method}")
@@ -112,18 +115,68 @@ class MainActivity : FlutterFragmentActivity() {
             val duration = System.currentTimeMillis() - startTime
             Log.i(TAG, "Method '${call.method}' completed in ${duration}ms")
         }
+
+        // Set up the Widget MethodChannel
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, WIDGET_CHANNEL).setMethodCallHandler { call, result ->
+            val startTime = System.currentTimeMillis()
+            Log.i(TAG, "Widget method called: ${call.method}")
+            
+            when (call.method) {
+                "updateExchangeRates" -> {
+                    val ratesJson = call.argument<String>("rates")
+                    if (ratesJson != null) {
+                        Log.d(TAG, "Updating widget with exchange rates...")
+                        updateWidgetExchangeRates(ratesJson)
+                        result.success(true)
+                    } else {
+                        Log.e(TAG, "Exchange rates data is null")
+                        result.error("INVALID_ARGUMENT", "Exchange rates data is null", null)
+                    }
+                }
+                "initializeWidget" -> {
+                    val apiEndpoint = call.argument<String>("apiEndpoint")
+                    Log.d(TAG, "Initializing widget with API endpoint: $apiEndpoint")
+                    initializeWidgetWork(apiEndpoint)
+                    result.success(true)
+                }
+                "refreshWidget" -> {
+                    Log.d(TAG, "Triggering widget refresh...")
+                    WidgetWorkManager.forceRefresh(this)
+                    result.success(true)
+                }
+                "isWidgetSupported" -> {
+                    result.success(true)
+                }
+                else -> {
+                    Log.w(TAG, "Widget method not implemented: ${call.method}")
+                    result.notImplemented()
+                }
+            }
+            
+            val duration = System.currentTimeMillis() - startTime
+            Log.i(TAG, "Widget method '${call.method}' completed in ${duration}ms")
+        }
     }
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         Log.i(TAG, "MainActivity onCreate")
         handleShortcutIntent(intent)
+        
+        // Initialize widget work manager for background updates
+        WidgetWorkManager.initialize(this)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         Log.i(TAG, "MainActivity onNewIntent")
         handleShortcutIntent(intent)
+        
+        // Check if we need to refresh exchange rates (from widget)
+        if (intent.getStringExtra("action") == "refresh_exchange_rates") {
+            Log.i(TAG, "Widget requested exchange rates refresh")
+            // The Flutter app should handle this via a callback or event
+        }
     }
 
     private fun handleShortcutIntent(intent: Intent) {
@@ -132,6 +185,29 @@ class MainActivity : FlutterFragmentActivity() {
             Log.i(TAG, "Shortcut action detected: $action")
             shortcutAction = action
         }
+    }
+
+    /**
+     * Updates the home screen widget with new exchange rate data.
+     * Called from Flutter when new rates are fetched.
+     */
+    private fun updateWidgetExchangeRates(ratesJson: String) {
+        ExchangeRateWidgetProvider.saveExchangeRates(this, ratesJson)
+        ExchangeRateWidgetProvider.updateWidgets(this)
+        Log.i(TAG, "Widget updated with new exchange rates")
+    }
+
+    /**
+     * Initializes background work for widget updates.
+     * Stores the API endpoint for the worker to use.
+     */
+    private fun initializeWidgetWork(apiEndpoint: String?) {
+        if (apiEndpoint != null) {
+            val prefs = getSharedPreferences("flutter_prefs", Context.MODE_PRIVATE)
+            prefs.edit().putString("api_endpoint", apiEndpoint).apply()
+            Log.d(TAG, "Saved API endpoint for widget: $apiEndpoint")
+        }
+        WidgetWorkManager.initialize(this)
     }
 
     /**
