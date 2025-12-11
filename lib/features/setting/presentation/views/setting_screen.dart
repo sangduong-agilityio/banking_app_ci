@@ -98,13 +98,6 @@ class SettingContent extends StatelessWidget {
                       },
                     ),
                     SettingSelection(
-                      title: 'Advanced Layout Demo',
-                      onTap: () {
-                        context.pushNamed(BAPaths.advancedLayoutDemo.name);
-                      },
-                    ),
-                  
-                    SettingSelection(
                       title: S.current.platformChannelTitle,
                       onTap: () {
                         context.pushNamed(BAPaths.platformChannelDemo.name);

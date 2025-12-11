@@ -2,7 +2,6 @@ import 'package:banking_app/core/widgets/layouts/app_bar.dart';
 import 'package:banking_app/core/widgets/layouts/scaffold.dart';
 import 'package:banking_app/core/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:banking_app/core/common/extensions/context_extensions.dart';
 
@@ -14,7 +13,6 @@ class CrashDemoPage extends StatefulWidget {
 }
 
 class _CrashDemoPageState extends State<CrashDemoPage> {
-  static const platform = MethodChannel('com.example.banking_app/crash');
   final List<String> _logs = [];
 
   @override
@@ -30,109 +28,63 @@ class _CrashDemoPageState extends State<CrashDemoPage> {
     });
   }
 
-  void _triggerDartCrash() {
-    _addLog('⚠️ Dart crash triggered');
-    if (mounted) {
-      BASnackBar.buildSuccessSnackbar(
-        context,
-        'Dart exception sent to Firebase',
-      );
-    }
-    throw Exception('Test Dart exception');
+  void _triggerFatalCrash() {
+    _addLog('Triggering fatal crash');
+    FirebaseCrashlytics.instance.log('fatal demo button pressed');
+    throw StateError('Fatal demo crash');
   }
 
-  void _triggerAsyncCrash() {
-    _addLog('⚠️ Async crash triggered');
-    if (mounted) {
-      BASnackBar.buildSuccessSnackbar(
-        context,
-        'Async exception sent to Firebase',
-      );
-    }
-    Future.delayed(const Duration(milliseconds: 500), () {
-      throw Exception('Test async exception');
-    });
-  }
-
-  void _triggerNullPointerCrash() {
-    _addLog('⚠️ Null pointer crash triggered');
-    if (mounted) {
-      BASnackBar.buildSuccessSnackbar(
-        context,
-        'Null pointer exception sent to Firebase',
-      );
-    }
-    dynamic obj;
-    // ignore: unnecessary_statements
-    obj.toString();
-  }
-
-  void _logNonFatalError() {
-    _addLog('📝 Recording non-fatal error');
+  Future<void> _recordNonFatal() async {
+    _addLog('Recording non-fatal error');
     try {
-      throw Exception('Test non-fatal error');
+      throw Exception('Non-fatal: simulated network timeout');
     } catch (e, stackTrace) {
-      FirebaseCrashlytics.instance.recordError(
+      FirebaseCrashlytics.instance.log('non-fatal demo tap');
+      await FirebaseCrashlytics.instance.recordError(
         e,
         stackTrace,
         fatal: false,
+        reason: 'Manual non-fatal demo',
       );
-      _addLog('✓ Non-fatal error recorded');
+      _addLog('Non-fatal sent to Crashlytics');
       if (mounted) {
         BASnackBar.buildSuccessSnackbar(
           context,
-          'Non-fatal error sent to Firebase',
+          'Non-fatal sent to Crashlytics',
         );
       }
     }
   }
 
-  void _addCustomLogsAndKeys() {
-    _addLog('🔑 Adding custom data');
-    try {
-      FirebaseCrashlytics.instance.setCustomKey(
-        'session_id',
-        'demo_${DateTime.now().millisecondsSinceEpoch}',
+  Future<void> _setUserAndKeys() async {
+    _addLog('Setting user + keys');
+    await FirebaseCrashlytics.instance.setUserIdentifier('demo-user-123');
+    await FirebaseCrashlytics.instance.setCustomKey('feature', 'crash_demo');
+    await FirebaseCrashlytics.instance.setCustomKey('flow_step', 'tap_set_user');
+    FirebaseCrashlytics.instance.log('user + keys set for demo');
+    if (mounted) {
+      BASnackBar.buildSuccessSnackbar(
+        context,
+        'UserId and custom keys set',
       );
-      FirebaseCrashlytics.instance.setCustomKey('action', 'crash_demo');
-      FirebaseCrashlytics.instance.log('Crash demo started');
-      _addLog('✓ Custom data added');
-      if (mounted) {
-        BASnackBar.buildSuccessSnackbar(
-          context,
-          'Custom logs & keys sent to Firebase',
-        );
-      }
-    } catch (e) {
-      _addLog('✗ Error: $e');
     }
   }
 
-  void _triggerNativeCrash() async {
-    _addLog('⚠️ Native crash triggered');
-    try {
-      await platform.invokeMethod('triggerNativeCrash');
-      if (mounted) {
-        BASnackBar.buildSuccessSnackbar(
-          context,
-          'Native crash sent to Firebase',
-        );
-      }
-    } catch (e) {
-      _addLog('ℹ️ Android only feature');
-      if (mounted) {
-        BASnackBar.buildSuccessSnackbar(
-          context,
-          'Native crash (Android only)',
-        );
-      }
+  Future<void> _sendUnsentReports() async {
+    _addLog('Forcing sendUnsentReports');
+    await FirebaseCrashlytics.instance.sendUnsentReports();
+    if (mounted) {
+      BASnackBar.buildSuccessSnackbar(
+        context,
+        'Queued reports sent',
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BAScaffold(
-       appBar: BAAppBar(
+      appBar: BAAppBar(
         title: 'Crash Test Demo',
         titleColor: context.colorScheme.onPrimary,
         alignment: BAAppBarAlignment.left,
@@ -146,41 +98,95 @@ class _CrashDemoPageState extends State<CrashDemoPage> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  _buildCrashItem(
-                    'Dart Crash',
-                    'throw Exception()',
-                    _triggerDartCrash,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Firebase Crashlytics Demo',
+                      style: context.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
+                  const SizedBox(height: 16),
                   _buildCrashItem(
-                    'Async Crash',
-                    'Future error',
-                    _triggerAsyncCrash,
+                    'Fatal crash',
+                    'throw StateError → app exits, sent on next launch',
+                    _triggerFatalCrash,
+                    context.colorScheme.primary,
                   ),
+                  const SizedBox(height: 12),
                   _buildCrashItem(
-                    'Null Pointer Crash',
-                    'null.toString()',
-                    _triggerNullPointerCrash,
+                    'Non-fatal error',
+                    'try-catch + recordError(fatal: false)',
+                    _recordNonFatal,
+                    context.colorScheme.primary,
                   ),
+                  const SizedBox(height: 12),
                   _buildCrashItem(
-                    'Non-Fatal Error',
-                    'Caught & logged',
-                    _logNonFatalError,
+                    'Set user + keys + log',
+                    'setUserIdentifier + setCustomKey + log',
+                    _setUserAndKeys,
+                    context.colorScheme.tertiary,
                   ),
+                  const SizedBox(height: 12),
                   _buildCrashItem(
-                    'Custom Logs & Keys',
-                    'Add metadata',
-                    _addCustomLogsAndKeys,
+                    'Send queued reports',
+                    'sendUnsentReports() after reopening',
+                    _sendUnsentReports,
+                    context.colorScheme.secondary,
                   ),
-                  _buildCrashItem(
-                    'Native Crash',
-                    'Android only',
-                    _triggerNativeCrash,
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Logs (local view)',
+                        style: context.textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                   ),
+                  const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: context.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: context.colorScheme.outlineVariant,
+                        ),
+                      ),
+                      child: _logs.isEmpty
+                          ? Text(
+                              'No logs yet',
+                              style: context.textTheme.bodySmall,
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: _logs
+                                  .map(
+                                    (e) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 6),
+                                      child: Text(
+                                        e,
+                                        style: context.textTheme.bodySmall,
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
           ),
-         
         ],
       ),
     );
@@ -190,30 +196,37 @@ class _CrashDemoPageState extends State<CrashDemoPage> {
     String title,
     String description,
     VoidCallback onTap,
+    Color accentColor,
   ) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           decoration: BoxDecoration(
             color: context.colorScheme.onPrimary,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: context.colorScheme.secondary.withOpacity(0.2),
-              width: 1,
-            ),
+            border: Border.all(color: accentColor.withOpacity(0.3), width: 1.5),
           ),
           child: Row(
             children: [
+              Container(
+                width: 4,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: accentColor,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      style: context.textTheme.labelMedium?.copyWith(
                         color: context.colorScheme.inverseSurface,
                         fontWeight: FontWeight.w600,
                       ),
@@ -221,19 +234,16 @@ class _CrashDemoPageState extends State<CrashDemoPage> {
                     const SizedBox(height: 4),
                     Text(
                       description,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: context.colorScheme.inverseSurface
-                            .withOpacity(0.6),
+                      style: context.textTheme.bodySmall?.copyWith(
+                        color: context.colorScheme.inverseSurface.withOpacity(
+                          0.6,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: context.colorScheme.secondary,
-              ),
+              Icon(Icons.arrow_forward_ios, size: 16, color: accentColor),
             ],
           ),
         ),
