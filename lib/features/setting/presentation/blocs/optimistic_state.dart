@@ -1,37 +1,33 @@
-import 'package:banking_app/features/setting/data/models/transaction.dart';
+import 'package:banking_app/features/setting/data/models/post.dart';
 
 enum OptimisticStatus { initial, loading, success, failure }
 
 final class OptimisticState {
   const OptimisticState({
-    this.balance = 1000000.0,
-    this.transactions = const [],
-    this.previousBalance,
-    this.previousTransactions,
+    this.posts = const [],
+    this.previousPosts,
+    this.pendingPostIds = const {},
     this.status = OptimisticStatus.initial,
     this.errorMessage,
   });
 
-  final double balance;
-  final List<Transaction> transactions;
-  final double? previousBalance;
-  final List<Transaction>? previousTransactions;
+  final List<Post> posts; // Danh sách bài viết
+  final List<Post>? previousPosts; // Backup để rollback nếu thất bại
+  final Set<String> pendingPostIds; // IDs của posts đang pending reaction
   final OptimisticStatus status;
   final String? errorMessage;
 
   OptimisticState copyWith({
-    double? balance,
-    List<Transaction>? transactions,
-    double? previousBalance,
-    List<Transaction>? previousTransactions,
+    List<Post>? posts,
+    List<Post>? previousPosts,
+    Set<String>? pendingPostIds,
     OptimisticStatus? status,
     String? errorMessage,
   }) {
     return OptimisticState(
-      balance: balance ?? this.balance,
-      transactions: transactions ?? this.transactions,
-      previousBalance: previousBalance ?? this.previousBalance,
-      previousTransactions: previousTransactions ?? this.previousTransactions,
+      posts: posts ?? this.posts,
+      previousPosts: previousPosts ?? this.previousPosts,
+      pendingPostIds: pendingPostIds ?? this.pendingPostIds,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
     );

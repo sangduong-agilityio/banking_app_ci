@@ -89,12 +89,24 @@ class SettingContent extends StatelessWidget {
                         color: context.colorScheme.secondary,
                         fontWeight: FontWeight.w600,
                       ),
-                    ), 
+                    ),
                     const SizedBox(height: 20),
                     SettingSelection(
                       title: 'Optimistic UI Demo',
                       onTap: () {
                         context.pushNamed(BAPaths.optimisticUIDemo.name);
+                      },
+                    ),
+                    SettingSelection(
+                      title: 'Draggable UI Demo',
+                      onTap: () {
+                        context.pushNamed(BAPaths.draggableUIDemo.name);
+                      },
+                    ),
+                    SettingSelection(
+                      title: 'GraphQL Demo',
+                      onTap: () {
+                        context.pushNamed(BAPaths.graphqlDemo.name);
                       },
                     ),
                     SettingSelection(
@@ -104,25 +116,18 @@ class SettingContent extends StatelessWidget {
                       },
                     ),
                     SettingSelection(
-                      title: 'GraphQL Users Demo',
-                      onTap: () {
-                        context.pushNamed(BAPaths.usersDemo.name);
-                      },
-                    ),
-                    SettingSelection(
                       title: 'Background Service Demo',
                       onTap: () {
                         context.pushNamed(BAPaths.backgroundServiceDemo.name);
                       },
                     ),
-                    SettingSelection(
-                      title: 'Firebase Crashlytics Demo',
-                      onTap: () {
-                        context.pushNamed(BAPaths.crashDemo.name);
-                      },
-                    ),
-                   
-                   
+                    // SettingSelection(
+                    //   title: 'Firebase Crashlytics Demo',
+                    //   onTap: () {
+                    //     context.pushNamed(BAPaths.crashDemo.name);
+                    //   },
+                    // ),
+              
                     SettingSelection(
                       title: S.current.settingLogoutTitle,
                       onTap: () => _showLogoutDialog(context),

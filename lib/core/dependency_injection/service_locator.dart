@@ -8,7 +8,6 @@ import 'package:banking_app/core/data/services/home_widget_service.dart';
 import 'package:banking_app/core/data/services/offline_exchange_service.dart';
 import 'package:banking_app/core/data/services/exchange_cache_manager.dart';
 import 'package:banking_app/core/data/services/connectivity_service.dart';
-import 'package:banking_app/core/data/services/graphql/graphql_client.dart';
 import 'package:banking_app/features/account/presentation/blocs/account_and_card_cubit.dart';
 import 'package:banking_app/features/auth/data/repositories/auth_repository.dart';
 import 'package:banking_app/features/auth/presentation/blocs/auth_bloc.dart';
@@ -26,10 +25,10 @@ import 'package:banking_app/features/transactions/data/repositories/transaction_
 import 'package:banking_app/features/transactions/presentation/blocs/transaction_bloc.dart';
 import 'package:banking_app/features/transfer/data/repositories/transfer_repository.dart';
 import 'package:banking_app/features/transfer/presentation/blocs/transfer_bloc.dart';
-import 'package:banking_app/features/users/data/repositories/mock_users_repository.dart';
-import 'package:banking_app/features/users/domain/repositories/users_repository.dart';
-import 'package:banking_app/features/users/presentation/bloc/users_bloc.dart';
-
+import 'package:banking_app/features/graphql_demo/data/datasources/graphql_data_source.dart';
+import 'package:banking_app/features/graphql_demo/data/repositories/graphql_repository_impl.dart';
+import 'package:banking_app/features/graphql_demo/domain/repositories/graphql_repository.dart';
+import 'package:banking_app/features/graphql_demo/presentation/blocs/graphql_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -119,10 +118,14 @@ class AppLocators {
       () => TransactionReportRepositoryImpl(client: locator()),
     );
 
-    /// GraphQL Client for Users module
-    locator.registerLazySingleton<GraphQLClient>(() => GraphQLClient());
+    // GraphQL Demo - Social media simulation
+    locator.registerLazySingleton<GraphQLDataSource>(
+      () => GraphQLDataSource(),
+    );
 
-    locator.registerLazySingleton<UsersRepository>(() => MockUsersRepository());
+    locator.registerLazySingleton<GraphQLRepository>(
+      () => GraphQLRepositoryImpl(dataSource: locator<GraphQLDataSource>()),
+    );
 
     /// Blocs / Cubits
     locator.registerFactory<AuthBloc>(
@@ -171,9 +174,11 @@ class AppLocators {
       () => TransactionReportBloc(repo: locator<TransactionReportRepository>()),
     );
 
-    /// Users BLoC (GraphQL Demo)
-    locator.registerFactory<UsersBloc>(
-      () => UsersBloc(repository: locator<UsersRepository>()),
+  
+
+    /// GraphQL Demo BLoC
+    locator.registerFactory<GraphQLBloc>(
+      () => GraphQLBloc(repository: locator<GraphQLRepository>()),
     );
   }
 }

@@ -17,12 +17,10 @@ import 'package:banking_app/features/setting/presentation/widgets/crash_demo_pag
 import 'package:banking_app/features/setting/presentation/widgets/platform_channel_demo.dart';
 import 'package:banking_app/features/background_service/background_service_demo.dart';
 import 'package:banking_app/features/setting/presentation/widgets/optimistic_ui_demo.dart';
+import 'package:banking_app/features/setting/presentation/widgets/draggable_ui_demo.dart';
+import 'package:banking_app/features/setting/presentation/widgets/graphql_demo.dart';
 import 'package:banking_app/features/transactions/presentation/views/transaction_report_screen.dart';
 import 'package:banking_app/features/transfer/presentation/views/transfer_screen.dart';
-import 'package:banking_app/features/users/presentation/bloc/users_bloc.dart';
-import 'package:banking_app/features/users/presentation/pages/users_page.dart';
-import 'package:banking_app/core/dependency_injection/service_locator.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -156,22 +154,14 @@ class BAAppRouter {
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
                     builder: (context, state) => const PlatformChannelDemo(),
                   ),
-                  GoRoute(
-                    path: BAPaths.usersDemo.path,
-                    name: BAPaths.usersDemo.name,
-                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
-                    builder: (context, state) => BlocProvider(
-                      create: (_) => locator<UsersBloc>(),
-                      child: const UsersPage(),
-                    ),
-                  ),
+                 
                   GoRoute(
                     path: BAPaths.backgroundServiceDemo.path,
                     name: BAPaths.backgroundServiceDemo.name,
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
                     builder: (context, state) => const BackgroundServiceDemo(),
                   ),
-                
+
                   GoRoute(
                     path: BAPaths.crashDemo.path,
                     name: BAPaths.crashDemo.name,
@@ -184,7 +174,18 @@ class BAAppRouter {
                     parentNavigatorKey: BAAppRouter.rootNavigatorKey,
                     builder: (context, state) => const OptimisticUIDemo(),
                   ),
-                  
+                  GoRoute(
+                    path: BAPaths.draggableUIDemo.path,
+                    name: BAPaths.draggableUIDemo.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const DraggableUIDemo(),
+                  ),
+                  GoRoute(
+                    path: BAPaths.graphqlDemo.path,
+                    name: BAPaths.graphqlDemo.name,
+                    parentNavigatorKey: BAAppRouter.rootNavigatorKey,
+                    builder: (context, state) => const GraphQLDemo(),
+                  ),
                 ],
               ),
             ],
@@ -232,15 +233,11 @@ enum BAPaths {
     name: 'backgroundServiceDemo',
     path: '/backgroundServiceDemo',
   ),
-  crashDemo(
-    name: 'crashDemo',
-    path: '/crashDemo',
-  ),
-  optimisticUIDemo(
-    name: 'optimisticUIDemo',
-    path: '/optimisticUIDemo',
-  ) ;
- 
+  crashDemo(name: 'crashDemo', path: '/crashDemo'),
+  optimisticUIDemo(name: 'optimisticUIDemo', path: '/optimisticUIDemo'),
+  draggableUIDemo(name: 'draggableUIDemo', path: '/draggableUIDemo'),
+  graphqlDemo(name: 'graphqlDemo', path: '/graphqlDemo');
+
   const BAPaths({required this.name, required this.path});
   final String name;
   final String path;

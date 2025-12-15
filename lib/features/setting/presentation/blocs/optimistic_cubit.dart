@@ -1,73 +1,93 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:banking_app/features/setting/data/models/transaction.dart';
+import 'package:banking_app/features/setting/data/models/post.dart';
+import 'package:banking_app/features/setting/data/models/mock_posts.dart';
 import 'package:banking_app/features/setting/presentation/blocs/optimistic_state.dart';
 
 class OptimisticCubit extends Cubit<OptimisticState> {
-  OptimisticCubit() : super(const OptimisticState());
+  OptimisticCubit()
+    : super(OptimisticState(posts: MockPosts.generateInitialPosts()));
 
-  /// Simulate transfer with optimistic update
-  /// [forceSuccess] - true to force success, false to force failure, null for random (50/50)
-  Future<void> transferMoney(
-    double amount,
-    String recipientName, {
+  /// Toggle reaction for a post with optimistic update
+  Future<void> toggleReaction(
+    String postId,
+    ReactionType? newReaction, {
     bool? forceSuccess,
   }) async {
-    // Save current state for rollback
-    final previousBalance = state.balance;
-    final previousTransactions = state.transactions;
+    // Find the post
+    final postIndex = state.posts.indexWhere((p) => p.id == postId);
+    if (postIndex == -1) return;
 
-    // Create pending transaction
-    final pendingTransaction = Transaction(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      amount: amount,
-      recipientName: recipientName,
-      timestamp: DateTime.now(),
-      status: TransactionStatus.pending,
+    final post = state.posts[postIndex];
+    final previousReaction = post.userReaction;
+
+    // Calculate new like count
+    int newLikeCount = post.likeCount;
+    if (previousReaction != null && newReaction == null) {
+      // Remove reaction
+      newLikeCount = post.likeCount - 1;
+    } else if (previousReaction == null && newReaction != null) {
+      // Add reaction
+      newLikeCount = post.likeCount + 1;
+    }
+    // If only changing reaction, keep count unchanged
+
+    // Backup current state for rollback if needed
+    final previousPosts = List<Post>.from(state.posts);
+
+    // Optimistic update: Update UI immediately
+    final updatedPost = post.copyWith(
+      userReaction: newReaction,
+      likeCount: newLikeCount,
     );
 
-    // Optimistic update: update UI immediately
+    final updatedPosts = List<Post>.from(state.posts);
+    updatedPosts[postIndex] = updatedPost;
+
+    // Add post ID to pending set
+    final pendingIds = Set<String>.from(state.pendingPostIds)..add(postId);
+
     emit(
       state.copyWith(
-        balance: previousBalance - amount,
-        transactions: [pendingTransaction, ...previousTransactions],
-        previousBalance: previousBalance,
-        previousTransactions: previousTransactions,
+        posts: updatedPosts,
+        previousPosts: previousPosts,
+        pendingPostIds: pendingIds,
         status: OptimisticStatus.loading,
       ),
     );
 
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
+    // Simulate API call (1-2 seconds)
+    await Future.delayed(
+      Duration(milliseconds: 1000 + (DateTime.now().millisecond % 1000)),
+    );
 
-    // Determine success or failure
-    final isSuccess = forceSuccess ?? (DateTime.now().millisecond % 2 == 0);
+    // Determine success or failure based on post ID
+    final isSuccess = postId == '1'
+        ? true // Post 1: Always SUCCESS
+        : postId == '2'
+        ? false // Post 2: Always FAIL
+        : (forceSuccess ?? (DateTime.now().millisecond % 10 < 7));
+
+    // Remove post ID from pending set
+    final newPendingIds = Set<String>.from(state.pendingPostIds)
+      ..remove(postId);
 
     if (isSuccess) {
-      // API succeeded: confirm the transaction
-      final confirmedTransaction = pendingTransaction.copyWith(
-        status: TransactionStatus.completed,
-      );
-
-      final updatedTransactions = state.transactions.map((tx) {
-        return tx.id == pendingTransaction.id ? confirmedTransaction : tx;
-      }).toList();
-
+      // API succeeded: Confirm the change
       emit(
         state.copyWith(
-          transactions: updatedTransactions,
+          pendingPostIds: newPendingIds,
           status: OptimisticStatus.success,
           errorMessage: null,
         ),
       );
     } else {
-      // API failed: rollback to previous state
+      // API failed: Rollback to previous state
       final failureReasons = [
         'Network connection lost',
-        'Recipient not found',
-        'Insufficient balance',
-        'Transfer limit exceeded',
         'Server temporarily unavailable',
-        'Invalid account details',
+        'Rate limit exceeded',
+        'Invalid request',
+        'Post no longer available',
       ];
 
       final reason =
@@ -75,11 +95,11 @@ class OptimisticCubit extends Cubit<OptimisticState> {
 
       emit(
         state.copyWith(
-          balance: previousBalance,
-          transactions: previousTransactions,
+          posts: previousPosts,
+          pendingPostIds: newPendingIds,
           status: OptimisticStatus.failure,
           errorMessage:
-              'Transfer failed: $reason\n\nYour balance has been restored.',
+              'Reaction failed: $reason\n\nYour action has been reverted.',
         ),
       );
     }
@@ -87,6 +107,11 @@ class OptimisticCubit extends Cubit<OptimisticState> {
 
   /// Reset to initial state
   void reset() {
-    emit(const OptimisticState());
+    emit(OptimisticState(posts: MockPosts.generateInitialPosts()));
+  }
+
+  /// Clear error message
+  void clearError() {
+    emit(state.copyWith(errorMessage: null, status: OptimisticStatus.initial));
   }
 }
